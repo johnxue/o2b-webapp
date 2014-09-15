@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html  ng-app="MainApp" ng-controller="ProductIndexCtrl"   >
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="renderer" content="webkit">
+<title></title>
+<link href="styles/index.css" rel="stylesheet">
+<link href="styles/zui.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="banner-top"> </div>
+<div class="bg">
+  <div class="cont" id="top">
+    <section id="navbars">
+    <nav class="navbar" role="navigation">
+      <div class="navbar-header"> <a class="navbar-brand" href="#">首页</a> </div>
+      
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-collapse-example">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#/">首页</a></li>
+          <li><a href="#/product">产品</a></li>
+          <li><a href="#">头条</a></li>
+          <li><a href="#/newsList">新闻</a></li>
+        </ul>
+        <form class="navbar-form navbar-left" role="search">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="搜索产品" ng-model="queryCondition">
+          </div>
+          <button type="submit" class="btn btn-default" ng-click="query(queryCondition)">搜索</button>
+        </form>
+          <!-- 登陆前显示-->
+        <ul class="nav navbar-nav navbar-right" ng-show="beforeLogin">
+          <li><a href="#">服务介绍</a></li>
+          <li><a href="#">注册</a></li>
+          <li><a href=""data-toggle="modal" data-target="#denglu">登陆</a></li>
+          <li ng-mouseenter="item.popover=true"
+                ng-mouseleave="item.popover=false"><a href="" ><i class="icon-shopping-cart"></i> 购物车 <span class="label label-badge label-info">0</span></a>
+                <div class="relative">
+                    <div class="popover" ng-style="{display: item.popover?'block':'none'}" >
+                        <div class="popover-title"> 您有购物车目前有0件商品 </div>
+                        <div class="popover-content"> <small class="label label-info" title="" > <a href="#/gouwuche"><i class="icon-shopping-cart"></i>查看购物车</a></small> </div>
+                    </div>
+                </div>
+          </li>
+        </ul>
+          <!-- 登陆前显示结束-->
+          <!-- 登陆后显示-->
+          <div class="dengluhou" ng-show="afterLogin">
+              <ul class="nav navbar-nav navbar-right">
+                  <li> <a href="#/myForm"> 我的订单</a> </li>
+                  <li> <a data-toggle="dropdown"  class="dropdown-toggle"> 消息 <i class="icon-caret-down"></i> </a>
+                      <ul class=" pull-right dropdown-menu  dropdown-close">
+                          <li> <a href="#"> <i class="icon-cog"></i> 我的评论 </a> </li>
+                          <li class="divider"></li>
+                          <li> <a href="#"> <i class="icon-envelope"></i> 我的私信 </a> </li>
+                          <li class="divider"></li>
+                          <li> <a href="#"> <i class="icon-user"></i> 联系客服 </a> </li>
+                          <li class="divider"></li>
+                          <li> <a href="#"> <i class="icon-comment"></i> 站内通知</a> </li>
+                      </ul>
+                  </li>
+                  <li > <a data-toggle="dropdown"  class="dropdown-toggle">{{loginedName}} <i class="icon-caret-down"></i> </a>
+                      <ul class=" pull-right dropdown-menu  dropdown-close">
+                          <li> <a href="#"> <i class="icon-cog"></i> 账号设置 </a> </li>
+                          <li class="divider"></li>
+                          <li> <a href="#"> <i class="icon-cog"></i> 我的产品 </a> </li>
+                          <li class="divider"></li>
+                          <li> <a href="#/userAddress"> <i class="icon-user"></i> 收货地址 </a> </li>
+                          <li class="divider"></li>
+                          <li ng-controller="logoutCtrl" ng-click="logout();"> <a href="#"> <i class="icon-off"></i> 退出 </a> </li>
+                      </ul>
+                  </li>
+                  <li ng-mouseenter="item.popover=true"
+                      ng-mouseleave="item.popover=false"><a href="" ><i class="icon-shopping-cart"></i> 购物车 <span class="label label-badge label-info">4</span></a>
+                      <div class="relative">
+                          <div class="popover" ng-style="{display: item.popover?'block':'none'}" >
+                              <div class="popover-title"> 您有购物车目前有4件商品 </div>
+                              <div class="popover-content"> <small class="label label-info" > <a href="#/productShoppingCart"><i class="icon-shopping-cart"></i> 查看购物车</a></small> </div>
+                          </div>
+                      </div>
+                  </li>
+              </ul>
+          </div>
+          <!-- 登陆后显示结束-->
+      </div>
+      <!-- /.navbar-collapse --> 
+    </nav>
+    </section>
+  </div>
+  </div>
+
+
+<!--导航结束-->
+<div ng-view > </div>
+
+<!-- /.page-content -->
+
+</div>
+
+<!-- 底部开始 -->
+<div class="footer black mp20">
+  <div class="cont" style=" padding-top:10px;">
+    <h2>合作伙伴</h2>
+    <div class="col-md-12" >
+      <p> <a href="#"><img src="images/hezuo1.gif"></a> <a href="#"><img src="images/hezuo2.gif" ></a> <a href="#"><img src="images/hezuo3.gif" ></a> <a href="#"><img src="images/hezuo4.gif" ></a> <a href="#"><img src="images/hezuo5.gif" ></a> <a href="#"><img src="images/hezuo6.gif" ></a> <a href="#"><img src="images/hezuo7.gif" ></a> </p>
+    </div>
+    <!-- 合作伙伴结束 -->
+    <div class="row">
+      <div class="col-md-4">
+        <h2>中国最大智能新品限时预购网站</h2>
+        <p>全中国最新最好的智能产品都在点名时间独家首发！点名时间全新的《首发模式》可以帮助硬件团队、渠道和消费者三方快速对接！让创新产品在最短的时间快速获得预订销量，建立品牌知名度！同时让消费者以优惠的价格参与到产品的诞生过程中！</p>
+        <p class="pull-right"><a  href="#" >服务介绍说明>></a></p>
+      </div>
+      <div class="col-md-4">
+        <h2>消费者可以得到什么？</h2>
+        <p>如果你是新奇特3C产品的爱好者，那么点名时间正是为你而存在的。在这里，你可以找到全中国最新奇、最有创意、最好玩的智能产品，而且你可以用市场价3-7折的超低价格抢先入手尚未上市智能产品！并提供7天内无条件退货，30天无条件换货保障！</p>
+        <p class="pull-right"><a  href="#">轻松尝鲜，前往产品列表>></a></p>
+      </div>
+      <div class="col-md-4">
+        <h2>硬件团队可以得到什么？</h2>
+        <p>针对智能硬件团队，点名时间帮你在30天内面向：至少500万以上的智能产品爱好者、国内外超过1000家的线上线下渠道、100多家媒体和 200多家的投资机构，迅速打开产品知名度，并快速积累大量真实订单！</p>
+        <p class="pull-right"><a  href="#">立即发布，前往提交产品页面>></a></p>
+      </div>
+    </div>
+    
+    <!--三个列表结束 -->
+    <div class="row">
+      <div class=" col-md-9 bottomlist mp20" ><i>我要发布</i>
+        <p> </a> <a href="">服务介绍</a> <a href="">产品规范</a> <a href="">常见问题</a> <span>|</span> <a href="">服务条款</a> <a href="">隐私权政策</a> <a href="">关于我们</a> <a href="">加入我们</a> <a href="">客服中心</a> </p>
+        <p>捷云易商(北京)科技有限公司 版权所有 2013-2014</p>
+        <p>Copyright Reserved 2013-2014©捷云易商（www.jetcloudtech.com ）| 京ICP备13045359号</p>
+      </div>
+      <div class="col-md-3"> <span><img src="images/kefuwx.jpg"> </span>
+        <p class="ml20"><i>扫描加入微信账号</i></p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 回顶部 -->
+
+<div class="modal" id="denglu" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true"  ng-controller="loginCtrl">
+    <div class="modal-dialog" >
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="resizedModalTitle"> 用户登陆 </h4>
+            </div>
+            <div class="modal-body">
+                <form name="frmLogin" class="form-horizontal" role="form" method='get' ng-model="objLoginInfo">
+                    <div class="container" >
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label bluezi" >用户名：</label>
+                                <div class="col-md-7">
+                                    <div class="input-group">
+
+                                        <input type='text'  class='form-control' placeholder="输入电子邮件地址"
+                                               ng-model="objLoginInfo.username" name="username" required emailmobile/>
+
+                    <span class="input-group-btn">
+                    <button class="btn btn-info" type="button"><i class="icon-user"></i></button>
+                    </span>
+                         </div>
+                            </div>
+                            </div>
+
+                            <div class="col-md-9 col-md-offset-3 ha30" ng-show="frmLogin.username.$dirty && frmLogin.username.$invalid">&nbsp;*
+                                <span ng-show="frmLogin.username.$error.emailmobile">请输入正确的电子邮件地址或手机号</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label bluezi">密码：</label>
+                                <div class="col-md-7">
+                                <div class="input-group">
+
+                                <input type='password'  class='form-control' placeholder="输入密码" required
+                                   name="password" ng-model="objLoginInfo.password" ng-minlength=6  ng-maxlength=20/>
+
+                                   <span class="input-group-btn">
+                                   <button class="btn btn-info" type="button"><i class="icon-lock"></i></button>
+                                   </span>
+                                </div>
+                                    <div class="col-md-12 pt10" ng-show="frmLogin.password.$dirty && frmLogin.password.$invalid">*
+                                        <span ng-show="frmLogin.password.$error.required">请输入您的密码</span>
+                                        <span ng-show="frmLogin.password.$error.minlength ||
+                                               frmLogin.password.$error.maxlength">密码由6-20字符组成</span>
+                                        <span ng-show="xue">无法识别的用户名或密码</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 pull-right"><a href="">忘记密码</a></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"  ng-click="reset()"
+                        ng-disabled="isUnchanged(objLoginInfo)">重置</button>
+                <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="update(objLoginInfo)"
+                        ng-disabled="frmLogin.$invalid">登陆</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<!-- /.modal -->
+<div class="fixtop"><a href="#top"></a></div>
+
+<script src="libs/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="libs/ZUI/js/example.js"></script>
+<script type="text/javascript" src="libs/ZUI/js/zui.min.js"></script>
+<script type="text/javascript" src="libs/ZUI/js/jquery-1.7.2.min.js"></script>
+
+<script type="text/javascript" src="libs/angular/angular.js"></script>
+<script type="text/javascript" src="libs/angular-route/angular-route.min.js"></script>
+<script src="libs/angular-resource/angular-resource.min.js"></script>
+<script src="libs/angular-animate/angular-animate.min.js"></script>
+
+<script src="scripts/app.js"></script>
+<script src="scripts/controllers/ctrProductList.js"></script>
+<script src="scripts/controllers/ctrProductDetail.js"></script>
+<script src="scripts/controllers/ctrProductIndex.js"></script>
+<script src="scripts/controllers/ctrProductMain.js"></script>
+<script src="scripts/controllers/ctrLogin.js"></script>
+<script src="scripts/controllers/ctrProductOrder.js"></script>
+<script src="scripts/controllers/ctrUserAddress.js"></script>
+<script src="scripts/controllers/ctrNews.js"></script>
+<script src="scripts/controllers/ctrNewsList.js"></script>
+<script src="scripts/controllers/ctrProductShoppingCart.js"></script>
+<script src="scripts/controllers/ctrMyForm.js"></script>
+
+<script src="scripts/services/svcCommon.js"></script>
+<script src="scripts/services/svcLogin.js"></script>
+
+
+<script src="scripts/filters/fltProduct.js"></script>
+
+<script src="scripts/directives/drtLogin.js"></script>
+
+<script src="libs/cryptojslib/rollups/md5.js"></script>
+<script src="libs/cryptojslib/rollups/aes.js"></script>
+<script src="libs/cryptojslib/components/pad-zeropadding-min.js"></script>
+<script src="libs/jctlibs/function.js"></script>
+<script src="libs/jctlibs/base64.js"></script>
+
+</body>
+</html>

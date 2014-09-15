@@ -1,0 +1,77 @@
+<div ng-controller="ProductMainCtrl">
+<!--中间大图-->
+<div class="bigbanner"  ></div>
+<!--中间大图结束-->
+<div class="container" >
+  <div class="cont" >
+    <div class="row mp20">
+      <div class="rowleft mr20 border ml10" style="height:226px;">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" >
+          <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+              <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+              <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+          </ol>
+          <div class="carousel-inner" >
+              <div class="item active h"  ng-repeat="adsLevelTwo in  adsLevelTwos" ng-if="$first"> <img alt="First slide" ng-src="images/products/{{adsLevelTwo[3]}}" class="fl">
+                  <div  class="itemtext">
+                      <p class="listb"><a ng-href="#/productDetail/{{adsLevelTwo[0]}}" class="card-heading"><span>{{adsLevelTwo[1]}}</span></a></p>
+                      <p class="lrp10">{{adsLevelTwo[2] | longmark}}</p>
+                      <P class="listp"><span class="hui">{{adsLevelTwo[4] | datemark}}</span><span class='label label-info pull-right' >{{adsLevelTwo[5]}}</span></P>
+                      <div class="col-md-4 ha20"  >¥{{adsLevelTwo[6]}}</div>
+                      <div class="col-md-4 ha20" >{{adsLevelTwo[7]}}</div>
+                      <div class="col-md-4 pull-right ha20" >{{adsLevelTwo[8]}}人</div>
+                      <div class="col-md-4 ha20 hui" >累计金额</div>
+                      <div class="col-md-4 ha20 hui" >话题</div>
+                      <div class="col-md-4 pull-right ha20 hui" >关注</div>
+                  </div>
+              </div>
+              <div class="item  h" ng-repeat="adsLevelTwo in  adsLevelTwos" ng-if="!$first"> <img alt="First slide" ng-src="images/products/{{adsLevelTwo[3]}}" class="fl">
+                  <div  class="itemtext">
+                      <p class="listb"><a ng-href="#/productDetail/{{adsLevelTwo[0]}}" class="card-heading"><span>{{adsLevelTwo[1]}}</span></a></p>
+                      <p class="lrp10">{{adsLevelTwo[2] | longmark}}</p>
+                      <P class="listp"><span class="hui">{{adsLevelTwo[4] | datemark}}</span><span class='label label-info pull-right' >{{adsLevelTwo[5]}}</span></P>
+                      <div class="col-md-4 ha20" >¥{{adsLevelTwo[6] | nullmark}}</div>
+                      <div class="col-md-4 ha20" >{{adsLevelTwo[7]  | nullmark }}</div>
+                      <div class="col-md-4 pull-right ha20" >{{adsLevelTwo[8]  | nullmark}}人</div>
+                      <div class="col-md-4 ha20 hui" >累计金额</div>
+                      <div class="col-md-4 ha20 hui" >话题</div>
+                      <div class="col-md-4 pull-right ha20 hui" >关注</div>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="rowright border" style="background:blue;"> <a><img src="images/img1.jpg" width="224" height="224"></a></div>
+    </div>
+    <!--中间轮播结束--> 
+    <!--中间导航开始-->
+    <div class="menu mp20"><i>最新推荐</i>
+      <p> <a href="" ng-click="queryBySth('sort',sorts[0][1])">{{sorts[0][0]}}</a> <a href="" ng-click="queryBySth('attribute',attributes[1][1])">{{attributes[1][0]}}</a> <a href="" ng-click="queryBySth('sort',sorts[2][1])">{{sorts[2][0]}}</a> <a href="" ng-click="queryBySth('sort',sorts[4][1])">{{sorts[4][0]}}</a> <a href="" ng-click="queryBySth('sort',sorts[3][1])">{{sorts[3][0]}}</a> <span>|</span> <a href="" ng-click="queryBySth('category',categorys[1][1])">{{categorys[1][0]}} </a> <a href="" ng-click="queryBySth('category',categorys[2][1])">{{categorys[2][0]}}</a> <a href="" ng-click="queryBySth('category',categorys[3][1])">{{categorys[3][0]}}</a> <a href="" ng-click="queryBySth('category',categorys[4][1])">{{categorys[4][0]}}</a> <a href="" ng-click="queryBySth('category',categorys[5][1])">{{categorys[5][0]}}</a> </p>
+    </div>
+    <!--中间导航结束--> 
+    
+    <!-- 推荐列表开始 -->
+    
+    <div class="list">
+      <section class="cards" >
+          <div  ng-repeat=" product in products" class="col-md-4 col-sm-6 col-lg-3">
+              <div class="card"> <img ng-src="images/products/{{product[4]}}" alt=""> <span class="caption">{{product[3]}}</span> <a href="#/productDetail/{{product[1]}}" class="card-heading"><span>{{product[3]}}</span></a>
+                  <P class="listp"><span class="hui">{{product[7] | datemark}}</span><span class='label label-info pull-right' >{{product[9]}}</span></P>
+                  <div class="col-md-4 ha20"  >¥{{product[0]}}</div>
+                  <div class="col-md-4 ha20" >{{product[1]}}</div>
+                  <div class="col-md-4 pull-right ha20" >{{product[2]}}人</div>
+                  <div class="col-md-4 ha20 hui" >累计金额</div>
+                  <div class="col-md-4 ha20 hui" >话题</div>
+                  <div class="col-md-4 pull-right ha20 hui" >关注</div>
+              </div>
+       </div>
+      </section>
+    </div>
+    
+    <!-- 推荐列表结束 --> 
+  </div>
+</div>
+</div>

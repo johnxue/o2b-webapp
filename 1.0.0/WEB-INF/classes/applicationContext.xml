@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+  http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+  http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+  http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+  ">
+
+	<!--1. 配置jdbc.properties文件的位置信息 -->
+	<bean id="dbproperty"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations" value="classpath:jdbc.properties" />
+	</bean>
+
+	<!--2. 配置数据源,读取jdbc.properties文件，其中{}中的名称就是上面jdbc.properties文件中对应的字段名称 。 
+		使用c3p0连接池 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="autoCommitOnClose" value="true" />
+		<property name="checkoutTimeout" value="${cpool.checkoutTimeout}" />
+		<property name="initialPoolSize" value="${cpool.minPoolSize}" />
+		<property name="minPoolSize" value="${cpool.minPoolSize}" />
+		<property name="maxPoolSize" value="${cpool.maxPoolSize}" />
+		<property name="maxIdleTime" value="${cpool.maxIdleTime}" />
+		<property name="acquireIncrement" value="${cpool.acquireIncrement}" />
+		<property name="maxIdleTimeExcessConnections" value="${cpool.maxIdleTimeExcessConnections}" />
+	</bean>
+	
+	<!-- 事物 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <aop:config>
+        <aop:advisor id="managerTx" advice-ref="txAdvice" pointcut="execution(* *..service..*.*(..))" order="1"/>
+    </aop:config>
+    
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">   	
+        <tx:attributes>
+        	<tx:method name="load*" read-only="true" />
+            <tx:method name="get*" read-only="true" />
+            <tx:method name="create*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="save*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="delete*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="crud*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="schedule*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="do*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="*" />
+        </tx:attributes>
+    </tx:advice> 
+    	
+	
+	<!-- 通过注释@Autowired自动注入restfull service -->	  
+	<context:component-scan base-package="com.jct.app.marketmng.rest" />	
+	<!-- 通过注释@Autowired自动注入service -->	
+	<context:component-scan base-package="com.jct.app.marketmng.sales.service"/>
+	<!-- 通过注释@Autowired自动注入dao -->
+	<context:component-scan base-package="com.jct.app.marketmng.base.dao"/>
+
+	<!-- enable autowire -->
+    <context:annotation-config/>
+    
+    <!-- MyBatis 配置  创建SqlSessionFactory，指定数据源  -->	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">			
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="typeAliasesPackage" value="com.jct.app.marketmng.base.po" />
+		<property name="mapperLocations" value="classpath:com/jct/app/marketmng/base/dao/*.xml" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />		
+	</bean>	
+				
+		
+	<!-- scan for Dao/mappers and let them be autowired -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+  		<property name="basePackage" value="com.jct.app.marketmng.base.dao" />  		
+	</bean>
+	
+	
+</beans>

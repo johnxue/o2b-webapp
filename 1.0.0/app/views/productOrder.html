@@ -1,0 +1,115 @@
+<div ng-controller="ProductOrderCtrl">
+<div class="container" >
+  <div class="cont" style=" margin-top:20px;" >
+    <div class="col-md-12">
+      <legend >填写并核对您的订单信息 </legend>
+      <div class="alert alert-info"> <strong>Hi!</strong> 请认真核对您的订单信息 ,以便商品购买。 </div>
+      <!--收件人地址开始-->
+      <p class="title">收件地址 <span><a href="" class=" titlea pull-right" data-toggle="modal" data-target="#updateperson" >修改收货地址</a></span></p>
+      <div class="alert with-icon "> <strong>收货人信息 </strong>
+        <div class="content">
+          <div class="ha30"><span>{{defaultDisaplayAddress[2]}}</span> <span>{{defaultDisaplayAddress[4]}}</span> <span>{{defaultDisaplayAddress[5]}}</span></div>
+          <div class="ha30"><span>{{defaultDisaplayAddress[6]}}</span> <span>{{defaultDisaplayAddress[8]}}</span> <span>{{defaultDisaplayAddress[9]}}</span><span>{{defaultDisaplayAddress[10]}}</span></div>
+        </div>
+      </div>
+      <!--收件人地址结束--> 
+      <!--支付方式开始-->
+      <div class="alert with-icon "> <strong>支付方式 </strong>
+        <div class="content">
+          <div class="ha30">
+            <input name="radio" type="radio" value="" >
+            货到付款 <span class="ml20 blue">送货上门后再收款，支持现金、POS机刷卡、支票支付</span></div>
+          <div class="ha30">
+            <input name="radio" type="radio" value="">
+            在线付款 <span class="ml20 blue">即时到帐，支持绝大数银行借记卡及部分银行信用卡 </span></div>
+          <div class="ha30">
+            <input name="radio" type="radio" value="">
+            公司转账 <span class="ml20 blue"> 转帐后1-3个工作日内到帐</span></div>
+          <div class="ha30">
+            <input name="radio" type="radio" value="">
+            邮局汇款 <span class="ml20 blue"> 汇款后1-3个工作日到账</span></div>
+        </div>
+      </div>
+      <!--支付方式结束--> 
+      <!--配送方式开始-->
+      <div class="alert with-icon "> <strong>配送方式 </strong>
+        <div class="content">
+          <p>由本公司负责配送，速度很快，还接受上门刷卡付款服务. </p>
+          <strong class="ha20">温馨提示：</strong>
+          <p class="ha20">1.我们会努力按照您指定的时间配送，但因天气、交通等各类因素影响，您的订单有可能会有延误现象！</p>
+          <p class="ha20">2.部分服务仅在配送区域提供，非配送区域无法选择，请您谅解。</p>
+        </div>
+      </div>
+        <div class="alert with-icon "> <strong>商品清单</strong> </div>
+        <table class="table table-hover">
+            <tbody>
+            <thead>
+            <td></td>
+            <td>商品信息</td>
+            <td>单价（元）</td>
+            <td>数量</td>
+            <td>金额（元）</td>
+            <td>库存状态</td>
+            </thead>
+            <form ng-model="orderForm">
+            <tr ng-repeat="orderProductInfo in orderProductsInfo">
+                <td><input name="" type="checkbox"  ng-value="orderProductInfo" ng-model="orderForm.selectedOrder"></td>
+                <!--<td><img ng-src=""  class="prdouctimg" /></td>-->
+                <td>{{orderProductInfo.name}}</td>
+                <td><strong>{{orderProductInfo.currentPrice}}</strong></td>
+                <td><span> <span>{{orderProductInfo.quantity}}</span> </span></td>
+                <td><strong class="blue">¥{{orderProductInfo.amount | number:2}}</strong></td>
+                <td>{{orderProductInfo.inventoryStatus}}</td>
+            </tr>
+            </form>
+            </tbody>
+        </table>
+        <p class="title">备注</p>
+        <div class="col-md-12">
+            <textarea name="" cols="" rows="" style="width:100%; height:100px; border:1px solid #ccc; margin-bottom:20px;" ng-model="comment"></textarea>
+        </div>
+        <div class="alert with-icon ">
+            <div class="content">
+                <div class="ha30 pull-right col-md-12"> <span ><strong>总商品金额：</strong></span> <span  style="width:100px; text-align:right">￥{{costAll | number:2}}</span></div>
+            </div>
+            <div class="ha30 pull-right col-md-12"> <span class="mr40"><strong>运费：</strong></span> <span  style="width:100px; text-align:right">￥10.00</span> </div>
+            <div class="ha30 pull-right">应付总额：￥<strong class="blue">{{costAll+10 | number:2}}</strong>元 <span ng-click="balance();"><a class="btn btn-info" >结算</a></span></div>
+        </div>
+    </div>
+    <!--配送方式结束-->
+
+  </div>
+</div>
+</div>
+<!--修改收货人地址 -->
+<div class="modal"  id="updateperson" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" > <i class="icon-map-marker"></i> 更改收货地址 </h4>
+      </div>
+      <div class="modal-body">
+        <div>
+          <table class="table table-hover">
+            <tbody>
+            <form ng-model="changeOrderAddressForm">
+              <tr ng-repeat="userAddressBeforeOr in userAddressesBeforeOr">
+                <td><input name="address" type="radio"  ng-value="userAddressBeforeOr" ng-model="changeOrderAddressForm.selectedAddress"></td>
+                <td>{{userAddressBeforeOr[6]+userAddressBeforeOr[8]+userAddressBeforeOr[9]+userAddressBeforeOr[10]}}&nbsp; {{userAddressBeforeOr[2]}}收</td>
+              </tr>
+            </form>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="saveChange(changeOrderAddressForm)">保存</button>
+      </div>
+    </div>
+    <!-- /.modal-content --> 
+  </div>
+  <!-- /.modal-dialog --> 
+</div>
+</div>

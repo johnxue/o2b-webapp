@@ -1,0 +1,70 @@
+'use strict';
+
+/**
+ *
+ *  @模块名称: Common Services
+ *  @版 本 号: V1.0.0
+ *  @作    者: Xu Kun
+ *  @作者邮件:
+ *  @修改日期: 2014-08-15
+ *  @版本描述:
+ *  
+ */
+
+var CommonServices = angular.module('CommonServices', []);
+//定义通用服务：CommonService
+CommonServices.factory('CommonService', ['$http', function ($http) {
+    
+	var baseUrl = 'http://192.168.1.210:8081/o2b/v1.0.0/';
+
+    //定义通用服务CommonService提供的方法
+    return {
+        
+		//1.Get all obj
+        getAll: function (uri,data) {
+            return $http({
+                method: "GET",
+             /*  headers:{'Content-Type':'application/json'},*/
+                url: baseUrl+uri+'?'+data
+            });
+        },
+
+        //2.Get one obj
+        getOne: function (params) {
+            return $http({
+                method: "GET",
+                url: params
+            })
+        },
+
+        //3.Update one obj
+        updateOne: function (params, data) {
+            return $http({
+                method: "PUT",
+                url: params,
+                headers: {'Content-Type': 'application/json' },
+                data: data    /*从页面提交的数据，保存在http data域*/
+            })
+        },
+
+        //4.Delete one
+        deleteOne: function (params) {
+            return $http({
+                method: "DELETE",
+                url: params
+            })
+        },
+
+        //5.Add new one
+        createOne: function (params, data) {
+            return $http({
+                method: "POST",
+                url: params,
+                data: data        /*从页面提交的数据，保存在http data域*/
+            })
+        }
+				
+
+    };
+}
+]);

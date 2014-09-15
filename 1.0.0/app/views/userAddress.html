@@ -1,0 +1,108 @@
+<div ng-controller="UserAddressCtrl">
+<style type="text/css">
+.large a { color: #FFF; outline:none;}
+.large a:hover { text-decoration:none;cursor: pointer; }
+</style>
+
+<div class="container" >
+<div class="cont" >
+  <div class="col-md-12">
+    <div class="col-md-9" >
+      
+        <p class="title">收货地址</p>
+        <div class="alert alert-info"> <strong>Hi!</strong> 请认真填写您的收货地址,以便商品购买。 </div>
+        <form class="form-horizontal" role="form" method="post" ng-model="deliveryAddress">
+          <div class="form-group">
+            <label class="col-md-3 control-label" >收件人姓名：</label>
+            <div class="col-md-7">
+              <input type="text"  class="form-control" ng-model="deliveryAddress.c">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label" >省份/直辖市：</label>
+            <div class="col-md-2">
+              <select  class="form-control" ng-model="deliveryAddress.pi" ng-options="province[0] as province[1] for province in selectProvinces">
+                <option value="" selected="selected">--省份--</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <select  class="form-control" ng-model="deliveryAddress.ci" ng-options="city[0] as city[1] for city in selectCitys" >
+                <option value="" selected="selected">--地级市--</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <select  class="form-control" ng-model="deliveryAddress.ai" ng-options="district[0] as district[1] for district in selectDistricts">
+                <option value="" selected="selected">--市、县--</option>
+              </select>
+            </div>
+          </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" style="text-align:right;">街道：</label>
+                <div class="col-md-7">
+                    <input type="text" class="form-control" ng-model="deliveryAddress.s">
+                </div>
+            </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label" style="text-align:right;">详细地址：</label>
+            <div class="col-md-7">
+              <input type="text" class="form-control" ng-model="deliveryAddress.a">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label" style="text-align:right;">邮政地址：</label>
+            <div class="col-md-7">
+              <input type="text" class="form-control" ng-model="deliveryAddress.z">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label" style="text-align:right;">手机号码：</label>
+            <div class="col-md-7">
+              <input type="text" class="form-control" ng-model="deliveryAddress.m">
+            </div>
+          </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" style="text-align:right;">固定电话：</label>
+                <div class="col-md-7">
+                    <input type="text" class="form-control" ng-model="deliveryAddress.t">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" style="text-align:right;">电子邮箱：</label>
+                <div class="col-md-7">
+                    <input type="text" class="form-control" ng-model="deliveryAddress.e">
+                </div>
+            </div>
+
+          
+          <div class="col-md-12 text-center"><button class="btn btn-info" ng-click="save(deliveryAddress)">确定保存</button></div>
+        </form>
+        
+        <p class="title">已有收货地址</p> 
+        <div>
+        <table class="table table-hover">
+              <tbody>
+                <tr ng-repeat="userAddress in userAddressesBefore" ng-if="userAddress[11]=='Y'">
+                  <td><input name="address" type="radio" value="{{userAddress[0]}}"></td>
+                  <td>{{userAddress[6]+userAddress[8]+userAddress[9]+userAddress[10]}}</td>
+                    <td><span class="label label-info large" ng-click="updateDefault(userAddress[0])"><a href="">默认地址</a></span></td>
+                  <td><a href="" ><i class="icon-pencil"></i></a></td>
+                  <td><a href="" style="color:#39b3d7"><i class="icon-trash" ng-click="delete(userAddress[0])"></i></a></td>
+                </tr>
+                <tr ng-repeat="userAddress in userAddressesBefore" ng-if="userAddress[11]=='N'">
+                    <td><input name="address" type="radio" value="{{userAddress[0]}}"></td>
+                    <td>{{userAddress[6]+userAddress[8]+userAddress[9]+userAddress[10]}}</td>
+                    <td><span class="label label-info large" ng-click="updateDefault(userAddress[0])"><a href="">设置为默认地址</a></span></td>
+                    <td><a href="" ><i class="icon-pencil"></i></a></td>
+                    <td><a href="" style="color:#39b3d7"><i class="icon-trash" ng-click="delete(userAddress[0])"></i></a></td>
+                </tr>
+                
+              </tbody>
+          </table>
+        
+        </div>
+        
+    </div>
+  </div>
+</div>
+</div>
+ </div>

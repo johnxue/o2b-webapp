@@ -1,0 +1,50 @@
+<div ng-controller="ProductListCtrl">
+<div class="container" >
+  <div class="cont" style=" margin-top:-20px;"> 
+    <!--中间导航开始-->
+    <div class="menu mp20"><i>最新推荐</i>
+      <p>&nbsp; </p>
+    </div>
+    <ul  class="list-group" style="margin-top:20px;">
+      <li  class="list-group-item"><span>属性：</span>
+          <a ng-repeat="attribute in attributes" href="" ng-if="$first" class="active" ng-click="queryBySth('0','20','attribute',attribute[1])">{{attribute[0]}}</a>
+          <a ng-repeat="attribute in attributes" href="" ng-if="!$first" ng-click="queryBySth('0','20','attribute',attribute[1])">{{attribute[0]}}</a>
+      </li>
+      <li  class="list-group-item"><span>分类：</span>
+          <a  ng-repeat="category in categorys" href="" ng-if="$first" class="active" ng-click="queryBySth('0','20','category',category[1])">{{category[0]}}</a>
+          <a  ng-repeat="category in categorys" href="" ng-if="!$first" ng-click="queryBySth('0','20','category',category[1])">{{category[0]}}</a>
+      </li>
+      <li  class="list-group-item"><span>排序：</span>
+          <a ng-repeat="sort in sorts" href="" ng-if="$first" class="active" ng-click="queryBySth('0','20','sort',sort[1])">{{sort[0]}}</a>
+          <a ng-repeat="sort in sorts" href="" ng-if="!$first" ng-click="queryBySth('0','20','sort',sort[1])">{{sort[0]}}</a>
+      </li>
+    </ul>
+<script type="text/javascript">
+
+  
+  $(".list-group-item a").click(function(){
+$(this).parent().find("a").removeClass("active")
+$(this).addClass("active");
+})
+</script> 
+    <!-- 列表开始 -->
+    
+    <div class="list">
+      <section class="cards" >
+        <div  ng-repeat=" product in products" class="col-md-4 col-sm-6 col-lg-3">
+          <div class="card"> <img ng-src="images/products/{{product[4]}}" alt=""> <span class="caption">{{product[3]}}</span> <a href="#/productDetail/{{product[1]}}" class="card-heading"><span>{{product[3]}}</span></a>
+            <P class="listp"><span class="hui">{{product[7] | datemark}}</span><span class='label label-info pull-right' >{{product[9]}}</span></P>
+            <div class="col-md-4 ha20"  >¥{{product[0]}}</div>
+            <div class="col-md-4 ha20" >{{product[1]}}</div>
+            <div class="col-md-4 pull-right ha20" >{{product[2]}}人</div>
+            <div class="col-md-4 ha20 hui" >累计金额</div>
+            <div class="col-md-4 ha20 hui" >话题</div>
+            <div class="col-md-4 pull-right ha20 hui" >关注</div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </div>
+</div>
+</div>

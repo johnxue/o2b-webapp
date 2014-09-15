@@ -1,0 +1,174 @@
+<div ng-controller="ProductDetailCtrl">
+    <!--导航结束-->
+
+    <div class="bigbanner"><img ng-src="images/products/{{productDetailBasic.imageBanners}}" width="2560" height="450"/>
+    </div>
+    <div class="container">
+        <div class="cont" style=" background:#CCF; margin-top:20px;">
+
+            <!-- 列表开始 -->
+            <!--产品详情页左边开始-->
+            <div class="col-md-12">
+                <ul class="nav nav-tabs" ng-init="vm.activeTab=1">
+                    <li ng-class="{active: vm.activeTab == 1}"><a href="javascript:;"
+                                                                  ng-click="vm.activeTab = 1">产品主页</a></li>
+                    <li ng-class="{active: vm.activeTab == 2}"><a href="javascript:;" ng-click="vm.activeTab = 2">预订</a>
+                    </li>
+                    <li ng-class="{active: vm.activeTab == 3}"><a href="javascript:;" ng-click="vm.activeTab = 3">话题</a>
+                    </li>
+                    <li ng-class="{active: vm.activeTab == 4}"><a href="javascript:;" ng-click="vm.activeTab = 4">统计</a>
+                    </li>
+                    <span class="label label-info large wd" ng-show="guanZhu"
+                          ng-click="guanZhuFun(productDetailBasic.code)">+ 关注</span>
+                    <span class="label label-info large wd" ng-show="yiGuanZhu"
+                          ng-click="yiGuanZhuFun(productDetailBasic.code)">已关注</span>
+
+                </ul>
+                <div class="tab-content tab-bordered">
+                    <div class="tab-panel" ng-show="vm.activeTab == 1">
+                        <div class="col-md-9" id="tab1" ng-repeat="productDetailhtml in productDetailhtmls"
+                             ng-bind-html="productDetailhtml | to_trusted"></div>
+                        <div class="col-md-3">
+                            <!-- <p style="background:red; text-align:center; height:35px; padding-top:7px;">2014年9月20日10点结束</p>-->
+                            <div>
+                                <h2><span class="label label-info large">{{productDetailBasic.starttime+'&'+productDetailBasic.endtime | detailDateMark}}</span>
+                                </h2>
+
+                                <p>累计金额</p>
+
+                                <p>
+
+                                <h1 style="color:#999;"><strong style="color:#999;">¥{{productDetailBasic.totalAmount |
+                                    number:2}}</strong></h1>
+                                </p>
+                                <div class="lrp10">{{productDetailBasic.description}}</div>
+                                <div class="lrp10"><img src="images/title.png" width="80" height="80"/>&nbsp;&nbsp;<span
+                                        class="label label-info large">{{productDetailBasic.supplierName}}</span>
+
+                                    <div class="row border fixed">
+                                        <div class="col-md-12">
+                                            <h3><span class="label label-info large">限额{{productDetailBasic.limit}}台 / 剩余{{productDetailBasic.limit-productDetailBasic.totalSold}}台</span>
+                                            </h3>
+
+                                            <p><strong class="cl">¥{{productDetailBasic.currentPrice}}</strong>&nbsp;({{productDetailBasic.totalSold}}预订)/<span>原价：<del>
+                                                223
+                                            </del></span></p>
+                                        </div>
+                                        <p><img ng-src="images/products/{{productDetailBasic.image}}"/></p>
+
+                                        <div class="col-md-12">非常感谢您成为支持儿童健康成长的首批用户，相信您的决定将使您身边小朋友的未来变得更加阳光灿烂！ <br/>
+                                            没有更好的方法比真诚和免费来的实在，我们果断决定在点名首发才推出的超值买身高仪赠送蓝牙体重秤活动，您只用63折身高仪的价格即可获得完整1套成长计划 。
+                                            还没有结束，为了鼓励更多的人来支持首个儿童健康成长产品，将在活动中推出预售越多，送得越多，微信转发即送人人都有份的神马大礼包活动.
+                                            <p>包邮（大陆地区）</p>
+
+                                            <p>预计发货：预订结束后30天内</p>
+
+                                            <p>数量： <span>
+            <button class="btn btn-info btn-mini w20 " ng-click="quantityPlus(productDetailBasic.limit,productDetailBasic.totalSold)">+</button>
+            <span>
+            <input name="" type="text"  class="input" ng-model="quantity"/>
+            </span>
+            <button class="btn btn-info btn-mini w20 " ng-click="quantitySubtract()">-</button>
+            </span>
+                                            </p>
+                                            <P>总金额：<strong class="bluezi">￥{{cost | number:2}}</strong></P>
+
+                                            <p style="text-align:center">
+                                                <button type="button" class="btn btn-info" ng-click="order();"
+                                                        ng-disabled="reserverState">立即预订
+                                                </button>
+                                                <button class="btn btn-info" ng-click="addToShoppingCart();"><i class="icon-shopping-cart"></i> 加入购物车</button>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="clear:both"></div>
+                        </div>
+                        <div class="tab-panel" ng-show="vm.activeTab == 2">
+                            <div class="col-md-9">
+                                <section class="comments-list">
+                                    <div class="comment"><a href="#" class="avatar"><img src="images/head1.gif"/></a>
+
+                                        <div class="content">
+                                            <div class="pull-right"><span class="text-muted">2小时前</span> &nbsp;<strong>2014-5-5</strong>
+                                            </div>
+                                            <a href="#" class="author"><strong>admin123</strong></a>
+
+                                            <div class="text"> 2014年08月26日 加入,共消费$200元.</div>
+                                            <div class="actions"><a href="##">reply</a> <a href="##">edit</a> <a
+                                                    href="##">delete</a></div>
+                                        </div>
+                                    </div>
+                                    <div class="comment"><a href="#" class="avatar"><img src="images/head2.png"/></a>
+
+                                        <div class="content">
+                                            <div class="pull-right"><span class="text-muted">2小时前</span> &nbsp;<strong>2014-5-5</strong>
+                                            </div>
+                                            <a href="#" class="author"><strong>admin123</strong></a>
+
+                                            <div class="text"> 2014年08月26日 加入,共消费$200元.</div>
+                                            <div class="actions"><a href="##">reply</a> <a href="##">edit</a> <a
+                                                    href="##">delete</a></div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            <div class="col-md-3">fffff</div>
+                        </div>
+                        <div class="tab-panel" ng-show="vm.activeTab == 3">
+                            <div class="col-md-9">
+                                <table class="table table-hover">
+                                    <tbody>
+                                    <tr>
+                                        <td>请问有VPN服务器功能？</td>
+                                        <td>Sunshine</td>
+                                        <td><span>12</span> <i class="icon-comment"></i></td>
+                                        <td>1小时前</td>
+                                    </tr>
+                                    <tr>
+                                        <td>能把路由里面的硬盘映射为本地一个带盘符的磁盘么</td>
+                                        <td>Sunshine</td>
+                                        <td><span>12</span> <i class="icon-comment"></i></td>
+                                        <td>1小时前</td>
+                                    </tr>
+                                    <tr>
+                                        <td>请问有VPN服务器功能？</td>
+                                        <td>Sunshine</td>
+                                        <td><span>12</span> <i class="icon-comment"></i></td>
+                                        <td>1小时前</td>
+                                    </tr>
+                                    <tr>
+                                        <td>能把路由里面的硬盘映射为本地一个带盘符的磁盘么</td>
+                                        <td>Sunshine</td>
+                                        <td><span>12</span> <i class="icon-comment"></i></td>
+                                        <td>1小时前</td>
+                                    </tr>
+                                    <tr>
+                                        <td>请问有VPN服务器功能？</td>
+                                        <td>Sunshine</td>
+                                        <td><span>12</span> <i class="icon-comment"></i></td>
+                                        <td>1小时前</td>
+                                    </tr>
+                                    <tr>
+                                        <td>能把路由里面的硬盘映射为本地一个带盘符的磁盘么</td>
+                                        <td>Sunshine</td>
+                                        <td><span>12</span> <i class="icon-comment"></i></td>
+                                        <td>1小时前</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-3"></div>
+
+
+                        </div>
+                        <div class="tab-panel" ng-show="vm.activeTab == 4"> 标签4的内容</div>
+                    </div>
+                </div>
+                <!--产品详情页左边开始-->
+
+            </div>
+        </div>
+    </div>
+</div>
