@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="22a608ef-4398-471e-937b-509c5b512b9a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/1.0.0/app/scripts/app.js" afterPath="$PROJECT_DIR$/1.0.0/app/scripts/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/1.0.0/app/scripts/controllers/ctrLogin.js" afterPath="$PROJECT_DIR$/1.0.0/app/scripts/controllers/ctrLogin.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/1.0.0/app/scripts/controllers/ctrProductDetail.js" afterPath="$PROJECT_DIR$/1.0.0/app/scripts/controllers/ctrProductDetail.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/1.0.0/app/scripts/controllers/ctrProductIndex.js" afterPath="$PROJECT_DIR$/1.0.0/app/scripts/controllers/ctrProductIndex.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/1.0.0/app/scripts/controllers/ctrProductOrder.js" afterPath="$PROJECT_DIR$/1.0.0/app/scripts/controllers/ctrProductOrder.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/1.0.0/app/scripts/controllers/ctrProductShoppingCart.js" afterPath="$PROJECT_DIR$/1.0.0/app/scripts/controllers/ctrProductShoppingCart.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/1.0.0/app/index.html" afterPath="$PROJECT_DIR$/1.0.0/app/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/1.0.0/app/views/productDetail.html" afterPath="$PROJECT_DIR$/1.0.0/app/views/productDetail.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/1.0.0/app/views/productOrder.html" afterPath="$PROJECT_DIR$/1.0.0/app/views/productOrder.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/1.0.0/app/views/productShoppingCart.html" afterPath="$PROJECT_DIR$/1.0.0/app/views/productShoppingCart.html" />
-    </list>
+    <list default="true" id="22a608ef-4398-471e-937b-509c5b512b9a" name="Default" comment="" />
     <ignored path="o2b-webapp.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -412,7 +401,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="24" width="1301" height="744" extended-state="1" />
+    <frame x="65" y="24" width="1301" height="744" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
