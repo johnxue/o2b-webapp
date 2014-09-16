@@ -23,7 +23,9 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
     var uriData ='';
     var balanceNeed = {};
 //初始化$scope中定义的变量
-    $scope.orderProductsInfo =JSON.parse(localDataStorage.getItem('orderProductsInfo'));
+    $scope.orderForm={};
+
+    $scope.orderForm.orderProductsInfo =JSON.parse(localDataStorage.getItem('orderProductsInfo'));
 
 
     $scope.userAddressesBeforeOr = {};
@@ -31,19 +33,19 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
     $scope.defaultDisaplayAddress={};
 
 
-    $scope.comment='';
+    $scope.orderForm.comment='';
 
     $scope.changeOrderAddressForm={};
 
     $scope.costAll=0;
 
-    for(var i=0;i<$scope.orderProductsInfo.length;i++){
-        $scope.costAll+=$scope.orderProductsInfo[i].amount;
+    for(var i=0;i<$scope.orderForm.orderProductsInfo.length;i++){
+        $scope.costAll+=$scope.orderForm.orderProductsInfo[i].amount;
     }
 
-    $scope.payments ={};
+    $scope.orderForm.payments ={};
 
-    $scope.deliverys={};
+    $scope.orderForm.deliverys={};
 
 
     //实现与页面交互的事件,如：button_click
@@ -56,30 +58,45 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
 
     //结算
 
-    $scope.balance=function(){
+    $scope.balance=function(orderForm){
         balanceNeed.aId=$scope.defaultDisaplayAddress[0];
-        balanceNeed.payment='20';
+
+        balanceNeed.payment='';
+        for(var i =0;i<$scope.orderForm.payments.length;i++){
+            var a = $scope.orderForm.payments[i].$radioBox;
+            if(typeof(a)!=='undefined'){
+                balanceNeed.payment=$scope.orderForm.payments[i].$radioBox;
+            }
+        }
+
         balanceNeed.shipping='10';
         balanceNeed.freight= 10;
-        balanceNeed.total= $scope.orderProductsInfo.length;
+        balanceNeed.total= $scope.orderForm.orderProductsInfo.length;
         balanceNeed.amount=$scope.costAll;
-        balanceNeed.comment=$scope.comment;
+        balanceNeed.comment=$scope.orderForm.comment;
 
-        var orderProductsInfoForBalance=$scope.orderProductsInfo;
-        for(var i=0;i<orderProductsInfoForBalance.length;i++){
-            orderProductsInfoForBalance[i].wouldOrder=undefined;
-            orderProductsInfoForBalance[i].amount=undefined;
-            orderProductsInfoForBalance[i].id=undefined;
-            orderProductsInfoForBalance[i].pcode=orderProductsInfoForBalance[i].code;
-            orderProductsInfoForBalance[i].code=undefined;
-            orderProductsInfoForBalance[i].price=orderProductsInfoForBalance[i].currentPrice;
-            orderProductsInfoForBalance[i].currentPrice=undefined;
-            orderProductsInfoForBalance[i].oPrice=orderProductsInfoForBalance[i].originalPrice;
-            orderProductsInfoForBalance[i].originalPrice=undefined;
-            orderProductsInfoForBalance[i].number=orderProductsInfoForBalance[i].quantity;
-            orderProductsInfoForBalance[i].quantity=undefined;
-            orderProductsInfoForBalance[i].$$hashKey=undefined;
+        var orderProductsInfoForBalance=[];
+        for(var i=0;i<$scope.orderForm.orderProductsInfo.length;i++){
+            if($scope.orderForm.orderProductsInfo[i]['$selectedOrder']==true){
+                var orderProductInfoForBalance={};
+
+                orderProductInfoForBalance['pid']=$scope.orderForm.orderProductsInfo[i].pid;
+
+                orderProductInfoForBalance['name']=$scope.orderForm.orderProductsInfo[i].name;
+
+
+                orderProductInfoForBalance['pcode']=$scope.orderForm.orderProductsInfo[i].code;
+
+                orderProductInfoForBalance['price']=$scope.orderForm.orderProductsInfo[i].currentPrice;
+
+                orderProductInfoForBalance['oPrice']=$scope.orderForm.orderProductsInfo[i].originalPrice;
+
+                orderProductInfoForBalance['number']=$scope.orderForm.orderProductsInfo[i].quantity;
+
+                orderProductsInfoForBalance.push(orderProductInfoForBalance);
+            }
         }
+
         balanceNeed.orders=orderProductsInfoForBalance;
 
         CommonService.createOne('order',JSON.stringify(balanceNeed),function(data){
@@ -110,8 +127,8 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
 
     uriData = undefined;
     CommonService.getAll('order/attribute',uriData,function(data){
-        $scope.payments
-        $scope.deliverys
+        $scope.orderForm.payments=data['payment'];
+        $scope.orderForm.deliverys;
     },errorOperate);
 
 });

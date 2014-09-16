@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-var MainApp=angular.module('MainApp',['ngRoute','ngResource','ProductDetailControllers','ProductIndexControllers','ProductListControllers','ProductMainControllers','CommonServices','ProductFilters','LoginDirectives','LoginServices','LoginControllers','ProductOrderControllers','UserAddressControllers','NewsControllers','NewsListControllers','ProductShoppingCartControllers']);
+var MainApp=angular.module('MainApp',['ngRoute','ngResource','ProductDetailControllers','ProductIndexControllers','ProductListControllers','ProductMainControllers','CommonServices','ProductFilters','LoginDirectives','LoginServices','LoginControllers','ProductOrderControllers','UserAddressControllers','NewsControllers','NewsListControllers','ProductShoppingCartControllers','MyFormControllers']);
 
 MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($routeProvider,$httpProvider,$locationProvider) {
     $routeProvider

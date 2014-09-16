@@ -67,14 +67,39 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
             cookieOperate.setCookie('userName', strUserName);
             $scope.$emit('logined', strUserName);
 
-            //获取用户购物车信息
+            //获取用户登录之后的购物车商品商品信息
             uriData=undefined;
             CommonService.getAll('shoppingcart',uriData,function(data){
                 var cartProducts = data;
-                var cartProductsTotal = cartProducts.length;
-                var cartProductsInfoArray=[];
 
-                for(var i=1;i<cartProducts.length;i++){
+                //得到用户登录之前的购物车商品信息
+                var cartProductsTotal = JSON.parse(localDataStorage.getItem('cartProductsTotal'));
+                if(cartProductsTotal==null){
+                    cartProductsTotal=0;
+                }
+                var cartProductsInfoArray=JSON.parse(localDataStorage.getItem('cartProductsInfoArray'));
+                if(cartProductsInfoArray==null){
+                    cartProductsInfoArray=[];
+                }
+
+                //将用户登录之前的购物车商品信息添加到服务器
+                for(var i=0;i<cartProductsInfoArray.length;i++){
+                    addCartNeed.pid = cartProductsInfoArray[i]['pid'];
+                    addCartNeed.pcode = cartProductsInfoArray[i]['code'];
+                    addCartNeed.number = cartProductsInfoArray[i]['quantity'];
+                    CommonService.createOne('shoppingcart', JSON.stringify(addCartNeed), function (data) {
+                        console.info(data.user);
+                        console.info(data.shoppingCartId);
+                        cartProductsInfoArray[i]['id']=data.shoppingCartId;
+                },errorOperate);
+                }
+
+                //将用户登录前后的购物车商品个数合并
+                cartProductsTotal+=cartProducts.length;
+
+
+                //将用户登录前后的购物车商品信息合并
+                for(var i=0;i<cartProducts.length;i++){
                     var cartProductsInfo={};
 
                     cartProductsInfo.id=cartProducts[i][0];
@@ -94,8 +119,8 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
                     cartProductsInfoArray.push(cartProductsInfo);
                 }
 
-                localDataStorage.setItem(JSON.stringify(cartProductsInfoArray));
-                localDataStorage.setItem(cartProductsTotal);
+                localDataStorage.setItem('cartProductsInfoArray',JSON.stringify(cartProductsInfoArray));
+                localDataStorage.setItem('cartProductsTotal',cartProductsTotal.toString());
             },errorOperate);
 
 
@@ -136,6 +161,10 @@ LoginControllers.controller('logoutCtrl', function ($scope,CommonService) {
         CommonService.deleteOne('logout',uriData,function(){
             cookieOperate.delCookie('token');
             cookieOperate.delCookie('userName');
+            localDataStorage.setItem('cartProductsInfoArray',null);
+            localDataStorage.setItem('cartProductsTotal',null);
+            localDataStorage.setItem('orderProductsInfo',null);
+
             var logoutedState =false;
             $scope.$emit('logouted',logoutedState);
         },errorOperate);

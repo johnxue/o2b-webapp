@@ -73,7 +73,7 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
         },errorOperate);
     }
 
-    //点击订购点击事件
+    //点击购买点击事件
     $scope.order=function(){
 
         var orderProductsInfoDataArray=[];
@@ -102,13 +102,72 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
     //点击添加购物车点击事件
 
     $scope.addToShoppingCart=function(){
-        addCartNeed.pid = $scope.productDetailBasic.pid;
-        addCartNeed.pcode=$scope.productDetailBasic.code;
-        addCartNeed.number=$scope.quantity;
-        CommonService.createOne('shoppingcart',JSON.stringify(addCartNeed),function(data){
-            console.info(data.user);
-            console.info(data.shoppingCartId);
-        },errorOperate);
+        if(cookieOperate.getCookie("token")!=null) {
+            addCartNeed.pid = $scope.productDetailBasic.pid;
+            addCartNeed.pcode = $scope.productDetailBasic.code;
+            addCartNeed.number = $scope.quantity;
+            CommonService.createOne('shoppingcart', JSON.stringify(addCartNeed), function (data) {
+                console.info(data.user);
+                console.info(data.shoppingCartId);
+
+                //本地购物车增加商品
+                var cartProductsInfoArray=JSON.parse(localDataStorage.getItem('cartProductsInfoArray'));
+                if(cartProductsInfoArray==null){
+                    cartProductsInfoArray=[];
+                }
+                var cartProductsTotal = JSON.parse(localDataStorage.getItem('cartProductsTotal'));
+                if(cartProductsTotal==null){
+                    cartProductsTotal=0;
+                }
+                var cartProductsInfo={};
+                cartProductsInfo.id=data['shoppingCartId'];
+                cartProductsInfo.pid=$scope.productDetailBasic['pid'];
+                cartProductsInfo.code = $scope.productDetailBasic['code'];
+                cartProductsInfo.name=$scope.productDetailBasic['name'];
+                cartProductsInfo.originalPrice=$scope.productDetailBasic['originalPrice'];
+                cartProductsInfo.currentPrice=$scope.productDetailBasic['currentPrice'];
+                cartProductsInfo.quantity=$scope.quantity;
+                cartProductsInfo.offLine=$scope.productDetailBasic['status'];
+                if($scope.productDetailBasic['limit']-$scope.productDetailBasic['totalSold']>0){
+                    cartProductsInfo.inventoryStatus='有货';
+                }else{
+                    cartProductsInfo.inventoryStatus='无货'
+                }
+                cartProductsInfoArray.push(cartProductsInfo);
+                localDataStorage.setItem('cartProductsInfoArray',JSON.stringify(cartProductsInfoArray));
+                cartProductsTotal=cartProductsInfoArray.length;
+                localDataStorage.setItem('cartProductsTotal',JSON.stringify(cartProductsTotal));
+
+            }, errorOperate);
+        }else{
+            //本地购物车增加商品
+            var cartProductsInfoArray=JSON.parse(localDataStorage.getItem('cartProductsInfoArray'));
+            if(cartProductsInfoArray==null){
+                cartProductsInfoArray=[];
+            }
+            var cartProductsTotal = JSON.parse(localDataStorage.getItem('cartProductsTotal'));
+            if(cartProductsTotal=null){
+                cartProductsTotal=0;
+            }
+            var cartProductsInfo={};
+            cartProductsInfo.pid=$scope.productDetailBasic['pid'];
+            cartProductsInfo.code = $scope.productDetailBasic['code'];
+            cartProductsInfo.name=$scope.productDetailBasic['name'];
+            cartProductsInfo.originalPrice=$scope.productDetailBasic['originalPrice'];
+            cartProductsInfo.currentPrice=$scope.productDetailBasic['currentPrice'];
+            cartProductsInfo.quantity=$scope.quantity;
+            cartProductsInfo.offLine=$scope.productDetailBasic['status'];
+            if($scope.productDetailBasic['limit']-$scope.productDetailBasic['totalSold']>0){
+                cartProductsInfo.inventoryStatus='有货';
+            }else{
+                cartProductsInfo.inventoryStatus='无货';
+            }
+            cartProductsInfoArray.push(cartProductsInfo);
+            localDataStorage.setItem('cartProductsInfoArray',JSON.stringify(cartProductsInfoArray));
+            cartProductsTotal=cartProductsInfoArray.length;
+            localDataStorage.setItem('cartProductsTotal',JSON.stringify(cartProductsTotal));
+
+        }
     }
 
 
