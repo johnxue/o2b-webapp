@@ -39,11 +39,25 @@ UserAddressControllers.controller('UserAddressCtrl',function($scope,CommonServic
 
   $scope.userAddressesBefore = {};
 
+    /*注册事件*/
+    $scope.$on("userDefaultAddressesChange",function (event, id) {
+        for(var i =0;i<$scope.userAddressesBefore.length;i++){
+            if($scope.userAddressesBefore[i][11]=='Y'){
+                $scope.userAddressesBefore[i][11]='N';
+            }
+        }
+        for(var i =0;i<$scope.userAddressesBefore.length;i++){
+            if($scope.userAddressesBefore[i][0]==id){
+                $scope.userAddressesBefore[i][11]='Y';
+            }
+        }
+    });
+
     //实现与页面交互的事件,如：button_click
 
     $scope.$watch('deliveryAddress.pi', function(selectedProvince) {
         if(selectedProvince!=undefined ){
-        CommonService.getAll('area','p='+selectedProvince).success(function(data){
+        CommonService.getAll('area','p='+selectedProvince,function(data){
             $scope.selectCitys=data.city;
 
             for(var i=0;i<$scope.selectProvinces.length;i++){
@@ -51,15 +65,13 @@ UserAddressControllers.controller('UserAddressCtrl',function($scope,CommonServic
                     provinceName=$scope.selectProvinces[i][1];
                 }
             }
-        }).error(function(){
-            console.info('error');
-        });
+        },errorOperate);
         }
     });
 
     $scope.$watch('deliveryAddress.ci', function(selectedCity) {
         if(selectedCity!=undefined ){
-            CommonService.getAll('area','c='+selectedCity).success(function(data){
+            CommonService.getAll('area','c='+selectedCity,function(data){
                 $scope.selectDistricts=data.district;
 
                 for(var i =0;i<$scope.selectCitys.length;i++){
@@ -67,9 +79,7 @@ UserAddressControllers.controller('UserAddressCtrl',function($scope,CommonServic
                         cityName=$scope.selectCitys[i][1];
                     }
                 }
-            }).error(function(){
-                console.info('error');
-            });
+            },errorOperate);
         }
     });
 
@@ -87,7 +97,7 @@ UserAddressControllers.controller('UserAddressCtrl',function($scope,CommonServic
         deliveryAddress.i='N';
         uriData = angular.toJson(deliveryAddress)
         CommonService.createOne('address',uriData,function(data){
-            $scope.userAddressesBefore.splice(1,0,[,,deliveryAddress.c,deliveryAddress.t,deliveryAddress.m,deliveryAddress.e,provinceName,cityName,districtName,deliveryAddress.s,deliveryAddress.a,deliveryAddress.i]);
+            $scope.userAddressesBefore.splice(1,0,[data.address,data.user,deliveryAddress.c,deliveryAddress.t,deliveryAddress.m,deliveryAddress.e,provinceName,cityName,districtName,deliveryAddress.s,deliveryAddress.a,deliveryAddress.i]);
             $scope.deliveryAddress={};
         },errorOperate);
     }

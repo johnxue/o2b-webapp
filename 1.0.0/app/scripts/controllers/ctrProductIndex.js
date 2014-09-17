@@ -26,7 +26,7 @@ ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonServ
     $scope.beforeLogin = null;
     $scope.afterLogin = null;
     $scope.loginedName={};
-    $scope.cartProductsTotal=localDataStorage.getItem('cartProductsTotal');
+    $scope.cartProductsTotal=JSON.parse(localDataStorage.getItem('cartProductsTotal'));
      if($scope.cartProductsTotal==null){
          $scope.cartProductsTotal=0
      }
