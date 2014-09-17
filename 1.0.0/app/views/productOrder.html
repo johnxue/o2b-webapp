@@ -1,6 +1,7 @@
 <div ng-controller="ProductOrderCtrl">
 <div class="container" >
   <div class="cont" style=" margin-top:20px;" >
+
     <div class="col-md-12">
       <legend >填写并核对您的订单信息 </legend>
       <div class="alert alert-info"> <strong>Hi!</strong> 请认真核对您的订单信息 ,以便商品购买。 </div>
@@ -12,24 +13,18 @@
           <div class="ha30"><span>{{defaultDisaplayAddress[6]}}</span> <span>{{defaultDisaplayAddress[8]}}</span> <span>{{defaultDisaplayAddress[9]}}</span><span>{{defaultDisaplayAddress[10]}}</span></div>
         </div>
       </div>
-      <!--收件人地址结束--> 
+      <!--收件人地址结束-->
+        <form ng-model="orderForm">
       <!--支付方式开始-->
       <div class="alert with-icon "> <strong>支付方式 </strong>
         <div class="content">
-          <div class="ha30">
-            <input name="radio" type="radio" value="" >
-            货到付款 <span class="ml20 blue">送货上门后再收款，支持现金、POS机刷卡、支票支付</span></div>
-          <div class="ha30">
-            <input name="radio" type="radio" value="">
-            在线付款 <span class="ml20 blue">即时到帐，支持绝大数银行借记卡及部分银行信用卡 </span></div>
-          <div class="ha30">
-            <input name="radio" type="radio" value="">
-            公司转账 <span class="ml20 blue"> 转帐后1-3个工作日内到帐</span></div>
-          <div class="ha30">
-            <input name="radio" type="radio" value="">
-            邮局汇款 <span class="ml20 blue"> 汇款后1-3个工作日到账</span></div>
-        </div>
+          <div class="ha30" ng-repeat="payment in orderForm.payments">
+            <input name="radio" type="radio" ng-value="payment[1]" ng-model="payment.$radioBox">
+            {{payment[0]}} <span class="ml20 blue"> {{payment[2]}}</span>
+          </div>
+
       </div>
+          </div>
       <!--支付方式结束--> 
       <!--配送方式开始-->
       <div class="alert with-icon "> <strong>配送方式 </strong>
@@ -40,6 +35,7 @@
           <p class="ha20">2.部分服务仅在配送区域提供，非配送区域无法选择，请您谅解。</p>
         </div>
       </div>
+          <!--配送方式结束-->
         <div class="alert with-icon "> <strong>商品清单</strong> </div>
         <table class="table table-hover">
             <tbody>
@@ -51,9 +47,9 @@
             <td>金额（元）</td>
             <td>库存状态</td>
             </thead>
-            <form ng-model="orderForm">
-            <tr ng-repeat="orderProductInfo in orderProductsInfo">
-                <td><input name="" type="checkbox"  ng-value="orderProductInfo" ng-model="orderForm.selectedOrder"></td>
+
+            <tr ng-repeat="orderProductInfo in orderForm.orderProductsInfo">
+                <td><input name="" type="checkbox"  ng-value="orderProductInfo" ng-model="orderProductInfo.$selectedOrder"></td>
                 <!--<td><img ng-src=""  class="prdouctimg" /></td>-->
                 <td>{{orderProductInfo.name}}</td>
                 <td><strong>{{orderProductInfo.currentPrice}}</strong></td>
@@ -61,24 +57,26 @@
                 <td><strong class="blue">¥{{orderProductInfo.amount | number:2}}</strong></td>
                 <td>{{orderProductInfo.inventoryStatus}}</td>
             </tr>
-            </form>
+
             </tbody>
         </table>
         <p class="title">备注</p>
         <div class="col-md-12">
-            <textarea name="" cols="" rows="" style="width:100%; height:100px; border:1px solid #ccc; margin-bottom:20px;" ng-model="comment"></textarea>
+            <textarea name="" cols="" rows="" style="width:100%; height:100px; border:1px solid #ccc; margin-bottom:20px;" ng-model="orderForm.comment"></textarea>
         </div>
         <div class="alert with-icon ">
             <div class="content">
                 <div class="ha30 pull-right col-md-12"> <span ><strong>总商品金额：</strong></span> <span  style="width:100px; text-align:right">￥{{costAll | number:2}}</span></div>
             </div>
             <div class="ha30 pull-right col-md-12"> <span class="mr40"><strong>运费：</strong></span> <span  style="width:100px; text-align:right">￥10.00</span> </div>
-            <div class="ha30 pull-right">应付总额：￥<strong class="blue">{{costAll+10 | number:2}}</strong>元 <span ng-click="balance();"><a class="btn btn-info" >结算</a></span></div>
+            <div class="ha30 pull-right">应付总额：￥<strong class="blue">{{costAll+10 | number:2}}</strong>元 <span><a class="btn btn-info" ><div ng-click="balance(orderForm);">结算</div></a></span></div>
         </div>
-    </div>
-    <!--配送方式结束-->
+
+        </form>
+      </div>
 
   </div>
+
 </div>
 </div>
 <!--修改收货人地址 -->

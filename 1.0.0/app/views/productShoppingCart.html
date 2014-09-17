@@ -2,7 +2,7 @@
 <div class="container" >
   <div class="cont" style=" margin-top:20px;" >
     <div class="col-md-12">
-      <legend >您已加入购物车的商品 <span ><a href=""class="label label-info pull-right mr10" ng-click="order(cartProductForm);">结算</a></span><span class="pull-right mr20 ">购物车共<strong class="blue">{{allQuantity}}</strong>件,总金额共计:￥<strong class="blue">{{allCost | number:2}}</strong></span></legend>
+      <legend >您已加入购物车的商品 <span ><a href=""class="label label-info pull-right mr10" ng-click="order(cartProductForm);">购买</a></span><span class="pull-right mr20 ">购物车共<strong class="blue">{{allQuantity}}</strong>件,总金额共计:￥<strong class="blue">{{allCost | number:2}}</strong></span></legend>
       <table class="table table-hover">
        <form ng-model="cartProductForm">
         <tbody>
@@ -19,19 +19,18 @@
         <tr ng-repeat="cartProduct in cartProductForm.cartProducts" >
           <td><input name="check" type="checkbox" ng-model="cartProduct.checked" ng-value="cartProduct"/></td>
           <td><img ng-src="images/prducttu.jpg"  class="prdouctimg" /></td>
-          <td>{{cartProduct[3]}}</td>
-          <td><strong>{{cartProduct[5]}}</strong></td>
+          <td>{{cartProduct.name}}</td>
+          <td><strong>{{cartProduct.currentPrice}}</strong></td>
           <td><span>
             <button class="btn btn-info btn-mini w20 " ng-click="quantityPlus(cartProduct);">+</button>
             <span>
-            <input name="" type="text"  ng-value="cartProduct[6]" class="input"/>
+            <input name="" type="text"  ng-value="cartProduct.quantity" class="input"/>
             </span>
             <button class="btn btn-info btn-mini w20 " ng-click="quantitySubtract(cartProduct);">-</button>
             </span></td>
-          <td><strong class="blue">¥{{cartProduct[8]}}</strong></td>
+          <td><strong class="blue">¥{{cartProduct.amount}}</strong></td>
           <td><a href="" style="color:#39b3d7" data-toggle="modal" data-target="#delproduct"><i  class="icon-trash" ></i></a>
-              <!-- 确认删除弹框 -->
-
+              <!-- 确认删除弹框开始 -->
              <div class="modal"  id="delproduct" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true">
                   <div class="modal-dialog">
                       <div class="modal-content">
@@ -49,6 +48,7 @@
                   </div>
                   <!-- /.modal-dialog -->
               </div>
+              <!-- 确认删除弹框结束 -->
           </td>
 
         </tr>
@@ -59,70 +59,4 @@
   </div>
 </div>
 
-
-
-<!-- 添加新地址弹框 -->
-
-<div class="modal"  id="addperson" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" > <i class="icon-map-marker"></i> 添加新地址 </h4>
-      </div>
-      <div class="modal-body">
-        <form class="form-horizontal" role="form" method="post">
-          <div class="form-group">
-            <label class="col-md-3 control-label" >收件人姓名：</label>
-            <div class="col-md-7">
-              <input type="text"  class="form-control">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-md-3 control-label" >省份/直辖市：</label>
-            <div class="col-md-3">
-              <select  class="form-control">
-                <option value="1" selected="selected">省份</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <select  class="form-control">
-                <option value="1" selected="selected">地级市</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <select  class="form-control">
-                <option value="1" selected="selected">市、县</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-md-3 control-label" style="text-align:right;">详细地址：</label>
-            <div class="col-md-7">
-              <input type="text" class="form-control">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-md-3 control-label" style="text-align:right;">邮政地址：</label>
-            <div class="col-md-7">
-              <input type="text" class="form-control">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-md-3 control-label" style="text-align:right;">手机号码：</label>
-            <div class="col-md-7">
-              <input type="text" class="form-control">
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-info" data-dismiss="modal">保存</button>
-      </div>
-    </div>
-    <!-- /.modal-content --> 
-  </div>
-  <!-- /.modal-dialog --> 
-</div>
 </div>
