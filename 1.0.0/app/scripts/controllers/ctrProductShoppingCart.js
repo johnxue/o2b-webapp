@@ -28,6 +28,10 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
 
     $scope.allCost=0;
 
+    $scope.toDelTheCartProduct=undefined;
+
+    $scope.delCartProductForm=false;
+
     $scope.cartProductForm={};
 
     $scope.cartProductForm.cartProducts = JSON.parse(localDataStorage.getItem('cartProductsInfoArray'));
@@ -41,6 +45,11 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
         $scope.cartProductForm.cartProducts[i].amount=$scope.cartProductForm.cartProducts[i].currentPrice* $scope.cartProductForm.cartProducts[i].quantity;
         $scope.allCost += $scope.cartProductForm.cartProducts[i].currentPrice* $scope.cartProductForm.cartProducts[i].quantity;
     }
+
+    localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
+    localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
+
+
 
 
     //实现与页面交互的事件,如：button_click
@@ -60,7 +69,11 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
            CommonService.updatePartOne('shoppingcart',JSON.stringify(uriData),function(data){
             cartProduct.amount = cartProduct.currentPrice * cartProduct.quantity;
             $scope.allCost+=cartProduct.currentPrice;
-        },errorOperate);
+
+               localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
+               localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
+
+           },errorOperate);
 
     }
 
@@ -72,26 +85,78 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
 
                 cartProduct.amount = cartProduct.currentPrice * cartProduct.quantity;
                 $scope.allCost-=cartProduct.currentPrice;
+
+                localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
+                localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
+
             },errorOperate);
         }
     }
 
-    //删除购物车商品
+    //显示单个删除购物车商品提示框
+    $scope.showDeleteAlterForm=function(cartProduct){
+        $scope.toDelTheCartProduct=cartProduct;
+        $scope.delCartProductForm=true;
+    }
 
-    $scope.cartProductForm.delCartProduct = function(cartProducts){
+    //单个删除购物车商品
+
+    $scope.delCartProduct = function(cartProduct){
 
         uriData ={};
-        uriData.ids=cartProducts['id'].toString();
+        uriData.ids=cartProduct['id'].toString();
 
         CommonService.deleteOne('shoppingcart',JSON.stringify(uriData),function(data){
            for(var i=0;i< $scope.cartProductForm.cartProducts.length;i++){
-               if($scope.cartProductForm.cartProducts[i]['id']==cartProducts['id']){
+               if($scope.cartProductForm.cartProducts[i]['id']==cartProduct['id']){
                   $scope.cartProductForm.cartProducts.splice(i,1);
+
+                   $scope.allQuantity--;
+                   $scope.allCost-=cartProduct['currentPrice']*cartProduct['quantity'];
                }
            }
-            $scope.allQuantity--;
-            $scope.allCost-=cartProducts['currentPrice']*cartProducts['quantity'];
+
+            localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
+            localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
+
         },errorOperate);
+
+        $scope.delCartProductForm=false;
+    }
+
+    //多个删除购物车商品
+
+    $scope.multipleDelCartProduct=function(cartProductForm){
+        uriData={};
+        var ids='';
+        var idsArray=[];
+        for(var i=0;i<cartProductForm.cartProducts.length;i++){
+           if(cartProductForm.cartProducts[i]['checked']==true){
+
+               idsArray.push(cartProductForm.cartProducts[i]['id']);
+               ids+=cartProductForm.cartProducts[i]['id'].toString()+',';
+           }
+        }
+        uriData.ids=ids.substring(0,ids.length-1);
+
+        CommonService.deleteOne('shoppingcart',JSON.stringify(uriData),function(data){
+            for(var i=0;i< $scope.cartProductForm.cartProducts.length;i++){
+                for(var j=0;j<idsArray.length;j++){
+                   if($scope.cartProductForm.cartProducts[i]['id']==idsArray[j]){
+
+                    $scope.cartProductForm.cartProducts.splice(i,1);
+
+                       $scope.allQuantity--;
+                       $scope.allCost-=$scope.cartProductForm.cartProducts[i]['currentPrice']*$scope.cartProductForm.cartProducts[i]['quantity'];
+                    }
+                }
+            }
+
+            localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
+            localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
+
+        },errorOperate);
+
     }
 
 
@@ -101,7 +166,9 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
         var orderProductsInfoDataArray=[];
         var cartProductsForm_cartProducts=cartProductForm.cartProducts;
 
-        if(cookieOperate.getCookie("token")!=null){
+        if(cookieOperate.getCookie("token")==null) {
+              $('#denglu').show();
+        }else {
             for (var i = 0; i < cartProductsForm_cartProducts.length; i++) {
                 if (cartProductsForm_cartProducts[i].checked == true) {
 
@@ -118,7 +185,7 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
                     orderProductsInfoData.inventoryStatus = cartProductsForm_cartProducts[i].inventoryStatus;
 
                     orderProductsInfoData.amount = cartProductsForm_cartProducts[i]['amount'];
-                    ;
+
 
                     orderProductsInfoDataArray.push(orderProductsInfoData);
                 }
@@ -127,7 +194,9 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
             localDataStorage.setItem('orderProductsInfo', JSON.stringify(orderProductsInfoDataArray));
             $window.location.href = '#/productOrder';
         }
+
         }
+
 
 
     //调用与后端的接口,如：CommonService.getAll(params)
