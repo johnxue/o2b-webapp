@@ -6,7 +6,7 @@ var MyFormControllers = angular.module('MyFormControllers',[]);
 MyFormControllers.controller('MyFormCtrl',function($scope,CommonService){
 
     var uriData = '';
-    var nowPage = 0;  //当前页数
+    var nowPage = 0;  //当前页
 
     //加载运行
     $scope.seleAllGoods = function(){   //获取数据
