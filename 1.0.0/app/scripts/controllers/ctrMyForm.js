@@ -52,7 +52,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
         var seleCon = $scope.seleVal;  //获取输入内容
         uriData = "q="+seleCon;
         CommonService.getAll('order', uriData, function (data) {
-         $scope.sendHtml(data);
+         $scope.sendHtml("content1",data);
         });
     }
 
@@ -119,7 +119,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
         $("#"+cid+" tr:gt(0)").remove();  //清空数据
         $("#Prompt").html(null);
         if(data.OrderList.length==0){      //判断是否有记录
-            $("#Prompt").html("<div class='col-md-9'><div class='container'><div class='col-md-12'><div class='alert with-icon mp10'>" +
+            $("#Prompt").html("<div class='row'><div class='container'><div class='col-md-12'><div class='alert with-icon mp10'>" +
                 "<i class='icon-info-sign'></i><div class='content'>没有符合条件的订单记录。</div></div></div></div></div>");
         }else{
             for(var i=0;i<data.OrderList.length;i++){
