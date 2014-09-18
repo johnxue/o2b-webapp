@@ -32,6 +32,7 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
 
     $scope.defaultDisaplayAddress={};
 
+    $scope.updateAddressFormState=false;
 
     $scope.orderForm.comment='';
 
@@ -39,9 +40,12 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
 
     $scope.costAll=0;
 
-    for(var i=0;i<$scope.orderForm.orderProductsInfo.length;i++){
+    $scope.allQuantity=0;
+
+    /*for(var i=0;i<$scope.orderForm.orderProductsInfo.length;i++){
+        $scope.allQuantity++;
         $scope.costAll+=$scope.orderForm.orderProductsInfo[i].amount;
-    }
+    }*/
 
     $scope.orderForm.payments ={};
 
@@ -62,36 +66,35 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
         balanceNeed.aId=$scope.defaultDisaplayAddress[0];
 
         balanceNeed.payment='';
-        for(var i =0;i<$scope.orderForm.payments.length;i++){
-            var a = $scope.orderForm.payments[i].$radioBox;
-            if(typeof(a)!=='undefined'){
-                balanceNeed.payment=$scope.orderForm.payments[i].$radioBox;
+        for(var i =0;i<orderForm.payments.length;i++){
+            if(typeof(orderForm.payments[i].$radioBox)!=='undefined'){
+                balanceNeed.payment=orderForm.payments[i].$radioBox;
             }
         }
 
         balanceNeed.shipping='10';
         balanceNeed.freight= 10;
-        balanceNeed.total= $scope.orderForm.orderProductsInfo.length;
+        balanceNeed.total= $scope.allQuantity;
         balanceNeed.amount=$scope.costAll;
-        balanceNeed.comment=$scope.orderForm.comment;
+        balanceNeed.comment=orderForm.comment;
 
         var orderProductsInfoForBalance=[];
-        for(var i=0;i<$scope.orderForm.orderProductsInfo.length;i++){
-            if($scope.orderForm.orderProductsInfo[i]['$selectedOrder']==true){
+        for(var i=0;i<orderForm.orderProductsInfo.length;i++){
+            if(orderForm.orderProductsInfo[i]['$selectedOrder']==true){
                 var orderProductInfoForBalance={};
 
-                orderProductInfoForBalance['pid']=$scope.orderForm.orderProductsInfo[i].pid;
+                orderProductInfoForBalance['pid']=orderForm.orderProductsInfo[i].pid;
 
-                orderProductInfoForBalance['name']=$scope.orderForm.orderProductsInfo[i].name;
+                orderProductInfoForBalance['name']=orderForm.orderProductsInfo[i].name;
 
 
-                orderProductInfoForBalance['pcode']=$scope.orderForm.orderProductsInfo[i].code;
+                orderProductInfoForBalance['pcode']=orderForm.orderProductsInfo[i].code;
 
-                orderProductInfoForBalance['price']=$scope.orderForm.orderProductsInfo[i].currentPrice;
+                orderProductInfoForBalance['price']=orderForm.orderProductsInfo[i].currentPrice;
 
-                orderProductInfoForBalance['oPrice']=$scope.orderForm.orderProductsInfo[i].originalPrice;
+                orderProductInfoForBalance['oPrice']=orderForm.orderProductsInfo[i].originalPrice;
 
-                orderProductInfoForBalance['number']=$scope.orderForm.orderProductsInfo[i].quantity;
+                orderProductInfoForBalance['number']=orderForm.orderProductsInfo[i].quantity;
 
                 orderProductsInfoForBalance.push(orderProductInfoForBalance);
             }
@@ -109,6 +112,48 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
         },errorOperate);
     }
 
+    //复选框状态改变事件
+
+    $scope.checkBoxChange=function(orderForm){
+        $scope.costAll=0;
+        $scope.allQuantity=0;
+
+        for(var i=0;i<orderForm.orderProductsInfo.length;i++){
+            if(orderForm.orderProductsInfo[i]['$selectedOrder']==true){
+                $scope.costAll+=orderForm.orderProductsInfo[i].amount;
+                $scope.allQuantity++;
+            }
+        }
+
+    }
+
+    //弹出修改收获地址栏单击事件
+    $scope.updateAddress=function(){
+        $scope.updateAddressFormState=!$scope.updateAddressFormState;
+    }
+
+    //修改默认收获地址单击事件
+    $scope.updateDefaultInOrder=function(id) {
+        uriData = undefined;
+        CommonService.updatePartOne('address/' + id, uriData, function (data) {
+
+            //改变UserAddressCtrl中的默认地址
+            $scope.$broadcast("userDefaultAddressesChange", id);
+
+            //改变当前控制器下的默认地址
+            for (var i = 0; i < $scope.userAddressesBeforeOr.length; i++) {
+                if ($scope.userAddressesBeforeOr[i][11] == 'Y') {
+                    $scope.userAddressesBeforeOr[i][11] = 'N';
+                }
+            }
+            for (var i = 0; i < $scope.userAddressesBeforeOr.length; i++) {
+                if ($scope.userAddressesBeforeOr[i][0] == id) {
+                    $scope.userAddressesBeforeOr[i][11] = 'Y';
+                    $scope.defaultDisaplayAddress=$scope.userAddressesBeforeOr[i];
+                }
+            }
+        }, errorOperate);
+    }
 
     //调用与后端的接口,如：CommonService.getAll(params)
 

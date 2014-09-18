@@ -21,6 +21,7 @@ var LoginControllers = angular.module('LoginControllers', []);
 LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,CommonService) {
 
     var uriData='';
+
     //初始化$scope中定义的变量
 
     $scope.master= {};
@@ -84,6 +85,7 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
 
                 //将用户登录之前的购物车商品信息添加到服务器
                 for(var i=0;i<cartProductsInfoArray.length;i++){
+                    var addCartNeed={};
                     addCartNeed.pid = cartProductsInfoArray[i]['pid'];
                     addCartNeed.pcode = cartProductsInfoArray[i]['code'];
                     addCartNeed.number = cartProductsInfoArray[i]['quantity'];
@@ -123,7 +125,7 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
                 localDataStorage.setItem('cartProductsTotal',cartProductsTotal.toString());
             },errorOperate);
 
-
+            $('#denglu').hide();
             // 调用回调连接
         }, function (response) {
             objResults.error.code = parseInt(response.code);
@@ -143,6 +145,10 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
     	return angular.equals(objLoginInfo, $scope.master);
     };
 
+    $scope.close=function(){
+        $('#denglu').hide();
+    }
+
 
     //调用与后端的接口,如：CommonService.getAll(params)
 
@@ -161,9 +167,9 @@ LoginControllers.controller('logoutCtrl', function ($scope,CommonService) {
         CommonService.deleteOne('logout',uriData,function(){
             cookieOperate.delCookie('token');
             cookieOperate.delCookie('userName');
-            localDataStorage.setItem('cartProductsInfoArray',null);
-            localDataStorage.setItem('cartProductsTotal',null);
-            localDataStorage.setItem('orderProductsInfo',null);
+            localDataStorage.setItem('cartProductsInfoArray',JSON.stringify(null));
+            localDataStorage.setItem('cartProductsTotal',JSON.stringify(null));
+            localDataStorage.setItem('orderProductsInfo',JSON.stringify(null));
 
             var logoutedState =false;
             $scope.$emit('logouted',logoutedState);
