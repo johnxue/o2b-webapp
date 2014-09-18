@@ -4,7 +4,7 @@
     <div class="col-md-12">
       <div class="col-md-12">
         <ul class="nav nav-tabs" ng-init="vm.activeTab=1">
-          <li ng-class="{active: vm.activeTab == 1}" ><a href="javascript:;" ng-click="vm.activeTab = 1">所有</a></li>
+          <li ng-class="{active: vm.activeTab == 1}"><a href="javascript:;" ng-click="vm.activeTab = 1">所有</a></li>
           <li ng-class="{active: vm.activeTab == 2}"><a href="javascript:;" ng-click="vm.activeTab = 2">订单中</a></li>
           <li ng-class="{active: vm.activeTab == 3}"><a href="javascript:;" ng-click="vm.activeTab = 3">待发货</a></li>
           <li ng-class="{active: vm.activeTab == 4}"><a href="javascript:;" ng-click="vm.activeTab = 4">已发货</a></li>
@@ -19,13 +19,7 @@
                 <input type="text" ng-model="seleVal" class="form-control" placeholder="订单号、商品名、时间">
                 </span> <span class="ml10"><button class="btn btn-info" ng-click="seleBtn()">查询</button></span>
                     <div class="col-md-2">
-                        <select name="" class="form-control">
-                            <option value="">最近3个月</option>
-                            <option value="">今年内</option>
-                            <option value="">2013年</option>
-                            <option value="">2012年</option>
-                            <option value="">2011年以前</option>
-                        </select>
+                        <select ng-model="seleDataTime" class="form-control" ng-options="period[0] for period in selectTime"></select> <!-- 按时间段查询 -->
                     </div>
                 </div>
                 <table class="table table-hover">
@@ -46,7 +40,7 @@
             </div>
           </div>
           <!--我的订单所有结束-->
-                <div class="tab-panel" ng-show="vm.activeTab == 2">
+          <div class="tab-panel" ng-show="vm.activeTab == 2">
             <div class="col-md-9">
               <div class="container" >
                 <div class="col-md-12">
@@ -70,35 +64,8 @@
                   <td>操作</td>
                     </thead>
                   <div id="fetion"></div>
-                <tr>
-                 <!-- <td><input name="check" type="checkbox" value="" /></td>
-                  <td><img src="images/prducttu.jpg"  class="prdouctimg" /></td>
-                  <td>【AirProce云智能空气净化器一台】感谢您的支持！作为第二波支持用户</td>
-                  <td><strong>1000.00</strong></td>
-                  <td>4</td>
-                  <td><strong class="blue">¥29,690</strong></td>
-                  <td><a href="" style="color:#39b3d7" data-toggle="modal" data-target="#delproduct"><i class="icon-trash" ></i></a></td>
-                </tr>
-                <tr>
-                  <td><input name="check" type="checkbox" value="" /></td>
-                  <td><img src="images/prducttu.jpg"  class="prdouctimg" /></td>
-                  <td>【AirProce云智能空气净化器一台】感谢您的支持！作为第二波支持用户</td>
-                  <td><strong>1000.00</strong></td>
-                  <td>4</td>
-                  <td><strong class="blue">¥29,690</strong></td>
-                  <td><a href="" style="color:#39b3d7" data-toggle="modal" data-target="#delproduct"><i class="icon-trash" ></i></a></td>
-                </tr>
-                <tr>
-                  <td><input name="check" type="checkbox" value="" /></td>
-                  <td><img src="images/prducttu.jpg"  class="prdouctimg" /></td>
-                  <td>【AirProce云智能空气净化器一台】感谢您的支持！作为第二波支持用户</td>
-                  <td><strong>1000.00</strong></td>
-                  <td>5</td>
-                  <td><strong class="blue">¥29,690</strong></td>
-                  <td><a href="" style="color:#39b3d7" data-toggle="modal" data-target="#delproduct"><i class="icon-trash" ></i></a></td>-->
-                </tr>
+                     <tr><!--js遍历数据内容 --> </tr>
                   </tbody>
-                
               </table>
             </div>
           </div>

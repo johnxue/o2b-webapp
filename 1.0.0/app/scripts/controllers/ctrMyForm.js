@@ -9,11 +9,10 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
     var nowPage = 0;  //当前页
 
     //加载运行
-    $scope.seleAllGoods = function(){   //获取数据
+/*    $scope.seleAllGoods = function(){   //获取数据
     uriData = undefined;
     CommonService.getAll('order?o='+nowPage+'&&r=10', uriData, function (data) {
-     //   alert(data.OrderList[0][0][8]);
-     /*   if(data.OrderList.length==0){      //判断是否有记录
+        if(data.OrderList.length==0){      //判断是否有记录
             $("#Prompt").html("<div class='col-md-9'><div class='container'><div class='col-md-12'><div class='alert with-icon mp10'>" +
                                "<i class='icon-info-sign'></i><div class='content'>没有符合条件的订单记录。</div></div></div></div></div>");
         }else{
@@ -27,15 +26,14 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
                 $("table tr:eq(0)").after(cHTML);  //添加至页面
             }
 
-        }*/
+        }
     });
-    }
+    }*/
    // $scope.seleAllGoods();  //调用获取数据方法
 
     //页面交互事件
     //下拉时间段
     $scope.$watch('seleDataTime', function(onVal) {
-
         if(onVal == null){
             CommonService.getAll('order/attribute', uriData, function (data) {
                 $scope.selectTime = data.period;
@@ -49,23 +47,23 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
         }
     });
 
-    //查询
+    //模糊查询
     $scope.seleBtn = function(){
         var seleCon = $scope.seleVal;  //获取输入内容
-        if(seleCon == null){
-           uriData = "q=ALL"
-        }else{
-            uriData = "q="+seleCon;
-            CommonService.getAll('order', uriData, function (data) {
-                $scope.sendHtml(data);
-            });
-        }
+        uriData = "q="+seleCon;
+        CommonService.getAll('order', uriData, function (data) {
+         $scope.sendHtml(data);
+        });
     }
 
     //查看更多
     $scope.Page = function(){
         nowPage = nowPage+1;
         $scope.seleAllGoods();
+    }
+
+    $scope.aa = function(){
+       alert("@");
     }
 
     //删除事件
