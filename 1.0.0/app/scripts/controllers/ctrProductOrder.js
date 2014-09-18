@@ -59,7 +59,7 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
     //实现与页面交互的事件,如：button_click
 
 
-    //保存更改收货地址s
+    //保存更改收货地址
     $scope.saveChange=function(changeOrderAddressForm){
        $scope.defaultDisaplayAddress= changeOrderAddressForm.selectedAddress;
     }
