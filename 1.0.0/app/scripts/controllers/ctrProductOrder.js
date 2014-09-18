@@ -60,7 +60,7 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
 
 
 
-    //保存更改收货地址sssss
+    //保存更改收货地
     $scope.saveChange=function(changeOrderAddressForm){
        $scope.defaultDisaplayAddress= changeOrderAddressForm.selectedAddress;
     }
