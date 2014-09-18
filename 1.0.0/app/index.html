@@ -34,7 +34,7 @@
           <!-- 登陆前显示-->
         <ul class="nav navbar-nav navbar-right" ng-show="beforeLogin">
           <li><a href="#">服务介绍</a></li>
-          <li><a href="#">注册</a></li>
+          <li><a href="#/register">注册</a></li>
           <li><a href="" data-toggle="modal"  data-target="#denglu">登陆</a></li>
           <li ng-mouseenter="item.popover=true"
                 ng-mouseleave="item.popover=false"><a href="" ><i class="icon-shopping-cart"></i> 购物车 <span class="label label-badge label-info">{{cartProductsTotal}}</span></a>
@@ -234,6 +234,7 @@
 <script src="scripts/controllers/ctrNewsList.js"></script>
 <script src="scripts/controllers/ctrProductShoppingCart.js"></script>
 <script src="scripts/controllers/ctrMyForm.js"></script>
+<script src="scripts/controllers/ctrUserRegister.js"></script>
 
 <script src="scripts/services/svcCommon.js"></script>
 <script src="scripts/services/svcLogin.js"></script>
@@ -242,6 +243,7 @@
 <script src="scripts/filters/fltProduct.js"></script>
 
 <script src="scripts/directives/drtLogin.js"></script>
+<script src="scripts/directives/drtRegister.js"></script>
 
 <script src="libs/cryptojslib/rollups/md5.js"></script>
 <script src="libs/cryptojslib/rollups/aes.js"></script>

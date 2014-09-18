@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-var MainApp=angular.module('MainApp',['ngRoute','ngResource','ProductDetailControllers','ProductIndexControllers','ProductListControllers','ProductMainControllers','CommonServices','ProductFilters','LoginDirectives','LoginServices','LoginControllers','ProductOrderControllers','UserAddressControllers','NewsControllers','NewsListControllers','ProductShoppingCartControllers','MyFormControllers']);
+var MainApp=angular.module('MainApp',['ngRoute','ngResource','ProductDetailControllers','ProductIndexControllers','ProductListControllers','ProductMainControllers','CommonServices','ProductFilters','LoginDirectives','LoginServices','LoginControllers','ProductOrderControllers','UserAddressControllers','NewsControllers','NewsListControllers','ProductShoppingCartControllers','MyFormControllers','UserRegisterControllers','RegisterDirectives']);
 
 MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($routeProvider,$httpProvider,$locationProvider) {
     $routeProvider
@@ -40,6 +40,14 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title:'我的订单',
             templateUrl:'views/dingdan.html',
             controller:'MyFormCtrl'
+        }).when('/register',{
+             title:'注册',
+            templateUrl:'views/register.html',
+            controller:'UserRegisterCtrl'
+        }).when('/registerSuccess',{
+            title:'注册成功',
+            templateUrl:'views/registerSuccess.html',
+            controller:'UserRegisterCtrl'
         })
      	.otherwise({
             redirectTo: '/'
@@ -48,6 +56,7 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
     //$locationProvider.html5Mode(true);
     //$locationProvider.hashPrefix('!');
 
+    //跨域
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
