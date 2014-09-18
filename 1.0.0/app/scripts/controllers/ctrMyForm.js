@@ -42,7 +42,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
         }else{  //根据选项查询获取相应数据
             uriData = "s=period&v="+onVal[1];
             CommonService.getAll('order', uriData, function (data) {
-                $scope.sendHtml(data);
+                $scope.sendHtml("content1",data);
             });
         }
     });
@@ -62,27 +62,43 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
         $scope.seleAllGoods();
     }
 
+    //所有
+    $scope.formAll = function(){
+        uriData = "s=period&v=ALL";
+        CommonService.getAll('order', uriData, function (data) {
+            $scope.sendHtml("content1",data);
+        });
+    }
+
     //订单中
     $scope.order = function(){
-       alert("订单中");
-        uriData = "s=period&v=";
+        uriData = "s=status&v=110";
         CommonService.getAll('order', uriData, function (data) {
-
+           $scope.sendHtml("content2",data);
         });
     }
 
     //待发货
     $scope.waitShipped = function(){
-        alert("待发货");
+        uriData = "s=status&v=130";
+        CommonService.getAll('order', uriData, function (data) {
+            $scope.sendHtml("content3",data);
+        });
     }
 
     //已发货
     $scope.shipped = function(){
-        alert("已发货");
+        uriData = "s=status&v=210";
+        CommonService.getAll('order', uriData, function (data) {
+            $scope.sendHtml("content4",data);
+        });
     }
     //退货
     $scope.return = function(){
-        alert("退货");
+        uriData = "s=status&v=310";
+        CommonService.getAll('order', uriData, function (data) {
+            $scope.sendHtml("content5",data);
+        });
     }
 
     //删除事件
@@ -99,8 +115,8 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
     }
 
     //添加数据到页面
-    $scope.sendHtml = function(data){
-        $("table tr:gt(0)").remove();  //清空数据
+    $scope.sendHtml = function(cid,data){
+        $("#"+cid+" tr:gt(0)").remove();  //清空数据
         $("#Prompt").html(null);
         if(data.OrderList.length==0){      //判断是否有记录
             $("#Prompt").html("<div class='col-md-9'><div class='container'><div class='col-md-12'><div class='alert with-icon mp10'>" +
@@ -113,7 +129,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
                 "<td>"+data.OrderList[i][0][3]+"</td><td><strong>"+data.OrderList[i][0][4]+"</strong></td><td><strong class='blue'>￥"+data.OrderList[i][0][5]+"</strong></td><td><a class='label label-info'>"+data.OrderList[i][0][7]+"</a></td><td><p class='ha20'>"+data.OrderList[i][0][2].substring(0,10)+"</p><p class='ha20'>"+data.OrderList[i][0][2].substring(11,19)+" </p></td>"+
                 "<td><p class='ha20'><a href='javascript:void(0)'>详情</a></p><p class='ha20'><a data-toggle='modal' data-ng-click='deleGoods("+delteNum+","+dealStatus+")'>删除</a></p></td></tr>";
                 var cHTML=$compile(HTML)($scope);  //编译
-                $("table tr:eq(0)").after(cHTML);  //添加至页面
+                $("#"+cid+" tr:eq(0)").after(cHTML);  //添加至页面
             }
         }
     }
