@@ -53,12 +53,13 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
     $scope.seleBtn = function(){
         var seleCon = $scope.seleVal;  //获取输入内容
         if(seleCon == null){
-
+           uriData = "q=ALL"
+        }else{
+            uriData = "q="+seleCon;
+            CommonService.getAll('order', uriData, function (data) {
+                $scope.sendHtml(data);
+            });
         }
-        uriData = "q="+seleCon;
-        CommonService.getAll('order', uriData, function (data) {
-         $scope.sendHtml(data);
-        });
     }
 
     //查看更多
@@ -80,7 +81,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
        }
     }
 
-    //添加数据到页面s
+    //添加数据到页面
     $scope.sendHtml = function(data){
         $("table tr:gt(0)").remove();  //清空数据
         $("#Prompt").html(null);
