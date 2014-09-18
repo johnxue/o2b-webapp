@@ -80,7 +80,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
        }
     }
 
-    //添加数据到页面s
+    //添加数据到页面
     $scope.sendHtml = function(data){
         $("table tr:gt(0)").remove();  //清空数据
         $("#Prompt").html(null);
