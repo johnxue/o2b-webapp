@@ -4,12 +4,11 @@
     <div class="col-md-12">
       <div class="col-md-12">
         <ul class="nav nav-tabs" ng-init="vm.activeTab=1">
-          <li ng-class="{active: vm.activeTab == 1}"><a href="javascript:;" ng-click="vm.activeTab = 1">所有</a></li>
-          <li ng-class="{active: vm.activeTab == 2}"><a href="javascript:;" ng-click="vm.activeTab = 2;order()">订单中</a></li>
+          <li ng-class="{active: vm.activeTab == 1}"><a href="javascript:;" ng-click="vm.activeTab = 1;formAll()">所有</a></li>
+          <li ng-class="{active: vm.activeTab == 2}"><a href="javascript:;" ng-click="vm.activeTab = 2;order()">未付款</a></li>
           <li ng-class="{active: vm.activeTab == 3}"><a href="javascript:;" ng-click="vm.activeTab = 3;waitShipped()">待发货</a></li>
           <li ng-class="{active: vm.activeTab == 4}"><a href="javascript:;" ng-click="vm.activeTab = 4;shipped()">已发货</a></li>
           <li ng-class="{active: vm.activeTab == 5}"><a href="javascript:;" ng-click="vm.activeTab = 5;return()"> 退货</a></li>
-
         </ul>
         <div class="tab-content tab-bordered mp20 " >
           <div class="tab-panel" ng-show="vm.activeTab == 1">
@@ -22,7 +21,7 @@
                         <select ng-model="seleDataTime" class="form-control" ng-options="period[0] for period in selectTime"></select> <!-- 按时间段查询 -->
                     </div>
                 </div>
-                <table class="table table-hover">
+                <table class="table table-hover" id="content1">
                     <tbody>
                     <thead>
                     <td>商品信息</td>
@@ -41,63 +40,54 @@
           </div>
           <!--我的订单所有结束-->
           <div class="tab-panel" ng-show="vm.activeTab == 2">
-            <div class="col-md-9">
-              <div class="container" >
-                <div class="col-md-12">
-                  <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
-                    <div class="content">没有符合条件的订单记录。</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <table class="table table-hover">
-                <tbody>
-                <thead>
-                <td><input name="check" type="checkbox" value="" />
-                    &nbsp;全选</td>
-                  <td></td>
+              <table class="table table-hover" id="content2">
+                  <tbody>
+                  <thead>
                   <td>商品信息</td>
+                  <td>收货人</td>
                   <td>单价（元）</td>
-                  <td>数量</td>
-                  <td>金额（元）</td>
+                  <td>订单金额（元）</td>
+                  <td>状态</td>
+                  <td>时间</td>
                   <td>操作</td>
-                    </thead>
-                  <div id="fetion"></div>
-                     <tr><!--js遍历数据内容 --> </tr>
+                  </thead>
+                  <tr><!--遍历信息内容 --></tr>
                   </tbody>
               </table>
-            </div>
           </div>
-     
           <!--预订中结束-->
           <div class="tab-panel" ng-show="vm.activeTab == 3">
-            <div class="col-md-9">
-              <form class="form-horizontal" role="form" method='post'>
-                <div class="container" >
-                  <div class="col-md-12">
-                    <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
-                      <div class="content">没有符合条件的订单记录。</div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
+              <table class="table table-hover" id="content3">
+                  <tbody>
+                  <thead>
+                  <td>商品信息</td>
+                  <td>收货人</td>
+                  <td>单价（元）</td>
+                  <td>订单金额（元）</td>
+                  <td>状态</td>
+                  <td>时间</td>
+                  <td>操作</td>
+                  </thead>
+                  <tr><!--遍历信息内容 --></tr>
+                  </tbody>
+              </table>
           </div>
-          
           <!--待发货结束-->
           <div class="tab-panel" ng-show="vm.activeTab == 4">
-            <div class="col-md-9">
-              <form class="form-horizontal" role="form" method='post'>
-                <div class="container" >
-                  <div class="col-md-12">
-                    <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
-                      <div class="content">没有符合条件的订单记录。</div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
+              <table class="table table-hover" id="content4">
+                  <tbody>
+                  <thead>
+                  <td>商品信息</td>
+                  <td>收货人</td>
+                  <td>单价（元）</td>
+                  <td>订单金额（元）</td>
+                  <td>状态</td>
+                  <td>时间</td>
+                  <td>操作</td>
+                  </thead>
+                  <tr><!--遍历信息内容 --></tr>
+                  </tbody>
+              </table>
           </div>
           
           <!--已发货结束-->
@@ -169,14 +159,12 @@
                 </div>
             </div>
             <!--已发货结束-->
-
         </div>
       </div>
     </div>
   </div>
 </div>
 <!-- 确认删除弹框 -->
-
 <div class="modal"  id="delproduct" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
