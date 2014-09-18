@@ -21,7 +21,7 @@ var ProductOrderControllers = angular.module('ProductOrderControllers',[]);
 ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonService){
 
     var uriData ='';
-    var balanceNeed = {};
+
 //初始化$scope中定义的变量
     $scope.orderForm={};
 
