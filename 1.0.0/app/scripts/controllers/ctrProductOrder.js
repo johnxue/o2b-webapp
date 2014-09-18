@@ -22,7 +22,11 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
 
     var uriData ='';
 
+
 //初始化$scope中定义的变量
+
+    var balanceNeed = {};
+
     $scope.orderForm={};
 
     $scope.orderForm.orderProductsInfo =JSON.parse(localDataStorage.getItem('orderProductsInfo'));
