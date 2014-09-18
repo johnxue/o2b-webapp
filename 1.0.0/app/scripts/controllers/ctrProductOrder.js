@@ -59,7 +59,6 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
     //实现与页面交互的事件,如：button_click
 
     //结算
-
     $scope.balance=function(orderForm){
         balanceNeed.aId=$scope.defaultDisaplayAddress[0];
 
