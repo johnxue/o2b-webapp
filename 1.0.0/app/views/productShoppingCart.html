@@ -2,7 +2,9 @@
 <div class="container" >
   <div class="cont" style=" margin-top:20px;" >
     <div class="col-md-12">
-      <legend >您已加入购物车的商品 <span ><a href=""class="label label-info pull-right mr10" ng-click="order(cartProductForm);">购买</a></span><span class="pull-right mr20 ">购物车共<strong class="blue">{{allQuantity}}</strong>件,总金额共计:￥<strong class="blue">{{allCost | number:2}}</strong></span></legend>
+
+      <legend ><button class="btn btn-info" ng-click="multipleDelCartProduct(cartProductForm);">删除选中商品</button> <span><a href=""class="label label-info pull-right mr10" ng-click="order(cartProductForm);">购买</a></span><span class="pull-right mr20 ">购物车共<strong class="blue">{{allQuantity}}</strong>件,总金额共计:￥<strong class="blue">{{allCost | number:2}}</strong></span></legend>
+
       <table class="table table-hover">
        <form ng-model="cartProductForm">
         <tbody>
@@ -16,9 +18,11 @@
           <td>金额（元）</td>
           <td>操作</td>
             </thead>
-        <tr ng-repeat="cartProduct in cartProductForm.cartProducts" >
+        <tr ng-repeat="cartProduct in cartProductForm.cartProducts track by $index" >
           <td><input name="check" type="checkbox" ng-model="cartProduct.checked" ng-value="cartProduct"/></td>
+
           <td><img ng-src="images/prducttu.jpg"  class="prdouctimg" /></td>
+
           <td>{{cartProduct.name}}</td>
           <td><strong>{{cartProduct.currentPrice}}</strong></td>
           <td><span>
@@ -29,26 +33,9 @@
             <button class="btn btn-info btn-mini w20 " ng-click="quantitySubtract(cartProduct);">-</button>
             </span></td>
           <td><strong class="blue">¥{{cartProduct.amount}}</strong></td>
-          <td><a href="" style="color:#39b3d7" data-toggle="modal" data-target="#delproduct"><i  class="icon-trash" ></i></a>
-              <!-- 确认删除弹框开始 -->
-             <div class="modal"  id="delproduct" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true">
-                  <div class="modal-dialog">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                              <h4 class="modal-title" > <i class="icon-remove"></i> 商品删除 </h4>
-                          </div>
-                          <div class="modal-body"> 您确定要删除吗，亲 </div>
-                          <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                              <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="cartProductForm.delCartProduct(cartProduct)">确定{{cartProduct[0]}}</button>
-                          </div>
-                      </div>
-                      <!-- /.modal-content -->
-                  </div>
-                  <!-- /.modal-dialog -->
-              </div>
-              <!-- 确认删除弹框结束 -->
+
+
+          <td><a href="" style="color:#39b3d7" data-toggle="modal" data-target="#delproduct" ng-click="showDeleteAlterForm(cartProduct);"><i  class="icon-trash" ></i></a></td>
           </td>
 
         </tr>
@@ -58,5 +45,25 @@
     </div>
   </div>
 </div>
+
+    <!-- 确认删除弹框开始 -->
+    <div class="modal"  id="delproduct" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" ng-show="delCartProductForm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" > <i class="icon-remove"></i> 商品删除 </h4>
+                </div>
+                <div class="modal-body"> 您确定要删除吗，亲 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="delCartProduct(toDelTheCartProduct);">确定</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- 确认删除弹框结束 -->
 
 </div>

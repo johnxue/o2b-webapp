@@ -6,13 +6,113 @@
       <legend >填写并核对您的订单信息 </legend>
       <div class="alert alert-info"> <strong>Hi!</strong> 请认真核对您的订单信息 ,以便商品购买。 </div>
       <!--收件人地址开始-->
-      <p class="title">收件地址 <span><a href="" class=" titlea pull-right" data-toggle="modal" data-target="#updateperson" >修改收货地址</a></span></p>
+      <p class="title">收件地址 <span><a href="" class=" titlea pull-right" data-toggle="modal" data-target="#updateperson" ng-click="updateAddress();">修改收货地址</a></span></p>
+        <!--修改收货人地址开始 -->
+        <div ng-controller="UserAddressCtrl">
+        <div class="col-md-12" ng-show="updateAddressFormState">
+            <div class="col-md-9" >
+                <p class="title">收货地址</p>
+                <div class="alert alert-info"> <strong>Hi!</strong> 请认真填写您的收货地址,以便商品购买。 </div>
+                <form class="form-horizontal" role="form" method="post" ng-model="deliveryAddress">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" >收件人姓名：</label>
+                        <div class="col-md-7">
+                            <input type="text"  class="form-control" ng-model="deliveryAddress.c">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" >省份/直辖市：</label>
+                        <div class="col-md-2">
+                            <select  class="form-control" ng-model="deliveryAddress.pi" ng-options="province[0] as province[1] for province in selectProvinces">
+                                <option value="" selected="selected">省份</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select  class="form-control" ng-model="deliveryAddress.ci" ng-options="city[0] as city[1] for city in selectCitys">
+                                <option value="" selected="selected">地级市</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select  class="form-control" ng-model="deliveryAddress.ai" ng-options="district[0] as district[1] for district in selectDistricts">
+                                <option value="" selected="selected">市、县</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" style="text-align:right;">街道：</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" ng-model="deliveryAddress.s">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" style="text-align:right;">详细地址：</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" ng-model="deliveryAddress.a">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" style="text-align:right;">邮政地址：</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" ng-model="deliveryAddress.z">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" style="text-align:right;">手机号码：</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" ng-model="deliveryAddress.m">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" style="text-align:right;">固定电话：</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" ng-model="deliveryAddress.t">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" style="text-align:right;">电子邮箱：</label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" ng-model="deliveryAddress.e">
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <button class="btn btn-info" ng-click="save(deliveryAddress)">确定保存</button>
+                    </div>
+                </form>
+                <p class="title">已有收货地址</p>
+                <div>
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr ng-repeat="userAddress in userAddressesBefore" ng-if="userAddress[11]=='Y'">
+                            <td><input name="address" type="radio" value="{{userAddress[0]}}"></td>
+                            <td>{{userAddress[6]+userAddress[8]+userAddress[9]+userAddress[10]}}</td>
+                            <td><span class="label label-info large" ng-click="updateDefaultInOrder(userAddress[0])"><a href="">默认地址</a></span></td>
+                            <td><a href="" ><i class="icon-pencil"></i></a></td>
+                            <td><a href="" style="color:#39b3d7"><i class="icon-trash" ng-click="delete(userAddress[0])"></i></a></td>
+                        </tr>
+                        <tr ng-repeat="userAddress in userAddressesBefore" ng-if="userAddress[11]=='N'">
+                            <td><input name="address" type="radio" value="{{userAddress[0]}}"></td>
+                            <td>{{userAddress[6]+userAddress[8]+userAddress[9]+userAddress[10]}}</td>
+                            <td><span class="label label-info large" ng-click="updateDefaultInOrder(userAddress[0])"><a href="">设置为默认地址</a></span></td>
+                            <td><a href="" ><i class="icon-pencil"></i></a></td>
+                            <td><a href="" style="color:#39b3d7"><i class="icon-trash" ng-click="delete(userAddress[0])"></i></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!--修改收货人地址结束-->
+
+        <!--显示收货人信息开始-->
       <div class="alert with-icon "> <strong>收货人信息 </strong>
         <div class="content">
           <div class="ha30"><span>{{defaultDisaplayAddress[2]}}</span> <span>{{defaultDisaplayAddress[4]}}</span> <span>{{defaultDisaplayAddress[5]}}</span></div>
           <div class="ha30"><span>{{defaultDisaplayAddress[6]}}</span> <span>{{defaultDisaplayAddress[8]}}</span> <span>{{defaultDisaplayAddress[9]}}</span><span>{{defaultDisaplayAddress[10]}}</span></div>
         </div>
       </div>
+
+
       <!--收件人地址结束-->
         <form ng-model="orderForm">
       <!--支付方式开始-->
@@ -49,7 +149,10 @@
             </thead>
 
             <tr ng-repeat="orderProductInfo in orderForm.orderProductsInfo">
-                <td><input name="" type="checkbox"  ng-value="orderProductInfo" ng-model="orderProductInfo.$selectedOrder"></td>
+
+
+                <td><input name="" type="checkbox"  ng-value="orderProductInfo" ng-model="orderProductInfo.$selectedOrder" ng-change="checkBoxChange(orderForm);"></td>
+
                 <!--<td><img ng-src=""  class="prdouctimg" /></td>-->
                 <td>{{orderProductInfo.name}}</td>
                 <td><strong>{{orderProductInfo.currentPrice}}</strong></td>
@@ -72,6 +175,7 @@
             <div class="ha30 pull-right">应付总额：￥<strong class="blue">{{costAll+10 | number:2}}</strong>元 <span><a class="btn btn-info" ><div ng-click="balance(orderForm);">结算</div></a></span></div>
         </div>
 
+
         </form>
       </div>
 
@@ -79,6 +183,7 @@
 
 </div>
 </div>
+
 <!--修改收货人地址 -->
 <div class="modal"  id="updateperson" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true">
   <div class="modal-dialog">
@@ -100,14 +205,14 @@
             </tbody>
           </table>
         </div>
+
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="saveChange(changeOrderAddressForm)">保存</button>
-      </div>
-    </div>
-    <!-- /.modal-content --> 
+
   </div>
-  <!-- /.modal-dialog --> 
+
 </div>
+</div>
+
+
+
 </div>

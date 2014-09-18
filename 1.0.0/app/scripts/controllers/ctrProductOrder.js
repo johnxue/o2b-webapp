@@ -23,27 +23,33 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
     var uriData ='';
     var balanceNeed = {};
 //初始化$scope中定义的变量
-    $scope.orderProductsInfo =JSON.parse(localDataStorage.getItem('orderProductsInfo'));
+    $scope.orderForm={};
+
+    $scope.orderForm.orderProductsInfo =JSON.parse(localDataStorage.getItem('orderProductsInfo'));
 
 
     $scope.userAddressesBeforeOr = {};
 
     $scope.defaultDisaplayAddress={};
 
+    $scope.updateAddressFormState=false;
 
-    $scope.comment='';
+    $scope.orderForm.comment='';
 
     $scope.changeOrderAddressForm={};
 
     $scope.costAll=0;
 
-    for(var i=0;i<$scope.orderProductsInfo.length;i++){
-        $scope.costAll+=$scope.orderProductsInfo[i].amount;
-    }
+    $scope.allQuantity=0;
 
-    $scope.payments ={};
+    /*for(var i=0;i<$scope.orderForm.orderProductsInfo.length;i++){
+        $scope.allQuantity++;
+        $scope.costAll+=$scope.orderForm.orderProductsInfo[i].amount;
+    }*/
 
-    $scope.deliverys={};
+    $scope.orderForm.payments ={};
+
+    $scope.orderForm.deliverys={};
 
 
     //实现与页面交互的事件,如：button_click
@@ -56,30 +62,44 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
 
     //结算
 
-    $scope.balance=function(){
+    $scope.balance=function(orderForm){
         balanceNeed.aId=$scope.defaultDisaplayAddress[0];
-        balanceNeed.payment='20';
+
+        balanceNeed.payment='';
+        for(var i =0;i<orderForm.payments.length;i++){
+            if(typeof(orderForm.payments[i].$radioBox)!=='undefined'){
+                balanceNeed.payment=orderForm.payments[i].$radioBox;
+            }
+        }
+
         balanceNeed.shipping='10';
         balanceNeed.freight= 10;
-        balanceNeed.total= $scope.orderProductsInfo.length;
+        balanceNeed.total= $scope.allQuantity;
         balanceNeed.amount=$scope.costAll;
-        balanceNeed.comment=$scope.comment;
+        balanceNeed.comment=orderForm.comment;
 
-        var orderProductsInfoForBalance=$scope.orderProductsInfo;
-        for(var i=0;i<orderProductsInfoForBalance.length;i++){
-            orderProductsInfoForBalance[i].wouldOrder=undefined;
-            orderProductsInfoForBalance[i].amount=undefined;
-            orderProductsInfoForBalance[i].id=undefined;
-            orderProductsInfoForBalance[i].pcode=orderProductsInfoForBalance[i].code;
-            orderProductsInfoForBalance[i].code=undefined;
-            orderProductsInfoForBalance[i].price=orderProductsInfoForBalance[i].currentPrice;
-            orderProductsInfoForBalance[i].currentPrice=undefined;
-            orderProductsInfoForBalance[i].oPrice=orderProductsInfoForBalance[i].originalPrice;
-            orderProductsInfoForBalance[i].originalPrice=undefined;
-            orderProductsInfoForBalance[i].number=orderProductsInfoForBalance[i].quantity;
-            orderProductsInfoForBalance[i].quantity=undefined;
-            orderProductsInfoForBalance[i].$$hashKey=undefined;
+        var orderProductsInfoForBalance=[];
+        for(var i=0;i<orderForm.orderProductsInfo.length;i++){
+            if(orderForm.orderProductsInfo[i]['$selectedOrder']==true){
+                var orderProductInfoForBalance={};
+
+                orderProductInfoForBalance['pid']=orderForm.orderProductsInfo[i].pid;
+
+                orderProductInfoForBalance['name']=orderForm.orderProductsInfo[i].name;
+
+
+                orderProductInfoForBalance['pcode']=orderForm.orderProductsInfo[i].code;
+
+                orderProductInfoForBalance['price']=orderForm.orderProductsInfo[i].currentPrice;
+
+                orderProductInfoForBalance['oPrice']=orderForm.orderProductsInfo[i].originalPrice;
+
+                orderProductInfoForBalance['number']=orderForm.orderProductsInfo[i].quantity;
+
+                orderProductsInfoForBalance.push(orderProductInfoForBalance);
+            }
         }
+
         balanceNeed.orders=orderProductsInfoForBalance;
 
         CommonService.createOne('order',JSON.stringify(balanceNeed),function(data){
@@ -92,6 +112,48 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
         },errorOperate);
     }
 
+    //复选框状态改变事件
+
+    $scope.checkBoxChange=function(orderForm){
+        $scope.costAll=0;
+        $scope.allQuantity=0;
+
+        for(var i=0;i<orderForm.orderProductsInfo.length;i++){
+            if(orderForm.orderProductsInfo[i]['$selectedOrder']==true){
+                $scope.costAll+=orderForm.orderProductsInfo[i].amount;
+                $scope.allQuantity++;
+            }
+        }
+
+    }
+
+    //弹出修改收获地址栏单击事件
+    $scope.updateAddress=function(){
+        $scope.updateAddressFormState=!$scope.updateAddressFormState;
+    }
+
+    //修改默认收获地址单击事件
+    $scope.updateDefaultInOrder=function(id) {
+        uriData = undefined;
+        CommonService.updatePartOne('address/' + id, uriData, function (data) {
+
+            //改变UserAddressCtrl中的默认地址
+            $scope.$broadcast("userDefaultAddressesChange", id);
+
+            //改变当前控制器下的默认地址
+            for (var i = 0; i < $scope.userAddressesBeforeOr.length; i++) {
+                if ($scope.userAddressesBeforeOr[i][11] == 'Y') {
+                    $scope.userAddressesBeforeOr[i][11] = 'N';
+                }
+            }
+            for (var i = 0; i < $scope.userAddressesBeforeOr.length; i++) {
+                if ($scope.userAddressesBeforeOr[i][0] == id) {
+                    $scope.userAddressesBeforeOr[i][11] = 'Y';
+                    $scope.defaultDisaplayAddress=$scope.userAddressesBeforeOr[i];
+                }
+            }
+        }, errorOperate);
+    }
 
     //调用与后端的接口,如：CommonService.getAll(params)
 
@@ -110,8 +172,8 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
 
     uriData = undefined;
     CommonService.getAll('order/attribute',uriData,function(data){
-        $scope.payments
-        $scope.deliverys
+        $scope.orderForm.payments=data['payment'];
+        $scope.orderForm.deliverys;
     },errorOperate);
 
 });

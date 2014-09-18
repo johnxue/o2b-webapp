@@ -48,6 +48,9 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
     //$locationProvider.html5Mode(true);
     //$locationProvider.hashPrefix('!');
 
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+
     $httpProvider.defaults.headers.common['Content-Type']= 'application/json';
     $httpProvider.defaults.headers.common['app-key']='fb98ab9159f51fd0'; //(key)
 
@@ -67,5 +70,9 @@ MainApp.run(['$location', '$rootScope', function($location, $rootScope) {
         $rootScope.title = previousRoute.$$route.title;
     });
 }]);
+
+
+
+
 
 

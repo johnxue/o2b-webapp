@@ -26,6 +26,10 @@ ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonServ
     $scope.beforeLogin = null;
     $scope.afterLogin = null;
     $scope.loginedName={};
+    $scope.cartProductsTotal=JSON.parse(localDataStorage.getItem('cartProductsTotal'));
+     if($scope.cartProductsTotal==null){
+         $scope.cartProductsTotal=0
+     }
 
     if(cookieOperate.getCookie("token")==null){
         $scope.beforeLogin = true;
@@ -53,7 +57,6 @@ ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonServ
         $scope.afterLogin = logoutedState;
         $scope.beforeLogin = !logoutedState;
     });
-
 
     //实现与页面交互的事件,如：button_click
     $scope.query = function(queryCondition){

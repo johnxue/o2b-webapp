@@ -28,7 +28,27 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
 
     $scope.allCost=0;
 
+    $scope.toDelTheCartProduct=undefined;
+
+    $scope.delCartProductForm=false;
+
     $scope.cartProductForm={};
+
+    $scope.cartProductForm.cartProducts = JSON.parse(localDataStorage.getItem('cartProductsInfoArray'));
+     if($scope.cartProductForm.cartProducts==null){
+         $scope.cartProductForm.cartProducts=[];
+     }
+
+    for(var i=0;i< $scope.cartProductForm.cartProducts.length;i++){
+        $scope.allQuantity++;
+        //增加总价字段
+        $scope.cartProductForm.cartProducts[i].amount=$scope.cartProductForm.cartProducts[i].currentPrice* $scope.cartProductForm.cartProducts[i].quantity;
+        $scope.allCost += $scope.cartProductForm.cartProducts[i].currentPrice* $scope.cartProductForm.cartProducts[i].quantity;
+    }
+
+    localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
+    localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
+
 
 
 
@@ -44,94 +64,154 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
     //数量增加
     $scope.quantityPlus = function (cartProduct) {
 
-        uriData ={id:cartProduct[0],number:++cartProduct[6]};
+        uriData ={id:cartProduct.id,number:++cartProduct.quantity};
 
            CommonService.updatePartOne('shoppingcart',JSON.stringify(uriData),function(data){
-            cartProduct[9] = cartProduct[6] * cartProduct[4];
-            $scope.allCost+=cartProduct[4];
-        },errorOperate);
+            cartProduct.amount = cartProduct.currentPrice * cartProduct.quantity;
+            $scope.allCost+=cartProduct.currentPrice;
+
+               localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
+               localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
+
+           },errorOperate);
 
     }
 
     //数量减少
     $scope.quantitySubtract = function (cartProduct) {
-        if (cartProduct[6] > 1) {
-            uriData ={id:cartProduct[0],number:--cartProduct[6]};
+        if (cartProduct.quantity > 1) {
+            uriData ={id:cartProduct.id,number:--cartProduct.quantity};
             CommonService.updatePartOne('shoppingcart',JSON.stringify(uriData),function(data){
 
-                cartProduct[9] = cartProduct[6] * cartProduct[4];
-                $scope.allCost-=cartProduct[4];
+                cartProduct.amount = cartProduct.currentPrice * cartProduct.quantity;
+                $scope.allCost-=cartProduct.currentPrice;
+
+                localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
+                localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
+
             },errorOperate);
         }
     }
 
-    //删除购物车商品
+    //显示单个删除购物车商品提示框
+    $scope.showDeleteAlterForm=function(cartProduct){
+        $scope.toDelTheCartProduct=cartProduct;
+        $scope.delCartProductForm=true;
+    }
 
-    $scope.cartProductForm.delCartProduct = function(cartProducts){
+    //单个删除购物车商品
+
+    $scope.delCartProduct = function(cartProduct){
 
         uriData ={};
-        uriData.ids=cartProducts[0].toString();
+        uriData.ids=cartProduct['id'].toString();
 
         CommonService.deleteOne('shoppingcart',JSON.stringify(uriData),function(data){
            for(var i=0;i< $scope.cartProductForm.cartProducts.length;i++){
-               if($scope.cartProductForm.cartProducts[i][0]==cartProducts[0]){
-                  $scope.cartProductForm.cartProducts.splice(i,1);
+               if($scope.cartProductForm.cartProducts[i]['id']==cartProduct['id']){
+
+
+                   $scope.allQuantity--;
+                   $scope.allCost-=cartProduct['currentPrice']*cartProduct['quantity'];
+
+                   $scope.cartProductForm.cartProducts.splice(i,1);
+
+
+
                }
            }
-            $scope.allQuantity--;
-            $scope.allCost-=cartProduct[6]*cartProduct[4];
+
+            localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
+            localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
+
+
         },errorOperate);
+
+        $scope.delCartProductForm=false;
     }
 
-    //结算生成订单
+    //多个删除购物车商品
 
+    $scope.multipleDelCartProduct=function(cartProductForm){
+        uriData={};
+        var ids='';
+        var idsArray=[];
+        for(var i=0;i<cartProductForm.cartProducts.length;i++){
+           if(cartProductForm.cartProducts[i]['checked']==true){
+
+               idsArray.push(cartProductForm.cartProducts[i]['id']);
+               ids+=cartProductForm.cartProducts[i]['id'].toString()+',';
+           }
+        }
+        uriData.ids=ids.substring(0,ids.length-1);
+
+        CommonService.deleteOne('shoppingcart',JSON.stringify(uriData),function(data){
+            for(var i=0;i< $scope.cartProductForm.cartProducts.length;i++){
+                for(var j=0;j<idsArray.length;j++){
+                   if($scope.cartProductForm.cartProducts[i]['id']==idsArray[j]){
+
+                       $scope.allQuantity--;
+                       $scope.allCost-=$scope.cartProductForm.cartProducts[i]['currentPrice']*$scope.cartProductForm.cartProducts[i]['quantity'];
+
+                    $scope.cartProductForm.cartProducts.splice(i,1);
+
+                    }
+                }
+            }
+
+            localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
+            localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
+
+        },errorOperate);
+
+
+        $scope.delCartProductForm=false;
+    }
+
+
+
+
+
+    //购买
     $scope.order=function(cartProductForm){
 
         var orderProductsInfoDataArray=[];
+        var cartProductsForm_cartProducts=cartProductForm.cartProducts;
 
-        for(var i=0;i<cartProductForm.cartProducts.length;i++){
-            if(cartProductForm.cartProducts[i].checked==true){
+        if(cookieOperate.getCookie("token")==null) {
+              $('#denglu').show();
+        }else {
+            for (var i = 0; i < cartProductsForm_cartProducts.length; i++) {
+                if (cartProductsForm_cartProducts[i].checked == true) {
 
-                var orderProductsInfoData={};
+                    var orderProductsInfoData = {};
 
-                orderProductsInfoData.id=cartProductForm.cartProducts[i][0];
-                orderProductsInfoData.pid=cartProductForm.cartProducts[i][1];
-                orderProductsInfoData.code = cartProductForm.cartProducts[i][2];
-                orderProductsInfoData.name=cartProductForm.cartProducts[i][3];
-                orderProductsInfoData.originalPrice=cartProductForm.cartProducts[i][4];
-                orderProductsInfoData.currentPrice=cartProductForm.cartProducts[i][5];
-                orderProductsInfoData.quantity=cartProductForm.cartProducts[i][6];
-                orderProductsInfoData.offLine=cartProductForm.cartProducts[i][7];
-                if(cartProductForm.cartProducts[i][8]>0){
-                    orderProductsInfoData.inventoryStatus='有货';
-                }else{
-                    orderProductsInfoData.inventoryStatus='无货'
+                    orderProductsInfoData.id = cartProductsForm_cartProducts[i].id;
+                    orderProductsInfoData.pid = cartProductsForm_cartProducts[i].pid;
+                    orderProductsInfoData.code = cartProductsForm_cartProducts[i].code;
+                    orderProductsInfoData.name = cartProductsForm_cartProducts[i].name;
+                    orderProductsInfoData.originalPrice = cartProductsForm_cartProducts[i].originalPrice;
+                    orderProductsInfoData.currentPrice = cartProductsForm_cartProducts[i].currentPrice;
+                    orderProductsInfoData.quantity = cartProductsForm_cartProducts[i].quantity;
+                    orderProductsInfoData.offLine = cartProductsForm_cartProducts[i].offLine;
+                    orderProductsInfoData.inventoryStatus = cartProductsForm_cartProducts[i].inventoryStatus;
+
+                    orderProductsInfoData.amount = cartProductsForm_cartProducts[i]['amount'];
+
+
+                    orderProductsInfoDataArray.push(orderProductsInfoData);
                 }
-                orderProductsInfoData.amount=cartProductForm.cartProducts[i][9];;
-
-                orderProductsInfoDataArray.push(orderProductsInfoData);
             }
+
+            localDataStorage.setItem('orderProductsInfo', JSON.stringify(orderProductsInfoDataArray));
+            $window.location.href = '#/productOrder';
         }
 
-        localDataStorage.setItem('orderProductsInfo',JSON.stringify(orderProductsInfoDataArray));
-        $window.location.href='#/productOrder';
-    }
+        }
+
 
 
     //调用与后端的接口,如：CommonService.getAll(params)
-
-    uriData = undefined;
-    CommonService.getAll('shoppingcart', uriData, function (data) {
-        $scope.cartProductForm.cartProducts = data;
-        for(var i=0;i< $scope.cartProductForm.cartProducts.length;i++){
-            $scope.allQuantity++;
-
-            //增加总价字段
-            $scope.cartProductForm.cartProducts[i].splice(9,0, $scope.cartProductForm.cartProducts[i][4]* $scope.cartProductForm.cartProducts[i][6]);
-            $scope.allCost += $scope.cartProductForm.cartProducts[i][4]*$scope.cartProductForm.cartProducts[i][6];
-        }
-        localDataStorage.setItem('orderProductsInfo', JSON.stringify($scope.cartProductForm.cartProducts));
-    }, errorOperate);
 
 
 });
