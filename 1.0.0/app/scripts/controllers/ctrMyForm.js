@@ -65,7 +65,8 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
     //订单中
     $scope.order = function(){
        alert("订单中");
-        CommonService.getAll('s=period&v=', uriData, function (data) {
+        uriData = "s=period&v=";
+        CommonService.getAll('order', uriData, function (data) {
 
         });
     }
