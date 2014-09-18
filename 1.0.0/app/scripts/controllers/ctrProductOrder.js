@@ -21,8 +21,12 @@ var ProductOrderControllers = angular.module('ProductOrderControllers',[]);
 ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonService){
 
     var uriData ='';
+
+
+//初始化$scope中定义的变量
+
     var balanceNeed = {};
-//初始化$scope中定义的
+
     $scope.orderForm={};
 
     $scope.orderForm.orderProductsInfo =JSON.parse(localDataStorage.getItem('orderProductsInfo'));
@@ -55,7 +59,7 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
     //实现与页面交互的事件,如：button_click
 
 
-    //保存更改收货地址
+    //保存更改收货地址s
     $scope.saveChange=function(changeOrderAddressForm){
        $scope.defaultDisaplayAddress= changeOrderAddressForm.selectedAddress;
     }
