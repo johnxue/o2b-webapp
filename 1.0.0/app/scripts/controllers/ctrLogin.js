@@ -85,7 +85,7 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
 
                 //将用户登录之前的购物车商品信息添加到服务器
                 for(var i=0;i<cartProductsInfoArray.length;i++){
-                    var addCartNeed={};
+                    var addCartNeed = {};
                     addCartNeed.pid = cartProductsInfoArray[i]['pid'];
                     addCartNeed.pcode = cartProductsInfoArray[i]['code'];
                     addCartNeed.number = cartProductsInfoArray[i]['quantity'];

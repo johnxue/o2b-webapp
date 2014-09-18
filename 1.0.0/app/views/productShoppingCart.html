@@ -2,7 +2,9 @@
 <div class="container" >
   <div class="cont" style=" margin-top:20px;" >
     <div class="col-md-12">
+
       <legend ><button class="btn btn-info" ng-click="multipleDelCartProduct(cartProductForm);">删除选中商品</button> <span><a href=""class="label label-info pull-right mr10" ng-click="order(cartProductForm);">购买</a></span><span class="pull-right mr20 ">购物车共<strong class="blue">{{allQuantity}}</strong>件,总金额共计:￥<strong class="blue">{{allCost | number:2}}</strong></span></legend>
+
       <table class="table table-hover">
        <form ng-model="cartProductForm">
         <tbody>
@@ -18,7 +20,9 @@
             </thead>
         <tr ng-repeat="cartProduct in cartProductForm.cartProducts track by $index" >
           <td><input name="check" type="checkbox" ng-model="cartProduct.checked" ng-value="cartProduct"/></td>
-         <td><img ng-src="images/prducttu.jpg"  class="prdouctimg" /></td>
+
+          <td><img ng-src="images/prducttu.jpg"  class="prdouctimg" /></td>
+
           <td>{{cartProduct.name}}</td>
           <td><strong>{{cartProduct.currentPrice}}</strong></td>
           <td><span>
@@ -29,7 +33,11 @@
             <button class="btn btn-info btn-mini w20 " ng-click="quantitySubtract(cartProduct);">-</button>
             </span></td>
           <td><strong class="blue">¥{{cartProduct.amount}}</strong></td>
+
+
           <td><a href="" style="color:#39b3d7" data-toggle="modal" data-target="#delproduct" ng-click="showDeleteAlterForm(cartProduct);"><i  class="icon-trash" ></i></a></td>
+          </td>
+
         </tr>
           </tbody>
        </form>
@@ -37,6 +45,7 @@
     </div>
   </div>
 </div>
+
     <!-- 确认删除弹框开始 -->
     <div class="modal"  id="delproduct" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" ng-show="delCartProductForm">
         <div class="modal-dialog">
@@ -56,4 +65,5 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- 确认删除弹框结束 -->
+
 </div>

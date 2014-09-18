@@ -111,10 +111,9 @@
           <div class="ha30"><span>{{defaultDisaplayAddress[6]}}</span> <span>{{defaultDisaplayAddress[8]}}</span> <span>{{defaultDisaplayAddress[9]}}</span><span>{{defaultDisaplayAddress[10]}}</span></div>
         </div>
       </div>
-        <!--显示收货人信息开始-->
+
 
       <!--收件人地址结束-->
-
         <form ng-model="orderForm">
       <!--支付方式开始-->
       <div class="alert with-icon "> <strong>支付方式 </strong>
@@ -150,7 +149,10 @@
             </thead>
 
             <tr ng-repeat="orderProductInfo in orderForm.orderProductsInfo">
+
+
                 <td><input name="" type="checkbox"  ng-value="orderProductInfo" ng-model="orderProductInfo.$selectedOrder" ng-change="checkBoxChange(orderForm);"></td>
+
                 <!--<td><img ng-src=""  class="prdouctimg" /></td>-->
                 <td>{{orderProductInfo.name}}</td>
                 <td><strong>{{orderProductInfo.currentPrice}}</strong></td>
@@ -173,6 +175,7 @@
             <div class="ha30 pull-right">应付总额：￥<strong class="blue">{{costAll+10 | number:2}}</strong>元 <span><a class="btn btn-info" ><div ng-click="balance(orderForm);">结算</div></a></span></div>
         </div>
 
+
         </form>
       </div>
 
@@ -180,6 +183,36 @@
 
 </div>
 </div>
+
+<!--修改收货人地址 -->
+<div class="modal"  id="updateperson" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" > <i class="icon-map-marker"></i> 更改收货地址 </h4>
+      </div>
+      <div class="modal-body">
+        <div>
+          <table class="table table-hover">
+            <tbody>
+            <form ng-model="changeOrderAddressForm">
+              <tr ng-repeat="userAddressBeforeOr in userAddressesBeforeOr">
+                <td><input name="address" type="radio"  ng-value="userAddressBeforeOr" ng-model="changeOrderAddressForm.selectedAddress"></td>
+                <td>{{userAddressBeforeOr[6]+userAddressBeforeOr[8]+userAddressBeforeOr[9]+userAddressBeforeOr[10]}}&nbsp; {{userAddressBeforeOr[2]}}收</td>
+              </tr>
+            </form>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+  </div>
+
+</div>
+</div>
+
 
 
 </div>

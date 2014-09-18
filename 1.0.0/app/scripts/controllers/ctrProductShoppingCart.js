@@ -110,16 +110,20 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
            for(var i=0;i< $scope.cartProductForm.cartProducts.length;i++){
                if($scope.cartProductForm.cartProducts[i]['id']==cartProduct['id']){
 
+
                    $scope.allQuantity--;
                    $scope.allCost-=cartProduct['currentPrice']*cartProduct['quantity'];
 
                    $scope.cartProductForm.cartProducts.splice(i,1);
+
+
 
                }
            }
 
             localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
             localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
+
 
         },errorOperate);
 
@@ -160,7 +164,12 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
 
         },errorOperate);
 
+
+        $scope.delCartProductForm=false;
     }
+
+
+
 
 
     //购买
