@@ -127,7 +127,7 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
 
     }
 
-    //弹出修改收获地址栏单击事件
+    //弹出修改收获地址栏单击事件s
     $scope.updateAddress=function(){
         $scope.updateAddressFormState=!$scope.updateAddressFormState;
     }
