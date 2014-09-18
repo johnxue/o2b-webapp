@@ -8,23 +8,16 @@
           <li ng-class="{active: vm.activeTab == 2}"><a href="javascript:;" ng-click="vm.activeTab = 2">订单中</a></li>
           <li ng-class="{active: vm.activeTab == 3}"><a href="javascript:;" ng-click="vm.activeTab = 3">待发货</a></li>
           <li ng-class="{active: vm.activeTab == 4}"><a href="javascript:;" ng-click="vm.activeTab = 4">已发货</a></li>
-          <li ng-class="{active: vm.activeTab == 5}"><a href="javascript:;" ng-click="vm.activeTab = 5">已签收</a></li>
-          <li ng-class="{active: vm.activeTab == 6}"><a href="javascript:;" ng-click="vm.activeTab = 6">已退款</a></li>
+          <li ng-class="{active: vm.activeTab == 5}"><a href="javascript:;" ng-click="vm.activeTab = 5"> 退货</a></li>
+
         </ul>
         <div class="tab-content tab-bordered mp20 " >
           <div class="tab-panel" ng-show="vm.activeTab == 1">
               <div id="Prompt"></div> <!-- 无记录提示信息-->
             <div class="row">
-<<<<<<< HEAD
-                <div class="alert with-icon "> <span class="mp7" style="float:left"><i class="icon-search"></i> 订单查询： </span><span class="col-md-3">
-                <input type="text" class="form-control" placeholder="订单号、商品名、时间" ng-model="seleContent">
-                </span> <span class="ml10"><button class="btn btn-info" ng-click="fuzzyQuery()">查询</button></span>
-                    <div class="col-md-2">
-                        <select class="form-control" ng-model="dataTime" ng-options="period[0] for period in selectTime"> <!--查询显示时间 -->
-=======
                 <div class="alert with-icon "> <span class="mp7" style="float:left;"><i class="icon-search"></i> 订单查询： </span><span class="col-md-3">
-                <input type="text" class="form-control" placeholder="订单号、商品名、时间">
-                </span> <span class="ml10"><button class="btn btn-info">查询</button></span>
+                <input type="text" ng-model="seleVal" class="form-control" placeholder="订单号、商品名、时间">
+                </span> <span class="ml10"><button class="btn btn-info" ng-click="seleBtn()">查询</button></span>
                     <div class="col-md-2">
                         <select name="" class="form-control">
                             <option value="">最近3个月</option>
@@ -32,7 +25,6 @@
                             <option value="">2013年</option>
                             <option value="">2012年</option>
                             <option value="">2011年以前</option>
->>>>>>> origin/dev
                         </select>
                     </div>
                 </div>
@@ -47,12 +39,10 @@
                     <td>时间</td>
                     <td>操作</td>
                     </thead>
-                    <tr>
-                        <!-- 遍历信息内容 -->
-                    </tr>
+                       <tr><!--遍历信息内容 --></tr>
                     </tbody>
                 </table>
-                <div class="mp20"><button class="btn btn-info more" ng-click="Page()">查看更多</button></div>
+                <div class="mp20"><button ng-model="seleDataTime" class="btn btn-info more" ng-click="Page()">查看更多</button></div>
             </div>
           </div>
           <!--我的订单所有结束-->
@@ -79,8 +69,9 @@
                   <td>金额（元）</td>
                   <td>操作</td>
                     </thead>
+                  <div id="fetion"></div>
                 <tr>
-                  <td><input name="check" type="checkbox" value="" /></td>
+                 <!-- <td><input name="check" type="checkbox" value="" /></td>
                   <td><img src="images/prducttu.jpg"  class="prdouctimg" /></td>
                   <td>【AirProce云智能空气净化器一台】感谢您的支持！作为第二波支持用户</td>
                   <td><strong>1000.00</strong></td>
@@ -104,7 +95,7 @@
                   <td><strong>1000.00</strong></td>
                   <td>5</td>
                   <td><strong class="blue">¥29,690</strong></td>
-                  <td><a href="" style="color:#39b3d7" data-toggle="modal" data-target="#delproduct"><i class="icon-trash" ></i></a></td>
+                  <td><a href="" style="color:#39b3d7" data-toggle="modal" data-target="#delproduct"><i class="icon-trash" ></i></a></td>-->
                 </tr>
                   </tbody>
                 
@@ -143,37 +134,75 @@
           </div>
           
           <!--已发货结束-->
-          <div class="tab-panel" ng-show="vm.activeTab == 5">
-            <div class="col-md-9">
-              <form class="form-horizontal" role="form" method='post'>
-                <div class="container" >
-                  <div class="col-md-12">
-                    <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
-                      <div class="content">没有符合条件的订单记录。</div>
+            <div class="tab-panel" ng-show="vm.activeTab == 5">
+                <div class="col-md-12 marginb">
+                    <div class="panel ">
+                        <div class="panel-heading">服务单明细 </div>
+                        <div class="panel-body ">
+                            <table class="table table-hover">
+                                <thead>
+                                <td>商品信息</td>
+                                <td>订单号</td>
+                                <td>收货人</td>
+                                <td>购买数量</td>
+                                <td>状态</td>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><img src="images/prducttu.jpg"  class="prdouctimg ml10 mr10"/><img src="images/prducttu.jpg"  class="prdouctimg ml10 mr10" /><img src="images/prducttu.jpg"  class="prdouctimg ml10 mr10" /></td>
+                                    <td class="blue">1794067691 </td>
+                                    <td>张小明</td>
+                                    <td><strong class="blue">3</strong></td>
+                                    <td>已收货</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="col-md-9" >
+                                <p class="title">退货详细</p>
+                                <form class="form-horizontal" role="form" method="post">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" >退货类型：</label>
+                                        <div class="col-md-7">
+                                            <input name="tuihuo" type="radio" value="" checked="checked"/>
+                                            退货
+                                            <input name="tuihuo" type="radio" value=""/>
+                                            换货 </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" >退货数量：</label>
+                                        <div class="col-md-7"> <span>
+                          <button class="btn btn-info btn-mini w20 ">+</button>
+                          <span>
+                          <input name="" type="text"  value="4" class="input"/>
+                          </span>
+                          <button class="btn btn-info btn-mini w20 ">-</button>
+                          </span> </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" style="text-align:right;">上传图片：</label>
+                                        <div class="col-md-7">
+                                            <input name="" type="file" />
+                                            </br>
+                                            <div class="alert alert-info"> <strong>Hi!</strong> 为了帮助我们更好的解决问题，请您上传图片</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" style="text-align:right;">问题描述：</label>
+                                        <div class="col-md-7">
+                                            <textarea name="" cols="" rows="" style="width:100%; height:100px; border:1px solid #ccc; margin-bottom:20px;"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row text-center">
+                                        <button class="btn btn-info">确定提交</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </form>
             </div>
-          </div>
-          
-          <!--已发货结束-->
-          <div class="tab-panel" ng-show="vm.activeTab == 6">
-            <div class="col-md-9">
-              <form class="form-horizontal" role="form" method='post'>
-                <div class="container" >
-                  <div class="col-md-12">
-                    <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
-                      <div class="content">没有符合条件的订单记录。</div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-          
-          <!--已发货结束--> 
-          
+            <!--已发货结束-->
+
         </div>
       </div>
     </div>
