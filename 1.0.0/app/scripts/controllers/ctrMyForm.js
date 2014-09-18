@@ -53,12 +53,13 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
     $scope.seleBtn = function(){
         var seleCon = $scope.seleVal;  //获取输入内容
         if(seleCon == null){
-
+           uriData = "q=ALL"
+        }else{
+            uriData = "q="+seleCon;
+            CommonService.getAll('order', uriData, function (data) {
+                $scope.sendHtml(data);
+            });
         }
-        uriData = "q="+seleCon;
-        CommonService.getAll('order', uriData, function (data) {
-         $scope.sendHtml(data);
-        });
     }
 
     //查看更多
