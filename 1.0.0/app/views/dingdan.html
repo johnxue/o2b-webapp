@@ -5,10 +5,10 @@
       <div class="col-md-12">
         <ul class="nav nav-tabs" ng-init="vm.activeTab=1">
           <li ng-class="{active: vm.activeTab == 1}"><a href="javascript:;" ng-click="vm.activeTab = 1">所有</a></li>
-          <li ng-class="{active: vm.activeTab == 2}"><a href="javascript:;" ng-click="vm.activeTab = 2">订单中</a></li>
-          <li ng-class="{active: vm.activeTab == 3}"><a href="javascript:;" ng-click="vm.activeTab = 3">待发货</a></li>
-          <li ng-class="{active: vm.activeTab == 4}"><a href="javascript:;" ng-click="vm.activeTab = 4">已发货</a></li>
-          <li ng-class="{active: vm.activeTab == 5}"><a href="javascript:;" ng-click="vm.activeTab = 5"> 退货</a></li>
+          <li ng-class="{active: vm.activeTab == 2}"><a href="javascript:;" ng-click="vm.activeTab = 2;order()">订单中</a></li>
+          <li ng-class="{active: vm.activeTab == 3}"><a href="javascript:;" ng-click="vm.activeTab = 3;waitShipped()">待发货</a></li>
+          <li ng-class="{active: vm.activeTab == 4}"><a href="javascript:;" ng-click="vm.activeTab = 4;shipped()">已发货</a></li>
+          <li ng-class="{active: vm.activeTab == 5}"><a href="javascript:;" ng-click="vm.activeTab = 5;return()"> 退货</a></li>
 
         </ul>
         <div class="tab-content tab-bordered mp20 " >

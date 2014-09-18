@@ -62,8 +62,27 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
         $scope.seleAllGoods();
     }
 
-    $scope.aa = function(){
-       alert("@");
+    //订单中
+    $scope.order = function(){
+       alert("订单中");
+        uriData = "s=period&v=";
+        CommonService.getAll('order', uriData, function (data) {
+
+        });
+    }
+
+    //待发货
+    $scope.waitShipped = function(){
+        alert("待发货");
+    }
+
+    //已发货
+    $scope.shipped = function(){
+        alert("已发货");
+    }
+    //退货
+    $scope.return = function(){
+        alert("退货");
     }
 
     //删除事件
