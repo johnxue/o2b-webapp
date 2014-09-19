@@ -47,7 +47,7 @@
               <div class="col-md-7">
                 <div class="input-group">
                   <input type='text'  class='col-md-7 yzinput' placeholder="验证码"/>
-                  <span class="label label-warning ml10"><a href="" class="hrefw ">发送验证码</a></span>
+                  <span class="label label-warning ml10"><a href="javascript:;" class="hrefw" ng-disabled="sendIdentifyingCodeState" ng-click="sendIdentifyingCode();">{{sendIdentifyingCodeButtonText}}</a></span>
                 </div>
               </div>
               <div class="col-md-7 col-md-offset-4 ha30 blue"> 您输入的验证码有误.</div>
