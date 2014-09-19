@@ -66,7 +66,7 @@
                       <ul class=" pull-right dropdown-menu  dropdown-close">
                           <li> <a href="#"> <i class="icon-cog"></i> 账号设置 </a> </li>
                           <li class="divider"></li>
-                          <li> <a href="#"> <i class="icon-cog"></i> 我的产品 </a> </li>
+                          <li> <a href="#/follow"> <i class="icon-cog"></i> 我的关注 </a> </li>
                           <li class="divider"></li>
                           <li> <a href="#/userAddress"> <i class="icon-user"></i> 收货地址 </a> </li>
                           <li class="divider"></li>
@@ -163,6 +163,7 @@
                     <span class="input-group-btn">
                     <button class="btn btn-info" type="button"><i class="icon-user"></i></button>
                     </span>
+                      <div ng-show="frmLogin.username.$valid">&radic;</div>
                          </div>
                             </div>
                             </div>
@@ -182,6 +183,7 @@
                                    <span class="input-group-btn">
                                    <button class="btn btn-info" type="button"><i class="icon-lock"></i></button>
                                    </span>
+                                    <div ng-show="frmLogin.password.$valid">&radic;</div>
                                 </div>
                                     <div class="col-md-12 pt10" ng-show="frmLogin.password.$dirty && frmLogin.password.$invalid">*
                                         <span ng-show="frmLogin.password.$error.required">请输入您的密码</span>
@@ -198,7 +200,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default"  ng-click="reset()"
-                        ng-disabled="isUnchanged(objLoginInfo)">重置</button>
+                        ng-disabled="!frmLogin.$dirty">重置</button>
                 <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="update(objLoginInfo)"
                         ng-disabled="frmLogin.$invalid">登陆</button>
             </div>
@@ -235,6 +237,7 @@
 <script src="scripts/controllers/ctrProductShoppingCart.js"></script>
 <script src="scripts/controllers/ctrMyForm.js"></script>
 <script src="scripts/controllers/ctrUserRegister.js"></script>
+<script src="scripts/controllers/ctrUserFollow.js"></script>
 <script src="scripts/controllers/ctrViewDetails.js"></script>
 
 <script src="scripts/services/svcCommon.js"></script>
