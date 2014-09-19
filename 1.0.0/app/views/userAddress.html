@@ -11,70 +11,118 @@
       
         <p class="title">收货地址</p>
         <div class="alert alert-info"> <strong>Hi!</strong> 请认真填写您的收货地址,以便商品购买。 </div>
-        <form class="form-horizontal" role="form" method="post" ng-model="deliveryAddress">
+        <form class="form-horizontal" role="form" method="post" ng-model="deliveryAddress" name="deliveryAddress" novalidate="true">
           <div class="form-group">
             <label class="col-md-3 control-label" >收件人姓名：</label>
             <div class="col-md-7">
-              <input type="text"  class="form-control" ng-model="deliveryAddress.c">
+              <input type="text"  class="form-control" ng-model="deliveryAddress.c" placeholder="请输入联系人姓名" required="true" ng-pattern="/^[\u4e00-\u9fa5A-Za-z0-9_]{0,}$/"  name="deliveryAddress_c">
             </div>
+            <div class="col-md-1">
+                <div ng-show="!(deliveryAddress.deliveryAddress_c.$error.required || deliveryAddress.deliveryAddress_c.$error.pattern)">&radic;</div>
+            </div>
+              <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="deliveryAddress.deliveryAddress_c.$dirty && deliveryAddress.deliveryAddress_c.$error.required"> 联系人不能为空</div>
+
+              <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="deliveryAddress.deliveryAddress_c.$dirty && deliveryAddress.deliveryAddress_c.$error.pattern"> 您输入的联系人格式有误，请改正</div>
           </div>
           <div class="form-group">
             <label class="col-md-3 control-label" >省份/直辖市：</label>
             <div class="col-md-2">
-              <select  class="form-control" ng-model="deliveryAddress.pi" ng-options="province[0] as province[1] for province in selectProvinces">
+              <select  class="form-control" ng-model="deliveryAddress.pi" ng-options="province[0] as province[1] for province in selectProvinces" name="deliveryAddress_pi">
                 <option value="" selected="selected">--省份--</option>
               </select>
             </div>
             <div class="col-md-2">
-              <select  class="form-control" ng-model="deliveryAddress.ci" ng-options="city[0] as city[1] for city in selectCitys" >
+              <select  class="form-control" ng-model="deliveryAddress.ci" ng-options="city[0] as city[1] for city in selectCitys" name="deliveryAddress_ci">
                 <option value="" selected="selected">--地级市--</option>
               </select>
             </div>
             <div class="col-md-2">
-              <select  class="form-control" ng-model="deliveryAddress.ai" ng-options="district[0] as district[1] for district in selectDistricts">
+              <select  class="form-control" ng-model="deliveryAddress.ai" ng-options="district[0] as district[1] for district in selectDistricts" name="deliveryAddress_ai">
                 <option value="" selected="selected">--市、县--</option>
               </select>
             </div>
+             <div class="col-md-2">
+                 <div ng-show="deliveryAddress.deliveryAddress_pi.$dirty && deliveryAddress.deliveryAddress_ci.$dirty && deliveryAddress.deliveryAddress_ai.$dirty">&radic;</div>
+              <div ng-show="!deliveryAddress.deliveryAddress_pi.$dirty">请选择省份</div>
+              <div ng-show="!deliveryAddress.deliveryAddress_ci.$dirty">请选择城市</div>
+              <div ng-show="!deliveryAddress.deliveryAddress_ai.$dirty">请选择地区</div>
+             </div>
           </div>
             <div class="form-group">
                 <label class="col-md-3 control-label" style="text-align:right;">街道：</label>
                 <div class="col-md-7">
-                    <input type="text" class="form-control" ng-model="deliveryAddress.s">
+                    <input type="text" class="form-control" ng-model="deliveryAddress.s" name="deliveryAddress_s" placeholder="请输入街道地址名称" required="true" ng-pattern="/^[\u4e00-\u9fa5A-Za-z0-9_]{0,}$/">
                 </div>
+                <div class="col-md-1">
+                    <div ng-show="!(deliveryAddress.deliveryAddress_s.$error.required || deliveryAddress.deliveryAddress_s.$error.pattern)">&radic;</div>
+                </div>
+                <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="deliveryAddress.deliveryAddress_s.$dirty && deliveryAddress.deliveryAddress_s.$error.required">街道地址不能为空</div>
+
+                <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="deliveryAddress.deliveryAddress_s.$dirty && deliveryAddress.deliveryAddress_s.$error.pattern"> 您输入的街道地址格式有误，请改正</div>
             </div>
           <div class="form-group">
             <label class="col-md-3 control-label" style="text-align:right;">详细地址：</label>
             <div class="col-md-7">
-              <input type="text" class="form-control" ng-model="deliveryAddress.a">
+              <input type="text" class="form-control" ng-model="deliveryAddress.a" name="deliveryAddress_a" placeholder="请输入详细地址" required="true" ng-pattern="/^[\u4e00-\u9fa5A-Za-z0-9_]{0,}$/">
             </div>
+              <div class="col-md-1">
+                  <div ng-show="!(deliveryAddress.deliveryAddress_a.$error.required || deliveryAddress.deliveryAddress_a.$error.pattern)">&radic;</div>
+              </div>
+              <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="deliveryAddress.deliveryAddress_a.$dirty && deliveryAddress.deliveryAddress_a.$error.required">详细地址不能为空</div>
+
+              <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="deliveryAddress.deliveryAddress_a.$dirty && deliveryAddress.deliveryAddress_a.$error.pattern"> 您输入的详细地址格式有误，请改正</div>
           </div>
           <div class="form-group">
             <label class="col-md-3 control-label" style="text-align:right;">邮政地址：</label>
             <div class="col-md-7">
-              <input type="text" class="form-control" ng-model="deliveryAddress.z">
+              <input type="text" class="form-control" ng-model="deliveryAddress.z" name="deliveryAddress_z" placeholder="请输入邮政编码" required="true" ng-pattern="/^[1-9]\d{5}(?!\d)$/"/>
             </div>
+              <div class="col-md-1">
+                  <div ng-show="!(deliveryAddress.deliveryAddress_z.$error.required || deliveryAddress.deliveryAddress_z.$error.pattern)">&radic;</div>
+              </div>
+              <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="deliveryAddress.deliveryAddress_z.$dirty && deliveryAddress.deliveryAddress_z.$error.required">邮政编码不能为空</div>
+
+              <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="deliveryAddress.deliveryAddress_z.$dirty && deliveryAddress.deliveryAddress_z.$error.pattern"> 您输入的邮编格式有误，请改正</div>
           </div>
           <div class="form-group">
             <label class="col-md-3 control-label" style="text-align:right;">手机号码：</label>
             <div class="col-md-7">
-              <input type="text" class="form-control" ng-model="deliveryAddress.m">
+              <input type="text" class="form-control" ng-model="deliveryAddress.m" name="deliveryAddress_m" placeholder="请输入手机号码" required="true" ng-pattern="/^1[3|5|7|8|][0-9]{9}$/">
             </div>
+              <div class="col-md-1">
+                  <div ng-show="!(deliveryAddress.deliveryAddress_m.$error.required || deliveryAddress.deliveryAddress_m.$error.pattern)">&radic;</div>
+              </div>
+              <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="deliveryAddress.deliveryAddress_m.$dirty && deliveryAddress.deliveryAddress_m.$error.required">手机号不能为空</div>
+
+              <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="deliveryAddress.deliveryAddress_m.$dirty && deliveryAddress.deliveryAddress_m.$error.pattern"> 您输入的手机号格式有误，请改正</div>
           </div>
             <div class="form-group">
                 <label class="col-md-3 control-label" style="text-align:right;">固定电话：</label>
                 <div class="col-md-7">
-                    <input type="text" class="form-control" ng-model="deliveryAddress.t">
+                    <input type="text" class="form-control" ng-model="deliveryAddress.t" name="deliveryAddress_t" placeholder="请输入电话号码" required="true" ng-pattern="/^(\d{3,4}-)\d{7,8}$/">
                 </div>
+                <div class="col-md-1">
+                    <div ng-show="!(deliveryAddress.deliveryAddress_t.$error.required || deliveryAddress.deliveryAddress_t.$error.pattern)">&radic;</div>
+                </div>
+                <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="deliveryAddress.deliveryAddress_t.$dirty && deliveryAddress.deliveryAddress_t.$error.required">电话号码不能为空</div>
+
+                <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="deliveryAddress.deliveryAddress_t.$dirty && deliveryAddress.deliveryAddress_t.$error.pattern"> 您输入的电话号码格式有误，请改正</div>
             </div>
             <div class="form-group">
                 <label class="col-md-3 control-label" style="text-align:right;">电子邮箱：</label>
                 <div class="col-md-7">
-                    <input type="text" class="form-control" ng-model="deliveryAddress.e">
+                    <input type="email" class="form-control" ng-model="deliveryAddress.e" name="deliveryAddress_e" placeholder="请输入电子邮箱地址" required="true">
                 </div>
+                <div class="col-md-1">
+                    <div ng-show="!(deliveryAddress.deliveryAddress_e.$error.required || deliveryAddress.deliveryAddress_e.$error.email)">&radic;</div>
+                </div>
+                <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="deliveryAddress.deliveryAddress_e.$dirty && deliveryAddress.deliveryAddress_e.$error.required">电子邮箱不能为空</div>
+
+                <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="deliveryAddress.deliveryAddress_e.$dirty && deliveryAddress.deliveryAddress_e.$error.email"> 您输入的电子邮箱格式有误，请改正</div>
             </div>
 
           
-          <div class="col-md-12 text-center"><button class="btn btn-info" ng-click="save(deliveryAddress)">确定保存</button></div>
+          <div class="col-md-12 text-center"><button class="btn btn-info" ng-click="save(deliveryAddress)" ng-disabled="deliveryAddress.$invalid">确定保存</button></div>
         </form>
         
         <p class="title">已有收货地址</p> 

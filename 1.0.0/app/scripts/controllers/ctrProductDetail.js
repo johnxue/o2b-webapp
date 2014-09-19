@@ -26,6 +26,7 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
     var addCartNeed ={};
     var inventoryStatus='';
     //初始化$scope中定义的变量
+    $scope.vm = {};
     $scope.guanZhu=true;
     $scope.yiGuanZhu = false;
 

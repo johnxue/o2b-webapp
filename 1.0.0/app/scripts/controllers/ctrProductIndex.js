@@ -26,17 +26,22 @@ ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonServ
     $scope.beforeLogin = null;
     $scope.afterLogin = null;
     $scope.loginedName={};
-    $scope.cartProductsTotal=JSON.parse(localDataStorage.getItem('cartProductsTotal'));
-     if($scope.cartProductsTotal==null){
-         $scope.cartProductsTotal=0
-     }
 
     if(cookieOperate.getCookie("token")==null){
         $scope.beforeLogin = true;
         $scope.afterLogin = false;
+        localDataStorage.setItem('cartProductsInfoArray',JSON.stringify(null));
+        localDataStorage.setItem('cartProductsTotal',JSON.stringify(null));
+        localDataStorage.setItem('orderProductsInfo',JSON.stringify(null));
+
     }else{
         $scope.beforeLogin = false;
         $scope.afterLogin = true;
+    }
+
+    $scope.cartProductsTotal=JSON.parse(localDataStorage.getItem('cartProductsTotal'));
+    if($scope.cartProductsTotal==null){
+        $scope.cartProductsTotal=0
     }
 
     if(cookieOperate.getCookie("userName")==null){

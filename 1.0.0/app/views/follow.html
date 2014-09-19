@@ -1,0 +1,104 @@
+<div ng-controller="UserFollowCtrl">
+<div class="container" >
+  <div class="cont" >
+    <div class="col-md-12">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs" ng-init="vm.activeTab=1">
+          <li ng-class="{active: vm.activeTab == 2}"><a href="javascript:;" ng-click="vm.activeTab = 1">我关注的产品 <span class="label label-badge label-info">4</span></a></li>
+        </ul>
+        <div class="tab-content tab-bordered mp20 " >
+          <div class="tab-panel" ng-show="vm.activeTab == 1"> 
+            <!-- 如果用户没有关注的产品则显示此信息-->
+            
+            <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
+              <div class="content">没有符合条件的订单记录。</div>
+            </div>
+            <!-- 如果用户没有关注的产品则显示此信息结束--> 
+            <!-- 用户关注信息展示-->
+            
+            <div class="row">
+              <div class="col-md-3 ">
+                <div class="card"> <img src="images/list1.png" alt=""> <span class="caption">Kids Grow豆芽宝贝成长计划</span> <a href="###" class="card-heading"><span>Kids Grow豆芽宝贝成长计划</span></a>
+                  <P class="listp"><span class="hui">27天20小时后结束</span><span class='label label-info pull-right' >即将开始</span></P>
+                  <div class="col-md-5 ha20"  >¥58</div>
+                  <div class="col-md-3 ha20" >12</div>
+                  <div class="col-md-4 pull-right ha20" >108人</div>
+                  <div class="col-md-5 ha20 hui" >累计金额</div>
+                  <div class="col-md-3 ha20 hui" >话题</div>
+                  <div class="col-md-4 pull-right ha20 hui" >关注</div>
+                </div>
+              </div>
+              <div class="col-md-3 ">
+                <div class="card"> <img src="images/list1.png" alt=""> <span class="caption">Kids Grow豆芽宝贝成长计划</span> <a href="###" class="card-heading"><span>Kids Grow豆芽宝贝成长计划</span></a>
+                  <P class="listp"><span class="hui">27天20小时后结束</span><span class='label label-info pull-right' >即将开始</span></P>
+                  <div class="col-md-5 ha20"  >¥58</div>
+                  <div class="col-md-3 ha20" >12</div>
+                  <div class="col-md-4 pull-right ha20" >108人</div>
+                  <div class="col-md-5 ha20 hui" >累计金额</div>
+                  <div class="col-md-3 ha20 hui" >话题</div>
+                  <div class="col-md-4 pull-right ha20 hui" >关注</div>
+                </div>
+              </div>
+              <div class="col-md-3 ">
+                <div class="card"> <img src="images/list1.png" alt=""> <span class="caption">Kids Grow豆芽宝贝成长计划</span> <a href="###" class="card-heading"><span>Kids Grow豆芽宝贝成长计划</span></a>
+                  <P class="listp"><span class="hui">27天20小时后结束</span><span class='label label-info pull-right' >即将开始</span></P>
+                  <div class="col-md-5 ha20"  >¥58</div>
+                  <div class="col-md-3 ha20" >12</div>
+                  <div class="col-md-4 pull-right ha20" >108人</div>
+                  <div class="col-md-5 ha20 hui" >累计金额</div>
+                  <div class="col-md-3 ha20 hui" >话题</div>
+                  <div class="col-md-4 pull-right ha20 hui" >关注</div>
+                </div>
+              </div>
+              <div class="col-md-3 ">
+                <div class="card"> <img src="images/list1.png" alt=""> <span class="caption">Kids Grow豆芽宝贝成长计划</span> <a href="###" class="card-heading"><span>Kids Grow豆芽宝贝成长计划</span></a>
+                  <P class="listp"><span class="hui">27天20小时后结束</span><span class='label label-info pull-right' >即将开始</span></P>
+                  <div class="col-md-5 ha20"  >¥58</div>
+                  <div class="col-md-3 ha20" >12</div>
+                  <div class="col-md-4 pull-right ha20" >108人</div>
+                  <div class="col-md-5 ha20 hui" >累计金额</div>
+                  <div class="col-md-3 ha20 hui" >话题</div>
+                  <div class="col-md-4 pull-right ha20 hui" >关注</div>
+                </div>
+              </div>
+              <div class="col-md-3 ">
+                <div class="card"> <img src="images/list1.png" alt=""> <span class="caption">Kids Grow豆芽宝贝成长计划</span> <a href="###" class="card-heading"><span>Kids Grow豆芽宝贝成长计划</span></a>
+                  <P class="listp"><span class="hui">27天20小时后结束</span><span class='label label-info pull-right' >即将开始</span></P>
+                  <div class="col-md-5 ha20"  >¥58</div>
+                  <div class="col-md-3 ha20" >12</div>
+                  <div class="col-md-4 pull-right ha20" >108人</div>
+                  <div class="col-md-5 ha20 hui" >累计金额</div>
+                  <div class="col-md-3 ha20 hui" >话题</div>
+                  <div class="col-md-4 pull-right ha20 hui" >关注</div>
+                </div>
+              </div>
+              <div class="col-md-3 ">
+                <div class="card"> <img src="images/list1.png" alt=""> <span class="caption">Kids Grow豆芽宝贝成长计划</span> <a href="###" class="card-heading"><span>Kids Grow豆芽宝贝成长计划</span></a>
+                  <P class="listp"><span class="hui">27天20小时后结束</span><span class='label label-info pull-right' >即将开始</span></P>
+                  <div class="col-md-5 ha20"  >¥58</div>
+                  <div class="col-md-3 ha20" >12</div>
+                  <div class="col-md-4 pull-right ha20" >108人</div>
+                  <div class="col-md-5 ha20 hui" >累计金额</div>
+                  <div class="col-md-3 ha20 hui" >话题</div>
+                  <div class="col-md-4 pull-right ha20 hui" >关注</div>
+                </div>
+              </div>
+              <div class="col-md-3 ">
+                <div class="card"> <img src="images/list1.png" alt=""> <span class="caption">Kids Grow豆芽宝贝成长计划</span> <a href="###" class="card-heading"><span>Kids Grow豆芽宝贝成长计划</span></a>
+                  <P class="listp"><span class="hui">27天20小时后结束</span><span class='label label-info pull-right' >即将开始</span></P>
+                  <div class="col-md-5 ha20"  >¥58</div>
+                  <div class="col-md-3 ha20" >12</div>
+                  <div class="col-md-4 pull-right ha20" >108人</div>
+                  <div class="col-md-5 ha20 hui" >累计金额</div>
+                  <div class="col-md-3 ha20 hui" >话题</div>
+                  <div class="col-md-4 pull-right ha20 hui" >关注</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-var MainApp=angular.module('MainApp',['ngRoute','ngResource','ProductDetailControllers','ProductIndexControllers','ProductListControllers','ProductMainControllers','CommonServices','ProductFilters','LoginDirectives','LoginServices','LoginControllers','ProductOrderControllers','UserAddressControllers','NewsControllers','NewsListControllers','ProductShoppingCartControllers','MyFormControllers','UserRegisterControllers','RegisterDirectives']);
+var MainApp=angular.module('MainApp',['ngRoute','ngResource','ProductDetailControllers','ProductIndexControllers','ProductListControllers','ProductMainControllers','CommonServices','ProductFilters','LoginDirectives','LoginServices','LoginControllers','ProductOrderControllers','UserAddressControllers','NewsControllers','NewsListControllers','ProductShoppingCartControllers','MyFormControllers','UserRegisterControllers','RegisterDirectives','UserFollowControllers']);
 
 MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($routeProvider,$httpProvider,$locationProvider) {
     $routeProvider
@@ -48,6 +48,10 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title:'注册成功',
             templateUrl:'views/registerSuccess.html',
             controller:'UserRegisterCtrl'
+        }).when('/follow',{
+            title:'我的关注',
+            templateUrl:'views/follow.html',
+            controller:'UserFollowCtrl'
         })
      	.otherwise({
             redirectTo: '/'

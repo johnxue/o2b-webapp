@@ -18,7 +18,9 @@
                   <input type="email"  class='form-control' placeholder="请输入您的邮箱" ng-model="registerForm.userName" required="true" name="registerForm_userName"/>
                   <span class="input-group-btn">
                   <button class="btn btn-default" type="button"><i class="icon-user"></i></button>
-                  </span> </div>
+                  </span>
+                  <div ng-show="!(registerForm.registerForm_userName.$error.required || registerForm.registerForm_userName.$error.email)">&radic;</div>
+                </div>
               </div>
                 <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="registerForm.registerForm_userName.$dirty && registerForm.registerForm_userName.$error.required"> 邮箱不能为空</div>
 
@@ -32,7 +34,9 @@
                   <input type='text'  class='form-control' placeholder="请输入您的手机号码" required="true" ng-pattern="/^1[3|5|7|8|][0-9]{9}$/" ng-model="registerForm.mobileNumber" name="registerForm_mobileNumbe"/>
                   <span class="input-group-btn">
                   <button class="btn btn-default" type="button"><i class="icon-phone-sign"></i></button>
-                  </span> </div>
+                  </span>
+                    <div ng-show="!(registerForm.registerForm_mobileNumbe.$error.required || registerForm.registerForm_mobileNumbe.$error.pattern)">&radic;</div>
+                </div>
               </div>
                 <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="registerForm.registerForm_mobileNumbe.$dirty && registerForm.registerForm_mobileNumbe.$error.required"> 手机号不能为空</div>
 
@@ -56,13 +60,15 @@
                          required="true" ng-maxlength="20" ng-minlength="6" name="registerForm_password"/>
                   <span class="input-group-btn">
                   <button class="btn btn-default" type="button"><i class="icon-lock"></i></button>
-                  </span> </div>
+                  </span>
+                    <div ng-show="!(registerForm.registerForm_password.$error.required || registerForm.registerForm_password.$error.maxlength||registerForm.registerForm_password.$error.minlength)">&radic;</div>
+                </div>
               </div>
                 <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="registerForm.registerForm_password.$dirty && registerForm.registerForm_password.$error.required">密码不能为空</div>
 
                 <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="registerForm.registerForm_password.$dirty && registerForm.registerForm_password.$error.maxlength">密码长度不能大于20个字符！</div>
 
-                <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="registerForm.registerForm_password.$dirty && registerForm.registerForm_password.$error.minlength">密码长度不能大于6个字符！</div>
+                <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="registerForm.registerForm_password.$dirty && registerForm.registerForm_password.$error.minlength">密码长度不能小于6个字符！</div>
 
             </div>
             <div class="form-group mp20">
@@ -73,7 +79,9 @@
                          required="true" ng-maxlength="20" ng-minlength="6" repeat="registerForm_password" name="registerForm_repeatPassword"/>
                   <span class="input-group-btn">
                   <button class="btn btn-default" type="button"><i class="icon-lock"></i></button>
-                  </span> </div>
+                  </span>
+                    <div ng-show="!(registerForm.registerForm_repeatPassword.$error.required || registerForm.registerForm_repeatPassword.$error.repeat)">&radic;</div>
+                </div>
               </div>
                <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="registerForm.registerForm_repeatPassword.$dirty && registerForm.registerForm_repeatPassword.$error.repeat"> 两次密码输入不一致！</div>
             </div>
