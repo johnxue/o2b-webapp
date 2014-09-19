@@ -77,4 +77,5 @@ right: 50px; top: 50px; }
 .input{width:50px; height:30px; border:1px solid #ccc; border-radius:10px;  text-align:center;}
 .prdouctimg { height: 60px; width: 60px; }
 #updateperson .modal-dialog { width: 50%; }
+.more { width:30%; text-align:center; margin-left:35%; margin-right:35%; }
 

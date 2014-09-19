@@ -11,8 +11,9 @@
           <li ng-class="{active: vm.activeTab == 5}"><a href="javascript:;" ng-click="vm.activeTab = 5;return()"> 退货</a></li>
         </ul>
         <div class="tab-content tab-bordered mp20 " >
+            <div id="Prompt"></div>    <!--无记录提示 -->
           <div class="tab-panel" ng-show="vm.activeTab == 1">
-              <div id="Prompt"></div> <!-- 无记录提示信息-->
+
             <div class="row">
                 <div class="alert with-icon "> <span class="mp7" style="float:left;"><i class="icon-search"></i> 订单查询： </span><span class="col-md-3">
                 <input type="text" ng-model="seleVal" class="form-control" placeholder="订单号、商品名、时间">
@@ -35,6 +36,7 @@
                        <tr><!--遍历信息内容 --></tr>
                     </tbody>
                 </table>
+
                 <div class="mp20"><button ng-model="seleDataTime" class="btn btn-info more" ng-click="Page()">查看更多</button></div>
             </div>
           </div>
@@ -96,24 +98,21 @@
                     <div class="panel ">
                         <div class="panel-heading">服务单明细 </div>
                         <div class="panel-body ">
-                            <table class="table table-hover">
+                            <table class="table table-hover" id="content5">
                                 <thead>
                                 <td>商品信息</td>
-                                <td>订单号</td>
                                 <td>收货人</td>
-                                <td>购买数量</td>
+                                <td>单价（元）</td>
+                                <td>订单金额（元）</td>
                                 <td>状态</td>
+                                <td>时间</td>
+                                <td>操作</td>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td><img src="images/prducttu.jpg"  class="prdouctimg ml10 mr10"/><img src="images/prducttu.jpg"  class="prdouctimg ml10 mr10" /><img src="images/prducttu.jpg"  class="prdouctimg ml10 mr10" /></td>
-                                    <td class="blue">1794067691 </td>
-                                    <td>张小明</td>
-                                    <td><strong class="blue">3</strong></td>
-                                    <td>已收货</td>
-                                </tr>
+                                <tr><!--js遍历数据 --></tr>
                                 </tbody>
                             </table>
+
                             <div class="col-md-9" >
                                 <p class="title">退货详细</p>
                                 <form class="form-horizontal" role="form" method="post">
