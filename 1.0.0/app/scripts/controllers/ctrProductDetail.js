@@ -39,11 +39,6 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
 
     $scope.reserverState=true;
 
-    if($scope.reserverState){
-        inventoryStatus='无货';
-    }else{
-        inventoryStatus='有货';
-    }
 
     //实现与页面交互的事件,如：button_click
 
@@ -51,32 +46,43 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
 
     $scope.guanZhuFun = function(code){
 
-        $scope.guanZhu=! $scope.guanZhu;
-        $scope.yiGuanZhu=!$scope.yiGuanZhu;
+        if(cookieOperate.getCookie("token")==null) {
+            $('#denglu').show();
+        }else {
+            $scope.guanZhu = !$scope.guanZhu;
+            $scope.yiGuanZhu = !$scope.yiGuanZhu;
 
-        uriData = undefined;
-        CommonService.createOne('product/'+code+'/follow',uriData,function(data){
-            var code = data.code;
-            var totalFollow = data.totalFollow;
-            console.info(code+','+totalFollow);
-        },errorOperate);
+            uriData = undefined;
+            CommonService.createOne('product/' + code + '/follow', uriData, function (data) {
+                var code = data.code;
+                var totalFollow = data.totalFollow;
+                console.info(code + ',' + totalFollow);
+            }, errorOperate);
+        }
     }
 
     $scope.yiGuanZhuFun = function(code){
-        $scope.guanZhu=! $scope.guanZhu;
-        $scope.yiGuanZhu=!$scope.yiGuanZhu;
+        if(cookieOperate.getCookie("token")==null) {
+            $('#denglu').show();
+        }else {
+            $scope.guanZhu = !$scope.guanZhu;
+            $scope.yiGuanZhu = !$scope.yiGuanZhu;
 
-        uriData = undefined;
-        CommonService.deleteOne('product/'+code+'/follow',uriData,function(data){
-            var code = data.code;
-            var totalFollow = data.totalFollow;
-            console.info(code+','+totalFollow);
-        },errorOperate);
+            uriData = undefined;
+            CommonService.deleteOne('product/' + code + '/follow', uriData, function (data) {
+                var code = data.code;
+                var totalFollow = data.totalFollow;
+                console.info(code + ',' + totalFollow);
+            }, errorOperate);
+        }
     }
 
     //点击购买点击事件
     $scope.order=function(){
 
+        if(cookieOperate.getCookie("token")==null) {
+            $('#denglu').show();
+        }else {
         var orderProductsInfoDataArray=[];
         var orderProductsInfoData={};
 
@@ -86,18 +92,25 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
         orderProductsInfoData.originalPrice=$scope.productDetailBasic.originalPrice;
         orderProductsInfoData.currentPrice=$scope.productDetailBasic.currentPrice;
         orderProductsInfoData.quantity=$scope.quantity;
-        orderProductsInfoData.inventoryStatus= inventoryStatus;
+        if($scope.productDetailBasic['limit']-$scope.productDetailBasic['totalSold']>0){
+            orderProductsInfoData.inventoryStatus='有货';
+        }else{
+            orderProductsInfoData.inventoryStatus='无货'
+        }
         orderProductsInfoData.amount=$scope.quantity*$scope.productDetailBasic.currentPrice;
-
         addCartNeed.pid = $scope.productDetailBasic.pid;
         addCartNeed.pcode=$scope.productDetailBasic.code;
         addCartNeed.number=$scope.quantity;
+
         CommonService.createOne('shoppingcart',JSON.stringify(addCartNeed),function(data){
             orderProductsInfoData.id=data.shoppingCartId;
         },errorOperate);
+
         orderProductsInfoDataArray.push(orderProductsInfoData);
         localDataStorage.setItem('orderProductsInfo',JSON.stringify(orderProductsInfoDataArray));
         $window.location.href='#/productOrder';
+
+        }
     }
 
     //点击添加购物车点击事件
@@ -213,16 +226,18 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
         }
 
         //判断是否已经关注
-        uriData = undefined;
-        var pCode = $scope.productDetailBasic.code;
 
-        CommonService.getAll('product/'+pCode+'/follow',uriData,function(data){
-           if( data[cookieOperate.getCookie('userName')]=='YES'){
-               $scope.guanZhu=! $scope.guanZhu;
-               $scope.yiGuanZhu=!$scope.yiGuanZhu;
-           }
-        },errorOperate);
+        if(cookieOperate.getCookie("token")!=null) {
+            uriData = undefined;
+            var pCode = $scope.productDetailBasic.code;
 
+            CommonService.getAll('product/' + pCode + '/follow', uriData, function (data) {
+                if (data[cookieOperate.getCookie('userName')] == 'YES') {
+                    $scope.guanZhu = !$scope.guanZhu;
+                    $scope.yiGuanZhu = !$scope.yiGuanZhu;
+                }
+            }, errorOperate);
+        }
 
     },errorOperate);
 

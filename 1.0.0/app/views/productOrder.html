@@ -220,7 +220,7 @@
                 <div class="ha30 pull-right col-md-12"> <span ><strong>总商品金额：</strong></span> <span  style="width:100px; text-align:right">￥{{costAll | number:2}}</span></div>
             </div>
             <div class="ha30 pull-right col-md-12"> <span class="mr40"><strong>运费：</strong></span> <span  style="width:100px; text-align:right">￥10.00</span> </div>
-            <div class="ha30 pull-right">应付总额：￥<strong class="blue">{{costAll+10 | number:2}}</strong>元 <span><a class="btn btn-info" ><div ng-click="balance(orderForm);">结算</div></a></span></div>
+            <div class="ha30 pull-right">应付总额：￥<strong class="blue">{{costAll+10 | number:2}}</strong>元 <span><a href="javascript:;" class="btn btn-info" ng-click="balance(orderForm);" ng-disabled="balanceButtonState">结算</a></span></div>
         </div>
 
 

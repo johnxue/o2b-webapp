@@ -55,6 +55,8 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
 
     $scope.orderForm.deliverys={};
 
+    $scope.balanceButtonState=true;
+
 
     //实现与页面交互的事件,如：button_click
 
@@ -119,6 +121,16 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
             if(orderForm.orderProductsInfo[i]['$selectedOrder']==true){
                 $scope.costAll+=orderForm.orderProductsInfo[i].amount;
                 $scope.allQuantity++;
+            }
+        }
+
+        $scope.balanceButtonState=false;
+        for(var i=0;i<orderForm.orderProductsInfo.length;i++){
+            if(orderForm.orderProductsInfo[i]['$selectedOrder']==true){
+                if(orderForm.orderProductsInfo[i]['inventoryStatus']=='无货'){
+                    $scope.balanceButtonState=true;
+                    break;
+                }
             }
         }
 
