@@ -20,12 +20,13 @@ var ProductIndexControllers = angular.module('ProductIndexControllers',[]);
 
 
 /*定义 Controller: ProductIndexCtrl  （首页面 index.html）*/
-ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonService){
+ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonService,$window){
     var uriData ='';
 //初始化$scope中定义的变量
     $scope.beforeLogin = null;
     $scope.afterLogin = null;
     $scope.loginedName={};
+    $scope.showAdvert=false;
 
     if(cookieOperate.getCookie("token")==null){
         $scope.beforeLogin = true;
@@ -50,6 +51,11 @@ ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonServ
         $scope.loginedName =cookieOperate.getCookie("userName");
     }
 
+    if($window.location.href.substring($window.location.href.length-2,$window.location.href.length)=='#/'){
+        $scope.showAdvert=true;
+    }
+
+
 
     /*注册事件*/
     $scope.$on("logined",function (event, strUserName) {
@@ -63,14 +69,24 @@ ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonServ
         $scope.beforeLogin = !logoutedState;
     });
 
+
+
     //实现与页面交互的事件,如：button_click
     $scope.query = function(queryCondition){
+        if(queryCondition==undefined){
+            queryCondition='';
+        }
         queryCondition.replace(' ','+');
         uriData = 'q='+queryCondition;
         CommonService.getAll('product',uriData,function(data){
 
-            /*向下传播newProductsByQuery事件*/
-            $scope.$broadcast("newProductsByQuery", data);
+           if($window.location.href.substring($window.location.href.length-9,$window.location.href.length)!='#/product'){
+               $window.location.href='#/product';
+               $scope.$broadcast("newProductsByQuery",data);
+
+           }else{
+               $scope.$broadcast("newProductsByQuery",data);
+           }
 
         },errorOperate);
     }

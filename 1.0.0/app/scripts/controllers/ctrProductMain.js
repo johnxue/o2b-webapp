@@ -18,7 +18,7 @@
 var ProductMainControllers = angular.module('ProductMainControllers',[]);
 
 /*定义 Controller: ShowMainCtrl  （主页面 first.html）*/
-ProductMainControllers.controller('ProductMainCtrl',function($scope,CommonService){
+ProductMainControllers.controller('ProductMainCtrl',function($scope,CommonService,$window){
 
     var uriData='';
 //初始化$scope中定义的变量
@@ -29,12 +29,6 @@ ProductMainControllers.controller('ProductMainCtrl',function($scope,CommonServic
     $scope.adsLevelOne = {};
 
     $scope.adsLevelTwo ={};
-
-    /*注册事件*/
-    $scope.$on("newProductsByQuery",function (event, data) {
-        $scope.products = data.rows;
-    });
-
 
     //实现与页面交互的事件,如：button_click
 
