@@ -1,6 +1,7 @@
 ﻿'use strict';
 
-var MainApp=angular.module('MainApp',['ngRoute','ngResource','ProductDetailControllers','ProductIndexControllers','ProductListControllers','ProductMainControllers','CommonServices','ProductFilters','LoginDirectives','LoginServices','LoginControllers','ProductOrderControllers','UserAddressControllers','NewsControllers','NewsListControllers','ProductShoppingCartControllers','MyFormControllers','UserRegisterControllers','RegisterDirectives','UserFollowControllers']);
+var MainApp=angular.module('MainApp',['ngRoute','ngResource','ProductDetailControllers','ProductIndexControllers','ProductListControllers','ProductMainControllers','CommonServices','ProductFilters','LoginDirectives','LoginServices','LoginControllers','ProductOrderControllers','UserAddressControllers','NewsControllers','NewsListControllers','ProductShoppingCartControllers','MyFormControllers','UserRegisterControllers','RegisterDirectives','UserFollowControllers','ViewDetailsControllers']);
+
 
 MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($routeProvider,$httpProvider,$locationProvider) {
     $routeProvider
@@ -52,6 +53,10 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title:'我的关注',
             templateUrl:'views/follow.html',
             controller:'UserFollowCtrl'
+        }).when('/viewDetails/:userId',{
+            title:'查看详情',
+            templateUrl:'views/xiangqing.html',
+            controller:'ViewDetailsCtrl'
         })
      	.otherwise({
             redirectTo: '/'
