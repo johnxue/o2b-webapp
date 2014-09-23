@@ -11,10 +11,10 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
     var empty = true;    //是否清空数据  true是||false否
     var contentTab = ""; //Html Table_ID
 
-    var oid = '';
-    var orderNo = '';
-    var pcode = '';
-    var pname = '';
+    var oid = '58';
+    var orderNo = '2014092000000058';
+    var pcode = '123';
+    var pname = '123';
 
                  /******************************  加载运行 *************************/
     ctrInit();
@@ -75,12 +75,11 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
         });
     }
 
-    $scope.returnGoods = function(datas){
-        alert(datas);
-     /*   oid =
-        orderNo =
-        pcode =
-        pname =*/
+    $scope.returnGoods = function(num1,num2){
+       oid = JSON.stringify(num1);
+       orderNo = JSON.stringify(num2);
+       pcode ="11";
+       pname ="22";
     }
 
     //重置
@@ -106,7 +105,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
 
     //切换选项卡查询
     $scope.switchTab = function(){
-        CommonService.getAll('order', uriData+nowPage, function (data) {
+       var aa= CommonService.getAll('order', uriData+nowPage, function (data) {
             $scope.sendHtml(contentTab ,data);
         });
     }
@@ -131,20 +130,21 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
         var goodsDescribe = goods.Describe;   //问题描述
 
         var objGoods = Object();
-        objGoods.number = goodsNum;     //退货数量
-        objGoods.mode = goodsType;   //类型
-        objGoods.description = goodsDescribe;    //产品缺陷说明
         objGoods.oid = oid;    //订单ID
         objGoods.orderNo = orderNo;    //订单号
         objGoods.pcode = pcode;  //产品编码
         objGoods.pname = pname;  //产品名称
+        objGoods.number = goodsNum;     //退货数量
+        objGoods.mode = goodsType;   //类型
+        objGoods.description = goodsDescribe;    //产品缺陷说明
         objGoods.imgProblem = "123";     //上传图片
+        var goodsPicUrl = "123";     //图片路径
+        uriData = JSON.stringify(objGoods);
 
-        alert(goodsType+"@"+goodsNum+"@"+goodsDescribe);
-     /*   var goodsPicUrl = ;     //图片路径
-        CommonService.createOne('o2b/v1.0.0/order/returns', uriData, function (data) {
+        CommonService.createOne('order/returns', uriData, function (data) {
 
-        });*/
+        });
+
     }
 
     //添加数据到页面
@@ -158,12 +158,11 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
                 "<i class='icon-info-sign'></i><div class='content'>没有符合条件的订单记录。</div></div></div></div></div>");
         }else{
             for(var i=0;i<data.OrderList.length;i++){
-                var num = data.OrderList;
                 var Status = data.OrderList[i][0][8]; //交易状态
                 var recordId = data.OrderList[i][0][0]; //记录ID
                 var HTML = "<tr><td><img src='images/products/"+data.OrderList[i][1][0]+"' class='prdouctimg ml10 mr10'/><img src='images/products/"+data.OrderList[i][1][1]+"' class='prdouctimg ml10 mr10'/><img src='images/products/"+data.OrderList[i][1][2]+"' class='prdouctimg ml10 mr10'/></td>"+
                 "<td>"+data.OrderList[i][0][3]+"</td><td><strong>"+data.OrderList[i][0][4]+"</strong></td><td><strong class='blue'>￥"+data.OrderList[i][0][5]+"</strong></td><td><a class='label label-info'>"+data.OrderList[i][0][7]+"</a></td><td><p class='ha20'>"+data.OrderList[i][0][2].substring(0,10)+"</p><p class='ha20'>"+data.OrderList[i][0][2].substring(11,19)+" </p></td>"+
-                "<td><p class='ha20'><a href='#/viewDetails/"+data.OrderList[i][0][0]+"'>详情</a></p><p class='ha20'><a data-toggle='modal' data-ng-click='deleGoods("+recordId+","+Status+")'>删除</a></p><p class='ha20'><a data-toggle='modal' data-ng-click='vm.activeTab = 5;returnGoods()'>退货</a></p></td></tr>";
+                "<td><p class='ha20'><a href='#/viewDetails/"+data.OrderList[i][0][0]+"'>详情</a></p><p class='ha20'><a data-toggle='modal' data-ng-click='deleGoods("+recordId+","+Status+")'>删除</a></p><p class='ha20'><a data-toggle='modal' data-ng-click='vm.activeTab = 5;returnGoods("+data.OrderList[i][0][0]+","+data.OrderList[i][0][1]+")'>退货</a></p></td></tr>";
                 var cHTML=$compile(HTML)($scope);  //编译
                 $("#"+cid+" tr:eq(0)").after(cHTML);  //添加至页面
             }
