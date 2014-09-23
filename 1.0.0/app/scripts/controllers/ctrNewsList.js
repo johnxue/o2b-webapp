@@ -7,6 +7,8 @@ var NewsListControllers = angular.module('NewsListControllers',[]);
 NewsListControllers.controller('NewsListCtrl',function($scope,CommonService) {
 
     var uriData = '';
+    var nowPage = 0;  //当前页
+    var pageNum = 5;  //每页显示条数
 
     var nowTime = new Date();
     var Year = nowTime.getFullYear();  //年
@@ -36,17 +38,26 @@ NewsListControllers.controller('NewsListCtrl',function($scope,CommonService) {
     }
 
     //加载运行
-    uriData = undefined;
-    CommonService.getAll('news', uriData, function (data) {
-        for (var i = 0; i < data.news.length; i++) {
-            var times = timeDifference("D", data.news[i][5], Time);
-            if (times >= 3.00 || times < 0) {
-                $("table tr:eq(0)").after("<tr><td><a href='#/news/" + data.news[i][0] + "'>" + data.news[i][1] + "</a></td><td>" + data.news[i][3] + "</td><td>" + data.news[i][5] + "</td></tr>");
-            } else {
-                $("table tr:eq(0)").after("<tr><td><a href='#/news/" + data.news[i][0] + "'>" + data.news[i][1] + "</a></td><td>" + data.news[i][3] + "</td><td>" + times + "</td></tr>");
+    $scope.newListPage = function() {
+        uriData = "r=" + pageNum + "&o=" + nowPage;
+        CommonService.getAll('news', uriData, function (data) {
+            for (var i = 0; i < data.news.length; i++) {
+                var times = timeDifference("D", data.news[i][5], Time);
+                if (times >= 3.00 || times < 0) {
+                    $("table tr:eq(0)").after("<tr><td><a href='#/news/" + data.news[i][0] + "'>" + data.news[i][1] + "</a></td><td>" + data.news[i][3] + "</td><td>" + data.news[i][5] + "</td></tr>");
+                } else {
+                    $("table tr:eq(0)").after("<tr><td><a href='#/news/" + data.news[i][0] + "'>" + data.news[i][1] + "</a></td><td>" + data.news[i][3] + "</td><td>" + times + "</td></tr>");
+                }
             }
-        }
-    },errorOperate);
+        }, errorOperate);
+    }
+    $scope.newListPage();
+
+    //查看更多
+    $scope.newsLisPage = function(){
+        nowPage = nowPage+1
+        $scope.newListPage();
+    }
 
 });
 
