@@ -124,3 +124,9 @@ function errorOperate(response) {
 
 }
 
+//controller init
+function ctrInit(){
+    //隐藏广告栏
+    $('#banner').hide();
+}
+
