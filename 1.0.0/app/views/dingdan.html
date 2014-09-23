@@ -110,7 +110,7 @@
                                 </tbody>
                             </table>
 
-                            <div class="col-md-9" >
+                            <div class="col-md-9" ng-show="returnFrom">
                                 <p class="title">退货详细</p>
                                 <form class="form-horizontal" role="form" method="post">
                                     <div class="form-group">
@@ -134,7 +134,10 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label" style="text-align:right;">上传图片：</label>
                                         <div class="col-md-7">
-                                            <input name="" type="file" />
+                                            <input ng-file-select type="file" multiple  style="width:70px">
+                                            <!--文件上传 -->
+
+                                            <!-- 结束-->
                                             </br>
                                             <div class="alert alert-info"> <strong>Hi!</strong> 为了帮助我们更好的解决问题，请您上传图片</div>
                                         </div>
