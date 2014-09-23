@@ -19,14 +19,7 @@
           <a ng-repeat="sort in sorts" href="" ng-if="!$first" ng-click="queryBySth('0','20','sort',sort[1])">{{sort[0]}}</a>
       </li>
     </ul>
-<script type="text/javascript">
 
-  
-  $(".list-group-item a").click(function(){
-$(this).parent().find("a").removeClass("active")
-$(this).addClass("active");
-})
-</script> 
     <!-- 列表开始 -->
     
     <div class="list">

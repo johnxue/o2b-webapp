@@ -121,8 +121,10 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
                     cartProductsInfoArray.push(cartProductsInfo);
                 }
 
-                localDataStorage.setItem('cartProductsInfoArray',JSON.stringify(cartProductsInfoArray));
-                localDataStorage.setItem('cartProductsTotal',cartProductsTotal.toString());
+                localDataStorage.removeItem('cartProductsInfoArray');
+                localDataStorage.removeItem('cartProductsTotal');
+                localDataStorage.removeItem('orderProductsInfo');
+
             },errorOperate);
 
             $('#denglu').hide();

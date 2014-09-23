@@ -20,15 +20,17 @@
  ProductListControllers.controller('ProductListCtrl', function ($scope,CommonService) {
 
      var uriData ='';
+
    //初始化$scope中定义的变量
     $scope.products = {};
 
     $scope.attributes={};
 
-     /*注册事件*/
-     $scope.$on("newProductsByQuery",function (event, data) {
-         $scope.products = data.rows;
-     });
+
+  $scope.$on('newProductsByQuery',function(event,data){
+         $scope.products=data.rows;
+   });
+
     
    //实现与页面交互的事件,如：button_click
 
@@ -51,10 +53,12 @@
          $scope.categorys = data.category;
      },errorOperate);
 
-     uriData = 'o=0&r=48';
-    CommonService.getAll('product',uriData,function(data){
-        $scope.products=data.rows;
-    },errorOperate);
+
+        uriData = 'o=0&r=48';
+        CommonService.getAll('product',uriData,function(data){
+            $scope.products=data.rows;
+         },errorOperate);
+
  });
 
 
