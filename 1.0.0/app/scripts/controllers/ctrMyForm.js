@@ -6,19 +6,20 @@ var MyFormControllers = angular.module('MyFormControllers',[]);
 MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService){
 
     var uriData = '';
+    var emData = '';  //判断数据是否为空
     var nowPage = 0;  //当前页
-    var pageNum = 1;  //每页显示条数
+    var pageNum = 10;  //每页显示条数
     var empty = true;    //是否清空数据  true是||false否
     var contentTab = ""; //Html Table_ID
 
-    var oid = '';
-    var orderNo = '';
-    var pcode = '';
-    var pname = '';
+    var oid = '58';
+    var orderNo = '2014092000000058';
+    var pcode = '123';
+    var pname = '123';
 
                  /******************************  加载运行 *************************/
-
-
+    ctrInit();
+    $scope.returnFrom=false;   //隐藏退货表单
      /*************************************************  页面交互事件  ********************************************/
      //下拉框
     $scope.$watch('seleDataTime', function(onVal) {
@@ -74,19 +75,30 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
             $scope.sendHtml("content5",data);
         });
     }
-
-    $scope.returnGoods = function(datas){
-        alert(datas);
-     /*   oid =
-        orderNo =
-        pcode =
-        pname =*/
+    var rGoodsHtml='';
+    $scope.returnGoods = function(rData){
+        $scope.returnFrom=true;
+        uriData = '';
+        CommonService.getAll('order', uriData, function (data) {
+            for(var i=0;i<data.OrderList.length;i++){
+                if(data.OrderList[i][0][0]==rData){
+                    for(var s=0;s<data.OrderList[i][1].length;s++){
+                         rGoodsHtml = "<tr><td><img src='images/products/"+data.OrderList[i][1][s][1]+"' class='prdouctimg ml10 mr10'/></td>"+
+                         "<td>"+data.OrderList[i][0][3]+"</td><td><strong>"+data.OrderList[i][0][4]+"</strong></td><td><strong class='blue'>￥"+data.OrderList[i][1][s][5]+"</strong></td><td><a class='label label-info'>"+data.OrderList[i][0][7]+"</a></td><td><p class='ha20'>"+data.OrderList[i][0][2].substring(0,10)+"</p><p class='ha20'>"+data.OrderList[i][0][2].substring(11,19)+" </p></td>"+
+                         "<td><p class='ha20'><a data-ng-click='apply("+data.OrderList[i][1][s][0]+","+data.OrderList[i][0][1]+","+data.OrderList[i][1][s][2]+","+JSON.stringify(data.OrderList[i][1][s][3])+")'>申请</a></p></td></tr>";
+                          var cHTML=$compile(rGoodsHtml)($scope);  //编译
+                         $("#content5 tr:eq(0)").after(cHTML);  //添加至页面
+                    }
+                }
+            }
+        });
     }
 
     //重置
     $scope.tabClear = function(){
         nowPage = 0;
         empty = true;
+        $scope.returnFrom = false;
     }
 
     //模糊查询
@@ -106,9 +118,13 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
 
     //切换选项卡查询
     $scope.switchTab = function(){
-        CommonService.getAll('order', uriData+nowPage, function (data) {
+       var aa= CommonService.getAll('order', uriData+nowPage, function (data) {
             $scope.sendHtml(contentTab ,data);
-        });
+        },function(response){
+            if(response.message=="没有找到数据"){
+                $scope.sendHtml(contentTab,null);
+            }
+       });
     }
 
     //删除事件
@@ -124,6 +140,15 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
        }
     }
 
+    //申请退货
+    $scope.apply = function(rOid,rOrderNo,rPcode,rPname){
+         oid = JSON.stringify(rOid);
+         orderNo = JSON.stringify(rOrderNo);
+         pcode = JSON.stringify(rPcode);
+         pname = rPname;
+        $("#retGoodsFrom tr:eq(0)").after(rGoodsHtml);  //添加至页面
+    }
+
     //确认退货
     $scope.conReturn = function(goods){
         var goodsType = goods.Type;    //退货类型
@@ -131,20 +156,20 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
         var goodsDescribe = goods.Describe;   //问题描述
 
         var objGoods = Object();
-        objGoods.number = goodsNum;     //退货数量
-        objGoods.mode = goodsType;   //类型
-        objGoods.description = goodsDescribe;    //产品缺陷说明
         objGoods.oid = oid;    //订单ID
         objGoods.orderNo = orderNo;    //订单号
         objGoods.pcode = pcode;  //产品编码
         objGoods.pname = pname;  //产品名称
+        objGoods.number = goodsNum;     //退货数量
+        objGoods.mode = goodsType;   //类型
+        objGoods.description = goodsDescribe;    //产品缺陷说明
         objGoods.imgProblem = "123";     //上传图片
+        var goodsPicUrl = "123";     //图片路径
+        uriData = JSON.stringify(objGoods);
 
-        alert(goodsType+"@"+goodsNum+"@"+goodsDescribe);
-     /*   var goodsPicUrl = ;     //图片路径
-        CommonService.createOne('o2b/v1.0.0/order/returns', uriData, function (data) {
+        CommonService.createOne('order/returns', uriData, function (data) {
 
-        });*/
+        });
     }
 
     //添加数据到页面
@@ -153,17 +178,18 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
             $("#"+cid+" tr:gt(0)").remove();
             $("#Prompt").html(null);
         }
-        if(data.OrderList.length==0){      //判断是否有记录
+        if(data==null){      //判断是否有记录
             $("#Prompt").html("<div class='row'><div class='container'><div class='col-md-12'><div class='alert with-icon mp10'>" +
                 "<i class='icon-info-sign'></i><div class='content'>没有符合条件的订单记录。</div></div></div></div></div>");
         }else{
             for(var i=0;i<data.OrderList.length;i++){
-                var num = data.OrderList;
+              //  alert(data.OrderList[i][0][0]);
+                localStorage.setItem("da",data.OrderList[i][1]);
                 var Status = data.OrderList[i][0][8]; //交易状态
                 var recordId = data.OrderList[i][0][0]; //记录ID
-                var HTML = "<tr><td><img src='images/products/"+data.OrderList[i][1][0]+"' class='prdouctimg ml10 mr10'/><img src='images/products/"+data.OrderList[i][1][1]+"' class='prdouctimg ml10 mr10'/><img src='images/products/"+data.OrderList[i][1][2]+"' class='prdouctimg ml10 mr10'/></td>"+
+                var HTML = "<tr><td><img src='images/products/"+data.OrderList[i][1][0][1]+"' class='prdouctimg ml10 mr10'/></td>"+
                 "<td>"+data.OrderList[i][0][3]+"</td><td><strong>"+data.OrderList[i][0][4]+"</strong></td><td><strong class='blue'>￥"+data.OrderList[i][0][5]+"</strong></td><td><a class='label label-info'>"+data.OrderList[i][0][7]+"</a></td><td><p class='ha20'>"+data.OrderList[i][0][2].substring(0,10)+"</p><p class='ha20'>"+data.OrderList[i][0][2].substring(11,19)+" </p></td>"+
-                "<td><p class='ha20'><a href='#/viewDetails/"+data.OrderList[i][0][0]+"'>详情</a></p><p class='ha20'><a data-toggle='modal' data-ng-click='deleGoods("+recordId+","+Status+")'>删除</a></p><p class='ha20'><a data-toggle='modal' data-ng-click='vm.activeTab = 5;returnGoods()'>退货</a></p></td></tr>";
+                "<td><p class='ha20'><a href='#/viewDetails/"+data.OrderList[i][0][0]+"'>详情</a></p><p class='ha20'><a data-toggle='modal' data-ng-click='deleGoods("+recordId+","+Status+")'>删除</a></p><p class='ha20'><a data-toggle='modal' data-ng-click='vm.activeTab = 5;returnGoods("+data.OrderList[i][0][0]+")'>退货</a></p></td></tr>";
                 var cHTML=$compile(HTML)($scope);  //编译
                 $("#"+cid+" tr:eq(0)").after(cHTML);  //添加至页面
             }
