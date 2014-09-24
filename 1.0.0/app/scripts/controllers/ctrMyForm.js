@@ -75,19 +75,20 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
             $scope.sendHtml("content5",data);
         });
     }
-
+    var rGoodsHtml='';
     $scope.returnGoods = function(rData){
         $scope.returnFrom=true;
-     //  var rDatas = localStorage.getItem("da");
-     /*   var oid = '58';
-        var orderNo = '2014092000000058';
-        var pcode = '123';
-        var pname = '123';*/
         uriData = '';
         CommonService.getAll('order', uriData, function (data) {
             for(var i=0;i<data.OrderList.length;i++){
                 if(data.OrderList[i][0][0]==rData){
-
+                    for(var s=0;s<data.OrderList[i][1].length;s++){
+                         rGoodsHtml = "<tr><td><img src='images/products/"+data.OrderList[i][1][s][1]+"' class='prdouctimg ml10 mr10'/></td>"+
+                         "<td>"+data.OrderList[i][0][3]+"</td><td><strong>"+data.OrderList[i][0][4]+"</strong></td><td><strong class='blue'>￥"+data.OrderList[i][1][s][5]+"</strong></td><td><a class='label label-info'>"+data.OrderList[i][0][7]+"</a></td><td><p class='ha20'>"+data.OrderList[i][0][2].substring(0,10)+"</p><p class='ha20'>"+data.OrderList[i][0][2].substring(11,19)+" </p></td>"+
+                         "<td><p class='ha20'><a data-ng-click='apply("+data.OrderList[i][1][s][0]+","+data.OrderList[i][0][1]+","+data.OrderList[i][1][s][2]+","+JSON.stringify(data.OrderList[i][1][s][3])+")'>申请</a></p></td></tr>";
+                          var cHTML=$compile(rGoodsHtml)($scope);  //编译
+                         $("#content5 tr:eq(0)").after(cHTML);  //添加至页面
+                    }
                 }
             }
         });
@@ -137,6 +138,15 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
         }else{
            alert("当前状态不可删除!");
        }
+    }
+
+    //申请退货
+    $scope.apply = function(rOid,rOrderNo,rPcode,rPname){
+         oid = JSON.stringify(rOid);
+         orderNo = JSON.stringify(rOrderNo);
+         pcode = JSON.stringify(rPcode);
+         pname = rPname;
+        $("#retGoodsFrom tr:eq(0)").after(rGoodsHtml);  //添加至页面
     }
 
     //确认退货
