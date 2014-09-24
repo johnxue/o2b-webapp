@@ -7,16 +7,16 @@
     </div>
     <ul  class="list-group" style="margin-top:20px;">
       <li  class="list-group-item"><span>属性：</span>
-          <a ng-repeat="attribute in attributes" href="" ng-if="$first" class="active" ng-click="queryBySth('0','20','attribute',attribute[1])">{{attribute[0]}}</a>
-          <a ng-repeat="attribute in attributes" href="" ng-if="!$first" ng-click="queryBySth('0','20','attribute',attribute[1])">{{attribute[0]}}</a>
+          <a ng-repeat="attribute in attributes" href="" ng-if="$first" class="active" ng-click="queryBySth('attribute',attribute[1])">{{attribute[0]}}</a>
+          <a ng-repeat="attribute in attributes" href="" ng-if="!$first" ng-click="queryBySth('attribute',attribute[1])">{{attribute[0]}}</a>
       </li>
       <li  class="list-group-item"><span>分类：</span>
-          <a  ng-repeat="category in categorys" href="" ng-if="$first" class="active" ng-click="queryBySth('0','20','category',category[1])">{{category[0]}}</a>
-          <a  ng-repeat="category in categorys" href="" ng-if="!$first" ng-click="queryBySth('0','20','category',category[1])">{{category[0]}}</a>
+          <a  ng-repeat="category in categorys" href="" ng-if="$first" class="active" ng-click="queryBySth('category',category[1])">{{category[0]}}</a>
+          <a  ng-repeat="category in categorys" href="" ng-if="!$first" ng-click="queryBySth('category',category[1])">{{category[0]}}</a>
       </li>
       <li  class="list-group-item"><span>排序：</span>
-          <a ng-repeat="sort in sorts" href="" ng-if="$first" class="active" ng-click="queryBySth('0','20','sort',sort[1])">{{sort[0]}}</a>
-          <a ng-repeat="sort in sorts" href="" ng-if="!$first" ng-click="queryBySth('0','20','sort',sort[1])">{{sort[0]}}</a>
+          <a ng-repeat="sort in sorts" href="" ng-if="$first" class="active" ng-click="queryBySth('sort',sort[1])">{{sort[0]}}</a>
+          <a ng-repeat="sort in sorts" href="" ng-if="!$first" ng-click="queryBySth('sort',sort[1])">{{sort[0]}}</a>
       </li>
     </ul>
 
@@ -24,20 +24,24 @@
     
     <div class="list">
       <section class="cards" >
-        <div  ng-repeat=" product in products" class="col-md-4 col-sm-6 col-lg-3">
+        <div  ng-repeat=" product in products" class="col-md-3 col-sm-6 col-lg-3">
           <div class="card"> <img ng-src="images/products/{{product[4]}}" alt=""> <span class="caption">{{product[3]}}</span> <a href="#/productDetail/{{product[1]}}" class="card-heading"><span>{{product[3]}}</span></a>
-            <P class="listp"><span class="hui">{{product[7] | datemark}}</span><span class='label label-info pull-right' >{{product[9]}}</span></P>
-            <div class="col-md-4 ha20"  >¥{{product[0]}}</div>
-            <div class="col-md-4 ha20" >{{product[1]}}</div>
-            <div class="col-md-4 pull-right ha20" >{{product[2]}}人</div>
+            <P class="listp"><span class="hui">{{product[5]+'&'+product[6] | datemark}}</span>
+                <span class='label label-success pull-right' ng-show="product[7]=='ON'">{{product[8]}}</span>
+                <span class='label label-warning pull-right' ng-show="product[7]=='TBA'">{{product[8]}}</span>
+                <span class='label label-default pull-right' ng-show="product[7]=='OFF'">{{product[8]}}</span>
+            </P>
+            <div class="col-md-4 ha20"  >¥{{product[12] | nullToZero}}</div>
+            <div class="col-md-4 ha20" >{{product[9] |nullToZero}}</div>
+            <div class="col-md-4 pull-right ha20" >{{product[10] | nullToZero}}人</div>
             <div class="col-md-4 ha20 hui" >累计金额</div>
             <div class="col-md-4 ha20 hui" >话题</div>
             <div class="col-md-4 pull-right ha20 hui" >关注</div>
           </div>
         </div>
-
       </section>
     </div>
   </div>
 </div>
+<div class="mp20 marginb"><button ng-model="seleDataTime" class="btn btn-info more" ng-click="nextPage();">查看更多</button></div>
 </div>

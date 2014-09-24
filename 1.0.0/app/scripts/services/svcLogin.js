@@ -5,7 +5,9 @@
 var LoginServices = angular.module('LoginServices', ['ngResource']);
 
 LoginServices.factory('loginService', function($http){
+
     var baseUrl="https://192.168.1.210/o2b/v1.0.0/login/";
+
     return {
         getToken: function (uri, funSuccess, funError) {
             $http({
@@ -16,5 +18,3 @@ LoginServices.factory('loginService', function($http){
         }
     }
 });
-
-

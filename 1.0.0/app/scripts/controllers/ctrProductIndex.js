@@ -26,21 +26,20 @@ ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonServ
     $scope.beforeLogin = null;
     $scope.afterLogin = null;
     $scope.loginedName={};
-    $scope.showAdvert=false;
 
     if(cookieOperate.getCookie("token")==null){
         $scope.beforeLogin = true;
         $scope.afterLogin = false;
-        localDataStorage.setItem('cartProductsInfoArray',JSON.stringify(null));
-        localDataStorage.setItem('cartProductsTotal',JSON.stringify(null));
-        localDataStorage.setItem('orderProductsInfo',JSON.stringify(null));
+        localDataStorage.removeItem('cartProductsInfoArray');
+        localDataStorage.removeItem('cartProductsTotal');
+        localDataStorage.removeItem('orderProductsInfo');
 
     }else{
         $scope.beforeLogin = false;
         $scope.afterLogin = true;
     }
 
-    $scope.cartProductsTotal=JSON.parse(localDataStorage.getItem('cartProductsTotal'));
+    $scope.cartProductsTotal=JSON.parse(localDataStorage.getItem('cartProductsTotalOnIndex'));
     if($scope.cartProductsTotal==null){
         $scope.cartProductsTotal=0
     }
@@ -51,22 +50,27 @@ ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonServ
         $scope.loginedName =cookieOperate.getCookie("userName");
     }
 
-    if($window.location.href.substring($window.location.href.length-2,$window.location.href.length)=='#/'){
-        $scope.showAdvert=true;
-    }
-
-
 
     /*注册事件*/
-    $scope.$on("logined",function (event, strUserName) {
+    $scope.$on("logined",function (event, strUserName,cartProductsTotal) {
         $scope.beforeLogin = false;
         $scope.afterLogin = true;
         $scope.loginedName=strUserName;
+        if(cartProductsTotal==null){
+            cartProductsTotal=0;
+        }
+        $scope.cartProductsTotal=cartProductsTotal;
     });
 
-    $scope.$on("logouted",function (event, logoutedState) {
-        $scope.afterLogin = logoutedState;
-        $scope.beforeLogin = !logoutedState;
+    $scope.$on("logouted",function (event) {
+        $scope.afterLogin = false;
+        $scope.beforeLogin = true;
+        $scope.cartProductsTotal=0;
+    });
+
+    $scope.$on("totalAfterAddShoppingCart",function(event,cartProductsTotal){
+        $scope.cartProductsTotal=cartProductsTotal;
+        localDataStorage.setItem('cartProductsTotalOnIndex',JSON.stringify(cartProductsTotal));
     });
 
 
@@ -92,5 +96,9 @@ ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonServ
     }
 
     //调用与后端的接口,如：CommonService.getAll(params)
+    uriData = undefined;
+    CommonService.getAll('adSense/main/1',uriData,function(data){
+        $scope.adsLevelOnes=data.ads_level_01;
+    },errorOperate);
 
 });

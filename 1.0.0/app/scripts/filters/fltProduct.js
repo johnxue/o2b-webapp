@@ -10,23 +10,23 @@ ProductFilters.filter('datemark', function() {
     return function(input) {
 
         var  startOrEnd ='';
-        /* 处理字符串*/
-        input = input.replace(/-/g,"/");
-        /* 将字符串转换为Date*/
-        var date = new Date(input);
+
+        var startTime =input.substring(0,input.indexOf('&'));
+        startTime = startTime.replace(/-/g,"/");
+        startTime = new Date(startTime);
+        var endTime = input.substring(input.indexOf('&')+1);
+        endTime = endTime.replace(/-/g,"/");
+        endTime = new Date(endTime);
 
         var sysDate = new Date();
 
-        var dateDiff = date-sysDate;
-
-        if(dateDiff>=0){
-            var days = parseInt(dateDiff / (1000 * 60 * 60 * 24));
-            var hours =  parseInt(dateDiff %(1000 * 60 * 60 * 24)/(1000 * 60 * 60));
+        if((startTime-sysDate)>=0){
+            var days = parseInt((endTime-sysDate) / (1000 * 60 * 60 * 24));
+            var hours =  parseInt((endTime-sysDate) %(1000 * 60 * 60 * 24)/(1000 * 60 * 60));
             startOrEnd= days+'天'+hours+'小时后结束';
-        }else if(dateDiff<0){
+        }else if((startTime-sysDate)<0){
             startOrEnd ='';
         }
-
         return startOrEnd;
         }
 });
@@ -36,16 +36,6 @@ ProductFilters.filter('longmark', function() {
     return function(input) {
         if(input.length>46){
             input=input.substring(0,46)+'...';
-        }
-        return input;
-    }
-});
-
-/*如果输入字符串为null 将把它变成'无'*/
-ProductFilters.filter('nullmark', function() {
-    return function(input) {
-        if(input==null){
-            input='无';
         }
         return input;
     }
@@ -94,6 +84,17 @@ ProductFilters.filter('detailDateMark',function(){
              hours = endTime.getHours();
             input=year+'年'+month+'月'+date+'日'+hours+'点预订结束';
         }
+        return input;
+    }
+});
+
+/*将null转换成0*/
+ProductFilters.filter('nullToZero',function(){
+
+    return function(input){
+       if(input==null){
+           input=0;
+       }
         return input;
     }
 });

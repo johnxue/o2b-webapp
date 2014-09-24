@@ -17,10 +17,14 @@
                   <div  class="itemtext">
                       <p class="listb"><a ng-href="#/productDetail/{{adsLevelTwo[0]}}" class="card-heading"><span>{{adsLevelTwo[1]}}</span></a></p>
                       <p class="lrp10">{{adsLevelTwo[2] | longmark}}</p>
-                      <P class="listp"><span class="hui">{{adsLevelTwo[4] | datemark}}</span><span class='label label-info pull-right' >{{adsLevelTwo[5]}}</span></P>
-                      <div class="col-md-4 ha20"  >¥{{adsLevelTwo[6]}}</div>
-                      <div class="col-md-4 ha20" >{{adsLevelTwo[7]}}</div>
-                      <div class="col-md-4 pull-right ha20" >{{adsLevelTwo[8]}}人</div>
+                      <P class="listp"><span class="hui">{{adsLevelTwo[4]+'&'+adsLevelTwo[5] | datemark}}</span>
+                          <span class='label label-success pull-right' ng-show="adsLevelTwo[6]=='ON'">{{adsLevelTwo[7]}}</span>
+                          <span class='label label-warning pull-right' ng-show="adsLevelTwo[6]=='TBA'">{{adsLevelTwo[7]}}</span>
+                          <span class='label label-default pull-right' ng-show="adsLevelTwo[6]=='OFF'">{{adsLevelTwo[7]}}</span>
+                      </P>
+                      <div class="col-md-4 ha20"  >¥{{adsLevelTwo[11]}}</div>
+                      <div class="col-md-4 ha20" >{{adsLevelTwo[8]}}</div>
+                      <div class="col-md-4 pull-right ha20" >{{adsLevelTwo[9]}}人</div>
                       <div class="col-md-4 ha20 hui" >累计金额</div>
                       <div class="col-md-4 ha20 hui" >话题</div>
                       <div class="col-md-4 pull-right ha20 hui" >关注</div>
@@ -30,10 +34,14 @@
                   <div  class="itemtext">
                       <p class="listb"><a ng-href="#/productDetail/{{adsLevelTwo[0]}}" class="card-heading"><span>{{adsLevelTwo[1]}}</span></a></p>
                       <p class="lrp10">{{adsLevelTwo[2] | longmark}}</p>
-                      <P class="listp"><span class="hui">{{adsLevelTwo[4] | datemark}}</span><span class='label label-info pull-right' >{{adsLevelTwo[5]}}</span></P>
-                      <div class="col-md-4 ha20" >¥{{adsLevelTwo[6] | nullmark}}</div>
-                      <div class="col-md-4 ha20" >{{adsLevelTwo[7]  | nullmark }}</div>
-                      <div class="col-md-4 pull-right ha20" >{{adsLevelTwo[8]  | nullmark}}人</div>
+                      <P class="listp"><span class="hui">{{adsLevelTwo[4]+'&'+adsLevelTwo[5] | datemark}}</span>
+                          <span class='label label-success pull-right' ng-show="adsLevelTwo[6]=='ON'">{{adsLevelTwo[7]}}</span>
+                          <span class='label label-warning pull-right' ng-show="adsLevelTwo[6]=='TBA'">{{adsLevelTwo[7]}}</span>
+                          <span class='label label-default pull-right' ng-show="adsLevelTwo[6]=='OFF'">{{adsLevelTwo[7]}}</span>
+                      </P>
+                      <div class="col-md-4 ha20" >¥{{adsLevelTwo[11] | nullToZero}}</div>
+                      <div class="col-md-4 ha20" >{{adsLevelTwo[8]  | nullToZero }}</div>
+                      <div class="col-md-4 pull-right ha20" >{{adsLevelTwo[9]  | nullToZero}}人</div>
                       <div class="col-md-4 ha20 hui" >累计金额</div>
                       <div class="col-md-4 ha20 hui" >话题</div>
                       <div class="col-md-4 pull-right ha20 hui" >关注</div>
@@ -55,17 +63,21 @@
     
     <div class="list">
       <section class="cards" >
-          <div  ng-repeat=" product in products" class="col-md-4 col-sm-6 col-lg-3">
+          <div  ng-repeat=" product in products" class="col-md-3 col-sm-6 col-lg-3">
               <div class="card"> <img ng-src="images/products/{{product[4]}}" alt=""> <span class="caption">{{product[3]}}</span> <a href="#/productDetail/{{product[1]}}" class="card-heading"><span>{{product[3]}}</span></a>
-                  <P class="listp"><span class="hui">{{product[7] | datemark}}</span><span class='label label-info pull-right' >{{product[9]}}</span></P>
-                  <div class="col-md-4 ha20"  >¥{{product[0]}}</div>
-                  <div class="col-md-4 ha20" >{{product[1]}}</div>
-                  <div class="col-md-4 pull-right ha20" >{{product[2]}}人</div>
+                  <P class="listp"><span class="hui">{{product[5]+'&'+product[6] | datemark}}</span>
+                      <span class='label label-success pull-right' ng-show="product[7]=='ON'">{{product[8]}}</span>
+                      <span class='label label-warning pull-right' ng-show="product[7]=='TBA'">{{product[8]}}</span>
+                      <span class='label label-default pull-right' ng-show="product[7]=='OFF'">{{product[8]}}</span>
+                  </P>
+                  <div class="col-md-4 ha20"  >¥{{product[12] | nullToZero}}</div>
+                  <div class="col-md-4 ha20" >{{product[9] |nullToZero}}</div>
+                  <div class="col-md-4 pull-right ha20" >{{product[10] | nullToZero}}人</div>
                   <div class="col-md-4 ha20 hui" >累计金额</div>
                   <div class="col-md-4 ha20 hui" >话题</div>
                   <div class="col-md-4 pull-right ha20 hui" >关注</div>
               </div>
-       </div>
+          </div>
       </section>
     </div>
     

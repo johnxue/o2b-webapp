@@ -26,7 +26,7 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
 
     $scope.master= {};
 
-
+    $scope.objLoginInfo={};
 
 //实现与页面交互的事件,如：button_click
 
@@ -66,12 +66,11 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
             $scope.token = objResults.authcode;
             cookieOperate.setCookie('token', $scope.token);
             cookieOperate.setCookie('userName', strUserName);
-            $scope.$emit('logined', strUserName);
 
             //获取用户登录之后的购物车商品商品信息
             uriData=undefined;
             CommonService.getAll('shoppingcart',uriData,function(data){
-                var cartProducts = data;
+                var cartProducts = data.ShoppingCart;
 
                 //得到用户登录之前的购物车商品信息
                 var cartProductsTotal = JSON.parse(localDataStorage.getItem('cartProductsTotal'));
@@ -117,14 +116,19 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
                     }else{
                         cartProductsInfo.inventoryStatus='无货'
                     }
+                    cartProductsInfo.image=cartProducts[i][9];
 
                     cartProductsInfoArray.push(cartProductsInfo);
                 }
 
-                localDataStorage.removeItem('cartProductsInfoArray');
+                localDataStorage.setItem('cartProductsTotalOnIndex',JSON.stringify(cartProductsTotal));
                 localDataStorage.removeItem('cartProductsTotal');
-                localDataStorage.removeItem('orderProductsInfo');
+                localDataStorage.removeItem('cartProductsInfoArray');
 
+                //改变购物车栏显示的商品数量
+                $scope.$emit('logined', strUserName,cartProductsTotal);
+
+                $scope.objLoginInfo={};
             },errorOperate);
 
             $('#denglu').hide();
@@ -166,16 +170,19 @@ LoginControllers.controller('logoutCtrl', function ($scope,CommonService) {
     //实现与页面交互的事件,如：button_click
     $scope.logout=function(){
 
-        CommonService.deleteOne('logout',uriData,function(){
+        CommonService.deleteOne('logout',uriData,function(data){
+
             cookieOperate.delCookie('token');
             cookieOperate.delCookie('userName');
-            localDataStorage.setItem('cartProductsInfoArray',JSON.stringify(null));
-            localDataStorage.setItem('cartProductsTotal',JSON.stringify(null));
-            localDataStorage.setItem('orderProductsInfo',JSON.stringify(null));
+            localDataStorage.removeItem('cartProductsInfoArray');
+            localDataStorage.removeItem('cartProductsTotal');
+            localDataStorage.removeItem('orderProductsInfo');
+            localDataStorage.removeItem('cartProductsTotalOnIndex');
 
-            var logoutedState =false;
-            $scope.$emit('logouted',logoutedState);
+            $scope.$emit('logouted');
+
         },errorOperate);
+
     }
 
     //调用与后端的接口,如：CommonService.getAll(params)
