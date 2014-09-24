@@ -20,8 +20,9 @@ var ProductOrderControllers = angular.module('ProductOrderControllers',[]);
 /*定义 Controller: ProductOrderCtrl  （订购页面 productOrder.html）*/
 ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonService){
 
-    var uriData ='';
+    ctrInit();
 
+    var uriData ='';
 
 //初始化$scope中定义的变量
 
@@ -73,7 +74,7 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
 
         balanceNeed.shipping='10';
         balanceNeed.freight= 10;
-        balanceNeed.total= $scope.allQuantity;
+        balanceNeed.total= $scope.allQuantity-balanceNeed.freight;
         balanceNeed.amount=$scope.costAll;
         balanceNeed.comment=orderForm.comment;
 

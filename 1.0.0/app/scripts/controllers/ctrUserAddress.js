@@ -22,6 +22,9 @@ var UserAddressControllers = angular.module('UserAddressControllers', []);
 
 /*定义 Controller: UserAddressCtrl  （用户地址页面 userAddress.html）*/
 UserAddressControllers.controller('UserAddressCtrl',function($scope,CommonService){
+
+    ctrInit();
+
     var uriData ='';
     var provinceName='';
     var cityName='';

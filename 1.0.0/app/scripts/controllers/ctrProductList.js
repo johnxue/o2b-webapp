@@ -18,8 +18,14 @@
     
  /*定义 Controller: ProductListCtrl  （产品页面-productList.html）*/
  ProductListControllers.controller('ProductListCtrl', function ($scope,CommonService) {
+     ctrInit();
 
      var uriData ='';
+
+     var page =0;
+     var pageSize=24;
+     var querySort=undefined;
+     var queryValue=undefined;
 
    //初始化$scope中定义的变量
     $scope.products = {};
@@ -34,13 +40,46 @@
     
    //实现与页面交互的事件,如：button_click
 
-     $scope.queryBySth = function(offset,rowcount,sort,value){
+     //按条件查询点击事件
+     $scope.queryBySth = function(sort,value){
          $scope.products = {};
-
-          uriData = 'o='+offset+'&r='+rowcount+'&s='+sort+'&v='+value;
+         querySort=sort;
+         queryValue=value;
+          page=0;
+          uriData = 'o='+page+'&r='+pageSize+'&s='+sort+'&v='+value;
          CommonService.getAll('product',uriData,function (data){
              $scope.products=data.rows;
          },errorOperate);
+     }
+
+     //查看更多点击事件（分页）
+     $scope.nextPage=function(){
+
+       if(querySort==undefined && queryValue==undefined){
+         uriData = 'o='+(++page)+'&r='+pageSize;
+
+         CommonService.getAll('product',uriData,function(data){
+             var newProductsByPage =data.rows;
+
+             for(var i=0;i<newProductsByPage.length;i++){
+             $scope.products.splice($scope.products.length,0,newProductsByPage[i]);
+             }
+
+         },errorOperate);
+
+       }else{
+             uriData = 'o='+(++page)+'&r='+pageSize+'&s='+querySort+'&v='+queryValue;
+
+             CommonService.getAll('product',uriData,function(data){
+                 var newProductsByPage =data.rows;
+
+                 for(var i=0;i<newProductsByPage.length;i++){
+                     $scope.products.splice($scope.products.length,0,newProductsByPage[i]);
+                 }
+
+             },errorOperate);
+         }
+
      }
 
     //调用与后端的接口,如：CommonService.getAll(params)
@@ -54,10 +93,10 @@
      },errorOperate);
 
 
-        uriData = 'o=0&r=48';
-        CommonService.getAll('product',uriData,function(data){
-            $scope.products=data.rows;
-         },errorOperate);
+     uriData = 'o=0&r='+pageSize;
+     CommonService.getAll('product',uriData,function(data){
+         $scope.products=data.rows;
+     },errorOperate);
 
  });
 

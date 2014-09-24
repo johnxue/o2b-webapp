@@ -120,7 +120,10 @@ var cookieOperate = {
 
 //error处理
 function errorOperate(response) {
-    console.info('error');
+   var errorCode=response.code;
+    if(errorCode=='602'){
+        $('#denglu').show();
+    }
 
 }
 

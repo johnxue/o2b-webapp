@@ -19,6 +19,8 @@ var UserRegisterControllers = angular.module('UserRegisterControllers', []);
 /*定义 Controller: UserRegisterCtrl  （注册页面 register.html）*/
 UserRegisterControllers.controller('UserRegisterCtrl', function ($scope, CommonService, $interval) {
 
+    ctrInit();
+
     var stop = undefined;
     var time =60;
     //初始化$scope中定义的变量

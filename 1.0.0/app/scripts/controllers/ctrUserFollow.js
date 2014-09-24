@@ -22,9 +22,16 @@
 var UserFollowControllers = angular.module('UserFollowControllers', []);
 
 /*定义 Controller: UserFollowCtrl  （用户关注页面 follow.html）*/
-UserFollowControllers.controller('UserFollowCtrl',function($scope,$routeParams,CommonService,$window){
+UserFollowControllers.controller('UserFollowCtrl',function($scope,CommonService){
 
+    ctrInit();
+
+    var uriData='';
     //初始化$scope中定义的变量
+
+    $scope.products={};
+    $scope.productsTotal=0;
+    $scope.showFollowProducts=false;
 
     //实现与页面交互的事件,如：button_click
 
@@ -32,5 +39,14 @@ UserFollowControllers.controller('UserFollowCtrl',function($scope,$routeParams,C
 
     //调用与后端的接口,如：CommonService.getAll(params)
 
+    uriData = undefined;
+    CommonService.getAll('user/product/follow',uriData,function(data){
+        $scope.products= data.rows;
+        $scope.productsTotal=data.rows.length;
+        if($scope.productsTotal>0){
+            $scope.showFollowProducts=true;
+        }
+
+    },errorOperate);
 
 });

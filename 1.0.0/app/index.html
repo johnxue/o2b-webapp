@@ -2,15 +2,12 @@
 <html  ng-app="MainApp" ng-controller="ProductIndexCtrl"   >
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="renderer" content="webkit">
-<title></title>
 <link href="styles/index.css" rel="stylesheet">
 <link href="styles/zui.min.css" rel="stylesheet">
 </head>
 
 <body>
-<div class="banner-top"> </div>
+
 <div class="bg">
   <div class="cont" id="top">
     <section id="navbars">
@@ -63,13 +60,13 @@
               </li>
               <li > <a href="" data-toggle="dropdown"  class="dropdown-toggle">{{loginedName}} <i class="icon-caret-down"></i> </a>
                 <ul class=" pull-right dropdown-menu  dropdown-close">
-                  <li> <a href="#"> <i class="icon-cog"></i> 账号设置 </a> </li>
+                  <li> <a href="#/accountSetting"> <i class="icon-cog"></i> 账号设置 </a> </li>
                   <li class="divider"></li>
                   <li> <a href="#/follow"> <i class="icon-cog"></i> 我的关注 </a> </li>
                   <li class="divider"></li>
                   <li> <a href="#/userAddress"> <i class="icon-user"></i> 收货地址 </a> </li>
                   <li class="divider"></li>
-                  <li ng-controller="logoutCtrl" ng-click="logout();"> <a href="#"> <i class="icon-off"></i> 退出 </a> </li>
+                  <li ng-controller="logoutCtrl"> <a href="javascript:;"  ng-click="logout();"> <i class="icon-off"></i> 退出 </a> </li>
                 </ul>
               </li>
               <li ng-mouseenter="item.popover=true"
@@ -92,31 +89,27 @@
 </div>
 <!--导航结束-->
 <!--滚动图开始-->
-<div style=" width:100%; margin-top:-20px;" id="banner" ng-show="showAdvert">
-    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+<div style=" width:100%; margin-top:-20px;display: none;" id="banner">
+    <div id="carousel-example-generic1" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
-            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-            <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
-            <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
+            <li data-target="#carousel-example-generic1" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-generic1" data-slide-to="1" class=""></li>
+            <li data-target="#carousel-example-generic1" data-slide-to="2" class=""></li>
         </ol>
         <div class="carousel-inner">
-            <div class="item active">
-                <img src="images/big3.png" class="bannerimg" style="height: 450px; width: 100%; background-position: center center;background-repeat: no-repeat; margin-top: -20px; cursor: pointer;" />
+            <div class="item active" ng-repeat="adsLevelOne in adsLevelOnes" ng-if="$first">
+               <a href="#/productDetail/{{adsLevelOne[0]}}"><img ng-src="images/products/{{adsLevelOne[1]}}" class="bannerimg" style="height: 450px; width: 100%; background-position: center center;background-repeat: no-repeat; margin-top: -20px; cursor: pointer;" /></a>
 
             </div>
-            <div class="item">
-                <img src="images/big2.jpg" class="bannerimg" style="height: 450px; width: 100%; background-position: center center;background-repeat: no-repeat; margin-top: -20px; cursor: pointer;"/>
-
-            </div>
-            <div class="item">
-                <img src="images/big1.png" class="bannerimg" style="height: 450px; width: 100%; background-position: center center;background-repeat: no-repeat; margin-top: -20px; cursor: pointer;"/>
+            <div class="item" ng-repeat="adsLevelOne in adsLevelOnes" ng-if="!$first">
+               <a href="#/productDetail/{{adsLevelOne[0]}}"><img ng-src="images/products/{{adsLevelOne[1]}}" class="bannerimg" style="height: 450px; width: 100%; background-position: center center;background-repeat: no-repeat; margin-top: -20px; cursor: pointer;"/></a>
 
             </div>
         </div>
-        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+        <a class="left carousel-control" href="#carousel-example-generic1" data-slide="prev">
             <span class="icon-chevron-left"></span>
         </a>
-        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+        <a class="right carousel-control" href="#carousel-example-generic1" data-slide="next">
             <span class="icon-chevron-right"></span>
         </a>
     </div>
@@ -172,7 +165,7 @@
 </div>
 <!-- 回顶部 -->
 
-<div class="modal" id="denglu" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle"   ng-controller="loginCtrl" >
+<div class="modal" id="denglu" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle"   ng-controller="loginCtrl">
   <div class="modal-dialog">
     <div class="modal-content" >
       <div class="modal-header">
@@ -254,7 +247,9 @@
 <script src="scripts/controllers/ctrProductShoppingCart.js"></script> 
 <script src="scripts/controllers/ctrMyForm.js"></script> 
 <script src="scripts/controllers/ctrUserRegister.js"></script> 
-<script src="scripts/controllers/ctrUserFollow.js"></script> 
+<script src="scripts/controllers/ctrUserFollow.js"></script>
+<script src="scripts/controllers/ctrViewDetails.js"></script>
+<script src="scripts/controllers/ctrUserAccountSetting.js"></script>
 <script src="scripts/services/svcCommon.js"></script> 
 <script src="scripts/services/svcLogin.js"></script> 
 <script src="scripts/filters/fltProduct.js"></script> 

@@ -19,6 +19,10 @@ var ProductMainControllers = angular.module('ProductMainControllers',[]);
 
 /*定义 Controller: ShowMainCtrl  （主页面 first.html）*/
 ProductMainControllers.controller('ProductMainCtrl',function($scope,CommonService,$window){
+    ctrInit();
+
+    //显示广告栏
+    $('#banner').show();
 
     var uriData='';
 //初始化$scope中定义的变量
@@ -58,8 +62,8 @@ ProductMainControllers.controller('ProductMainCtrl',function($scope,CommonServic
         $scope.products=data.rows;
     },errorOperate);
 
-    CommonService.getAll('adSense/main/1',undefined,function(data){
-        $scope.adsLevelOnes=data.ads_level_01;
+    uriData = undefined;
+    CommonService.getAll('adSense/main/1',uriData,function(data){
         $scope.adsLevelTwos=data.ads_level_02;
     },errorOperate);
 

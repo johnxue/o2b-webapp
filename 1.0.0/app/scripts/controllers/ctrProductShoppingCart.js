@@ -20,6 +20,8 @@ var ProductShoppingCartControllers = angular.module('ProductShoppingCartControll
 /*定义 Controller: ProductShoppingCartCtrl  （购物车页面 productShoppingCart.html）*/
 ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($scope, CommonService,$window) {
 
+    ctrInit();
+
     var uriData = '';
 
     //初始化$scope中定义的变量
@@ -33,6 +35,10 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
     $scope.delCartProductForm=false;
 
     $scope.cartProductForm={};
+
+    $scope.multiDelCartProductState=true;
+
+    if(cookieOperate.getCookie('token')==null){
 
     $scope.cartProductForm.cartProducts = JSON.parse(localDataStorage.getItem('cartProductsInfoArray'));
      if($scope.cartProductForm.cartProducts==null){
@@ -49,8 +55,7 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
     localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
     localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
 
-
-
+    }
 
     //实现与页面交互的事件,如：button_click
 
@@ -61,6 +66,19 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
         });
     };
 
+    //复选框状态改变事件
+    $scope.checkBoxChange=function(cartProductForm) {
+        var cartProductsForm_cartProducts = cartProductForm.cartProducts;
+
+        for (var i = 0; i < cartProductsForm_cartProducts.length; i++) {
+            if (cartProductsForm_cartProducts[i].checked == true) {
+                $scope.multiDelCartProductState = false;
+                break;
+            }
+            $scope.multiDelCartProductState = true;
+        }
+    }
+
     //数量增加
     $scope.quantityPlus = function (cartProduct) {
 
@@ -70,9 +88,10 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
             cartProduct.amount = cartProduct.currentPrice * cartProduct.quantity;
             $scope.allCost+=cartProduct.currentPrice;
 
-               localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
-               localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
-
+               if(cookieOperate.getCookie('token')==null) {
+                   localDataStorage.setItem('cartProductsInfoArray', JSON.stringify($scope.cartProductForm.cartProducts));
+                   localDataStorage.setItem('cartProductsTotal', JSON.stringify($scope.cartProductForm.cartProducts.length));
+               }
            },errorOperate);
 
     }
@@ -86,9 +105,10 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
                 cartProduct.amount = cartProduct.currentPrice * cartProduct.quantity;
                 $scope.allCost-=cartProduct.currentPrice;
 
-                localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
-                localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
-
+                if(cookieOperate.getCookie('token')==null) {
+                    localDataStorage.setItem('cartProductsInfoArray', JSON.stringify($scope.cartProductForm.cartProducts));
+                    localDataStorage.setItem('cartProductsTotal', JSON.stringify($scope.cartProductForm.cartProducts.length));
+                }
             },errorOperate);
         }
     }
@@ -110,20 +130,19 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
            for(var i=0;i< $scope.cartProductForm.cartProducts.length;i++){
                if($scope.cartProductForm.cartProducts[i]['id']==cartProduct['id']){
 
-
                    $scope.allQuantity--;
                    $scope.allCost-=cartProduct['currentPrice']*cartProduct['quantity'];
 
                    $scope.cartProductForm.cartProducts.splice(i,1);
 
-
-
+                   $scope.$emit('totalAfterAddShoppingCart', $scope.cartProductForm.cartProducts.length);
                }
            }
 
-            localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
-            localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
-
+            if(cookieOperate.getCookie('token')==null) {
+                localDataStorage.setItem('cartProductsInfoArray', JSON.stringify($scope.cartProductForm.cartProducts));
+                localDataStorage.setItem('cartProductsTotal', JSON.stringify($scope.cartProductForm.cartProducts.length));
+            }
 
         },errorOperate);
 
@@ -159,13 +178,17 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
                 }
             }
 
+            $scope.$emit('totalAfterAddShoppingCart', $scope.cartProductForm.cartProducts.length);
+
+            if(cookieOperate.getCookie('token')==null){
             localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
             localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
+            }
+
+            $scope.multiDelCartProductState=true;
 
         },errorOperate);
 
-
-        $scope.delCartProductForm=false;
     }
 
 
@@ -213,5 +236,42 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
 
     //调用与后端的接口,如：CommonService.getAll(params)
 
+    if(cookieOperate.getCookie('token')!=null){
+        uriData=undefined;
+        CommonService.getAll('shoppingcart',uriData,function(data) {
+            var cartProducts = data.ShoppingCart;
+
+            var cartProductsInfoArray=[];
+            for(var i=0;i<cartProducts.length;i++){
+                var cartProductsInfo={};
+
+                cartProductsInfo.id=cartProducts[i][0];
+                cartProductsInfo.pid=cartProducts[i][1];
+                cartProductsInfo.code = cartProducts[i][2];
+                cartProductsInfo.name=cartProducts[i][3];
+                cartProductsInfo.originalPrice=cartProducts[i][4];
+                cartProductsInfo.currentPrice=cartProducts[i][5];
+                cartProductsInfo.quantity=cartProducts[i][6];
+                cartProductsInfo.offLine=cartProducts[i][7];
+                if(cartProducts[i][8]>0){
+                    cartProductsInfo.inventoryStatus='有货';
+                }else{
+                    cartProductsInfo.inventoryStatus='无货'
+                }
+                cartProductsInfo.image=cartProducts[i][9];
+                cartProductsInfoArray.push(cartProductsInfo);
+            }
+
+            $scope.cartProductForm.cartProducts=cartProductsInfoArray;
+
+            for(var i=0;i< $scope.cartProductForm.cartProducts.length;i++){
+                $scope.allQuantity++;
+                //增加总价字段
+                $scope.cartProductForm.cartProducts[i].amount=$scope.cartProductForm.cartProducts[i].currentPrice* $scope.cartProductForm.cartProducts[i].quantity;
+                $scope.allCost += $scope.cartProductForm.cartProducts[i].currentPrice* $scope.cartProductForm.cartProducts[i].quantity;
+            }
+
+        },errorOperate);
+    }
 
 });
