@@ -113,13 +113,13 @@
                             <div class="col-md-9" ng-show="returnFrom">
                                 <p class="title">退货详细</p>
                                 <table class="table table-hover" id="retGoodsFrom">
-                                    <thead>
+                                 <!--   <thead>
                                     <td>商品信息</td>
                                     <td>订单号</td>
                                     <td>收货人</td>
                                     <td>购买数量</td>
                                     <td>状态</td>
-                                    </thead>
+                                    </thead>-->
                                     <tbody>
                                    <tr>
                                       <!-- js遍历 -->
@@ -131,19 +131,19 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label" >退货类型：</label>
                                         <div class="col-md-7">
-                                            <input ng-model="goods.Type" type="radio" value="T" checked="checked"/>
+                                            <input ng-model="goods.Type" type="radio" value="T"/>  <!-- ng-checked="true" -->
                                             退货
                                             <input ng-model="goods.Type" type="radio" value="H"/>
                                             换货 </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label" >退货数量：</label>
+                                        <label class="col-md-3 control-label">退货数量：</label>
                                         <div class="col-md-7"> <span>
-                          <button class="btn btn-info btn-mini w20 " ng-click="jia()">+</button>
+                        <!--  <button class="btn btn-info btn-mini w20 " ng-click="jia(goods)">+</button>-->
                           <span>
-                          <input ng-model="goods.Number" type="text" value="0" class="input"/>
+                          <input type="number" class="input" ng-model="goods.Number"/>
                           </span>
-                          <button class="btn btn-info btn-mini w20 ">-</button>
+                       <!--   <button class="btn btn-info btn-mini w20 ">-</button>-->
                           </span> </div>
                                     </div>
                                     <div class="form-group">
