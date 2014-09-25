@@ -23,7 +23,6 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
     $scope.returnFrom=false;   //隐藏退货表单
 
 
-
      /*************************************************  页面交互事件  ********************************************/
      //下拉框
     $scope.$watch('seleDataTime', function(onVal) {
@@ -174,7 +173,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
         uriData = JSON.stringify(objGoods);
 
         CommonService.createOne('order/returns', uriData, function (data) {
-
+                alert("退货信息已提交");
         });
     }
 
