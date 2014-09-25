@@ -74,7 +74,7 @@ ProductOrderControllers.controller('ProductOrderCtrl',function($scope,CommonServ
 
         balanceNeed.shipping='10';
         balanceNeed.freight= 10;
-        balanceNeed.total= $scope.allQuantity-balanceNeed.freight;
+        balanceNeed.total= $scope.allQuantity;
         balanceNeed.amount=$scope.costAll;
         balanceNeed.comment=orderForm.comment;
 

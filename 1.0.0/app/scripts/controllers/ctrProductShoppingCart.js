@@ -82,34 +82,51 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
     //数量增加
     $scope.quantityPlus = function (cartProduct) {
 
+        if(cookieOperate.getCookie('token')!=null){
+
         uriData ={id:cartProduct.id,number:++cartProduct.quantity};
 
            CommonService.updatePartOne('shoppingcart',JSON.stringify(uriData),function(data){
+
             cartProduct.amount = cartProduct.currentPrice * cartProduct.quantity;
             $scope.allCost+=cartProduct.currentPrice;
 
-               if(cookieOperate.getCookie('token')==null) {
-                   localDataStorage.setItem('cartProductsInfoArray', JSON.stringify($scope.cartProductForm.cartProducts));
-                   localDataStorage.setItem('cartProductsTotal', JSON.stringify($scope.cartProductForm.cartProducts.length));
-               }
            },errorOperate);
+
+        }else{
+            ++cartProduct.quantity;
+            cartProduct.amount = cartProduct.currentPrice * cartProduct.quantity;
+            $scope.allCost+=cartProduct.currentPrice;
+            localDataStorage.setItem('cartProductsInfoArray', JSON.stringify($scope.cartProductForm.cartProducts));
+            localDataStorage.setItem('cartProductsTotal', JSON.stringify($scope.cartProductForm.cartProducts.length));
+
+        }
 
     }
 
     //数量减少
     $scope.quantitySubtract = function (cartProduct) {
+
         if (cartProduct.quantity > 1) {
-            uriData ={id:cartProduct.id,number:--cartProduct.quantity};
-            CommonService.updatePartOne('shoppingcart',JSON.stringify(uriData),function(data){
 
+            if(cookieOperate.getCookie('token')!=null) {
+                uriData = {id: cartProduct.id, number: --cartProduct.quantity};
+                CommonService.updatePartOne('shoppingcart', JSON.stringify(uriData), function (data) {
+
+                    cartProduct.amount = cartProduct.currentPrice * cartProduct.quantity;
+                    $scope.allCost -= cartProduct.currentPrice;
+
+                }, errorOperate);
+
+            }else{
+
+                --cartProduct.quantity;
                 cartProduct.amount = cartProduct.currentPrice * cartProduct.quantity;
-                $scope.allCost-=cartProduct.currentPrice;
+                $scope.allCost -= cartProduct.currentPrice;
+                localDataStorage.setItem('cartProductsInfoArray', JSON.stringify($scope.cartProductForm.cartProducts));
+                localDataStorage.setItem('cartProductsTotal', JSON.stringify($scope.cartProductForm.cartProducts.length));
 
-                if(cookieOperate.getCookie('token')==null) {
-                    localDataStorage.setItem('cartProductsInfoArray', JSON.stringify($scope.cartProductForm.cartProducts));
-                    localDataStorage.setItem('cartProductsTotal', JSON.stringify($scope.cartProductForm.cartProducts.length));
                 }
-            },errorOperate);
         }
     }
 
@@ -123,56 +140,100 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
 
     $scope.delCartProduct = function(cartProduct){
 
-        uriData ={};
-        uriData.ids=cartProduct['id'].toString();
+        if(cookieOperate.getCookie('token')!=null) {
+            uriData = {};
+            uriData.ids = cartProduct['id'].toString();
 
-        CommonService.deleteOne('shoppingcart',JSON.stringify(uriData),function(data){
-           for(var i=0;i< $scope.cartProductForm.cartProducts.length;i++){
-               if($scope.cartProductForm.cartProducts[i]['id']==cartProduct['id']){
+            CommonService.deleteOne('shoppingcart', JSON.stringify(uriData), function (data) {
+                for (var i = 0; i < $scope.cartProductForm.cartProducts.length; i++) {
+                    if ($scope.cartProductForm.cartProducts[i]['id'] == cartProduct['id']) {
 
-                   $scope.allQuantity--;
-                   $scope.allCost-=cartProduct['currentPrice']*cartProduct['quantity'];
+                        $scope.allQuantity--;
+                        $scope.allCost -= cartProduct['currentPrice'] * cartProduct['quantity'];
 
-                   $scope.cartProductForm.cartProducts.splice(i,1);
+                        $scope.cartProductForm.cartProducts.splice(i, 1);
 
-                   $scope.$emit('totalAfterAddShoppingCart', $scope.cartProductForm.cartProducts.length);
-               }
-           }
+                        $scope.$emit('totalAfterAddShoppingCart', $scope.cartProductForm.cartProducts.length);
+                    }
+                }
 
-            if(cookieOperate.getCookie('token')==null) {
-                localDataStorage.setItem('cartProductsInfoArray', JSON.stringify($scope.cartProductForm.cartProducts));
-                localDataStorage.setItem('cartProductsTotal', JSON.stringify($scope.cartProductForm.cartProducts.length));
+            }, errorOperate);
+
+            $scope.delCartProductForm = false;
+        }else{
+            for (var i = 0; i < $scope.cartProductForm.cartProducts.length; i++) {
+                if ($scope.cartProductForm.cartProducts[i]['id'] == cartProduct['id']) {
+
+                    $scope.allQuantity--;
+                    $scope.allCost -= cartProduct['currentPrice'] * cartProduct['quantity'];
+
+                    $scope.cartProductForm.cartProducts.splice(i, 1);
+
+                    $scope.$emit('totalAfterAddShoppingCart', $scope.cartProductForm.cartProducts.length);
+                }
             }
 
-        },errorOperate);
+             localDataStorage.setItem('cartProductsInfoArray', JSON.stringify($scope.cartProductForm.cartProducts));
+             localDataStorage.setItem('cartProductsTotal', JSON.stringify($scope.cartProductForm.cartProducts.length));
 
-        $scope.delCartProductForm=false;
+        }
     }
 
     //多个删除购物车商品
 
-    $scope.multipleDelCartProduct=function(cartProductForm){
-        uriData={};
-        var ids='';
-        var idsArray=[];
-        for(var i=0;i<cartProductForm.cartProducts.length;i++){
-           if(cartProductForm.cartProducts[i]['checked']==true){
+    $scope.multipleDelCartProduct=function(cartProductForm) {
 
-               idsArray.push(cartProductForm.cartProducts[i]['id']);
-               ids+=cartProductForm.cartProducts[i]['id'].toString()+',';
-           }
-        }
-        uriData.ids=ids.substring(0,ids.length-1);
+        if (cookieOperate.getCookie('token') != null) {
+            uriData = {};
+            var ids = '';
+            var idsArray = [];
+            for (var i = 0; i < cartProductForm.cartProducts.length; i++) {
+                if (cartProductForm.cartProducts[i]['checked'] == true) {
 
-        CommonService.deleteOne('shoppingcart',JSON.stringify(uriData),function(data){
-            for(var i=0;i< $scope.cartProductForm.cartProducts.length;i++){
-                for(var j=0;j<idsArray.length;j++){
-                   if($scope.cartProductForm.cartProducts[i]['id']==idsArray[j]){
+                    idsArray.push(cartProductForm.cartProducts[i]['id']);
+                    ids += cartProductForm.cartProducts[i]['id'].toString() + ',';
+                }
+            }
+            uriData.ids = ids.substring(0, ids.length - 1);
 
-                       $scope.allQuantity--;
-                       $scope.allCost-=$scope.cartProductForm.cartProducts[i]['currentPrice']*$scope.cartProductForm.cartProducts[i]['quantity'];
+            CommonService.deleteOne('shoppingcart', JSON.stringify(uriData), function (data) {
+                for (var i = 0; i < $scope.cartProductForm.cartProducts.length; i++) {
+                    for (var j = 0; j < idsArray.length; j++) {
+                        if ($scope.cartProductForm.cartProducts[i]['id'] == idsArray[j]) {
 
-                    $scope.cartProductForm.cartProducts.splice(i,1);
+                            $scope.allQuantity--;
+                            $scope.allCost -= $scope.cartProductForm.cartProducts[i]['currentPrice'] * $scope.cartProductForm.cartProducts[i]['quantity'];
+
+                            $scope.cartProductForm.cartProducts.splice(i, 1);
+
+                        }
+                    }
+                }
+
+                $scope.$emit('totalAfterAddShoppingCart', $scope.cartProductForm.cartProducts.length);
+
+                $scope.multiDelCartProductState = true;
+
+            }, errorOperate);
+
+        } else {
+            var idsArray = [];
+            for (var i = 0; i < cartProductForm.cartProducts.length; i++) {
+                if (cartProductForm.cartProducts[i]['checked'] == true) {
+
+                    idsArray.push(cartProductForm.cartProducts[i]['id']);
+
+                }
+            }
+
+            for (var i = 0; i < $scope.cartProductForm.cartProducts.length; i++) {
+                for (var j = 0; j < idsArray.length; j++) {
+                    if ($scope.cartProductForm.cartProducts[i]['id'] == idsArray[j]) {
+
+                        $scope.allQuantity--;
+                        $scope.allCost -= $scope.cartProductForm.cartProducts[i]['currentPrice'] * $scope.cartProductForm.cartProducts[i]['quantity'];
+
+                        $scope.cartProductForm.cartProducts.splice(i, 1);
 
                     }
                 }
@@ -180,15 +241,12 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
 
             $scope.$emit('totalAfterAddShoppingCart', $scope.cartProductForm.cartProducts.length);
 
-            if(cookieOperate.getCookie('token')==null){
-            localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
-            localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
-            }
+            localDataStorage.setItem('cartProductsInfoArray', JSON.stringify($scope.cartProductForm.cartProducts));
+            localDataStorage.setItem('cartProductsTotal', JSON.stringify($scope.cartProductForm.cartProducts.length));
 
-            $scope.multiDelCartProductState=true;
 
-        },errorOperate);
-
+            $scope.multiDelCartProductState = true;
+        }
     }
 
 

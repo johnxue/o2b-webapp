@@ -33,6 +33,7 @@ ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonServ
         localDataStorage.removeItem('cartProductsInfoArray');
         localDataStorage.removeItem('cartProductsTotal');
         localDataStorage.removeItem('orderProductsInfo');
+        localDataStorage.removeItem('cartProductsTotalOnIndex');
 
     }else{
         $scope.beforeLogin = false;
