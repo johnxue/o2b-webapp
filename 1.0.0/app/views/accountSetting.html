@@ -69,13 +69,13 @@
                       <label class="col-md-3 control-label bluezi" >已有密码：</label>
                       <div class="col-md-7">
                         <div class="input-group">
-                          <input type='password'  class='form-control' ng-model="updatePasswordForm.OPwd" name="updatePasswordForm_OPwd" placeholder="请输入您的密码"   required="true" ng-maxlength="20" ng-minlength="6"/>
+                          <input type='password'  class='form-control' ng-model="updatePasswordForm.OPwd" name="updatePasswordForm_OPwd" placeholder="请输入您的原密码"   required="true" ng-maxlength="20" ng-minlength="6"/>
                           <span class="input-group-btn">
                           <button class="btn btn-info" type="button"><i class="icon-key"></i></button>
                           </span>
                         </div>
                       </div>
-                        <div class="col-md-1" ng-show="!(updatePasswordForm.updatePasswordForm_OPwd.$error.required || updatePasswordForm.updatePasswordForm_OPwd.$error.maxlength||updatePasswordForm.updatePasswordForm_OPwd.$error.minlength)">&radic;</div>
+                        <div class="col-md-1" ng-show="!(updatePasswordForm.updatePasswordForm_OPwd.$error.required || updatePasswordForm.updatePasswordForm_OPwd.$error.maxlength||updatePasswordForm.updatePasswordForm_OPwd.$error.minlength)"><i class="icon-ok green"></i></div>
                         <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="updatePasswordForm.updatePasswordForm_OPwd.$dirty && updatePasswordForm.updatePasswordForm_OPwd.$error.required">密码不能为空</div>
                         <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="updatePasswordForm.updatePasswordForm_OPwd.$dirty && updatePasswordForm.updatePasswordForm_OPwd.$error.maxlength">密码长度不能大于20个字符！</div>
                         <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="updatePasswordForm.updatePasswordForm_OPwd.$dirty && updatePasswordForm.updatePasswordForm_OPwd.$error.minlength">密码长度不能小于6个字符！</div>
@@ -84,13 +84,14 @@
                       <label class="col-md-3 control-label bluezi">新密码：</label>
                       <div class="col-md-7">
                         <div class="input-group">
-                          <input type='password'  class='form-control' ng-model="updatePasswordForm.NPwd" name="updatePasswordForm_NPwd" placeholder="请输入您的密码"   required="true" ng-maxlength="20" ng-minlength="6"/>
+                          <input type='password'  class='form-control' ng-model="updatePasswordForm.NPwd" name="updatePasswordForm_NPwd" placeholder="请输入您的新密码"   required="true" ng-minlength="6" ng-maxlength="20"   same="updatePasswordForm_OPwd"/>
                           <span class="input-group-btn">
                           <button class="btn btn-info" type="button"><i class="icon-key"></i></button>
                           </span> </div>
                       </div>
-                        <div class="col-md-1" ng-show="!(updatePasswordForm.updatePasswordForm_NPwd.$error.required || updatePasswordForm.updatePasswordForm_NPwd.$error.maxlength||updatePasswordForm.updatePasswordForm_NPwd.$error.minlength)">&radic;</div>
+                        <div class="col-md-1" ng-show="!(updatePasswordForm.updatePasswordForm_NPwd.$error.required || updatePasswordForm.updatePasswordForm_NPwd.$error.maxlength||updatePasswordForm.updatePasswordForm_NPwd.$error.minlength||updatePasswordForm.updatePasswordForm_NPwd.$error.same)"><i class="icon-ok green"></i></div>
                         <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="updatePasswordForm.updatePasswordForm_NPwd.$dirty && updatePasswordForm.updatePasswordForm_NPwd.$error.required">密码不能为空</div>
+                        <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="updatePasswordForm.updatePasswordForm_NPwd.$dirty && updatePasswordForm.updatePasswordForm_NPwd.$error.same"> 新密码不能跟旧密码一致！</div>
                         <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="updatePasswordForm.updatePasswordForm_NPwd.$dirty && updatePasswordForm.updatePasswordForm_NPwd.$error.maxlength">密码长度不能大于20个字符！</div>
                         <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="updatePasswordForm.updatePasswordForm_NPwd.$dirty && updatePasswordForm.updatePasswordForm_NPwd.$error.minlength">密码长度不能小于6个字符！</div>
                     </div>
@@ -98,13 +99,14 @@
                       <label class="col-md-3 control-label bluezi">重复密码：</label>
                       <div class="col-md-7">
                         <div class="input-group">
-                          <input type='password'  class='form-control' ng-model="updatePasswordForm.RNPwd" name="updatePasswordForm_RNPwd" placeholder="请输入您的密码"   required="true" ng-maxlength="20" ng-minlength="6" repeat="updatePasswordForm_NPwd" />
+                          <input type='password'  class='form-control' ng-model="updatePasswordForm.RNPwd" name="updatePasswordForm_RNPwd" placeholder="请再次输入您的新密码"   required="true" ng-maxlength="20" ng-minlength="6" repeat="updatePasswordForm_NPwd" />
                           <span class="input-group-btn">
                           <button class="btn btn-info" type="button"><i class="icon-key"></i></button>
                           </span> </div>
                       </div>
-                        <div class="col-md-1" ng-show="!(updatePasswordForm.updatePasswordForm_RNPwd.$error.required || updatePasswordForm.updatePasswordForm_RNPwd.$error.repeat)">&radic;</div>
+                        <div class="col-md-1" ng-show="!(updatePasswordForm.updatePasswordForm_RNPwd.$error.required || updatePasswordForm.updatePasswordForm_RNPwd.$error.repeat)"><i class="icon-ok green"></i></div>
                         <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="updatePasswordForm.updatePasswordForm_RNPwd.$dirty && updatePasswordForm.updatePasswordForm_RNPwd.$error.repeat"> 两次密码输入不一致！</div>
+                        <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="updatePasswordForm.updatePasswordForm_RNPwd.$dirty && updatePasswordForm.updatePasswordForm_RNPwd.$error.required">密码不能为空</div>
                     </div>
                     <div class="col-md-12 text-center">
                       <button class="btn btn-info" ng-disabled="updatePasswordForm.$invalid" ng-click="saveUpdate(updatePasswordForm);">保存更改</button>

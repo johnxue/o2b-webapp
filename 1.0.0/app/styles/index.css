@@ -51,7 +51,7 @@ img { border:0px; }
 .bannerimg { height: 450px; width: 100%; background-position: center center; background-repeat: no-repeat; margin-top: -20px; cursor: pointer; }
 .cl { color:#09C; }
 .bluezi { color: #09C; font-family: "微软雅黑"; }
-#denglu .modal-dialog { width:30%; }
+#denglu .modal-dialog { width:32%; }
 
 /*右边悬浮 */
 #leftsead { width:131px; height:143px; position:fixed; top:258px; right:0px; }
@@ -110,3 +110,5 @@ right: 50px; top: 50px; }
 */
 #ribbon { position:absolute; top:-3px; left:-5px; z-index:500; }
 .width { width:100%; }
+
+.green{ color:#7CFC00;}

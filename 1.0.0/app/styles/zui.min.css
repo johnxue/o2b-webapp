@@ -1170,8 +1170,8 @@ hr { margin-top:20px; margin-bottom:20px; border:0; border-top:1px solid #e5e5e5
 font-family:ZenIcon;
 font-style:normal;
 font-weight:400;
-src:url(../fonts/zenicon.eot?v=1.0.0);
-src:url(../fonts/zenicon.eot?#iefix&v=1.0.0) format('embedded-opentype'), url(../fonts/zenicon.woff?v=1.0.0) format('woff'), url(../fonts/zenicon.ttf?v=1.0.0) format('truetype'), url(../fonts/zenicon.svg#regular?v=1.0.0) format('svg')
+src:url(../fonts/ZenIcon.eot?v=1.0.0);
+src:url(../fonts/ZenIcon.eot?#iefix&v=1.0.0) format('embedded-opentype'), url(../fonts/ZenIcon.woff?v=1.0.0) format('woff'), url(../fonts/ZenIcon.ttf?v=1.0.0) format('truetype'), url(../fonts/ZenIcon.svg#regular?v=1.0.0) format('svg')
 }
 [class^=icon-], [class*=" icon-"] {
 font-family:ZenIcon;

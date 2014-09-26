@@ -69,14 +69,8 @@
                   <li ng-controller="logoutCtrl"> <a href="javascript:;"  ng-click="logout();"> <i class="icon-off"></i> 退出 </a> </li>
                 </ul>
               </li>
-              <li ng-mouseenter="item.popover=true"
-                      ng-mouseleave="item.popover=false"><a href="" ><i class="icon-shopping-cart"></i> 购物车 <span class="label label-badge label-info">{{cartProductsTotal}}</span></a>
-                <div class="relative">
-                  <div class="popover" ng-style="{display: item.popover?'block':'none'}" >
-                    <div class="popover-title"> 您有购物车目前有{{cartProductsTotal}}件商品 </div>
-                    <div class="popover-content"> <small class="label label-info" > <a href="#/productShoppingCart"><i class="icon-shopping-cart"></i> 查看购物车</a></small> </div>
-                  </div>
-                </div>
+              <li>
+                  <a href="#/productShoppingCart" ><i class="icon-shopping-cart"></i> 购物车 <span class="label label-badge label-info">{{cartProductsTotal}}</span></a>
               </li>
             </ul>
           </div>
@@ -187,9 +181,9 @@
                     </span>
                   </div>
                 </div>
-                  <div class="col-md-1" ng-show="frmLogin.username.$valid">&radic;</div>
+                  <div class="col-md-1" ng-show="frmLogin.username.$valid"><i class="icon-ok green"></i></div>
+                  <div class="col-md-9 col-md-offset-3 ha30 blue" ng-show="frmLogin.username.$dirty && frmLogin.username.$invalid">&nbsp;* <span ng-show="frmLogin.username.$error.emailmobile">请输入正确的电子邮箱地址或手机号</span> </div>
               </div>
-              <div class="col-md-9 col-md-offset-3 ha30" ng-show="frmLogin.username.$dirty && frmLogin.username.$invalid">&nbsp;* <span ng-show="frmLogin.username.$error.emailmobile">请输入正确的电子邮件地址或手机号</span> </div>
               <div class="form-group">
                 <label class="col-md-3 control-label bluezi">密码：</label>
                 <div class="col-md-7">
@@ -200,10 +194,10 @@
                     <button class="btn btn-info" type="button"><i class="icon-lock"></i></button>
                     </span>
                   </div>
-                  <div class="col-md-12 pt10" ng-show="frmLogin.password.$dirty && frmLogin.password.$invalid">* <span ng-show="frmLogin.password.$error.required">请输入您的密码</span> <span ng-show="frmLogin.password.$error.minlength ||
+                  <div class="col-md-12 pt10 ha30 blue" ng-show="frmLogin.password.$dirty && frmLogin.password.$invalid">* <span ng-show="frmLogin.password.$error.required">请输入您的密码</span> <span ng-show="frmLogin.password.$error.minlength ||
                                                frmLogin.password.$error.maxlength">密码由6-20字符组成</span> <span ng-show="xue">无法识别的用户名或密码</span> </div>
                 </div>
-                  <div class="col-md-1" ng-show="frmLogin.password.$valid">&radic;</div>
+                  <div class="col-md-1" ng-show="frmLogin.password.$valid"><i class="icon-ok green"></i></div>
               </div>
               <div class="col-md-5 pull-right"><a href="">忘记密码</a></div>
             </div>
@@ -249,14 +243,15 @@
 <script src="scripts/controllers/ctrUserRegister.js"></script> 
 <script src="scripts/controllers/ctrUserFollow.js"></script>
 <script src="scripts/controllers/ctrViewDetails.js"></script>
-
 <script src="scripts/controllers/ctrUserAccountSetting.js"></script>
-<script src="scripts/services/svcCommon.js"></script> 
 
-<script src="scripts/services/svcLogin.js"></script> 
-<script src="scripts/filters/fltProduct.js"></script> 
-<script src="scripts/directives/drtLogin.js"></script> 
-<script src="scripts/directives/drtRegister.js"></script> 
+<script src="scripts/services/svcCommon.js"></script>
+<script src="scripts/services/svcLogin.js"></script>
+
+<script src="scripts/filters/fltCommon.js"></script>
+
+<script src="scripts/directives/drtCommon.js"></script>
+
 <script src="libs/cryptojslib/rollups/md5.js"></script> 
 <script src="libs/cryptojslib/rollups/aes.js"></script> 
 <script src="libs/cryptojslib/components/pad-zeropadding-min.js"></script> 
