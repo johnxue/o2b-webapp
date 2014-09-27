@@ -32,14 +32,7 @@
           <ul class="nav navbar-nav navbar-right" ng-show="beforeLogin">
             <li><a href="#/register">注册</a></li>
             <li><a href="" data-toggle="modal"  data-target="#denglu">登陆</a></li>
-            <li ng-mouseenter="item.popover=true"
-                ng-mouseleave="item.popover=false"><a href="" ><i class="icon-shopping-cart"></i> 购物车 <span class="label label-badge label-info">{{cartProductsTotal}}</span></a>
-              <div class="relative">
-                <div class="popover" ng-style="{display: item.popover?'block':'none'}" >
-                  <div class="popover-title"> 您有购物车目前有{{cartProductsTotal}}件商品 </div>
-                  <div class="popover-content"> <small class="label label-info" title="" > <a href="#/productShoppingCart"><i class="icon-shopping-cart"></i>查看购物车</a></small> </div>
-                </div>
-              </div>
+            <li><a href="#/productShoppingCart" ><i class="icon-shopping-cart"></i> 购物车 <span class="label label-badge label-info">{{cartProductsTotal}}</span></a>
             </li>
           </ul>
           <!-- 登陆前显示结束--> 
