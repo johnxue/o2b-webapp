@@ -7,16 +7,16 @@
     </div>
     <ul  class="list-group" style="margin-top:20px;">
       <li  class="list-group-item"><span>属性：</span>
-          <a ng-repeat="attribute in attributes" href="javascript:;" ng-if="$first" class="active" ng-click="queryBySth('attribute',attribute[1])">{{attribute[0]}}</a>
-          <a ng-repeat="attribute in attributes" href="javascript:;" ng-if="!$first" ng-click="queryBySth('attribute',attribute[1])">{{attribute[0]}}</a>
+          <a ng-repeat="attribute in attributes" href="javascript:;" ng-if="$first" class="active" ng-click="queryBySth('attribute',attribute[1],$event.target)">{{attribute[0]}}</a>
+          <a ng-repeat="attribute in attributes" href="javascript:;" ng-if="!$first" ng-click="queryBySth('attribute',attribute[1],$event.target)">{{attribute[0]}}</a>
       </li>
       <li  class="list-group-item"><span>分类：</span>
-          <a  ng-repeat="category in categorys" href="javascript:;" ng-if="$first" class="active" ng-click="queryBySth('category',category[1])">{{category[0]}}</a>
-          <a  ng-repeat="category in categorys" href="javascript:;" ng-if="!$first" ng-click="queryBySth('category',category[1])">{{category[0]}}</a>
+          <a  ng-repeat="category in categorys" href="javascript:;" ng-if="$first" class="active" ng-click="queryBySth('category',category[1],$event.target)">{{category[0]}}</a>
+          <a  ng-repeat="category in categorys" href="javascript:;" ng-if="!$first" ng-click="queryBySth('category',category[1],$event.target)">{{category[0]}}</a>
       </li>
       <li  class="list-group-item"><span>排序：</span>
-          <a ng-repeat="sort in sorts" href="javascript:;" ng-if="$first" class="active" ng-click="queryBySth('sort',sort[1])">{{sort[0]}}</a>
-          <a ng-repeat="sort in sorts" href="javascript:;" ng-if="!$first" ng-click="queryBySth('sort',sort[1])">{{sort[0]}}</a>
+          <a ng-repeat="sort in sorts" href="javascript:;" ng-if="$first" class="active" ng-click="queryBySth('sort',sort[1],$event.target)">{{sort[0]}}</a>
+          <a ng-repeat="sort in sorts" href="javascript:;" ng-if="!$first" ng-click="queryBySth('sort',sort[1],$event.target)">{{sort[0]}}</a>
       </li>
     </ul>
 
