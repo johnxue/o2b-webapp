@@ -57,6 +57,8 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
     localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
     localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
 
+    $scope.$emit('totalAfterAddShoppingCart', $scope.cartProductForm.cartProducts.length);
+
     }
 
     //实现与页面交互的事件,如：button_click
@@ -344,6 +346,8 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
                 $scope.cartProductForm.cartProducts[i].amount=$scope.cartProductForm.cartProducts[i].currentPrice* $scope.cartProductForm.cartProducts[i].quantity;
                 $scope.allCost += $scope.cartProductForm.cartProducts[i].currentPrice* $scope.cartProductForm.cartProducts[i].quantity;
             }
+
+            $scope.$emit('totalAfterAddShoppingCart', $scope.cartProductForm.cartProducts.length);
 
         },errorOperate);
     }

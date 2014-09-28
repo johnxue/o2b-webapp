@@ -12,15 +12,15 @@
   <div class="cont" id="top">
     <section id="navbars">
       <nav class="navbar" role="navigation">
-        <div class="navbar-header"> <a class="navbar-brand" href="#">首页</a> </div>
+        <div class="navbar-header"> <a class="navbar-brand" href="#/" onclick="$('.activeIndex').removeClass('activeIndex');">首页</a> </div>
         
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-collapse-example">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#/">首页</a></li>
-            <li><a href="#/product">产品</a></li>
+            <li class="activeIndex"><a href="javascript:;" ng-click="goTo('#/',$event.target);">首页</a></li>
+            <li><a href="javascript:;" ng-click="goTo('#/product',$event.target);">产品</a></li>
             <li><a href="#">头条</a></li>
-            <li><a href="#/newsList">新闻</a></li>
+            <li><a href="javascript:;" ng-click="goTo('#/newsList',$event.target);">新闻</a></li>
           </ul>
           <form class="navbar-form navbar-left" role="search">
             <div class="form-group">
@@ -30,17 +30,17 @@
           </form>
           <!-- 登陆前显示-->
           <ul class="nav navbar-nav navbar-right" ng-show="beforeLogin">
-            <li><a href="#/register">注册</a></li>
-            <li><a href="" data-toggle="modal"  data-target="#denglu">登陆</a></li>
-            <li><a href="#/productShoppingCart" ><i class="icon-shopping-cart"></i> 购物车 <span class="label label-badge label-info">{{cartProductsTotal}}</span></a>
+            <li><a href="javascript:;" ng-click="goTo('#/register',$event.target);">注册</a></li>
+            <li><a href="" data-toggle="modal"  data-target="#denglu" onclick="$('.activeIndex').removeClass('activeIndex');">登陆</a></li>
+            <li><a href="javascript:;" ng-click="goTo('#/productShoppingCart',$event.target);"><i class="icon-shopping-cart"></i> 购物车 <span class="label label-badge label-info">{{cartProductsTotal}}</span></a>
             </li>
           </ul>
           <!-- 登陆前显示结束--> 
           <!-- 登陆后显示-->
           <div class="dengluhou" ng-show="afterLogin">
             <ul class="nav navbar-nav navbar-right">
-              <li> <a href="#/myForm"> 我的订单</a> </li>
-              <li> <a href="" data-toggle="dropdown"  class="dropdown-toggle"> 消息 <i class="icon-caret-down"></i> </a>
+              <li> <a href="javascritp:;" ng-click="goTo('#/myForm',$event.target);"> 我的订单</a> </li>
+              <li> <a href="" data-toggle="dropdown"  class="dropdown-toggle" onclick="$('.activeIndex').removeClass('activeIndex');"> 消息 <i class="icon-caret-down"></i> </a>
                 <ul class=" pull-right dropdown-menu  dropdown-close">
                   <li> <a href="#"> <i class="icon-cog"></i> 我的评论 </a> </li>
                   <li class="divider"></li>
@@ -51,7 +51,7 @@
                   <li> <a href="#"> <i class="icon-comment"></i> 站内通知</a> </li>
                 </ul>
               </li>
-              <li > <a href="" data-toggle="dropdown"  class="dropdown-toggle">{{loginedName}} <i class="icon-caret-down"></i> </a>
+              <li > <a href="" data-toggle="dropdown"  class="dropdown-toggle" onclick="$('.activeIndex').removeClass('activeIndex');">{{loginedName}} <i class="icon-caret-down"></i> </a>
                 <ul class=" pull-right dropdown-menu  dropdown-close">
                   <li> <a href="#/accountSetting"> <i class="icon-cog"></i> 账号设置 </a> </li>
                   <li class="divider"></li>
@@ -63,7 +63,7 @@
                 </ul>
               </li>
               <li>
-                  <a href="#/productShoppingCart" ><i class="icon-shopping-cart"></i> 购物车 <span class="label label-badge label-info">{{cartProductsTotal}}</span></a>
+                  <a href="javascript:;" ng-click="goTo('#/productShoppingCart',$event.target);"><i class="icon-shopping-cart"></i> 购物车 <span class="label label-badge label-info">{{cartProductsTotal}}</span></a>
               </li>
             </ul>
           </div>
