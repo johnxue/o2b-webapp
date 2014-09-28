@@ -30,11 +30,6 @@ ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonServ
     if(cookieOperate.getCookie("token")==null){
         $scope.beforeLogin = true;
         $scope.afterLogin = false;
-        localDataStorage.removeItem('cartProductsInfoArray');
-        localDataStorage.removeItem('cartProductsTotal');
-        localDataStorage.removeItem('orderProductsInfo');
-        localDataStorage.removeItem('cartProductsTotalOnIndex');
-
     }else{
         $scope.beforeLogin = false;
         $scope.afterLogin = true;

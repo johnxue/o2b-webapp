@@ -42,6 +42,8 @@
 
      //按条件查询点击事件
      $scope.queryBySth = function(sort,value){
+        // $('.active').removeClass('active');
+
          $scope.products = {};
          querySort=sort;
          queryValue=value;

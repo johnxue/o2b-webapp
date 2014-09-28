@@ -18,16 +18,20 @@
 var UserAccountSettingControllers = angular.module('UserAccountSettingControllers',[]);
 
 /*定义 Controller: UserAccountSettingCtrl  （帐号设置页面 accountSetting.html）*/
-UserAccountSettingControllers.controller('UserAccountSettingCtrl',function($scope,CommonService){
+UserAccountSettingControllers.controller('UserAccountSettingCtrl',function($scope,CommonService,$fileUploader){
     ctrInit();
 
     var uriData='';
     //初始化$scope中定义的变量
 
+    $scope.personalDataForm={};
+
+    $scope.updatePasswordForm={};
+
 
     //实现与页面交互的事件,如：button_click
 
-    $scope.saveUpdate=function(updatePasswordForm){
+    $scope.saveUpdatePwd=function(updatePasswordForm){
 
         var oPwd = updatePasswordForm['OPwd'];
         var nPwd = updatePasswordForm['NPwd'];
@@ -38,7 +42,28 @@ UserAccountSettingControllers.controller('UserAccountSettingCtrl',function($scop
 
         CommonService.updatePartOne('user/info/pmssmed',JSON.stringify(uriData),function(data){
         },errorOperate);
-    }
+    };
+
+    //文件上传
+   $scope.uploader=$fileUploader.create({
+           scope: $scope,
+           url: 'https://192.168.1.210/o2b/v1.0.0/user/header?type=header',
+           method: 'POST',
+           autoUpload: false,   // 自动上传
+           alias: 'picture',
+           headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
+
+       });
+
+    $scope.uploader.bind('success',function(event,xhr,item,response){
+        document.getElementById('hiId')['src']='https://192.168.1.210/'+response.url+'/'+response.filename;
+        alert('上传成功!');
+    });
+
+    $scope.uploader.bind('error',function(event,xhr,item,response){
+        alert('上传失败,请清除后重新提交!');
+    });
+
 
 
 
