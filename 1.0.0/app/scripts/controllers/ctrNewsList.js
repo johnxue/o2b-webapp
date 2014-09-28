@@ -43,10 +43,12 @@ NewsListControllers.controller('NewsListCtrl',function($scope,CommonService) {
         CommonService.getAll('news', uriData, function (data) {
             for (var i = 0; i < data.news.length; i++) {
                 var times = timeDifference("D", data.news[i][5], Time);
-                if (times >= 3.00 || times < 0) {
+                if (times > 3.00 || times < 0) {
                     $("table tr:eq(0)").after("<tr><td><a href='#/news/" + data.news[i][0] + "'>" + data.news[i][1] + "</a></td><td>" + data.news[i][3] + "</td><td>" + data.news[i][5] + "</td></tr>");
+                }else if(times == 0){
+                    $("table tr:eq(0)").after("<tr><td><a href='#/news/" + data.news[i][0] + "'>" + data.news[i][1] + "</a></td><td>" + data.news[i][3] + "</td><td>今天</td></tr>");
                 } else {
-                    $("table tr:eq(0)").after("<tr><td><a href='#/news/" + data.news[i][0] + "'>" + data.news[i][1] + "</a></td><td>" + data.news[i][3] + "</td><td>" + times + "</td></tr>");
+                    $("table tr:eq(0)").after("<tr><td><a href='#/news/" + data.news[i][0] + "'>" + data.news[i][1] + "</a></td><td>" + data.news[i][3] + "</td><td>" + times + "天</td></tr>");
                 }
             }
         }, errorOperate);
