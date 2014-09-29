@@ -131,5 +131,9 @@ function errorOperate(response) {
 function ctrInit(){
     //隐藏广告栏
     $('#banner').hide();
+    //去除滚动条事件
+    if(URL.getAll().match('/#/productDetail')==null){
+          $(window).unbind('scroll');
+    }
 }
 

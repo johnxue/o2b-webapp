@@ -42,7 +42,7 @@ img { border:0px; }
 .fixtop { height: 50px; width: 50px; position: fixed; bottom: 20px; right: 100px; }
 .fixtop a { padding: 10px; height: 50px; width: 50px; display: block; background-image: url(../images/top.png); background-color: #CCC; border-radius:5px; }
 .fixtop a:hover { background-color: #9CC; border-radius:5px; }
-.nav.navbar-nav .activeIndex { color: #333; background-color: #09C; }
+.nav.navbar-nav .activeIndex { color: #333; background-color: #fbfbfb; }
 .nav.navbar-nav .activeIndex a { color: #000; }
 .tab-content.tab-bordered { border-top: none; border-radius: 0 0 4px 4px; padding-top: 15px; }
 .nav.nav-tabs li a { color: #09C; outline:none; }
