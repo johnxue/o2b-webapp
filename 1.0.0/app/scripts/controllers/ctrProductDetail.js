@@ -25,6 +25,8 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
     var uriData ='';
     var starttime='';
     var endtime='';
+    var limit='';
+    var totalSold='';
     var currentPrice ='';
     var addCartNeed ={};
     var inventoryStatus='';
@@ -195,6 +197,8 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
         $scope.productDetailBasic=data.basic;
         starttime = $scope.productDetailBasic.starttime;
         endtime = $scope.productDetailBasic.endtime;
+        limit=$scope.productDetailBasic.limit;
+        totalSold=$scope.productDetailBasic.totalSold;
         currentPrice=$scope.productDetailBasic.currentPrice;
         $scope.cost=$scope.quantity*currentPrice;
         $scope.productDetailhtmls=data.html;
@@ -204,9 +208,7 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
         var sysDate = new Date();
         var stime = new Date(starttime.replace(/-/g,"/"));
         var etime = new Date(endtime.replace(/-/g,"/"));
-        var a = sysDate-stime;
-        var b = sysDate-etime;
-        if((sysDate-stime>0 )& (sysDate-etime<0)){
+        if((sysDate-stime>0 )&& (sysDate-etime<0)&&(limit-totalSold)>0){
             $scope.reserverState=false;
         }
 

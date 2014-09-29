@@ -25,7 +25,7 @@
     <div class="list">
       <section class="cards" >
         <div  ng-repeat=" product in products" class="col-md-3 col-sm-6 col-lg-3">
-          <div class="card"><p><img ng-src="images/products/{{product[4]}}" alt="" width="223" height="165"></p><span class="caption">{{product[3]}}</span> <a href="#/productDetail/{{product[1]}}" class="card-heading"><span>{{product[3]}}</span></a>
+          <div class="card"><p> <a href="#/productDetail/{{product[1]}}" ><img ng-src="images/products/{{product[4]}}" alt="" width="223" height="165"></a></p><span class="caption">{{product[3]}}</span> <a href="#/productDetail/{{product[1]}}" class="card-heading"><span>{{product[3]}}</span></a>
             <P class="listp"><span class="hui">{{product[5]+'&'+product[6] | datemark}}</span>
                 <span class='label label-success pull-right' ng-show="product[7]=='ON'">{{product[8]}}</span>
                 <span class='label label-warning pull-right' ng-show="product[7]=='TBA'">{{product[8]}}</span>
