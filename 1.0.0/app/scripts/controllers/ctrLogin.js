@@ -84,42 +84,18 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
 
                 //将用户登录之前的购物车商品信息添加到服务器
                 for(var i=0;i<cartProductsInfoArray.length;i++){
+
                     var addCartNeed = {};
                     addCartNeed.pid = cartProductsInfoArray[i]['pid'];
                     addCartNeed.pcode = cartProductsInfoArray[i]['code'];
                     addCartNeed.number = cartProductsInfoArray[i]['quantity'];
                     CommonService.createOne('shoppingcart', JSON.stringify(addCartNeed), function (data) {
-                        console.info(data.user);
-                        console.info(data.shoppingCartId);
-                        cartProductsInfoArray[i]['id']=data.shoppingCartId;
                 },errorOperate);
+
                 }
 
                 //将用户登录前后的购物车商品个数合并
                 cartProductsTotal+=cartProducts.length;
-
-
-                //将用户登录前后的购物车商品信息合并
-                for(var i=0;i<cartProducts.length;i++){
-                    var cartProductsInfo={};
-
-                    cartProductsInfo.id=cartProducts[i][0];
-                    cartProductsInfo.pid=cartProducts[i][1];
-                    cartProductsInfo.code = cartProducts[i][2];
-                    cartProductsInfo.name=cartProducts[i][3];
-                    cartProductsInfo.originalPrice=cartProducts[i][4];
-                    cartProductsInfo.currentPrice=cartProducts[i][5];
-                    cartProductsInfo.quantity=cartProducts[i][6];
-                    cartProductsInfo.offLine=cartProducts[i][7];
-                    if(cartProducts[i][8]>0){
-                        cartProductsInfo.inventoryStatus='有货';
-                    }else{
-                        cartProductsInfo.inventoryStatus='无货'
-                    }
-                    cartProductsInfo.image=cartProducts[i][9];
-
-                    cartProductsInfoArray.push(cartProductsInfo);
-                }
 
                 localDataStorage.setItem('cartProductsTotalOnIndex',JSON.stringify(cartProductsTotal));
                 localDataStorage.removeItem('cartProductsTotal');
@@ -129,9 +105,16 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
                 $scope.$emit('logined', strUserName,cartProductsTotal);
 
                 $scope.objLoginInfo={};
+
+                //如果发起登录请求的是购物车页面,则重新加载该页
+                if($window.location.href.substring($window.location.href.length-21,$window.location.href.length)=='#/productShoppingCart'){
+                    document.location.reload();
+                }
+
             },errorOperate);
 
             $('#denglu').hide();
+
             // 调用回调连接
         }, function (response) {
             objResults.error.code = parseInt(response.code);
@@ -164,7 +147,7 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
 });
 
 /*定义 Controller: logoutCtrl  （登出）*/
-LoginControllers.controller('logoutCtrl', function ($scope,CommonService) {
+LoginControllers.controller('logoutCtrl', function ($scope,CommonService,$window) {
     ///初始化$scope中定义的变量
      var uriData=undefined;
     //实现与页面交互的事件,如：button_click
@@ -178,6 +161,8 @@ LoginControllers.controller('logoutCtrl', function ($scope,CommonService) {
             localDataStorage.removeItem('cartProductsTotal');
             localDataStorage.removeItem('orderProductsInfo');
             localDataStorage.removeItem('cartProductsTotalOnIndex');
+
+            $window.location.href='/';
 
             $scope.$emit('logouted');
 

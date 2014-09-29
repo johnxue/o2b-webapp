@@ -38,6 +38,8 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
 
     $scope.multiDelCartProductState=true;
 
+    $scope.orderCartProductState=true;
+
     if(cookieOperate.getCookie('token')==null){
 
     $scope.cartProductForm.cartProducts = JSON.parse(localDataStorage.getItem('cartProductsInfoArray'));
@@ -54,6 +56,8 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
 
     localDataStorage.setItem('cartProductsInfoArray',JSON.stringify($scope.cartProductForm.cartProducts));
     localDataStorage.setItem('cartProductsTotal',JSON.stringify($scope.cartProductForm.cartProducts.length));
+
+    $scope.$emit('totalAfterAddShoppingCart', $scope.cartProductForm.cartProducts.length);
 
     }
 
@@ -73,9 +77,11 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
         for (var i = 0; i < cartProductsForm_cartProducts.length; i++) {
             if (cartProductsForm_cartProducts[i].checked == true) {
                 $scope.multiDelCartProductState = false;
+                $scope.orderCartProductState=false;
                 break;
             }
             $scope.multiDelCartProductState = true;
+            $scope.orderCartProductState=true;
         }
     }
 
@@ -154,6 +160,10 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
                         $scope.cartProductForm.cartProducts.splice(i, 1);
 
                         $scope.$emit('totalAfterAddShoppingCart', $scope.cartProductForm.cartProducts.length);
+
+                        $scope.multiDelCartProductState = true;
+
+                        $scope.orderCartProductState=true;
                     }
                 }
 
@@ -170,6 +180,10 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
                     $scope.cartProductForm.cartProducts.splice(i, 1);
 
                     $scope.$emit('totalAfterAddShoppingCart', $scope.cartProductForm.cartProducts.length);
+
+                    $scope.multiDelCartProductState = true;
+
+                    $scope.orderCartProductState=true;
                 }
             }
 
@@ -214,6 +228,8 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
 
                 $scope.multiDelCartProductState = true;
 
+                $scope.orderCartProductState=true;
+
             }, errorOperate);
 
         } else {
@@ -246,6 +262,8 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
 
 
             $scope.multiDelCartProductState = true;
+
+            $scope.orderCartProductState=true;
         }
     }
 
@@ -328,6 +346,8 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
                 $scope.cartProductForm.cartProducts[i].amount=$scope.cartProductForm.cartProducts[i].currentPrice* $scope.cartProductForm.cartProducts[i].quantity;
                 $scope.allCost += $scope.cartProductForm.cartProducts[i].currentPrice* $scope.cartProductForm.cartProducts[i].quantity;
             }
+
+            $scope.$emit('totalAfterAddShoppingCart', $scope.cartProductForm.cartProducts.length);
 
         },errorOperate);
     }

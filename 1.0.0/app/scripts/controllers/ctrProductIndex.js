@@ -30,11 +30,6 @@ ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonServ
     if(cookieOperate.getCookie("token")==null){
         $scope.beforeLogin = true;
         $scope.afterLogin = false;
-        localDataStorage.removeItem('cartProductsInfoArray');
-        localDataStorage.removeItem('cartProductsTotal');
-        localDataStorage.removeItem('orderProductsInfo');
-        localDataStorage.removeItem('cartProductsTotalOnIndex');
-
     }else{
         $scope.beforeLogin = false;
         $scope.afterLogin = true;
@@ -77,6 +72,7 @@ ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonServ
 
 
     //实现与页面交互的事件,如：button_click
+    //产品模糊查询
     $scope.query = function(queryCondition){
         if(queryCondition==undefined){
             queryCondition='';
@@ -94,6 +90,15 @@ ProductIndexControllers.controller('ProductIndexCtrl',function($scope,CommonServ
            }
 
         },errorOperate);
+    };
+
+    //页面跳转
+    $scope.goTo=function(url,target){
+        //更改选项样式
+        $('.activeIndex').removeClass('activeIndex');
+        target.setAttribute('class','activeIndex');
+        $window.location.href=url;
+
     }
 
     //调用与后端的接口,如：CommonService.getAll(params)

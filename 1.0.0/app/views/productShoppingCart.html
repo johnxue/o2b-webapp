@@ -24,7 +24,7 @@ $(document).ready(function(e) {
     <div class="cont" style=" margin-top:20px;" >
       <div class="col-md-12">
         <div class="fudong">
-          <div class="ha30"><a href="javascript:;" class="btn btn-info" ng-click="multipleDelCartProduct(cartProductForm);" ng-disabled="multiDelCartProductState">删除选中商品</a> <span><a href=""class="btn btn-info pull-right mr20" ng-click="order(cartProductForm);">购买</a></span><span class="pull-right mr20 ">购物车共&nbsp;<strong class="blue">{{allQuantity}}</strong>&nbsp;件,总金额共计:￥<strong class="blue">{{allCost | number:2}}</strong></span></div>
+          <div class="ha30"><a href="javascript:;" class="btn btn-info" ng-click="multipleDelCartProduct(cartProductForm);" ng-disabled="multiDelCartProductState">删除选中商品</a> <span><a href=""class="btn btn-info pull-right mr20" ng-click="order(cartProductForm);" ng-disabled="orderCartProductState">购买</a></span><span class="pull-right mr20 ">购物车共&nbsp;<strong class="blue">{{allQuantity}}</strong>&nbsp;件,总金额共计:￥<strong class="blue">{{allCost | number:2}}</strong></span></div>
         </div>
         <table class="table table-hover main">
           <form ng-model="cartProductForm">
