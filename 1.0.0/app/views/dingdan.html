@@ -1,3 +1,4 @@
+<!--  我的订单页面  -->
 <div class="container">
   <div class="cont" >
     <div class="col-md-12">
@@ -106,24 +107,15 @@
                                 <td>操作</td>
                                 </thead>
                                 <tbody>
-                                <tr><!--js遍历数据 --></tr>
+                                <tr><!--遍历信息内容 --></tr>
                                 </tbody>
                             </table>
 
                             <div class="col-md-9" ng-show="returnFrom">
                                 <p class="title">退货详细</p>
                                 <table class="table table-hover" id="retGoodsFrom">
-                                 <!--   <thead>
-                                    <td>商品信息</td>
-                                    <td>订单号</td>
-                                    <td>收货人</td>
-                                    <td>购买数量</td>
-                                    <td>状态</td>
-                                    </thead>-->
                                     <tbody>
-                                   <tr>
-                                      <!-- js遍历 -->
-                                    </tr>
+                                       <tr><!-- 遍历信息内容 --></tr>
                                     </tbody>
                                 </table>
 
@@ -138,22 +130,47 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">退货数量：</label>
-                                        <div class="col-md-7"> <span>
-                        <!--  <button class="btn btn-info btn-mini w20 " ng-click="jia(goods)">+</button>-->
-                          <span>
-                          <input type="number" class="input" ng-model="goods.Number"/>
-                          </span>
-                       <!--   <button class="btn btn-info btn-mini w20 ">-</button>-->
-                          </span> </div>
+                                        <div class="col-md-7">
+                                            <span><input type="number" class="input" ng-model="goods.Number"/></span>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-3 control-label" style="text-align:right;">上传图片：</label>
-                                        <div class="col-md-7">
-                                            <input ng-file-select type="file" multiple  style="width:70px">
+                                        <div class="col-md-7"> <!-- multiple  ng-file-select-->
+                                            <input ng-file-select type="file" style="width:62px">
                                             <!--文件上传 -->
-
+                                            <table class="table" style="width: 94%;">
+                                                <tbody>
+                                                <tr ng-repeat="item in uploader.queue">
+                                                        <td><strong class="mt20" ng-repeat="phone in phones">
+                                                        <img src="https://192.168.1.210{{phone.picUrl}}/{{phone.picFileName}}" class="prdouctimg ml10 mr10" />
+                                                        <!-- 申请退货商品图片显示 --></strong></td>
+                                                    <td><strong>{{ item.file.name }}</strong></td>
+                                                    <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                    <td ng-show="uploader.isHTML5">
+                                                        <div class="progress" style="margin-bottom: 0;">
+                                                            <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                                        <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                                    </td>
+                                                    <td nowrap>
+                                                        <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                            <span class="glyphicon glyphicon-upload"></span> 上传
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                                            <span class="glyphicon glyphicon-trash"></span> 移除
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
                                             <!-- 结束-->
                                             </br>
+                                         <!--   <div class="mt20" id="upPic">&lt;!&ndash; 申请退货商品图片显示 &ndash;&gt;</div>-->
                                             <div class="alert alert-info"> <strong>Hi!</strong> 为了帮助我们更好的解决问题，请您上传图片</div>
                                         </div>
                                     </div>

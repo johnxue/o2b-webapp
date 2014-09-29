@@ -1,15 +1,19 @@
-/**
- * Created by Administrator on 2014/9/10.
- */
+/*定义 Controller: NewsCtrl  （新闻详细页面 news.html）*/
+
 var NewsControllers = angular.module('NewsControllers',[]);
 
-/*定义 Controller: ProductReserveCtrl  （订购页面 productReserve.html）*/
 NewsControllers.controller('NewsCtrl',function($scope,CommonService,$routeParams){
 
     var uriData ='';
 
-    uriData = undefined;
+    ctrInit();  //广告
+
     CommonService.getAll('news/'+$routeParams.id,uriData,function (data) {
-        $("#content").html(data.htmlContent);
+        $("#newTitle").html(data.title);                  //标题
+        $("#newAuthor").html("作者："+data.author);     //作者
+        $("#newSource").html("来源: "+data.source);     //来自于
+        $("#newCreateTime").html(data.createTime);      //时间
+        $("#content").html(data.htmlContent);           //内容
     },errorOperate);
+
 });

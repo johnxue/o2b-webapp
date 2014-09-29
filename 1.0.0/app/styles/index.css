@@ -79,7 +79,7 @@ right: 50px; top: 50px; }
 .blue { color:#39b3d7 }
 .ha30 { line-height:40px; }
 .form_list form ul li { list-style-type: none; }
-.text p { font-family: "微软雅黑"; font-size: 16px; line-height: 40px; }
+.text { font-family: "微软雅黑"; font-size: 16px; line-height: 40px; }
 .table.table-hover tbody tr td a { color: #09C; }
 .label a { color: #FFF; }
 .label.a:hover { text-decoration: none; }

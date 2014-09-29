@@ -1,29 +1,29 @@
-/**
- * Created by Administrator on 2014/9/11.
- */
+/*定义 Controller: MyFormCtrl  （我的订单页面 dingdan.html）*/
+
 var MyFormControllers = angular.module('MyFormControllers',[]);
 
 MyFormControllers.controller('MyFormCtrl',function($scope,$fileUploader,$compile,CommonService){
 
     var uriData = '';
-    var emData = '';  //判断数据是否为空
-    var nowPage = 0;  //当前页
-    var pageNum = 10;  //每页显示条数
-    var empty = true;    //是否清空数据  true是||false否
-    var contentTab = ""; //Html Table_ID
-    var rGoodsHtml='';   //js拼接Html
+    var nowPage = 0;         //当前页
+    var pageNum = 10;       //每页显示条数
+    var empty = true;      //是否清空数据  true是||false否
+    var contentTab = "";   //Html Table_ID
+    var rGoodsHtml = '';   //js拼接Html
 
     var oid = '';
     var orderNo = '';
-    var pcode ='';
+    var pcode = '';
     var pname = '';
 
-    var picName='';
-        /******************************  加载运行 *************************/
-    ctrInit();  //广告
-    $scope.returnFrom=false;   //隐藏退货表单
+    var picName = '';     //上传图片名称
+    var static = true;  //是否显示退货
 
-     /*************************************************  页面交互事件  ********************************************/
+    /******************************   加载运行   ***********************************/
+    ctrInit();  //广告
+    $scope.returnFrom = false;   //隐藏退货表单
+
+     /*****************************  页面交互事件  ***********************************/
      //下拉框
     $scope.$watch('seleDataTime', function(onVal) {
         if(onVal == null){
@@ -43,6 +43,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$fileUploader,$compile
     $scope.formAll = function(){
         uriData = "s=period&v=ALL&r="+pageNum+"&o=";
         contentTab = "content1";
+        static = true;
         $scope.tabClear();
         $scope.switchTab();
     }
@@ -51,6 +52,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$fileUploader,$compile
     $scope.order = function(){
         uriData = "s=status&v=110&r="+pageNum+"&o=";
         contentTab = "content2";
+        static = false;
         $scope.tabClear();
         $scope.switchTab();
     }
@@ -59,6 +61,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$fileUploader,$compile
     $scope.waitShipped = function(){
         uriData = "s=status&v=130&r="+pageNum+"&o=";
         contentTab = "content3";
+        static = true;
         $scope.tabClear();
         $scope.switchTab();
     }
@@ -67,6 +70,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$fileUploader,$compile
     $scope.shipped = function(){
         uriData = "s=status&v=210&r="+pageNum+"&o=";
         contentTab = "content4";
+        static = true;
         $scope.tabClear();
         $scope.switchTab();
     }
@@ -75,18 +79,9 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$fileUploader,$compile
     $scope.return = function(rou){
         uriData = "s=status&v=310&r="+pageNum+"&o=";
         contentTab = "content5";
+        static=false;
         $scope.tabClear();
         $scope.switchTab();
-       /* CommonService.getAll('order', uriData, function (data) {
-            $scope.sendHtml("content5",data);
-        });*/
-    }
-
-    //重置
-    $scope.tabClear = function(){
-        nowPage = 0;
-        empty = true;
-        $scope.returnFrom = false;
     }
 
     //模糊查询
@@ -94,13 +89,6 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$fileUploader,$compile
         var seleCon = $scope.seleVal;  //获取输入内容
         uriData = "q="+seleCon+"&r="+pageNum+"&o=";
         $scope.tabClear();
-        $scope.switchTab();
-    }
-
-    //查看更多
-    $scope.Page = function(){
-        nowPage = nowPage+1
-        empty = false;
         $scope.switchTab();
     }
 
@@ -113,6 +101,13 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$fileUploader,$compile
                 $scope.sendHtml(contentTab,null);
             }
        });
+    }
+
+    //查看更多
+    $scope.Page = function(){
+        nowPage = nowPage+1
+        empty = false;
+        $scope.switchTab();
     }
 
     //删除事件
@@ -180,29 +175,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$fileUploader,$compile
         });
     }
 
-    //添加数据到页面
-    $scope.sendHtml = function(cid,data){
-        if(empty){  //是否清空数据
-            $("#"+cid+" tr:gt(0)").remove();
-            $("#Prompt").html(null);
-        }
-        if(data==null){      //判断是否有记录
-            $("#Prompt").html("<div class='row'><div class='container'><div class='col-md-12'><div class='alert with-icon mp10'>" +
-                "<i class='icon-info-sign'></i><div class='content'>没有符合条件的订单记录。</div></div></div></div></div>");
-        }else{
-            for(var i=0;i<data.OrderList.length;i++){
-              //  alert(data.OrderList[i][0][0]);
-                localStorage.setItem("da",data.OrderList[i][1]);
-                var Status = data.OrderList[i][0][8]; //交易状态
-                var recordId = data.OrderList[i][0][0]; //记录ID
-                var HTML = "<tr><td><img src='images/products/"+data.OrderList[i][1][0][1]+"' class='prdouctimg ml10 mr10'/></td>"+
-                "<td>"+data.OrderList[i][0][3]+"</td><td><strong>"+data.OrderList[i][0][4]+"</strong></td><td><strong class='blue'>￥"+data.OrderList[i][0][5]+"</strong></td><td><a class='label label-info'>"+data.OrderList[i][0][7]+"</a></td><td><p class='ha20'>"+data.OrderList[i][0][2].substring(0,10)+"</p><p class='ha20'>"+data.OrderList[i][0][2].substring(11,19)+" </p></td>"+
-                "<td><p class='ha20'><a href='#/viewDetails/"+data.OrderList[i][0][0]+"'>详情</a></p><p class='ha20'><a data-toggle='modal' data-ng-click='deleGoods("+recordId+","+Status+")'>删除</a></p><p class='ha20'><a data-toggle='modal' data-ng-click='vm.activeTab = 5;returnGoods("+data.OrderList[i][0][0]+")'>退货</a></p></td></tr>";
-                var cHTML=$compile(HTML)($scope);  //编译
-                $("#"+cid+" tr:eq(0)").after(cHTML);  //添加至页面
-            }
-        }
-    }
+
 
     //文件上传
     var uploader = $scope.uploader = $fileUploader.create({   //添加附件
@@ -215,14 +188,53 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$fileUploader,$compile
     });
 
    uploader.bind('success', function (event, xhr, item, response) {  //添加成功处理
-        console.info('Success', xhr, item, response);
+      //  console.info('Success', xhr, item, response);
        picName = response.filename;
-       $("#upPic").append("<span><img src='https://192.168.1.210"+response.url+"/"+response.filename+"'  class='prdouctimg ml10 mr10' /></span>");
+       $scope.phones = [
+           {"picUrl": response.url,
+            "picFileName": response.filename}
+       ];
    });
 
     uploader.bind('error', function (event, xhr, item, response) {  //添加失败处理
-        console.info('Error', xhr, item, response);
+
     });
 
+    /******************************   调用方法   ***********************************/
+     //重置
+    $scope.tabClear = function(){
+        nowPage = 0;
+        empty = true;
+        $scope.returnFrom = false;
+    }
+
+    //添加数据到页面
+    $scope.sendHtml = function(cid,data){
+        if(empty){  //是否清空数据
+            $("#"+cid+" tr:gt(0)").remove();
+            $("#Prompt").html(null);
+        }
+        if(data==null){      //判断是否有记录
+            $("#Prompt").html("<div class='row'><div class='container'><div class='col-md-12'><div class='alert with-icon mp10'>" +
+                "<i class='icon-info-sign'></i><div class='content'>没有符合条件的订单记录。</div></div></div></div></div>");
+        }else{
+            for(var i=0;i<data.OrderList.length;i++){
+                var Status = data.OrderList[i][0][8]; //交易状态
+                var recordId = data.OrderList[i][0][0]; //记录ID
+                var HTML;
+                if(static){  //未付款、退货 无退货功能
+                    HTML = "<tr><td><img src='images/products/"+data.OrderList[i][1][0][1]+"' class='prdouctimg ml10 mr10'/></td>"+
+                        "<td>"+data.OrderList[i][0][3]+"</td><td><strong>"+data.OrderList[i][0][4]+"</strong></td><td><strong class='blue'>￥"+data.OrderList[i][0][5]+"</strong></td><td><a class='label label-info'>"+data.OrderList[i][0][7]+"</a></td><td><p class='ha20'>"+data.OrderList[i][0][2].substring(0,10)+"</p><p class='ha20'>"+data.OrderList[i][0][2].substring(11,19)+" </p></td>"+
+                        "<td><p class='ha20'><a href='#/viewDetails/"+data.OrderList[i][0][0]+"'>详情</a></p><p class='ha20'><a data-toggle='modal' data-ng-click='deleGoods("+recordId+","+Status+")'>删除</a></p><p class='ha20'><a data-toggle='modal' data-ng-click='vm.activeTab = 5;returnGoods("+data.OrderList[i][0][0]+")'>退货</a></p></td></tr>";
+                }else{
+                    HTML = "<tr><td><img src='images/products/"+data.OrderList[i][1][0][1]+"' class='prdouctimg ml10 mr10'/></td>"+
+                        "<td>"+data.OrderList[i][0][3]+"</td><td><strong>"+data.OrderList[i][0][4]+"</strong></td><td><strong class='blue'>￥"+data.OrderList[i][0][5]+"</strong></td><td><a class='label label-info'>"+data.OrderList[i][0][7]+"</a></td><td><p class='ha20'>"+data.OrderList[i][0][2].substring(0,10)+"</p><p class='ha20'>"+data.OrderList[i][0][2].substring(11,19)+" </p></td>"+
+                        "<td><p class='ha20'><a href='#/viewDetails/"+data.OrderList[i][0][0]+"'>详情</a></p><p class='ha20'><a data-toggle='modal' data-ng-click='deleGoods("+recordId+","+Status+")'>删除</a></p></td></tr>";
+                }
+                var cHTML=$compile(HTML)($scope);  //编译
+                $("#"+cid+" tr:eq(0)").after(cHTML);  //添加至页面
+            }
+        }
+    }
 
 });
