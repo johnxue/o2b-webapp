@@ -26,6 +26,7 @@ img { border:0px; }
 .ml20 { margin-left: 20px; }
 .mp20 { margin-top: 20px; }
 .marginb { margin-bottom:50px; }
+.mt20{ margin-bottom:20px;}
 .itemtext { height:224px; float:left; width:230px; }
 .fl { float:left }
 .listp, .listb { width: 100%; padding-right: 10px; padding-left: 10px; line-height:25px; }

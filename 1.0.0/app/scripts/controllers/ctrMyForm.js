@@ -3,7 +3,7 @@
  */
 var MyFormControllers = angular.module('MyFormControllers',[]);
 
-MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService){
+MyFormControllers.controller('MyFormCtrl',function($scope,$fileUploader,$compile,CommonService){
 
     var uriData = '';
     var emData = '';  //判断数据是否为空
@@ -18,10 +18,10 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
     var pcode ='';
     var pname = '';
 
-                 /******************************  加载运行 *************************/
+    var picName='';
+        /******************************  加载运行 *************************/
     ctrInit();  //广告
     $scope.returnFrom=false;   //隐藏退货表单
-
 
      /*************************************************  页面交互事件  ********************************************/
      //下拉框
@@ -73,10 +73,13 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
 
     //退货
     $scope.return = function(rou){
-        uriData = "s=status&v=310";
-        CommonService.getAll('order', uriData, function (data) {
+        uriData = "s=status&v=310&r="+pageNum+"&o=";
+        contentTab = "content5";
+        $scope.tabClear();
+        $scope.switchTab();
+       /* CommonService.getAll('order', uriData, function (data) {
             $scope.sendHtml("content5",data);
-        });
+        });*/
     }
 
     //重置
@@ -128,6 +131,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
     //显示订单中商品
     $scope.returnGoods = function(rData){
         $scope.returnFrom=true;
+        $("#content5 tr:gt(0)").remove();
         $scope.Number="1";  //退货数量赋值
         uriData = '';
         CommonService.getAll('order', uriData, function (data) {
@@ -168,8 +172,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
         objGoods.number = JSON.stringify(goodsNum);     //退货数量
         objGoods.mode = goodsType;   //类型
         objGoods.description = goodsDescribe;    //产品缺陷说明
-        objGoods.imgProblem = "123";     //上传图片
-        var goodsPicUrl = "123";     //图片路径
+        objGoods.imgProblem = picName;     //上传图片
         uriData = JSON.stringify(objGoods);
 
         CommonService.createOne('order/returns', uriData, function (data) {
@@ -200,5 +203,26 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$compile,CommonService
             }
         }
     }
+
+    //文件上传
+    var uploader = $scope.uploader = $fileUploader.create({   //添加附件
+        scope: $scope,                          // to automatically update the html. Default: $rootScope
+        url:"https://192.168.1.210/o2b/v1.0.0/order/returns/upload?type=order.returns",
+        headers:{'Authorization':cookieOperate.getCookie('token'),'app-key':'fb98ab9159f51fd0'},
+        method: "POST",
+        alias:"picture",
+        autoUpload: true       //是否自动上传
+    });
+
+   uploader.bind('success', function (event, xhr, item, response) {  //添加成功处理
+        console.info('Success', xhr, item, response);
+       picName = response.filename;
+       $("#upPic").append("<span><img src='https://192.168.1.210"+response.url+"/"+response.filename+"'  class='prdouctimg ml10 mr10' /></span>");
+   });
+
+    uploader.bind('error', function (event, xhr, item, response) {  //添加失败处理
+        console.info('Error', xhr, item, response);
+    });
+
 
 });
