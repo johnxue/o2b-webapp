@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  ng-app="MainApp" ng-controller="ProductIndexCtrl"   >
+<html  ng-app="MainApp" ng-controller="IndexCtrl"   >
 <head>
 <meta charset="utf-8">
 <link href="styles/index.css" rel="stylesheet">
@@ -17,9 +17,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-collapse-example">
           <ul class="nav navbar-nav">
-            <li class="activeIndex"><a href="javascript:;" ng-click="goTo('#/',$event.target);">首页</a></li>
-            <li><a href="javascript:;" ng-click="goTo('#/product',$event.target);">产品</a></li>
-            <li><a href="#">头条</a></li>
+            <li><a href="javascript:;" ng-click="goTo('#/',$event.target);">首页</a></li>
+            <li><a href="javascript:;" ng-click="goTo('#/productList',$event.target);">产品</a></li>
+            <li><a href="javascript:;" ng-click="goTo('#/groupMain',$event.target);">圈子</a></li>
             <li><a href="javascript:;" ng-click="goTo('#/newsList',$event.target);">新闻</a></li>
           </ul>
           <form class="navbar-form navbar-left" role="search">
@@ -225,8 +225,8 @@
 <script src="scripts/app.js"></script>
 <script src="scripts/controllers/ctrProductList.js"></script> 
 <script src="scripts/controllers/ctrProductDetail.js"></script> 
-<script src="scripts/controllers/ctrProductIndex.js"></script> 
-<script src="scripts/controllers/ctrProductMain.js"></script> 
+<script src="scripts/controllers/ctrIndex.js"></script>
+<script src="scripts/controllers/ctrMain.js"></script>
 <script src="scripts/controllers/ctrLogin.js"></script> 
 <script src="scripts/controllers/ctrProductOrder.js"></script> 
 <script src="scripts/controllers/ctrUserAddress.js"></script> 
@@ -238,6 +238,11 @@
 <script src="scripts/controllers/ctrUserFollow.js"></script>
 <script src="scripts/controllers/ctrViewDetails.js"></script>
 <script src="scripts/controllers/ctrUserAccountSetting.js"></script>
+<script src="scripts/controllers/ctrGroupMain.js"></script>
+<script src="scripts/controllers/ctrGroupDetail.js"></script>
+<script src="scripts/controllers/ctrCreateGroup.js"></script>
+<script src="scripts/controllers/ctrGroupPostDetail.js"></script>
+<script src="scripts/controllers/ctrEditGroupPost.js"></script>
 
 <script src="scripts/services/svcCommon.js"></script>
 <script src="scripts/services/svcLogin.js"></script>

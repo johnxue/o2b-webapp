@@ -1,0 +1,95 @@
+<style type="text/css">
+.comment ul li { float: left; display: block; width: 40px; }
+.comment h2 { font-family: "微软雅黑"; font-size: 18px; color: #666; }
+</style>
+<div ng-controller="GroupDetailCtrl">
+<div class="container" >
+  <div class="cont" >
+    <div class="col-md-12">
+      <ul class="breadcrumb">
+        <li><a href="#/">首页</a></li>
+        <li><a href="#/groupMain">圈子</a></li>
+        <li class="active">admin454</li>
+      </ul>
+      <div class="col-md-12">
+        <div class="alert with-icon"> 
+          <div class="content"> <img src="images/dog.jpg" class="huati-head htu" /><strong class="ml70">重庆第一车友会</strong>&nbsp; <i class="icon-chat-dot"></i> 话题：<span class="blue">  40</span>
+         <div class="pull-right"><a href="" class="label label-info large href"><i class="icon-user"></i> 我的圈子</a></div>    <div class="pull-right"><a href="" class="label label-success large href"><i class="icon-minus"></i> 退出圈子</a></div>
+            <div class="pull-right"><a href="" class="label label-info large href"><i class="icon-plus"></i> 加入圈子</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-9 mp20">
+        <div class="huati-box">
+          <div class="huati-top"> 
+            
+            <!--  头像滑过显示-->
+            <div class="relative">
+              <div class="popover" ng-style="{display: item.popover?'block':'none'}"  ng-mouseenter="item.popover=true"
+            ng-mouseleave="item.popover=false"  >
+                <div class="popover-content">
+                  <div class="row">
+                    <div class="col-md-5"> <img src="images/head1.gif" class="huati-head " /> </div>
+                    <div class="col-md-7"> <span class="pull-right"> <a href="" class="label label-info">+关注</a> 
+                      <!-- <a href="" class="label label-info">已关注</a> --></span> </div>
+                  </div>
+                  <p class=" ha30 " > <span> <strong>小非印象</strong></span> &nbsp;<span>关注：2323</span>&nbsp;<span>粉丝：2323</span> </p>
+                  <p class=" ha30" > 已加圈：<span class="blue">财网、爱读书、小说圈</span> </p>
+                </div>
+              </div>
+            </div>
+            <!--  头像滑过显示结束--->
+            <div class="col-md-1" ><img src="images/head1.gif"  class="huati-head " ng-mouseenter="item.popover=true"
+              ng-mouseleave="item.popover=false"/></div>
+            <div class="col-md-11">
+              <p><span class="blue">小白</span> 来自于 <span class="blue">重庆第一车友会</span>&nbsp;&nbsp;<span>今天&nbsp; 10:50</span></p>
+              <div style=" line-height:30px;">
+                <p style="color:#000; font-weight:bold; font-size:15px;"><a href="#/groupPostDetail" >康师傅承认使用馊水油作原料 重蹈覆辙誓言落空</a></p>
+                2014年09月15日 13:13 一财网　　康师傅被馊水油拖下水 绝不再犯誓言落空　　康师傅9月14日下午发布公告，确认该公司产品使用了馊水油作为原料的劣质猪油... </div>
+              <div class="row ha30"><i class="icon-user blue"></i>&nbsp;<span>小非印象</span>&nbsp;最后回复<span>今天 18:33</span> &nbsp;<span class="pull-right"><i class="icon-comment-alt blue"></i> &nbsp;32423</span> &nbsp;<span class="pull-right"><i class="icon-eye-open blue"></i> &nbsp;123 &nbsp;</span> </div>
+            </div>
+          </div>
+        </div>
+        <p class="title">发布话题</p>
+        <div class="col-md-12">
+          <input name="" type="text"  style="width:100%; height:30px; border-radius:4px; border:1px solid #ccc; margin-bottom:20px;" placeholder="请输入标题"/>
+        </div>
+        <div class="col-md-12">
+          <textarea name="" cols="" rows="" style="width:100%; height:100px; border:1px solid #ccc; margin-bottom:20px;"></textarea>
+        </div>
+        <div class="mp20 marginb">
+          <button class="btn btn-info more">确认保存</button>
+        </div>
+      </div>
+      <div class="col-md-3 mp20">
+        <div class="panel ">
+          <div class="panel-heading">圈信息</div>
+          <div class="panel-body">
+            <p><span><i class="icon-th-large blue"></i> 所属分类</span><span class="pull-right label label-success "> 软件</span></p>
+            <p>创建于2014-4-24 <span class=" label label-info pull-right ">私有</span><!--<span class=" label label-info pull-right ">所有人可见</span>--></p>
+            <p><span><i class="icon-bullhorn blue"></i> 公告</span></p>
+            <p>迎各位加入重庆第一车友会！如果你想交流购车心得，如果你想交流保养心得，如果你想交流维修心得，欢迎加入</p>
+           
+            <p><span><i class="icon-user blue"></i> 圈主</span></p>
+            <div  class="row">
+              <div class="col-md-4"> <img src="images/dog.jpg" style="border-radius:50%" /></div>
+              <div class="col-md-8">
+                <p class="row"><a href="#/groupDetail" class="label label-info">十一长假要好好</a></p>
+                <p>财神客栈博客</p>
+            
+              </div>
+            </div>
+            <p><span><i class="icon-cog blue"></i> 管理员</span></p>
+            <div  class="row">
+              <div class="col-md-4"> <img src="images/dog.jpg" style="border-radius:50%" /></div>
+              <div class="col-md-4"> <img src="images/dog.jpg" style="border-radius:50%" /></div>
+              <div class="col-md-4"> <img src="images/dog.jpg" style="border-radius:50%" /></div>
+            </div>
+            <p class="ha30"><span><i class="icon-group blue"></i> 圈成员 <strong class="blue">123</strong>&nbsp;人</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

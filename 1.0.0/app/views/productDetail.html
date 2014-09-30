@@ -141,35 +141,3 @@
   </div>
 </div>
 
-<script type="text/javascript">
-
-            $('#productFixed').css('position','relative');
-            $('#productFixed').css("top",0);
-            $('#productFixed').css("left",0);
-
-            var ft = $('#productFixed').offset().top;
-            var fh = $('#productFixed').height();
-
-            $(window).scroll(function(e){
-                var s = $(document).scrollTop();
-                var ht =  $('#productDH').offset().top;
-                var hh = $('#productDH').height();
-
-                if(s > (ft -10)){
-                    if((s + fh) < (ht+hh-200)){
-                        $('#productFixed').css('position','fixed');
-                        $('#productFixed').css("top",0);
-                        $('#productFixed').css("left",900);
-                    }else{
-                        $('#productFixed').css('position','fixed');
-                        $('#productFixed').css("top",hh+ht-s-fh-220);
-                        $('#productFixed').css("left",900);
-                    }
-                }else{
-                    $('#productFixed').css('position','relative');
-                    $('#productFixed').css("top",0);
-                    $('#productFixed').css("left",0);
-                }
-            });
-
-</script>

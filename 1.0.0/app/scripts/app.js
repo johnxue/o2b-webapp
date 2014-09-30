@@ -1,14 +1,20 @@
 ﻿'use strict';
 
-var MainApp=angular.module('MainApp',['ngRoute','ngResource','angularFileUpload','ProductDetailControllers','ProductIndexControllers','ProductListControllers','ProductMainControllers','CommonServices','CommonFilters','LoginServices','LoginControllers','ProductOrderControllers','UserAddressControllers','NewsControllers','NewsListControllers','ProductShoppingCartControllers','MyFormControllers','UserRegisterControllers','UserFollowControllers','ViewDetailsControllers','UserAccountSettingControllers','CommonDirectives']);
+var MainApp=angular.module('MainApp',['ngRoute','ngResource','angularFileUpload','ProductDetailControllers',
+    'IndexControllers','ProductListControllers','MainControllers','CommonServices','CommonFilters',
+    'LoginServices','LoginControllers','ProductOrderControllers','UserAddressControllers','NewsControllers',
+    'NewsListControllers','ProductShoppingCartControllers','MyFormControllers','UserRegisterControllers',
+    'UserFollowControllers','ViewDetailsControllers','UserAccountSettingControllers','CommonDirectives',
+    'GroupMainControllers','GroupDetailControllers','GroupPostDetailControllers','CreateGroupControllers',
+    'EditGroupPostControllers']);
 
 MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($routeProvider,$httpProvider,$locationProvider) {
     $routeProvider
         .when('/', {
             title: '主页',
             templateUrl: 'views/main.html',
-            controller: 'ProductMainCtrl'
-        }).when('/product', {
+            controller: 'MainCtrl'
+        }).when('/productList', {
             title: '产品列表',
             templateUrl: 'views/productList.html',
             controller: 'ProductListCtrl'
@@ -53,11 +59,30 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             templateUrl:'views/follow.html',
             controller:'UserFollowCtrl'
         }).when('/viewDetails/:userId',{
-            title:'查看详情',
+            title:'查看订单详情',
             templateUrl:'views/xiangqing.html',
             controller:'ViewDetailsCtrl'
-        })
-     	.otherwise({
+        }).when('/groupMain',{
+            title:'圈子主页',
+            templateUrl:'views/groupMain.html',
+            controller:'GroupMainCtrl'
+        }).when('/groupDetail',{
+            title:'圈子详情',
+            templateUrl:'views/groupDetail.html',
+            controller:'GroupDetailCtrl'
+        }).when('/createGroup',{
+            title:'新建圈子',
+            templateUrl:'views/createGroup.html',
+            controller:'CreateGroupCtrl'
+        }).when('/groupPostDetail',{
+            title:'帖子详情',
+            templateUrl:'views/groupPostDetail.html',
+            controller:'GroupPostDetailCtrl'
+        }).when('/editGroupPost',{
+            title:'编辑帖子',
+            templateUrl:'views/editGroupPost.html',
+            controller:'EditGroupPostCtrl'
+        }).otherwise({
             redirectTo: '/'
         });
 
