@@ -6,7 +6,7 @@ var MainApp=angular.module('MainApp',['ngRoute','ngResource','angularFileUpload'
     'NewsListControllers','ProductShoppingCartControllers','MyFormControllers','UserRegisterControllers',
     'UserFollowControllers','ViewDetailsControllers','UserAccountSettingControllers','CommonDirectives',
     'GroupMainControllers','GroupDetailControllers','GroupPostDetailControllers','CreateGroupControllers',
-    'EditGroupPostControllers']);
+    'EditGroupPostControllers','ManageGroupControllers']);
 
 MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($routeProvider,$httpProvider,$locationProvider) {
     $routeProvider
@@ -66,7 +66,7 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title:'圈子主页',
             templateUrl:'views/groupMain.html',
             controller:'GroupMainCtrl'
-        }).when('/groupDetail',{
+        }).when('/groupDetail/:groupId',{
             title:'圈子详情',
             templateUrl:'views/groupDetail.html',
             controller:'GroupDetailCtrl'
@@ -74,6 +74,10 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title:'新建圈子',
             templateUrl:'views/createGroup.html',
             controller:'CreateGroupCtrl'
+        }).when('/manageGroup/:groupId',{
+            title:'管理圈子',
+            templateUrl:'views/manageGroup.html',
+            controller:'ManageGroupCtrl'
         }).when('/groupPostDetail',{
             title:'帖子详情',
             templateUrl:'views/groupPostDetail.html',

@@ -63,7 +63,7 @@
 
                                         <input ng-file-select name="personalDataForm_header" ng-model="personalDataForm.header" type="file" size="4" single accept="image/gif,image/png,image/jpeg"/>
 
-                                        <td nowrap>
+                                        <div nowrap>
                                             <button type="button" class="btn btn-success btn-xs" ng-click="uploader.queue[0].upload()"
                                                     ng-disabled="uploader.queue[0].isReady || uploader.queue[0].isUploading ||uploader.queue[0].isSuccess">
                                                 <span>上传</span>
@@ -74,7 +74,7 @@
                                             <button type="button" class="btn btn-danger btn-xs" ng-click="uploader.queue[0].remove()">
                                                 <span>清空</span>
                                             </button>
-                                        </td>
+                                        </div>
 
                                     </div>
 

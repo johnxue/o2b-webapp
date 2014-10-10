@@ -18,11 +18,16 @@
 var GroupDetailControllers = angular.module('GroupDetailControllers',[]);
 
 /*定义 Controller: GroupDetailCtrl  （圈子详情页面 groupDetail.html）*/
-GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonService,$window){
+GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonService,$window,$routeParams){
     ctrInit();
 
     var uriData='';
    //初始化$scope中定义的变量
+
+    //管理圈子需要的id临时从$routeParams里取
+    $scope.groupId=$routeParams.groupId;
+
+    $scope.groupDetailInfo={};
 
 
     //实现与页面交互的事件,如：button_click

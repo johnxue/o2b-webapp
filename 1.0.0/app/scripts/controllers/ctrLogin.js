@@ -115,13 +115,8 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
 
             $('#denglu').hide();
 
-            // 调用回调连接
-        }, function (response) {
-            objResults.error.code = parseInt(response.code);
-            objResults.error.message = response.message;
-            $scope.xue = !$scope.xue;
-            // 处理错误
-        });
+
+        },errorOperate);
 
     }
 

@@ -188,7 +188,7 @@
                     </span>
                   </div>
                   <div class="col-md-12 pt10 ha30 blue" ng-show="frmLogin.password.$dirty && frmLogin.password.$invalid">* <span ng-show="frmLogin.password.$error.required">请输入您的密码</span> <span ng-show="frmLogin.password.$error.minlength ||
-                                               frmLogin.password.$error.maxlength">密码由6-20字符组成</span> <span ng-show="xue">无法识别的用户名或密码</span> </div>
+                                               frmLogin.password.$error.maxlength">密码由6-20字符组成</span></div>
                 </div>
                   <div class="col-md-1" ng-show="frmLogin.password.$valid"><i class="icon-ok green"></i></div>
               </div>
@@ -243,6 +243,7 @@
 <script src="scripts/controllers/ctrCreateGroup.js"></script>
 <script src="scripts/controllers/ctrGroupPostDetail.js"></script>
 <script src="scripts/controllers/ctrEditGroupPost.js"></script>
+<script src="scripts/controllers/ctrManageGroup.js"></script>
 
 <script src="scripts/services/svcCommon.js"></script>
 <script src="scripts/services/svcLogin.js"></script>

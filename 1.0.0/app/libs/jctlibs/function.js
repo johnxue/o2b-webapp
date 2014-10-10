@@ -123,8 +123,10 @@ function errorOperate(response) {
    var errorCode=response.code;
     if(errorCode=='602'){
         $('#denglu').show();
+    }else if(errorCode=='603'){
+        alert('无法识别的用户名或密码!');
+        $('#denglu').show();
     }
-
 }
 
 //controller init

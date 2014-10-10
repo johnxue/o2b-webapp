@@ -30,17 +30,19 @@ CreateGroupControllers.controller('CreateGroupCtrl',function($scope,CommonServic
 
     //实现与页面交互的事件,如：button_click
 
-
+    //提交创建单击事件
     $scope.submitCreate=function(createGroupForm){
         uriData = {};
         uriData.name=createGroupForm.name;
-        uriData.desc=createGroupForm.desc;
         uriData.cat=createGroupForm.cat;
-        uriData.pwd = 123456;
+        uriData.join=createGroupForm.join;
+        uriData.cnt= createGroupForm.cnt;
 
         CommonService.createOne('group',JSON.stringify(uriData),function(data){
                    console.info(data.group);
                    console.info(data.id);
+                   alert('创建成功!');
+                $window.location.href='#/groupMain';
         },errorOperate);
     }
 

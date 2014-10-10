@@ -1,7 +1,7 @@
 <div ng-controller="CreateGroupCtrl">
 <div class="container" >
   <div class="cont mp20 marginb"  >
-    <div class="col-md-9 marginb"> 
+    <div class="col-md-20 marginb">
       
       <!--<div class="alert alert-defult"> <strong>Hi!</strong> 赶快来创建属于您的圈子吧！</div>-->
       <div class="panel mp20">
@@ -27,14 +27,26 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="col-md-3 control-label bluezi"> 圈子描述： </label>
-                <br/>
-                <div class="col-md-7 ">
-                  <textarea cols="" rows="" class="teax " style="width:100%" name="createGroupForm_desc" ng-model="createGroupForm.desc"></textarea>
+                <div class="form-group mp20">
+                    <label class="col-md-3 control-label bluezi" >加入权限：</label>
+
+                    <div class="col-md-7">
+
+                        <label class="radio-inline"> <input type="radio" name="createGroupForm_join" ng-model="createGroupForm.join" checked="checked" value="N"> 直接加入</label>
+                        <label class="radio-inline"> <input type="radio" name="createGroupForm_join" ng-model="createGroupForm.join" value="Y"> 需要验证加入</label>
+                    </div>
                 </div>
-              </div>
-              
+                <div class="form-group mp20">
+                    <label class="col-md-3 control-label bluezi" >内容权限：</label>
+                    <div class="col-md-7">
+                        <label class="radio-inline">
+                            <input type="radio" name="createGroupForm_cnt" ng-model="createGroupForm.cnt" checked="checked" value="N">
+                            任何人可见内容</label>
+                        <label class="radio-inline">
+                            <input type="radio" name="createGroupForm_cnt" ng-model="createGroupForm.cnt" value="Y">
+                            加入圈子可见内容</label>
+                    </div>
+                </div>
               <!--圈子权限问题暂时隐藏，后期修改
             
             
@@ -72,21 +84,6 @@
         </div>
       </div>
     </div>
-     <!--   圈子上传开始-->
-    <div class="col-md-3">
-      <div class="panel mp20">
-        <div class="panel-heading">圈子头像上传</div>
-        <div class="panel-body">
-          <div class="col-md-12 " > <img src="images/head1.gif" class="huati-head" style="text-align:center; margin-bottom:10px;" />
-            <p><span style="margin-left:20px; margin-top:20px;">
-              <input name="" type="file" />
-              </span></p>
-          </div>
-        </div>
-      </div>
-    </div>
- <!--   圈子上传结束-->
-
   </div>
 </div>
 </div>
