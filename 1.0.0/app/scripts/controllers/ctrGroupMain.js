@@ -30,15 +30,7 @@ GroupMainControllers.controller('GroupMainCtrl',function($scope,CommonService,$w
 
     $scope.hotGroups={};
 
-    /*$scope.myJoinGroups={};
-
-    $scope.joinGroupsNextPageState=false;
-
-    $scope.$watch('myJoinGroups', function(myJoinGroups) {
-       if(myJoinGroups.size<6){
-           $scope.joinGroupsNextPageState=true;
-         }
-      });*/
+    $scope.myGroupsNextPageState=false;
 
     //实现与页面交互的事件,如：button_click
 
@@ -48,31 +40,36 @@ GroupMainControllers.controller('GroupMainCtrl',function($scope,CommonService,$w
         if(cookieOperate.getCookie('token')==null){
             $('#denglu').show();
         }else{
-            uriData =undefined;
-            CommonService.getAll('group',uriData,function(data){
-                $scope.myGroups=data.MyGroups;
+            uriData ='o=0&r=6';
+            CommonService.getAll('user/group',uriData,function(data){
+                $scope.myGroups=data.MyJoinGroups;
             },errorOperate);
             $scope.vm.activeTab = 3
         }
     }
 
 
-    /*//我加入的圈子分页显示
-    $scope.joinGroupsNextPage=function(){
+    //我的圈子分页显示
+    $scope.myGroupsNextPage=function(){
         uriData='o='+(++page)+'&r=6';
-        CommonService.getAll('',uriData,function(data){
-            $scope.myJoinGroups=data;
-        },errorOperate);
+        CommonService.getAll('user/group',uriData,function(data){
+            $scope.myGroups=data.MyJoinGroups;
+        },function(response){
+            if(response.code=="802"){
+                $scope.myGroupsNextPageState=true;
+            }
+        });
     }
 
-    $scope.joinGroupsLastPage=function(){
+    $scope.myGroupsLastPage=function(){
+        $scope.myGroupsNextPageState=false;
         if(page>0){
          uriData='o='+(--page)+'&r=6';
-         CommonService.getAll('group',uriData,function(data){
-             $scope.myJoinGroups=data;
+         CommonService.getAll('user/group',uriData,function(data){
+             $scope.myGroups=data.MyJoinGroups;
          },errorOperate);
        }
-    }*/
+    }
 
 
 

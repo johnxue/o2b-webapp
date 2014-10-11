@@ -64,10 +64,10 @@
               <div class="panel-heading">热门圈子</div>
               <div class="panel-body">
                 <div class="row mt10" ng-repeat="hotGroup in hotGroups">
-                  <div class="col-md-4"> <img src="images/dog.jpg" style="border-radius:50%" /></div>
+                  <div class="col-md-4"> <img ng-src="{{hotGroup[9]}}" style="border-radius:50%" /></div>
                   <div class="col-md-8"> <span><a href="#/groupDetail/{{hotGroup[0]}}" class="bl">{{hotGroup[1]}}</a></strong></span><br/>
-                    <small>成员：<span class="blue">{{hotGroup[2]}}</span>&nbsp;</small><br/>
-                    <small>话题：<span class="blue">{{hotGroup[3]}}</span></small> </div>
+                    <small>成员：<span class="blue">{{hotGroup[3]}}</span>&nbsp;</small><br/>
+                    <small>话题：<span class="blue">{{hotGroup[4]}}</span></small> </div>
                 </div>
 
               </div>
@@ -159,23 +159,16 @@
           <div class="col-md-3">
             <p> <span><a href="#/createGroup"  class="label label-info"><i class="icon-comments-alt"></i> 创建圈子</a></span></p>
             <div class="panel">
-              <div class="panel-heading">我的圈子</div>
+              <div class="panel-heading">我的圈子
+                  <div class="btn-group pull-right" data-toggle="buttons-radio">
+                      <button type="button" class="btn btn-mini btn-default" ng-click="myGroupsLastPage();"><i class="icon-chevron-up"></i></button>
+                      <button type="button" class="btn  btn-mini btn-default" ng-click="myGroupsNextPage();" ng-disabled="myGroupsNextPageState"><i class="icon-chevron-down"></i></button>
+                  </div>
+              </div>
               <div class="panel-body">
                 <div class="col-md-4" ng-repeat="myGroup in myGroups">
-                  <P class="ha30"><img src="images/dog.jpg" class="huati-head"/></P>
+                  <P class="ha30"><img ng-src="{{myGroup[9]}}" class="huati-head"/></P>
                   <p class="ha20"><a href="#/groupDetail/{{myGroup[0]}}"  class="bl">{{myGroup[1]}}</a></p>
-                </div>
-              </div>
-            </div>
-            <div class="panel mp20">
-              <div class="panel-heading">我加入的圈子
-                  <!--<span class="pull-right ml10" title="下一页"><a href="javascript:;" ng-click="joinGroupsNextPage();" ng-disable="joinGroupsNextPageState"><i class="icon-chevron-down"></i></a></span>
-                  <span class="pull-right" title="上一页"><a href="javascript:;" ng-click="joinGroupsLastPage();"><i class="icon-chevron-up"></i></a></span>-->
-              </div>
-              <div class="panel-body">
-                <div class="col-md-4">
-                  <P class="ha30"><img src="images/dog.jpg" class="huati-head" /></P>
-                  <p class="ha20"><a href="#/groupDetail"  class="label label-success"> 圈子1</a></p>
                 </div>
               </div>
             </div>

@@ -16,7 +16,8 @@
         <li ng-class="{active: vm.activeTab == 1}"><a href="javascript:;" ng-click="vm.activeTab = 1">圈子设置</a></li>
         <li ng-class="{active: vm.activeTab == 2}"><a href="javascript:;" ng-click="vm.activeTab = 2">成员管理</a></li>
         <li ng-class="{active: vm.activeTab == 3}"><a href="javascript:;" ng-click="vm.activeTab = 3">话题管理</a></li>
-        <li ng-class="{active: vm.activeTab == 4}"><a href="javascript:;" ng-click="vm.activeTab = 4">黑名单</a></li>
+        <li ng-class="{active: vm.activeTab == 4}"><a href="javascript:;" ng-click="vm.activeTab = 4">加入审核</a></li>
+        <li ng-class="{active: vm.activeTab == 5}"><a href="javascript:;" ng-click="vm.activeTab = 5">黑名单</a></li>
       </ul>
       <div class="tab-content tab-bordered">
         <div class="tab-panel" ng-show="vm.activeTab == 1">
@@ -31,29 +32,29 @@
                     <div class="form-group mp20">
                       <label class="col-md-3 control-label bluezi" >圈子名称：</label>
                       <div class="col-md-7">
-                        <div style="margin-top: 5px;">第一朋友圈</div>
+                        <div style="margin-top: 5px;">{{manageGroupForm['name']}}</div>
                       </div>
                     </div>
                     <div class="form-group mp20">
                       <label class="col-md-3 control-label bluezi" >圈子分类：</label>
                       <div class="col-md-7">
-                        <div style="margin-top: 5px;">软件</div>
+                        <div style="margin-top: 5px;">{{manageGroupForm['cat']}}</div>
                       </div>
                     </div>
                     <div class="form-group mp20">
                       <label class="col-md-3 control-label bluezi" >圈子状态：</label>
                       <div class="col-md-7">
-                        <div style="margin-top: 5px;">待审核</div>
+                        <div style="margin-top: 5px;">{{manageGroupForm['state']}}</div>
                       </div>
                     </div>
                     <div class="form-group mp20">
                       <label class="col-md-3 control-label bluezi" >加入权限：</label>
                       <div class="col-md-7">
                         <label class="radio-inline">
-                          <input type="radio" name="optionsRadios" checked="checked">
+                          <input type="radio" name="manageGroupForm_join"  ng-model="manageGroupForm.join" value="N">
                           直接加入</label>
                         <label class="radio-inline">
-                          <input type="radio" name="optionsRadios" >
+                          <input type="radio" name="manageGroupForm_join" ng-model="manageGroupForm.join" value="Y">
                           需要验证加入</label>
                       </div>
                     </div>
@@ -61,10 +62,10 @@
                       <label class="col-md-3 control-label bluezi " >内容权限：</label>
                       <div class="col-md-7">
                         <label class="radio-inline">
-                          <input type="radio" name="optionsRadio" checked="checked">
+                          <input type="radio" name="manageGroupForm_cnt"  ng-model="manageGroupForm.cnt" value="N">
                           任何人可见内容</label>
                         <label class="radio-inline">
-                          <input type="radio" name="optionsRadio" >
+                          <input type="radio" name="manageGroupForm_cnt"  ng-model="manageGroupForm.cnt" value="Y" >
                           加入圈子可见内容</label>
                       </div>
                     </div>
@@ -72,11 +73,11 @@
                       <label class="col-md-3 control-label bluezi"> 圈子公告： </label>
                       <br/>
                       <div class="col-md-7 ">
-                        <textarea name="" cols="" rows="" class="teax " style="width:100%"></textarea>
+                        <textarea name="manageGroupForm_ntc" ng-model="manageGroupForm.ntc" cols="" rows="" class="teax " style="width:100%"></textarea>
                       </div>
                     </div>
                   </div>
-                  <div class="mp20 marginb"> <a href="#/quan"class="btn btn-info more">确认修改</a> </div>
+                  <div class="mp20 marginb"> <a href="javascript:;"class="btn btn-info more" ng-click="updateGroup(manageGroupForm);">确认修改</a> </div>
                 </form>
               </div>
             </div>
@@ -86,7 +87,7 @@
             <div class="panel mp20">
               <div class="panel-heading">圈子头像上传</div>
               <div class="panel-body">
-                <div class="col-md-12 " > <img id="giId" src="images/head1.gif" class="huati-head" style="text-align:center; margin-bottom:10px;" />
+                <div class="col-md-12 " > <img id="giId" src="{{manageGroupForm.header}}" class="huati-head" style="text-align:center; margin-bottom:10px;" />
                   <p> 
                   <span style="margin-left:20px; margin-top:20px;">
                   <input ng-file-select  name="createGroupForm_header" type="file" ng-model="createGroupForm.header" size="4" single accept="image/gif,image/png,image/jpeg"/>
@@ -106,6 +107,7 @@
           
         </div>
         <!--  圈子设置结束-->
+        <!--成员管理开始-->
         <div class="tab-panel" ng-show="vm.activeTab == 2">
           <div class="panel mp20">
             <table class="table table-condensed " >
@@ -122,43 +124,61 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr ng-repeat="groupUser in groupUsers" ng-if="$first">
                   <td></td>
-                  <td>admin123</td>
-                  <td>圈主</td>
-                  <td>2014-09-25</td>
-                  <td><span class="blue">1</span></td>
-                  <td>1980-01-01</td>
+                  <td>{{groupUser.name}}</td>
+                  <td>{{groupUser.roleN}}</td>
+                  <td>{{groupUser.joinTime}}</td>
+                  <td><span class="blue">{{groupUser.totaltopic}}</span></td>
+                  <td>{{groupUser.lasttime}}</td>
                   <td></td>
                 </tr>
-                <tr>
-                  <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
-                  <td>dsadsadsa</td>
-                  <td>成员|管理员</td>
-                  <td>2014-10-10</td>
-                  <td><span class="blue">1</span></td>
-                  <td>1980-01-01</td>
-                  <td><span  ><a href="" class="blue ml10"><i class="icon-cog"></i> 设为管理员|取消管理员</a></span> <span><a href="" class="blue ml10" ><i class="icon-ban-circle"></i> 踢出圈子</a> </span><span><a href="" class="blue ml10" ><i class="icon-remove"></i> 删除</a></span><span><a href="" class="blue ml10" ><i class="icon-remove-sign"></i> 加入黑名单</a></span></td>
+                <tr ng-repeat="groupUser in groupUsers" ng-if="!$first && isRoleOorS && groupUser.roleC=='S'">
+                  <td ><input name="check" type="checkbox" value="" style="margin-left:10px;" ng-model="groupUser.checked"/></td>
+                  <td>{{groupUser.name}}</td>
+                  <td>{{groupUser.roleN}}</td>
+                  <td>{{groupUser.joinTime}}</td>
+                  <td><span class="blue">{{groupUser.totaltopic}}</span></td>
+                  <td>{{groupUser.lasttime}}</td>
+                  <td><span  ><a href="" class="blue ml10"><i class="icon-cog"></i> 取消管理员</a></span> <span><a href="" class="blue ml10" ><i class="icon-ban-circle"></i> 踢出圈子</a> </span><span><a href="" class="blue ml10" ><i class="icon-remove-sign"></i> 加入黑名单</a></span></td>
                 </tr>
-                <tr>
-                  <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
-                  <td>dsadsadsa</td>
-                  <td>成员|管理员</td>
-                  <td>2014-10-10</td>
-                  <td><span class="blue">1</span></td>
-                  <td>1980-01-01</td>
-                  <td><span  ><a href="" class="blue ml10"><i class="icon-cog"></i> 设为管理员|取消管理员</a></span> <span><a href="" class="blue ml10" ><i class="icon-ban-circle"></i> 踢出圈子</a> </span><span><a href="" class="blue ml10" ><i class="icon-remove"></i> 删除</a></span><span><a href="" class="blue ml10" ><i class="icon-remove-sign"></i> 加入黑名单</a></span></td>
+                <tr ng-repeat="groupUser in groupUsers" ng-if="!$first && isRoleOorS && groupUser.roleC=='U'">
+                    <td ><input name="check" type="checkbox" value="" style="margin-left:10px;" ng-model="groupUser.checked"/></td>
+                    <td>{{groupUser.name}}</td>
+                    <td>{{groupUser.roleN}}</td>
+                    <td>{{groupUser.joinTime}}</td>
+                    <td><span class="blue">{{groupUser.totaltopic}}</span></td>
+                    <td>{{groupUser.lasttime}}</td>
+                    <td><span  ><a href="" class="blue ml10"><i class="icon-cog"></i> 设为管理员</a></span> <span><a href="" class="blue ml10" ><i class="icon-ban-circle"></i> 踢出圈子</a> </span><span><a href="" class="blue ml10" ><i class="icon-remove-sign"></i> 加入黑名单</a></span></td>
+                </tr>
+                <tr ng-repeat="groupUser in groupUsers" ng-if="!$first && !isRoleOorS && groupUser.roleC=='S'">
+                    <td></td>
+                    <td>{{groupUser.name}}</td>
+                    <td>{{groupUser.roleN}}</td>
+                    <td>{{groupUser.joinTime}}</td>
+                    <td><span class="blue">{{groupUser.totaltopic}}</span></td>
+                    <td>{{groupUser.lasttime}}</td>
+                    <td></td>
+                </tr>
+                <tr ng-repeat="groupUser in groupUsers" ng-if="!$first && !isRoleOorS && groupUser.roleC=='U'">
+                    <td ><input name="check" type="checkbox" value="" style="margin-left:10px;" ng-model="groupUser.checked"/></td>
+                    <td>{{groupUser.name}}</td>
+                    <td>{{groupUser.roleN}}</td>
+                    <td>{{groupUser.joinTime}}</td>
+                    <td><span class="blue">{{groupUser.totaltopic}}</span></td>
+                    <td>{{groupUser.lasttime}}</td>
+                    <td><span><a href="" class="blue ml10" ><i class="icon-ban-circle"></i> 踢出圈子</a> </span><span><a href="" class="blue ml10" ><i class="icon-remove-sign"></i> 加入黑名单</a></span></td>
                 </tr>
               </tbody>
             </table>
             <div class="col-md-12 mp20 marginb" style="float:left;">
               <button type="button" class="btn btn-info pull-right ml10">批量拉黑</button>
               <button type="button" class="btn btn-info pull-right ml10">批量踢出</button>
-              <button type="button" class="btn btn-info pull-right">批量删除</button>
             </div>
           </div>
         </div>
-        <!-- 话题管理结束-->
+        <!--成员管理结束-->
+        <!-- 话题管理开始-->
         <div class="tab-panel" ng-show="vm.activeTab == 3">
           <div class="alert with-icon "> <span class="mp7"> 话题查询： </span> <span class="col-md-3">
             <input type="text" class="form-control" placeholder="话题名称">
@@ -214,7 +234,44 @@
         </div>
         
         <!-- 话题管理结束-->
+        <!--加入审核开始-->
         <div class="tab-panel" ng-show="vm.activeTab == 4">
+            <div class="panel mp20">
+                <table class="table table-condensed " >
+                    <thead>
+                    <tr >
+                        <th ><input name="check" type="checkbox" value="" style="margin-left:10px;"/>
+                            &nbsp;全选</th>
+                        <th>用户</th>
+                        <th>基本信息</th>
+                        <th>申请时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
+                        <td><span ><a href="" class="blue">admin</a></span></td>
+                        <td>未完善信息</td>
+                        <td>2014-10-10</td>
+                        <td><span><a href="" class="blue  " ><i class="icon-ok"></i> 同意加入</a></span>
+                            <span><a href="" class="blue ml10" ><i class="icon-ban-circle"></i> 拒绝加入</a></span>
+                            <span><a href="" class="blue ml10" ><i class="icon-remove-sign"></i> 黑名单</a></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="col-md-12 mp20 marginb" style="float:left;">
+
+
+                    <button type="button" class="btn btn-info pull-right ml10">批量黑名单</button>
+                    <button type="button" class="btn btn-info pull-right ml10">批量拒绝</button>
+                    <button type="button" class="btn btn-info pull-right ml10">批量加入</button>
+                </div>
+            </div>
+        </div>
+        <!-- 加入审核结束-->
+        <!--黑名单开始-->
+        <div class="tab-panel" ng-show="vm.activeTab == 5">
           <div class="panel mp20">
             <table class="table table-condensed " >
               <thead>
