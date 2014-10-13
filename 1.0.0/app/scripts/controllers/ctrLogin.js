@@ -111,7 +111,14 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
                     document.location.reload();
                 }
 
-            },errorOperate);
+            },function(response){
+                if(response.code=='802'){
+                    //改变购物车栏显示的商品数量
+                    $scope.$emit('logined', strUserName,0);
+
+                    $scope.objLoginInfo={};
+                }
+            });
 
             $('#denglu').hide();
 

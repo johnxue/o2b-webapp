@@ -14,10 +14,10 @@
       <div class="col-md-12">
         <div class="alert with-icon"> 
           <div class="content"> <img src="images/dog.jpg" class="huati-head htu" /><strong class="ml70">重庆第一车友会</strong>&nbsp; <i class="icon-chat-dot"></i> 话题：<span class="blue">  40</span>
-          <div class="pull-right ml20"><a href="#/manageGroup/{{groupId}}" class="label label-info large href"><i class="icon-cog"></i> 管理圈子</a></div>
-         <div class="pull-right"><a href="" class="label label-info large href"><i class="icon-user"></i> 我的圈子</a></div>
-              <div class="pull-right"><a href="" class="label label-success large href"><i class="icon-minus"></i> 退出圈子</a></div>
-            <div class="pull-right"><a href="" class="label label-info large href"><i class="icon-plus"></i> 加入圈子</a></div>
+          <div class="pull-right ml20" ng-show="showManageGroup"><a href="#/manageGroup/{{groupId}}" class="label label-info large href"><i class="icon-cog"></i> 管理圈子</a></div>
+          <div class="pull-right" ng-show="showMyGroup"><a href="javascript:;" class="label label-info large href"><i class="icon-user"></i> 我的圈子</a></div>
+          <div class="pull-right" ng-show="showQuitGroup"><a href="javascript:;" class="label label-success large href" ng-click="quitGroup();"><i class="icon-minus"></i> 退出圈子</a></div>
+          <div class="pull-right" ng-show="showJoinGroup"><a href="javascript:;" class="label label-info large href" ng-click="joinGroup();"><i class="icon-plus"></i> 加入圈子</a></div>
           </div>
         </div>
       </div>

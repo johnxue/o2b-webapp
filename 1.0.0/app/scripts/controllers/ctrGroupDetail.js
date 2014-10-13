@@ -29,15 +29,77 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
 
     $scope.groupDetailInfo={};
 
+    $scope.UserGroupRole={};
+
+    $scope.showJoinGroup=false;
+
+    $scope.showQuitGroup=false;
+
+    $scope.showMyGroup=false;
+
+    $scope.showManageGroup=false;
+
 
     //实现与页面交互的事件,如：button_click
 
+    //加入圈子单击事件
+    $scope.joinGroup=function(){
+            var uriData = undefined;
+            CommonService.createOne('group/'+ $routeParams.groupId+'/user', uriData, function (data) {
+                console.info(data.id);
+                console.info(data.name);
+                console.info(data.membership);
+                $scope.showJoinGroup=false;
+                $scope.showQuitGroup=true;
+            }, errorOperate);
+    }
 
-
+   //退出圈子单击事件
+    $scope.quitGroup=function(){
+            var uriData = undefined;
+            CommonService.deleteOne('group/'+ $routeParams.groupId+'/user', uriData, function (data) {
+                console.info(data.id);
+                console.info(data.name);
+                console.info(data.membership);
+                $scope.showJoinGroup=true;
+                $scope.showQuitGroup=false;
+            }, errorOperate);
+    }
 
 
     //调用与后端的接口,如：CommonService.getAll(params)
 
+    /*uriData='g='+$scope.groupId;
+    CommonService.getAll('group',uriData,function(data){
+        $scope.groupDetailInfo.gid=data.MyGroup[0][0];
+        $scope.groupDetailInfo.name=data.MyGroup[0][1];
+        $scope.groupDetailInfo.cat = data.MyGroup[0][2];
+        $scope.groupDetailInfo.state=data.MyGroup[0][6];
+        $scope.groupDetailInfo.join=data.MyGroup[0][7];
+        $scope.groupDetailInfo.cnt=data.MyGroup[0][8];
+        $scope.groupDetailInfo.header=data.MyGroup[0][9];
+        $scope.groupDetailInfo.ntc=data.MyGroup[0][10];
+    },errorOperate);*/
 
+    //用户在某圈子中的权限
+    if(cookieOperate.getCookie('token')!=null){
+         uriData = undefined;
+         CommonService.getAll('group/'+$scope.groupId+'/user',uriData,function(data){
+                  $scope.UserGroupRole=data.UserGroupRole;
+                     if($scope.UserGroupRole.role=='O'){
+                         $scope.showMyGroup=true;
+                         $scope.showManageGroup=true;
+                     }else if($scope.UserGroupRole.role=='S'){
+                         $scope.showQuitGroup=true;
+                         $scope.showManageGroup=true;
+                     }else if($scope.UserGroupRole.role=='U'){
+                         $scope.showQuitGroup=true;
+                     }
+         },function(response){
+              if(response.code=='802'){
+                 $scope.showJoinGroup=true;
+              }
+         });
+    }
 
 });
