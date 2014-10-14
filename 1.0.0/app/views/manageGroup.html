@@ -110,12 +110,12 @@
         <!--成员管理开始-->
         <div class="tab-panel" ng-show="vm.activeTab == 2">
           <div class="panel mp20">
-            <table class="table table-condensed " >
+            <table class="table table-condensed " id="guTbId">
               <thead>
                 <tr>
                   <th></th>
                   <th>成员</th>
-                  <th>权限</th>
+                  <th>角色</th>
                   <th>加入时间</th>
                   <th>发布话题数</th>
                   <th>最后访问时间</th>
@@ -123,85 +123,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="groupUser in groupUsers" ng-if="$first">
-                  <td></td>
-                  <td>{{groupUser.name}}</td>
-                  <td>{{groupUser.roleN}}</td>
-                  <td>{{groupUser.joinTime}}</td>
-                  <td><span class="blue">{{groupUser.totaltopic}}</span></td>
-                  <td>{{groupUser.lasttime}}</td>
-                  <td></td>
-                </tr>
-                <tr ng-repeat="groupUser in groupUsers" ng-if="!$first && isRoleOorS && groupUser.roleC=='S'&& groupUser.gag=='OK'">
-                  <td></td>
-                  <td>{{groupUser.name}}</td>
-                  <td>{{groupUser.roleN}}</td>
-                  <td>{{groupUser.joinTime}}</td>
-                  <td><span class="blue">{{groupUser.totaltopic}}</span></td>
-                  <td>{{groupUser.lasttime}}</td>
-                  <td><span><a href="javascript:;" class="blue ml10" ng-click="setManager(groupUser['id'],'U');"><i class="icon-cog"></i> 取消管理员</a></span> <span><a href="javascript:;" class="blue ml10" ng-click="kickOut(groupUser['id']);"><i class="icon-ban-circle"></i> 踢出圈子</a></span><span><a href="javascript:;" class="blue ml10" ng-click="setGag(groupUser['id'],'NO');" ><i class="icon-volume-off"></i> 禁言</a></span><span><a href="" class="blue ml10" ><i class="icon-remove-sign"></i> 加入黑名单</a></span></td>
-                </tr>
-                <tr ng-repeat="groupUser in groupUsers" ng-if="!$first && isRoleOorS && groupUser.roleC=='S'&& groupUser.gag=='NO'">
-                    <td></td>
-                    <td>{{groupUser.name}}</td>
-                    <td>{{groupUser.roleN}}</td>
-                    <td>{{groupUser.joinTime}}</td>
-                    <td><span class="blue">{{groupUser.totaltopic}}</span></td>
-                    <td>{{groupUser.lasttime}}</td>
-                    <td><span><a href="javascript:;" class="blue ml10" ng-click="setManager(groupUser['id'],'U');"><i class="icon-cog"></i> 取消管理员</a></span> <span><a href="javascript:;" class="blue ml10" ng-click="kickOut(groupUser['id']);"><i class="icon-ban-circle"></i> 踢出圈子</a></span><span><a href="javascript:;" class="blue ml10" ng-click="setGag(groupUser['id'],'OK');"><i class="icon-volume-up"></i> 解除禁言</a></span><span><a href="" class="blue ml10" ><i class="icon-remove-sign"></i> 加入黑名单</a></span></td>
-                </tr>
-                <tr ng-repeat="groupUser in groupUsers" ng-if="!$first && isRoleOorS && groupUser.roleC=='U'&& groupUser.gag=='OK'">
-                    <td></td>
-                    <td>{{groupUser.name}}</td>
-                    <td>{{groupUser.roleN}}</td>
-                    <td>{{groupUser.joinTime}}</td>
-                    <td><span class="blue">{{groupUser.totaltopic}}</span></td>
-                    <td>{{groupUser.lasttime}}</td>
-                    <td><span  ><a href="javascript:;" class="blue ml10" ng-click="setManager(groupUser['id'],'S');"><i class="icon-cog"></i> 设为管理员</a></span> <span><a href="javascript:;" class="blue ml10" ng-click="kickOut(groupUser['id']);"><i class="icon-ban-circle"></i> 踢出圈子</a><span><a href="javascript:;" class="blue ml10" ng-click="setGag(groupUser['id'],'NO');"><i class="icon-volume-off"></i> 禁言</a></span></span><span><a href="" class="blue ml10" ><i class="icon-remove-sign"></i> 加入黑名单</a></span></td>
-                </tr>
-                <tr ng-repeat="groupUser in groupUsers" ng-if="!$first && isRoleOorS && groupUser.roleC=='U'&& groupUser.gag=='NO'">
-                    <td></td>
-                    <td>{{groupUser.name}}</td>
-                    <td>{{groupUser.roleN}}</td>
-                    <td>{{groupUser.joinTime}}</td>
-                    <td><span class="blue">{{groupUser.totaltopic}}</span></td>
-                    <td>{{groupUser.lasttime}}</td>
-                    <td><span  ><a href="javascript:;" class="blue ml10" ng-click="setManager(groupUser['id'],'S');"><i class="icon-cog"></i> 设为管理员</a></span> <span><a href="javascript:;" class="blue ml10" ng-click="kickOut(groupUser['id']);"><i class="icon-ban-circle"></i> 踢出圈子</a><span><a href="javascript:;" class="blue ml10" ng-click="setGag(groupUser['id'],'OK');"><i class="icon-volume-up"></i> 解除禁言</a></span></span><span><a href="" class="blue ml10" ><i class="icon-remove-sign"></i> 加入黑名单</a></span></td>
-                </tr>
-                <tr ng-repeat="groupUser in groupUsers" ng-if="!$first && !isRoleOorS && groupUser.roleC=='S'">
-                    <td></td>
-                    <td>{{groupUser.name}}</td>
-                    <td>{{groupUser.roleN}}</td>
-                    <td>{{groupUser.joinTime}}</td>
-                    <td><span class="blue">{{groupUser.totaltopic}}</span></td>
-                    <td>{{groupUser.lasttime}}</td>
-                    <td></td>
-                </tr>
-                <tr ng-repeat="groupUser in groupUsers" ng-if="!$first && !isRoleOorS && groupUser.roleC=='U'&& groupUser.gag=='OK'">
-                    <td></td>
-                    <td>{{groupUser.name}}</td>
-                    <td>{{groupUser.roleN}}</td>
-                    <td>{{groupUser.joinTime}}</td>
-                    <td><span class="blue">{{groupUser.totaltopic}}</span></td>
-                    <td>{{groupUser.lasttime}}</td>
-                    <td><span><a href="javascript:;" class="blue ml10" ng-click="kickOut(groupUser['id']);"><i class="icon-ban-circle"></i> 踢出圈子</a></span><span><a href="javascript:;" class="blue ml10" ng-click="setGag(groupUser['id'],'NO');"><i class="icon-volume-off"></i> 禁言</a></span><span><a href="" class="blue ml10" ><i class="icon-remove-sign"></i> 加入黑名单</a></span></td>
-                </tr>
-                <tr ng-repeat="groupUser in groupUsers" ng-if="!$first && !isRoleOorS && groupUser.roleC=='U'&& groupUser.gag=='NO'">
-                    <td></td>
-                    <td>{{groupUser.name}}</td>
-                    <td>{{groupUser.roleN}}</td>
-                    <td>{{groupUser.joinTime}}</td>
-                    <td><span class="blue">{{groupUser.totaltopic}}</span></td>
-                    <td>{{groupUser.lasttime}}</td>
-                    <td><span><a href="javascript:;" class="blue ml10" ng-click="kickOut(groupUser['id']);"><i class="icon-ban-circle"></i> 踢出圈子</a></span><span><a href="javascript:;" class="blue ml10" ng-click="setGag(groupUser['id'],'OK');"><i class="icon-volume-up"></i> 解除禁言</a></span><span><a href="" class="blue ml10" ><i class="icon-remove-sign"></i> 加入黑名单</a></span></td>
-                </tr>
+              <tr><!--表格内容--></tr>
               </tbody>
             </table>
-              <div style=" float:right">
-                  <ul class="pager pager-loose pull-right">
-                      <li class="previous "><a href="">«</a></li>
-                      <li class="next"><a href="">»</a></li>
-                  </ul>
+              <div class=" btn-group pull-right mp20"  data-toggle="buttons-radio">
+                  <button type="button" class="btn " ng-click="groupUsersLastPage();"><i class="icon-double-angle-left"></i></button>
+                  <button type="button" class="btn " ng-disabled="groupUsersNextPageState" ng-click="groupUsersNextPage();"><i class="icon-double-angle-right"></i></button>
               </div>
           </div>
         </div>
@@ -271,7 +198,7 @@
                         <th ><input name="check" type="checkbox" value="" style="margin-left:10px;"/>
                             &nbsp;全选</th>
                         <th>用户</th>
-                        <th>基本信息</th>
+                        <th>验证信息</th>
                         <th>申请时间</th>
                         <th>操作</th>
                     </tr>

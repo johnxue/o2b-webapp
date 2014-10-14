@@ -51,7 +51,7 @@ GroupMainControllers.controller('GroupMainCtrl',function($scope,CommonService,$w
 
     //我的圈子分页显示
     $scope.myGroupsNextPage=function(){
-        uriData='o='+(++page)+'&r=6';
+        uriData='o='+(++page)+'&r='+pageSize;
         CommonService.getAll('user/group',uriData,function(data){
             $scope.myGroups=data.MyJoinGroups;
         },function(response){
@@ -64,11 +64,11 @@ GroupMainControllers.controller('GroupMainCtrl',function($scope,CommonService,$w
     $scope.myGroupsLastPage=function(){
         $scope.myGroupsNextPageState=false;
         if(page>0){
-         uriData='o='+(--page)+'&r=6';
-         CommonService.getAll('user/group',uriData,function(data){
-             $scope.myGroups=data.MyJoinGroups;
-         },errorOperate);
-       }
+            uriData='o='+(--page)+'&r='+pageSize;
+            CommonService.getAll('user/group',uriData,function(data){
+                $scope.myGroups=data.MyJoinGroups;
+            },errorOperate);
+        }
     }
 
 
@@ -76,7 +76,7 @@ GroupMainControllers.controller('GroupMainCtrl',function($scope,CommonService,$w
 
     //调用与后端的接口,如：CommonService.getAll(params)
 
-    uriData ='u=hot';
+    uriData ='s=hot';
     CommonService.getAll('group',uriData,function(data){
         $scope.hotGroups=data.HotGroups;
     },errorOperate);

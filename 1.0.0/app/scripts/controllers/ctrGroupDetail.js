@@ -43,9 +43,10 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
     //实现与页面交互的事件,如：button_click
 
     //加入圈子单击事件
-    $scope.joinGroup=function(){
-            var uriData = undefined;
-            CommonService.createOne('group/'+ $routeParams.groupId+'/user', uriData, function (data) {
+    $scope.joinGroup=function(validateMessage){
+            var uriData = {};
+            uriData.vm=validateMessage;
+            CommonService.createOne('group/'+ $routeParams.groupId+'/user', JSON.stringify(uriData), function (data) {
                 console.info(data.id);
                 console.info(data.name);
                 console.info(data.membership);
