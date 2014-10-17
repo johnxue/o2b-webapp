@@ -278,7 +278,7 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
         var cartProductsForm_cartProducts=cartProductForm.cartProducts;
 
         if(cookieOperate.getCookie("token")==null) {
-              $('#denglu').show();
+              $('#denglu').modal('show');
         }else {
             for (var i = 0; i < cartProductsForm_cartProducts.length; i++) {
                 if (cartProductsForm_cartProducts[i].checked == true) {

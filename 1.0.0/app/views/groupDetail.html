@@ -17,7 +17,8 @@
           <div class="pull-right ml20" ng-show="showManageGroup"><a href="#/manageGroup/{{groupId}}" class="label label-info large href"><i class="icon-cog"></i> 管理圈子</a></div>
           <div class="pull-right" ng-show="showMyGroup"><a href="javascript:;" class="label label-info large href"><i class="icon-user"></i> 我的圈子</a></div>
           <div class="pull-right" ng-show="showQuitGroup"><a href="javascript:;" class="label label-success large href" ng-click="quitGroup();"><i class="icon-minus"></i> 退出圈子</a></div>
-          <div class="pull-right" ng-show="showJoinGroup"><a href="javascript:;" class="label label-info large href" ng-click="joinGroup('');"><i class="icon-plus"></i> 加入圈子</a></div>
+          <div class="pull-right" ng-show="showJoinGroup"><a href="javascript:;" class="label label-info large href" ng-click="joinDNVGroup();"><i class="icon-plus"></i> 加入圈子</a></div>
+          <!--<div class="pull-right" ng-show="showJoinGroup"><a href="" class="label label-info large href" data-toggle="modal" data-target="#joinNVMModal"><i class="icon-plus"></i> 加入圈子(验证)</a></div>-->
           </div>
         </div>
       </div>
@@ -94,4 +95,39 @@
     </div>
   </div>
 </div>
+
+<!--访问私有圈子弹框开始(需要验证)-->
+<div class="modal fade"  id="joinNVMModal" tabindex="-1" role="dialog" aria-labelledby="tsModalTitle" aria-hidden="true" style="display: none;">
+     <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
+         <div class="modal-content">
+             <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="tsModalTitle"><i class="icon-exclamation-sign"></i> 加入验证</h4>
+             </div>
+             <div class="modal-body">
+                <p> 亲，此圈子属私有圈子，您需要加入才能查看详细信息。 </p>
+                <form class="form-horizontal" role="form" name="validateMessageForm" novalidate="true" ng-model="validateMessageForm">
+                    <div class="form-group mp20 marginb" style="">
+                       <label class="col-md-3 control-label" >验证信息：</label>
+                         <div class="col-md-8">
+                            <div class="input-group">
+                            <input type='text'  class='form-control' placeholder="请输入验证信息" name="validateMessage"  required="true" ng-model="validateMessageForm.vm"/>
+                            <span class="input-group-btn">
+                            <button class="btn btn-default " type="button"><i class="icon-comment-alt "></i></button>
+                            </span>
+                            </div>
+                            <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="validateMessageForm.validateMessage.$dirty && validateMessageForm.validateMessage.$error.required">验证信息不能为空</div>
+                         </div>
+                    </div>
+                </form>
+             </div>
+             <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-info" ng-disabled="validateMessageForm.$invalid" ng-click="joinNVGroup(validateMessageForm.vm);">加入</button>
+             </div>
+         </div>
+     </div>
+</div>
+<!--访问私有圈子弹框结束(需要验证)-->
+
 </div>

@@ -27,8 +27,6 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
     //管理圈子需要的id临时从$routeParams里取
     $scope.groupId=$routeParams.groupId;
 
-    $scope.groupDetailInfo={};
-
     $scope.UserGroupRole={};
 
     $scope.showJoinGroup=false;
@@ -42,10 +40,10 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
 
     //实现与页面交互的事件,如：button_click
 
-    //加入圈子单击事件
-    $scope.joinGroup=function(validateMessage){
+    //加入不需要验证的圈子单击事件
+    $scope.joinDNVGroup=function(){
             var uriData = {};
-            uriData.vm=validateMessage;
+            uriData.st='OK';
             CommonService.createOne('group/'+ $routeParams.groupId+'/user', JSON.stringify(uriData), function (data) {
                 console.info(data.id);
                 console.info(data.name);
@@ -53,6 +51,19 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
                 $scope.showJoinGroup=false;
                 $scope.showQuitGroup=true;
             }, errorOperate);
+    }
+
+    //加入需要验证的圈子单击事件
+    $scope.joinNVGroup=function(){
+        var uriData = {};
+        uriData.st='WT';
+        CommonService.createOne('group/'+ $routeParams.groupId+'/user', JSON.stringify(uriData), function (data) {
+            console.info(data.id);
+            console.info(data.name);
+            console.info(data.membership);
+            $scope.showJoinGroup=false;
+            $scope.showQuitGroup=true;
+        }, errorOperate);
     }
 
    //退出圈子单击事件
@@ -69,18 +80,6 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
 
 
     //调用与后端的接口,如：CommonService.getAll(params)
-
-    /*uriData='g='+$scope.groupId;
-    CommonService.getAll('group',uriData,function(data){
-        $scope.groupDetailInfo.gid=data.MyGroup[0][0];
-        $scope.groupDetailInfo.name=data.MyGroup[0][1];
-        $scope.groupDetailInfo.cat = data.MyGroup[0][2];
-        $scope.groupDetailInfo.state=data.MyGroup[0][6];
-        $scope.groupDetailInfo.join=data.MyGroup[0][7];
-        $scope.groupDetailInfo.cnt=data.MyGroup[0][8];
-        $scope.groupDetailInfo.header=data.MyGroup[0][9];
-        $scope.groupDetailInfo.ntc=data.MyGroup[0][10];
-    },errorOperate);*/
 
     //用户在某圈子中的权限
     if(cookieOperate.getCookie('token')!=null){

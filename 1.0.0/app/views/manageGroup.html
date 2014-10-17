@@ -14,10 +14,10 @@
     <div class="col-md-12">
       <ul class="nav nav-tabs" ng-init="vm.activeTab=1">
         <li ng-class="{active: vm.activeTab == 1}"><a href="javascript:;" ng-click="vm.activeTab = 1">圈子设置</a></li>
-        <li ng-class="{active: vm.activeTab == 2}"><a href="javascript:;" ng-click="vm.activeTab = 2">成员管理</a></li>
+        <li ng-class="{active: vm.activeTab == 2}"><a href="javascript:;" ng-click="showUserManage();">成员管理</a></li>
         <li ng-class="{active: vm.activeTab == 3}"><a href="javascript:;" ng-click="vm.activeTab = 3">话题管理</a></li>
-        <li ng-class="{active: vm.activeTab == 4}"><a href="javascript:;" ng-click="vm.activeTab = 4">加入审核</a></li>
-        <li ng-class="{active: vm.activeTab == 5}"><a href="javascript:;" ng-click="vm.activeTab = 5">黑名单</a></li>
+        <li ng-class="{active: vm.activeTab == 4}"><a href="javascript:;" ng-click="showWTUserManage();">加入审核</a></li>
+        <li ng-class="{active: vm.activeTab == 5}"><a href="javascript:;" ng-click="showHUserManage();">黑名单</a></li>
       </ul>
       <div class="tab-content tab-bordered">
         <div class="tab-panel" ng-show="vm.activeTab == 1">
@@ -195,7 +195,7 @@
                 <table class="table table-condensed " >
                     <thead>
                     <tr >
-                        <th ><input name="check" type="checkbox" value="" style="margin-left:10px;"/>
+                        <th ><input name="check" type="checkbox" ng-model="groupWaitUsers.allChecked" ng-change="gWUCheckAll(groupWaitUsers.allChecked);" style="margin-left:10px;"/>
                             &nbsp;全选</th>
                         <th>用户</th>
                         <th>验证信息</th>
@@ -204,23 +204,26 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
-                        <td><span ><a href="" class="blue">admin</a></span></td>
-                        <td>未完善信息</td>
-                        <td>2014-10-10</td>
-                        <td><span><a href="" class="blue  " ><i class="icon-ok"></i> 同意加入</a></span>
-                            <span><a href="" class="blue ml10" ><i class="icon-ban-circle"></i> 拒绝加入</a></span>
-                            <span><a href="" class="blue ml10" ><i class="icon-remove-sign"></i> 黑名单</a></span></td>
+                    <tr ng-repeat="groupWaitUser in groupWaitUsers">
+                        <td ><input  type="checkbox"  style="margin-left:10px;" ng-model="groupWaitUser.checked" ng-change="gWUCheckBoxChange();"/></td>
+                        <td><span ><a href="" class="blue">{{groupWaitUser.name}}</a></span></td>
+                        <td>{{groupWaitUser.vm}}</td>
+                        <td>{{groupWaitUser.joinTime}}</td>
+                        <td>
+                            <span><a href="javascript:;" class="blue" ng-click="agreedToJoin(groupWaitUser);"><i class="icon-ok"></i> 同意加入</a></span>
+                            <span><a href="javascript:;" class="blue ml10" ng-click="refuseToJoin(groupWaitUser);"><i class="icon-ban-circle"></i> 拒绝加入</a></span>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
+                <div class=" btn-group pull-right mp20"  data-toggle="buttons-radio">
+                    <button type="button" class="btn " ng-click="waitUsersLastPage();"><i class="icon-double-angle-left"></i></button>
+                    <button type="button" class="btn " ng-disabled="waitUsersNextPageState" ng-click="waitUsersNextPage();"><i class="icon-double-angle-right"></i></button>
+                </div>
                 <div class="col-md-12 mp20 marginb" style="float:left;">
 
-
-                    <button type="button" class="btn btn-info pull-right ml10">批量黑名单</button>
-                    <button type="button" class="btn btn-info pull-right ml10">批量拒绝</button>
-                    <button type="button" class="btn btn-info pull-right ml10">批量加入</button>
+                    <button type="button" class="btn btn-info pull-right ml10" ng-disabled="multiRefuseToJoinState" ng-click="multiRefuseToJoin();">批量拒绝</button>
+                    <button type="button" class="btn btn-info pull-right ml10" ng-disabled="multiAgreedToJoinState" ng-click="multiAgreedToJoin();">批量加入</button>
                 </div>
             </div>
         </div>
@@ -231,26 +234,28 @@
             <table class="table table-condensed " >
               <thead>
                 <tr >
-                  <th ><input name="check" type="checkbox" value="" style="margin-left:10px;"/>
+                  <th ><input name="check" type="checkbox" ng-model="groupHoldUsers.allChecked" ng-change="gHUCheckAll(groupHoldUsers.allChecked);" style="margin-left:10px;"/>
                     &nbsp;全选</th>
                   <th>用户</th>
-                  <th>基本信息</th>
                   <th>加入黑名单时间</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
-                  <td><span ><a href="" class="blue">admin</a></span></td>
-                  <td>未完善信息</td>
-                  <td>2014-10-10</td>
-                  <td><span><a href="" class="blue " ><i class="icon-remove"></i> 从黑名单删除</a></span></td>
+                <tr ng-repeat="groupHoldUser in groupHoldUsers">
+                  <td ><input name="check" type="checkbox" ng-model="groupHoldUser.checked"  ng-change="gHUCheckBoxChange();" style="margin-left:10px;"/></td>
+                  <td><span ><a href="" class="blue">{{groupHoldUser.name}}</a></span></td>
+                  <td>{{groupHoldUser.lastTime}}</td>
+                  <td><span><a href="javascript:;" class="blue" ng-click="deleteFromHold(groupHoldUser.id,'U');"><i class="icon-remove"></i> 从黑名单中删除</a></span></td>
                 </tr>
               </tbody>
             </table>
+            <div class=" btn-group pull-right mp20"  data-toggle="buttons-radio">
+               <button type="button" class="btn " ng-click="holdUsersLastPage();"><i class="icon-double-angle-left"></i></button>
+               <button type="button" class="btn " ng-disabled="holdUsersNextPageState" ng-click="holdUsersNextPage();"><i class="icon-double-angle-right"></i></button>
+            </div>
             <div class="col-md-12 mp20 marginb" style="float:left;">
-              <button type="button" class="btn btn-info pull-right">批量清除</button>
+              <button type="button" class="btn btn-info pull-right" ng-disabled="multiDeleteFromHoldState" ng-click="multiDeleteFromHold();">批量删除</button>
             </div>
           </div>
         </div>

@@ -88,7 +88,7 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
     $scope.guanZhuFun = function(code){
 
         if(cookieOperate.getCookie("token")==null) {
-            $('#denglu').show();
+            $('#denglu').modal('show');
         }else {
             $scope.guanZhu = !$scope.guanZhu;
             $scope.yiGuanZhu = !$scope.yiGuanZhu;
@@ -104,7 +104,7 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
 
     $scope.yiGuanZhuFun = function(code){
         if(cookieOperate.getCookie("token")==null) {
-            $('#denglu').show();
+            $('#denglu').modal('show');
         }else {
             $scope.guanZhu = !$scope.guanZhu;
             $scope.yiGuanZhu = !$scope.yiGuanZhu;
@@ -122,7 +122,7 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
     $scope.order=function(){
 
         if(cookieOperate.getCookie("token")==null) {
-            $('#denglu').show();
+            $('#denglu').modal('show');
         }else {
         var orderProductsInfoDataArray=[];
         var orderProductsInfoData={};

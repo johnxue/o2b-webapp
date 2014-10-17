@@ -22,99 +22,60 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     ctrInit();
 
     var uriData='';
+
+    //分页信息(圈子下用户)
     var page=0;
     var pageSize=10;
+
+    //分页信息(圈子下待审核用户)
+    var waitPage=0;
+    var waitPageSize=10;
+
+    //分页信息(圈子下黑名单用户)
+    var holdPage=0;
+    var holdPageSize=10;
+
+    //当前用户是否为圈主
     var isRoleOorS=true;
-    var groupUsers=[];
+
    //初始化$scope中定义的变量
+
+    $scope.vm={};
 
     $scope.manageGroupForm={};
 
+    //圈子下所有用户信息
+    $scope.groupUsers=[];
+
     $scope.groupUsersNextPageState=false;
 
-    $scope.$on('$viewContentLoaded', function() {
+    $scope.groupWaitUsers=[];
 
-        findGroupById(0,10);
-    });
+    $scope.waitUsersNextPageState=false;
+
+    $scope.multiAgreedToJoinState=true;
+
+    $scope.multiRefuseToJoinState=true;
+
+    $scope.groupHoldUsers={};
+
+    $scope.holdUsersNextPageState=false;
+
+    $scope.multiDeleteFromHoldState=true;
 
    //实现与页面交互的事件,如：button_click
 
-    //设为或取消管理员
-    $scope.setManager=function(guid,role){
-        uriData={};
-        uriData.guid=guid;
-        uriData.role=role;
-        CommonService.updatePartOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
-            for(var i=0;i<groupUsers.length;i++){
-                if(groupUsers[i].id==guid){
-                   groupUsers[i].roleC=role;
-                    if(groupUsers[i].roleC=='S'){
-                        groupUsers[i].roleN='管理员';
-                    }else{
-                       groupUsers[i].roleN='普通成员';
-                    }
-                    break;
-                }
-            }
-            showGroupUsersHtml();
-        },errorOperate);
-    }
-
-    //踢出圈子
-    $scope.kickOut=function(guid){
-        uriData={};
-        uriData.guid=guid;
-        uriData.cmt='被踢出';
-        CommonService.deleteOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
-            for(var i=0;i<groupUsers.length;i++){
-                if(groupUsers[i].id==guid){
-                    groupUsers.splice(i, 1);
-                    break;
-                }
-            }
-            showGroupUsersHtml();
-        },errorOperate);
-    }
-
-    //设置或取消禁言
-    $scope.setGag=function(guid,state){
-        uriData={};
-        uriData.guid=guid;
-        uriData.st=state;
-       CommonService.updatePartOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
-           for(var i=0;i<groupUsers.length;i++){
-               if(groupUsers[i].id==guid){
-                   groupUsers[i].state=state;
-                   break;
-               }
-           }
-           showGroupUsersHtml();
-       },errorOperate);
-    }
-
-    //成员管理-用户列表分页
-    $scope.groupUsersNextPage=function(){
-        findGroupById(++page,pageSize);
-    }
-
-    $scope.groupUsersLastPage=function(){
-        $scope.groupUsersNextPageState=false;
-        if(page>0){
-            findGroupById(--page,pageSize);
-        }
-    }
-
     //提交修改单击事件
     $scope.updateGroup=function(manageGroupForm){
-          uriData={};
-          uriData['gid']=manageGroupForm['gid'];
-          uriData['join']=manageGroupForm['join'];
-          uriData['cnt']=manageGroupForm['cnt'];
-          uriData['ntc']=manageGroupForm['ntc'];
+        uriData={};
+        uriData['gid']=manageGroupForm['gid'];
+        uriData['join']=manageGroupForm['join'];
+        uriData['cnt']=manageGroupForm['cnt'];
+        uriData['ntc']=manageGroupForm['ntc'];
 
-         CommonService.updateOne('group',JSON.stringify(uriData),function(data){
-                           alert('设置成功!');
-         },errorOperate);
+        CommonService.updateOne('group',JSON.stringify(uriData),function(data){
+            alert('设置成功!');
+        },errorOperate);
     }
 
     //圈子头像上传
@@ -137,7 +98,307 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
         alert('上传失败,请清除后重新提交!');
     });
 
+    //显示成员管理
+    $scope.showUserManage=function(){
+        $scope.vm.activeTab = 2;
 
+        findGroupById(0,10);
+    }
+
+    //设为或取消管理员
+    $scope.setManager=function(guid,role){
+        uriData={};
+        uriData.guids=String(guid);
+        uriData.role=role;
+        CommonService.updatePartOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
+            for(var i=0;i<$scope.groupUsers.length;i++){
+                if($scope.groupUsers[i].id==guid){
+                    $scope.groupUsers[i].roleC=role;
+                    if($scope.groupUsers[i].roleC=='S'){
+                        $scope.groupUsers[i].roleN='管理员';
+                    }else{
+                        $scope.groupUsers[i].roleN='普通成员';
+                    }
+                    break;
+                }
+            }
+            showGroupUsersHtml($scope.groupUsers);
+        },errorOperate);
+    }
+
+    //踢出圈子
+    $scope.kickOut=function(guid){
+        uriData={};
+        uriData.guid=String(guid);
+        uriData.cmt='被踢出';
+        CommonService.deleteOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
+            for(var i=0;i<$scope.groupUsers.length;i++){
+                if($scope.groupUsers[i].id==guid){
+                    $scope.groupUsers.splice(i, 1);
+                    break;
+                }
+            }
+            showGroupUsersHtml($scope.groupUsers);
+        },errorOperate);
+    }
+
+    //设置或取消禁言
+    $scope.setGag=function(guid,state){
+        uriData={};
+        uriData.guids=String(guid);
+        uriData.st=state;
+       CommonService.updatePartOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
+           for(var i=0;i<$scope.groupUsers.length;i++){
+               if($scope.groupUsers[i].id==guid){
+                   $scope.groupUsers[i].state=state;
+                   break;
+               }
+           }
+           showGroupUsersHtml($scope.groupUsers);
+       },errorOperate);
+    }
+
+    //单个加入黑名单
+    $scope.addToHold=function(guid,role){
+        uriData={};
+        uriData.guids=String(guid);
+        uriData.role=role;
+        CommonService.updatePartOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
+            for(var i=0;i<$scope.groupUsers.length;i++){
+                if($scope.groupUsers[i].id==guid){
+                    $scope.groupUsers.splice(i, 1);
+                    break;
+                }
+            }
+            showGroupUsersHtml($scope.groupUsers);
+        },errorOperate);
+    }
+
+    //成员管理-用户列表分页
+    $scope.groupUsersNextPage=function(){
+        findGroupById(++page,pageSize);
+    }
+
+    $scope.groupUsersLastPage=function(){
+        $scope.groupUsersNextPageState=false;
+        if(page>0){
+            findGroupById(--page,pageSize);
+        }
+    }
+
+    //显示加入审核管理
+    $scope.showWTUserManage=function(){
+        $scope.vm.activeTab = 4;
+
+        findWaitUsers(0,10);
+    }
+
+    //待审核用户列表全选
+    $scope.gWUCheckAll = function(checked) {
+        angular.forEach($scope.groupWaitUsers, function(groupWaitUser) {
+            groupWaitUser.checked = checked;
+        });
+        $scope.multiAgreedToJoinState=true;
+        $scope.multiRefuseToJoinState=true;
+        for(var i=0;i<$scope.groupWaitUsers.length;i++){
+            if($scope.groupWaitUsers[i].checked==true){
+                $scope.multiAgreedToJoinState=false;
+                $scope.multiRefuseToJoinState=false;
+                break;
+            }
+        }
+    }
+
+    //待审核用户列表复选框状态改变事件
+    $scope.gWUCheckBoxChange=function(){
+        $scope.multiAgreedToJoinState=true;
+        $scope.multiRefuseToJoinState=true;
+        for(var i=0;i<$scope.groupWaitUsers.length;i++){
+            if($scope.groupWaitUsers[i].checked==true){
+                $scope.multiAgreedToJoinState=false;
+                $scope.multiRefuseToJoinState=false;
+                break;
+            }
+        }
+    }
+
+    //加入审核-待审核用户列表分页
+    $scope.waitUsersNextPage=function(){
+        findWaitUsers(++waitPage,waitPageSize);
+    }
+
+    $scope.waitUsersLastPage=function(){
+        $scope.waitUsersNextPageState=false;
+        if(waitPage>0){
+            findWaitUsers(--waitPage,waitPageSize);
+        }
+    }
+
+    //同意加入单击事件
+    $scope.agreedToJoin =function(groupWaitUser){
+        uriData = {};
+        uriData.vids=String(groupWaitUser.id);
+        uriData.role='U';
+        uriData.st='OK';
+        CommonService.updatePartOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
+             for(var i=0;i<$scope.groupWaitUsers.length;i++){
+                 if($scope.groupWaitUsers[i].id==groupWaitUser.id){
+                     $scope.groupWaitUsers.splice(i, 1);
+                     break;
+                 }
+             }
+        },errorOperate);
+    }
+
+    //拒绝加入单击事件
+    $scope.refuseToJoin =function(groupWaitUser){
+        uriData = {};
+        uriData.vids=String(groupWaitUser.id);
+        uriData.role='U';
+        uriData.st='NP';
+        CommonService.updatePartOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
+            for(var i=0;i<$scope.groupWaitUsers.length;i++){
+                if($scope.groupWaitUsers[i].id==groupWaitUser.id){
+                    $scope.groupWaitUsers.splice(i, 1);
+                    break;
+                }
+            }
+        },errorOperate);
+    }
+
+    //批量同意加入单击事件
+    $scope.multiAgreedToJoin=function(){
+        var ids =[]
+        for(var i=0;i<$scope.groupWaitUsers.length;i++){
+            if($scope.groupWaitUsers[i].checked==true){
+                ids.push($scope.groupWaitUsers[i].id);
+            }
+        }
+        uriData = {};
+        uriData.vids=ids.join(',');
+        uriData.role='U';
+        uriData.st='OK';
+        CommonService.updatePartOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
+            for(var i=0;i<$scope.groupWaitUsers.length;i++){
+              for(var j=0;j<ids.length;j++){
+                if($scope.groupWaitUsers[i].id==ids[j]){
+                    $scope.groupWaitUsers.splice(i, 1);
+                }
+              }
+            }
+            $scope.multiAgreedToJoinState=true;
+            $scope.multiRefuseToJoinState=true;
+        },errorOperate);
+    }
+
+    //批量拒绝加入单击事件
+    $scope.multiRefuseToJoin=function(){
+        var ids =[]
+        for(var i=0;i<$scope.groupWaitUsers.length;i++){
+            if($scope.groupWaitUsers[i].checked==true){
+                ids.push($scope.groupWaitUsers[i].id);
+            }
+        }
+        uriData = {};
+        uriData.vids=ids.join(',');
+        uriData.role='U';
+        uriData.st='NP';
+        CommonService.updatePartOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
+            for(var i=0;i<$scope.groupWaitUsers.length;i++){
+                for(var j=0;j<ids.length;j++){
+                    if($scope.groupWaitUsers[i].id==ids[j]){
+                        $scope.groupWaitUsers.splice(i, 1);
+                    }
+                }
+            }
+            $scope.multiAgreedToJoinState=true;
+            $scope.multiRefuseToJoinState=true;
+        },errorOperate);
+    }
+
+    //显示黑名单
+    $scope.showHUserManage=function(){
+        $scope.vm.activeTab = 5;
+
+        findHoldUsers(0,10);
+    }
+
+
+    //黑名单用户列表全选
+    $scope.gHUCheckAll=function(checked){
+        angular.forEach($scope.groupHoldUsers, function(groupHoldUser) {
+            groupHoldUser.checked = checked;
+        });
+        $scope.multiDeleteFromHoldState=true;
+        for(var i=0;i<$scope.groupHoldUsers.length;i++){
+            if($scope.groupHoldUsers[i].checked==true){
+                $scope.multiDeleteFromHoldState=false;
+                break;
+            }
+        }
+    }
+
+    //黑名单用户列表复选框状态改变事件
+    $scope.gHUCheckBoxChange=function(){
+        $scope.multiDeleteFromHoldState=true;
+        for(var i=0;i<$scope.groupHoldUsers.length;i++){
+            if($scope.groupHoldUsers[i].checked==true){
+                $scope.multiDeleteFromHoldState=false;
+                break;
+            }
+        }
+    }
+
+    //黑名单-用户列表分页
+    $scope.holdUsersNextPage=function(){
+        findHoldUsers(++holdPage,holdPageSize);
+    }
+
+    $scope.holdUsersLastPage=function(){
+        $scope.holdUsersNextPageState=false;
+        if(holdPage>0){
+            findHoldUsers(--holdPage,holdPageSize);
+        }
+    }
+
+    //单个从黑名单中删除
+    $scope.deleteFromHold=function(guid,role){
+        uriData={};
+        uriData.guids=String(guid);
+        uriData.role=role;
+        CommonService.updatePartOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
+            for(var i=0;i<$scope.groupHoldUsers.length;i++){
+                if($scope.groupHoldUsers[i].id==guid){
+                    $scope.groupHoldUsers.splice(i, 1);
+                    break;
+                }
+            }
+            $scope.multiDeleteFromHoldState=true;
+        },errorOperate);
+    }
+
+    //多个从黑名单中删除
+    $scope.multiDeleteFromHold=function(){
+        var ids =[]
+        for(var i=0;i<$scope.groupHoldUsers.length;i++){
+            if($scope.groupHoldUsers[i].checked==true){
+                ids.push($scope.groupHoldUsers[i].id);
+            }
+        }
+        uriData = {};
+        uriData.guids=ids.join(',');
+        uriData.role='U';
+        CommonService.updatePartOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
+            for(var i=0;i<$scope.groupHoldUsers.length;i++){
+                for(var j=0;j<ids.length;j++){
+                    if($scope.groupHoldUsers[i].id==ids[j]){
+                        $scope.groupHoldUsers.splice(i, 1);
+                    }
+                }
+            }
+            $scope.multiDeleteFromHoldState=true;
+        },errorOperate);
+    }
 
    //调用与后端的接口,如：CommonService.getAll(params)
 
@@ -158,7 +419,7 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     var findGroupById=function(page,pageSize){
           uriData ='o='+page+'&r='+pageSize;
          CommonService.getAll('group/'+$routeParams.groupId,uriData,function(data){
-
+             $scope.groupUsers=[];
            //判断当前用户是不是群主
            if(cookieOperate.getCookie('userName')!=data.GroupUsers[0][1]){
                  isRoleOorS=false;
@@ -171,14 +432,13 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
                 groupUser.roleC=data.GroupUsers[i][2];
                 groupUser.roleN=data.GroupUsers[i][3];
                 groupUser.joinTime=data.GroupUsers[i][4];
-                groupUser.lasttime=data.GroupUsers[i][5];
+                groupUser.lastTime=data.GroupUsers[i][5];
                 groupUser.totaltopic=data.GroupUsers[i][6];
                 groupUser.state=data.GroupUsers[i][7];
-                groupUsers.push(groupUser);
+               $scope.groupUsers.push(groupUser);
            }
 
-           showGroupUsersHtml();
-
+           showGroupUsersHtml($scope.groupUsers);
         },function(response){
              if(response.code=="802"){
                  $scope.groupUsersNextPageState=true;
@@ -187,7 +447,7 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     }
 
     //根据条件显示用户信息
-    var showGroupUsersHtml=function(){
+    var showGroupUsersHtml=function(groupUsers){
 
         angular.element('#guTbId tr:not(:eq(0))').remove();
 
@@ -201,7 +461,7 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
                 groupUserHtml.push("<td>" + groupUser.roleN + "</td>");
                 groupUserHtml.push("<td>" + groupUser.joinTime + "</td>");
                 groupUserHtml.push("<td><span class=\"blue\">" + groupUser.totaltopic + "</span></td>");
-                groupUserHtml.push("<td>" + groupUser.lasttime + "</td>");
+                groupUserHtml.push("<td>" + groupUser.lastTime + "</td>");
                 groupUserHtml.push("<td></td>");
                 groupUserHtml.push("</tr>");
                 groupUserHtml = $compile(groupUserHtml.join())($scope);
@@ -214,8 +474,8 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
                 groupUserHtml.push("<td>" + groupUser.roleN + "</td>");
                 groupUserHtml.push("<td>" + groupUser.joinTime + "</td>");
                 groupUserHtml.push("<td><span class=\"blue\">" + groupUser.totaltopic + "</span></td>");
-                groupUserHtml.push("<td>" + groupUser.lasttime + "</td>");
-                groupUserHtml.push("<td><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setManager("+groupUser.id+",'U');\"><i class=\"icon-cog\"></i> 取消管理员</a></span> <span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"kickOut("+groupUser.id+");\"><i class=\"icon-ban-circle\"></i> 踢出圈子</a></span><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setGag("+groupUser.id+",'NO');\" ><i class=\"icon-volume-off\"></i> 禁言</a></span><span><a href=\"\" class=\"blue ml10\" ><i class=\"icon-remove-sign\"></i> 加入黑名单</a></span></td>");
+                groupUserHtml.push("<td>" + groupUser.lastTime + "</td>");
+                groupUserHtml.push("<td><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setManager("+groupUser.id+",'U');\"><i class=\"icon-cog\"></i> 取消管理员</a></span> <span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"kickOut("+groupUser.id+");\"><i class=\"icon-ban-circle\"></i> 踢出圈子</a></span><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setGag("+groupUser.id+",'NO');\" ><i class=\"icon-volume-off\"></i> 禁言</a></span><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"addToHold("+groupUser.id+",'H');\"><i class=\"icon-remove-sign\"></i> 加入黑名单</a></span></td>");
                 groupUserHtml.push("</tr>");
                 groupUserHtml = $compile(groupUserHtml.join())($scope);
                 angular.element('#guTbId tr:eq(0)').after(groupUserHtml);
@@ -227,8 +487,8 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
                 groupUserHtml.push("<td>" + groupUser.roleN + "</td>");
                 groupUserHtml.push("<td>" + groupUser.joinTime + "</td>");
                 groupUserHtml.push("<td><span class=\"blue\">" + groupUser.totaltopic + "</span></td>");
-                groupUserHtml.push("<td>" + groupUser.lasttime + "</td>");
-                groupUserHtml.push("<td><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setManager("+groupUser.id+",'U');\"><i class=\"icon-cog\"></i> 取消管理员</a></span> <span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"kickOut("+groupUser.id+");\"><i class=\"icon-ban-circle\"></i> 踢出圈子</a></span><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setGag("+groupUser.id+",'OK');\" ><i class=\"icon-volume-off\"></i> 解除禁言</a></span><span><a href=\"\" class=\"blue ml10\" ><i class=\"icon-remove-sign\"></i> 加入黑名单</a></span></td>");
+                groupUserHtml.push("<td>" + groupUser.lastTime + "</td>");
+                groupUserHtml.push("<td><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setManager("+groupUser.id+",'U');\"><i class=\"icon-cog\"></i> 取消管理员</a></span> <span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"kickOut("+groupUser.id+");\"><i class=\"icon-ban-circle\"></i> 踢出圈子</a></span><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setGag("+groupUser.id+",'OK');\" ><i class=\"icon-volume-off\"></i> 解除禁言</a></span><span><a href=\"javascript:;\" class=\"blue ml10\"  ng-click=\"addToHold("+groupUser.id+",'H');\"><i class=\"icon-remove-sign\"></i> 加入黑名单</a></span></td>");
                 groupUserHtml.push("</tr>");
                 groupUserHtml = $compile(groupUserHtml.join())($scope);
                 angular.element('#guTbId tr:eq(0)').after(groupUserHtml);
@@ -240,8 +500,8 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
                 groupUserHtml.push("<td>" + groupUser.roleN + "</td>");
                 groupUserHtml.push("<td>" + groupUser.joinTime + "</td>");
                 groupUserHtml.push("<td><span class=\"blue\">" + groupUser.totaltopic + "</span></td>");
-                groupUserHtml.push("<td>" + groupUser.lasttime + "</td>");
-                groupUserHtml.push("<td><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setManager("+groupUser.id+",'S');\"><i class=\"icon-cog\"></i> 设为管理员</a></span> <span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"kickOut("+groupUser.id+");\"><i class=\"icon-ban-circle\"></i> 踢出圈子</a></span><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setGag("+groupUser.id+",'NO');\" ><i class=\"icon-volume-off\"></i> 禁言</a></span><span><a href=\"\" class=\"blue ml10\" ><i class=\"icon-remove-sign\"></i> 加入黑名单</a></span></td>");
+                groupUserHtml.push("<td>" + groupUser.lastTime + "</td>");
+                groupUserHtml.push("<td><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setManager("+groupUser.id+",'S');\"><i class=\"icon-cog\"></i> 设为管理员</a></span> <span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"kickOut("+groupUser.id+");\"><i class=\"icon-ban-circle\"></i> 踢出圈子</a></span><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setGag("+groupUser.id+",'NO');\" ><i class=\"icon-volume-off\"></i> 禁言</a></span><span><a href=\"javascript:;\" class=\"blue ml10\"  ng-click=\"addToHold("+groupUser.id+",'H');\"><i class=\"icon-remove-sign\"></i> 加入黑名单</a></span></td>");
                 groupUserHtml.push("</tr>");
                 groupUserHtml = $compile(groupUserHtml.join())($scope);
                 angular.element('#guTbId tr:eq(0)').after(groupUserHtml);
@@ -253,8 +513,8 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
                 groupUserHtml.push("<td>" + groupUser.roleN + "</td>");
                 groupUserHtml.push("<td>" + groupUser.joinTime + "</td>");
                 groupUserHtml.push("<td><span class=\"blue\">" + groupUser.totaltopic + "</span></td>");
-                groupUserHtml.push("<td>" + groupUser.lasttime + "</td>");
-                groupUserHtml.push("<td><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setManager("+groupUser.id+",'S');\"><i class=\"icon-cog\"></i> 设为管理员</a></span> <span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"kickOut("+groupUser.id+");\"><i class=\"icon-ban-circle\"></i> 踢出圈子</a></span><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setGag("+groupUser.id+",'OK');\" ><i class=\"icon-volume-off\"></i> 解除禁言</a></span><span><a href=\"\" class=\"blue ml10\" ><i class=\"icon-remove-sign\"></i> 加入黑名单</a></span></td>");
+                groupUserHtml.push("<td>" + groupUser.lastTime + "</td>");
+                groupUserHtml.push("<td><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setManager("+groupUser.id+",'S');\"><i class=\"icon-cog\"></i> 设为管理员</a></span> <span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"kickOut("+groupUser.id+");\"><i class=\"icon-ban-circle\"></i> 踢出圈子</a></span><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setGag("+groupUser.id+",'OK');\" ><i class=\"icon-volume-off\"></i> 解除禁言</a></span><span><a href=\"javascript:;\" class=\"blue ml10\"  ng-click=\"addToHold("+groupUser.id+",'H');\"><i class=\"icon-remove-sign\"></i> 加入黑名单</a></span></td>");
                 groupUserHtml.push("</tr>");
                 groupUserHtml = $compile(groupUserHtml.join())($scope);
                 angular.element('#guTbId tr:eq(0)').after(groupUserHtml);
@@ -266,7 +526,7 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
                 groupUserHtml.push("<td>" + groupUser.roleN + "</td>");
                 groupUserHtml.push("<td>" + groupUser.joinTime + "</td>");
                 groupUserHtml.push("<td><span class=\"blue\">" + groupUser.totaltopic + "</span></td>");
-                groupUserHtml.push("<td>" + groupUser.lasttime + "</td>");
+                groupUserHtml.push("<td>" + groupUser.lastTime + "</td>");
                 groupUserHtml.push("<td></td>");
                 groupUserHtml.push("</tr>");
                 groupUserHtml = $compile(groupUserHtml.join())($scope);
@@ -279,8 +539,8 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
                 groupUserHtml.push("<td>" + groupUser.roleN + "</td>");
                 groupUserHtml.push("<td>" + groupUser.joinTime + "</td>");
                 groupUserHtml.push("<td><span class=\"blue\">" + groupUser.totaltopic + "</span></td>");
-                groupUserHtml.push("<td>" + groupUser.lasttime + "</td>");
-                groupUserHtml.push("<td><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"kickOut("+groupUser.id+");\"><i class=\"icon-ban-circle\"></i> 踢出圈子</a></span><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setGag("+groupUser.id+",'NO');\" ><i class=\"icon-volume-off\"></i> 禁言</a></span><span><a href=\"\" class=\"blue ml10\" ><i class=\"icon-remove-sign\"></i> 加入黑名单</a></span></td>");
+                groupUserHtml.push("<td>" + groupUser.lastTime + "</td>");
+                groupUserHtml.push("<td><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"kickOut("+groupUser.id+");\"><i class=\"icon-ban-circle\"></i> 踢出圈子</a></span><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setGag("+groupUser.id+",'NO');\" ><i class=\"icon-volume-off\"></i> 禁言</a></span><span><a href=\"javascript:;\" class=\"blue ml10\"  ng-click=\"addToHold("+groupUser.id+",'H');\" ><i class=\"icon-remove-sign\"></i> 加入黑名单</a></span></td>");
                 groupUserHtml.push("</tr>");
                 groupUserHtml = $compile(groupUserHtml.join())($scope);
                 angular.element('#guTbId tr:eq(0)').after(groupUserHtml);
@@ -292,21 +552,8 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
                 groupUserHtml.push("<td>" + groupUser.roleN + "</td>");
                 groupUserHtml.push("<td>" + groupUser.joinTime + "</td>");
                 groupUserHtml.push("<td><span class=\"blue\">" + groupUser.totaltopic + "</span></td>");
-                groupUserHtml.push("<td>" + groupUser.lasttime + "</td>");
-                groupUserHtml.push("<td><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"kickOut("+groupUser.id+");\"><i class=\"icon-ban-circle\"></i> 踢出圈子</a></span><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setGag("+groupUser.id+",'OK');\" ><i class=\"icon-volume-off\"></i> 解除禁言</a></span><span><a href=\"\" class=\"blue ml10\" ><i class=\"icon-remove-sign\"></i> 加入黑名单</a></span></td>");
-                groupUserHtml.push("</tr>");
-                groupUserHtml = $compile(groupUserHtml.join())($scope);
-                angular.element('#guTbId tr:eq(0)').after(groupUserHtml);
-            } else if (groupUser.roleC == 'W') {
-                var groupUserHtml = [];
-                groupUserHtml.push("<tr>");
-                groupUserHtml.push("<td></td>");
-                groupUserHtml.push("<td>" + groupUser.name + "</td>");
-                groupUserHtml.push("<td>" + groupUser.roleN + "</td>");
-                groupUserHtml.push("<td>" + groupUser.joinTime + "</td>");
-                groupUserHtml.push("<td><span class=\"blue\">" + groupUser.totaltopic + "</span></td>");
-                groupUserHtml.push("<td>" + groupUser.lasttime + "</td>");
-                groupUserHtml.push("<td>&nbsp;&nbsp;&nbsp;<span class=\"blue\"><i class=\"icon-warning-sign\"></i> 待审核</span></td>");
+                groupUserHtml.push("<td>" + groupUser.lastTime + "</td>");
+                groupUserHtml.push("<td><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"kickOut("+groupUser.id+");\"><i class=\"icon-ban-circle\"></i> 踢出圈子</a></span><span><a href=\"javascript:;\" class=\"blue ml10\" ng-click=\"setGag("+groupUser.id+",'OK');\" ><i class=\"icon-volume-off\"></i> 解除禁言</a></span><span><a href=\"javascript:;\" class=\"blue ml10\"  ng-click=\"addToHold("+groupUser.id+",'H');\" ><i class=\"icon-remove-sign\"></i> 加入黑名单</a></span></td>");
                 groupUserHtml.push("</tr>");
                 groupUserHtml = $compile(groupUserHtml.join())($scope);
                 angular.element('#guTbId tr:eq(0)').after(groupUserHtml);
@@ -314,4 +561,53 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
         }
     }
 
+    //通过圈子id查询该圈子下待审核的用户信息
+    var findWaitUsers=function(waitPage,waitPageSize) {
+        uriData = 'o=' + waitPage + '&r=' + waitPageSize + '&role=W';
+        CommonService.getAll('group/' + $routeParams.groupId, uriData, function (data) {
+              $scope.groupWaitUsers=[];
+            for (var i = 0; i < data.GroupUsers.length; i++) {
+                var waitGroupUser = {};
+                waitGroupUser.id = data.GroupUsers[i][0];
+                waitGroupUser.name = data.GroupUsers[i][1];
+                waitGroupUser.roleC = data.GroupUsers[i][2];
+                waitGroupUser.roleN = data.GroupUsers[i][3];
+                waitGroupUser.joinTime = data.GroupUsers[i][4];
+                waitGroupUser.lastTime = data.GroupUsers[i][5];
+                waitGroupUser.totaltopic = data.GroupUsers[i][6];
+                waitGroupUser.state = data.GroupUsers[i][7];
+                waitGroupUser.vm = data.GroupUsers[i][8];
+                $scope.groupWaitUsers.push(waitGroupUser);
+            }
+        }, function (response) {
+            if(response.code=="802"){
+                $scope.waitUsersNextPageState=true;
+            }
+        });
+    }
+
+    //通过圈子id查询该圈子下黑名单的用户信息
+    var findHoldUsers=function(holdPage,holdPageSize){
+        uriData = 'o=' + holdPage + '&r=' + holdPageSize + '&role=H';
+        CommonService.getAll('group/' + $routeParams.groupId, uriData, function (data) {
+            $scope.groupHoldUsers=[];
+            for (var i = 0; i < data.GroupUsers.length; i++) {
+                var holdGroupUser = {};
+                holdGroupUser.id = data.GroupUsers[i][0];
+                holdGroupUser.name = data.GroupUsers[i][1];
+                holdGroupUser.roleC = data.GroupUsers[i][2];
+                holdGroupUser.roleN = data.GroupUsers[i][3];
+                holdGroupUser.joinTime = data.GroupUsers[i][4];
+                holdGroupUser.lastTime = data.GroupUsers[i][5];
+                holdGroupUser.totaltopic = data.GroupUsers[i][6];
+                holdGroupUser.state = data.GroupUsers[i][7];
+                holdGroupUser.vm = data.GroupUsers[i][8];
+                $scope.groupHoldUsers.push(holdGroupUser);
+            }
+        }, function (response) {
+            if(response.code=="802"){
+                $scope.holdUsersNextPageState=true;
+            }
+        });
+    }
 });
