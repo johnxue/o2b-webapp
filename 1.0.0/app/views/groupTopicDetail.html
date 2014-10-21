@@ -1,4 +1,4 @@
-<div ng-controller="GroupPostDetailCtrl">
+<div ng-controller="GroupTopicDetailCtrl">
 <div class="container" >
 <div class="cont" >
   <div class="col-md-12">
@@ -39,7 +39,7 @@
             <!--  头像滑过显示结束--> 
             <a href="#" class="avatar"><img src="images/boy.jpg" class="huati-head " ng-mouseenter="item.popover=true"
               ng-mouseleave="item.popover=false"/></a>
-            <h2 >便便的小道消息 <span class="ha20"><a href=""  class="label label-success pull-right ml10" data-toggle="modal" data-target="#del"><i class="icon-remove"></i> 删除</a></span> <span class="ha20"><a href="#/editGroupPost"  class="label label-info pull-right"><i class="icon-pencil"></i> 编辑</a></span></h2>
+            <h2 >便便的小道消息 <span class="ha20"><a href=""  class="label label-success pull-right ml10" data-toggle="modal" data-target="#del"><i class="icon-remove"></i> 删除</a></span> <span class="ha20"><a href="#/editGroupTopic"  class="label label-info pull-right"><i class="icon-pencil"></i> 编辑</a></span></h2>
             <div class="text">
               <p>便便小姐依旧每天喷着洗衣粉般味道的香水在我面前乱晃，告诉我该来的总会来不该来的总会走。我知道她这句话是在安慰受伤的我。可是怎么听怎么觉得是在诅咒我。我习惯性的推开便便，希望她能跟我保持一米的安全距离。</p>
               <p>她极力的靠近我说要告诉我一个特大重磅惊天大新闻，当然她告诉我的不过是公司里最近都在讨论的要新来的同事，其实，对于公司新来同事我已经见怪不怪了，虽然我嘴上说着很怀疑便便的审美，心里却在默默盘算，能从她口中蹦出美女两个字实在是不容易，因为她一直以来都认为她自己是整个生物界最美的。</p>
@@ -131,7 +131,8 @@ $(document).ready(function(){
 </script>
             <p class="title">快速回复</p>
             <div class="col-md-12">
-              <textarea name="" cols="" rows="" class="teax "></textarea>
+              <!--<textarea name="" cols="" rows="" class="teax "></textarea>-->
+                <script id="editor" type="text/plain" style="height:200px; background:red;"></script>
             </div>
             <div class="mp20 marginb">
               <button class="btn btn-info more">确认回复保存</button>

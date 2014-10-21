@@ -22,9 +22,16 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
     ctrInit();
 
     var uriData='';
+
+    var groupAllTopicsCount=0;
+    var topicsPage=0;
+    var topicsPageSize=1;
+    var topicsMaxPage=0;
+    //分页器可显示页数
+    var bursterMaxPage=6;
    //初始化$scope中定义的变量
 
-    //管理圈子需要的id临时从$routeParams里取
+    //管理圈子需要的id
     $scope.groupId=$routeParams.groupId;
 
     $scope.UserGroupRole={};
@@ -37,6 +44,15 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
 
     $scope.showManageGroup=false;
 
+    $scope.groupAdministrators={};
+
+    $scope.groupInfo={};
+
+    $scope.ifIsVerifyJoin=false;
+
+    $scope.groupTopics={};
+
+    $scope.bursterPageNumbers=[];
 
     //实现与页面交互的事件,如：button_click
 
@@ -53,17 +69,32 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
             }, errorOperate);
     }
 
+    //弹出加入验证框
+    $scope.showVMForm=function() {
+        CommonService.getAll('group/' + $routeParams.groupId + '/user', uriData, function (data) {
+            if (data.UserGroupRole.status == 'WT') {
+                alert('加入请求已发出,等待管理员审核');
+            }
+        }, function (response) {
+            if (response.code == '802') {
+                $('#joinNVMModal').modal('show');
+            }
+        });
+    }
+
     //加入需要验证的圈子单击事件
-    $scope.joinNVGroup=function(){
-        var uriData = {};
-        uriData.st='WT';
-        CommonService.createOne('group/'+ $routeParams.groupId+'/user', JSON.stringify(uriData), function (data) {
-            console.info(data.id);
-            console.info(data.name);
-            console.info(data.membership);
-            $scope.showJoinGroup=false;
-            $scope.showQuitGroup=true;
-        }, errorOperate);
+    $scope.joinNVGroup=function(validateMessage){
+         var uriData = {};
+         uriData.st='WT';
+         uriData.vm=validateMessage;
+         CommonService.createOne('group/'+ $routeParams.groupId+'/user', JSON.stringify(uriData), function (data) {
+               console.info(data.id);
+               console.info(data.name);
+               console.info(data.membership);
+               $('#joinNVMModal').modal('hide');
+               alert('加入成功,等待管理员验证');
+         }, errorOperate);
+
     }
 
    //退出圈子单击事件
@@ -78,6 +109,26 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
             }, errorOperate);
     }
 
+    //圈子的帖子信息分页
+    $scope.groupTopicsNextPage=function(){
+        angular.element('#LastPageLi').removeClass('disabled');
+
+        if(topicsPage<topicsMaxPage-1){
+        findTopicsOfGroup(++topicsPage,topicsPageSize);
+        }else{
+            angular.element('#NextPageLi').addClass('disabled');
+        }
+    }
+
+    $scope.groupTopicsLastPage=function(){
+        angular.element('#NextPageLi').removeClass('disabled');
+
+        if(topicsPage>0){
+           findTopicsOfGroup(--topicsPage,topicsPageSize);
+        }else{
+            angular.element('#LastPageLi').addClass('disabled');
+        }
+    }
 
     //调用与后端的接口,如：CommonService.getAll(params)
 
@@ -94,6 +145,8 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
                          $scope.showManageGroup=true;
                      }else if($scope.UserGroupRole.role=='U'){
                          $scope.showQuitGroup=true;
+                     }else if($scope.UserGroupRole.role=='W'){
+                         $scope.showJoinGroup=true;
                      }
          },function(response){
               if(response.code=='802'){
@@ -101,5 +154,60 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
               }
          });
     }
+
+    //通过圈子id查询圈子详情
+    uriData=undefined;
+    CommonService.getAll('group/'+$scope.groupId+'/info',uriData,function(data){
+         $scope.groupAdministrators=data.Administrator;
+         $scope.groupInfo=data.Group;
+
+        localDataStorage.setItem('groupInfo',JSON.stringify($scope.groupInfo));
+
+       if($scope.groupInfo.isVerifyJoin=='Y'){
+          $scope.ifIsVerifyJoin=true;
+       }
+    },errorOperate);
+
+    //查询圈子下的所有话题
+    var findTopicsOfGroup=$scope.findTopicsOfGroup=function(page,pageSize) {
+              uriData = 'o='+page+'&r='+pageSize;
+              CommonService.getAll('group/' + $scope.groupId + '/topics', uriData, function (data) {
+                  $scope.groupTopics = data.Topics;
+                  groupAllTopicsCount = data.count;
+
+                  //记录查询页号,连接点击页号查询和点击上一页或下一页查询
+                  topicsPage=page;
+
+                  //分页器显示
+                  topicsMaxPage=Math.ceil(groupAllTopicsCount/topicsPageSize);
+                  $scope.bursterPageNumbers =[];
+                  if(bursterMaxPage>topicsMaxPage){
+                      for(var i=0;i<topicsMaxPage;i++){
+                          $scope.bursterPageNumbers[i] = i;
+                      }
+                  }else {
+                      if (page < Math.ceil(bursterMaxPage / 2)) {
+                          for (var i = 0; i < topicsMaxPage && i < bursterMaxPage; i++) {
+                              $scope.bursterPageNumbers[i] = i;
+                          }
+                      } else if (page < topicsMaxPage - Math.ceil(bursterMaxPage / 2)) {
+                          for (var i = 0, j = -Math.floor(bursterMaxPage / 2); i < bursterMaxPage; i++, j++) {
+                              $scope.bursterPageNumbers[i] = page + j;
+                          }
+                      } else {
+                          for (var i = 0, j = topicsMaxPage - bursterMaxPage; i < bursterMaxPage; i++, j++) {
+                              $scope.bursterPageNumbers[i] = j;
+                          }
+                      }
+                  }
+
+                  //设置分页器样式
+                  angular.element('#pageLi'+page+'').siblings().removeClass('active');
+                  angular.element('#pageLi'+page+'').addClass('active');
+
+              }, errorOperate);
+    }
+
+    findTopicsOfGroup(0,1);
 
 });
