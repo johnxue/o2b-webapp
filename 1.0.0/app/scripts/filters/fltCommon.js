@@ -99,3 +99,36 @@ CommonFilters.filter('nullToZero',function(){
     }
 });
 
+/*格式化时间,只显示年月日*/
+CommonFilters.filter('showYMD',function(){
+
+    return function(input){
+        if(input!=undefined){
+        var dateTime = new Date(input.replace(/-/g,"/")).format('yyyy-MM-dd');
+        return dateTime;
+        }
+    }
+});
+
+/*格式化时间,根据当前时间(零点)判断是否为今天、昨天、前天,若不是,则直接显示时间*/
+CommonFilters.filter('showTime',function(){
+
+    return function(input){
+        if(input!=undefined){
+            var dateTime = new Date(input.replace(/-/g,"/"));
+            var sysTime = new Date();
+            var sysDate = new Date(sysTime.getFullYear(),sysTime.getMonth(),sysTime.getDate());
+            var yesterdayDate=new Date(sysTime.getFullYear(),sysTime.getMonth(),sysTime.getDate()-1);
+            var tDBYesterdayDate=new Date(sysTime.getFullYear(),sysTime.getMonth(),sysTime.getDate()-2);
+           if(dateTime>=sysDate){
+                return '今天';
+           }else if(dateTime>=yesterdayDate){
+               return '昨天';
+           }else if(dateTime>=tDBYesterdayDate){
+               return '前天';
+           }
+            return input;
+        }
+    }
+});
+

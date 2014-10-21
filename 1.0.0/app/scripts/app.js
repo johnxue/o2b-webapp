@@ -5,8 +5,8 @@ var MainApp=angular.module('MainApp',['ngRoute','ngResource','angularFileUpload'
     'LoginServices','LoginControllers','ProductOrderControllers','UserAddressControllers','NewsControllers',
     'NewsListControllers','ProductShoppingCartControllers','MyFormControllers','UserRegisterControllers',
     'UserFollowControllers','ViewDetailsControllers','UserAccountSettingControllers','CommonDirectives',
-    'GroupMainControllers','GroupDetailControllers','GroupPostDetailControllers','CreateGroupControllers',
-    'EditGroupPostControllers','ManageGroupControllers']);
+    'GroupMainControllers','GroupDetailControllers','GroupTopicDetailControllers','CreateGroupControllers',
+    'EditGroupTopicControllers','ManageGroupControllers']);
 
 MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($routeProvider,$httpProvider,$locationProvider) {
     $routeProvider
@@ -78,14 +78,14 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title:'管理圈子',
             templateUrl:'views/manageGroup.html',
             controller:'ManageGroupCtrl'
-        }).when('/groupPostDetail',{
+        }).when('/group/:groupId/topic/:topicId',{
             title:'帖子详情',
-            templateUrl:'views/groupPostDetail.html',
-            controller:'GroupPostDetailCtrl'
-        }).when('/editGroupPost',{
+            templateUrl:'views/groupTopicDetail.html',
+            controller:'GroupTopicDetailCtrl'
+        }).when('/editGroupTopic',{
             title:'编辑帖子',
-            templateUrl:'views/editGroupPost.html',
-            controller:'EditGroupPostCtrl'
+            templateUrl:'views/editGroupTopic.html',
+            controller:'EditGroupTopicCtrl'
         }).otherwise({
             redirectTo: '/'
         });

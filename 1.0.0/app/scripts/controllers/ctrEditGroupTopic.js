@@ -15,10 +15,10 @@
  *  @服务：CommonService 提供接口方法：getAll,getOne,updateOne,deleteOne,createOne
  */
 
-var EditGroupPostControllers = angular.module('EditGroupPostControllers',[]);
+var EditGroupTopicControllers = angular.module('EditGroupTopicControllers',[]);
 
-/*定义 Controller: EditGroupPostCtrl  （编辑圈子帖子页面 editGroupPost.html）*/
-EditGroupPostControllers.controller('EditGroupPostCtrl',function($scope,CommonService,$window){
+/*定义 Controller: EditGroupTopicCtrl  （编辑圈子帖子页面 editGroupTopic.html）*/
+EditGroupTopicControllers.controller('EditGroupTopicCtrl',function($scope,CommonService,$window){
     ctrInit();
 
     var uriData='';
