@@ -27,6 +27,19 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
 
     var topicId=$routeParams.topicId;
 
+    //初始化UEditor(百度编辑器)
+    var ue = UE.getEditor('editor');
+
+    ue.ready(function() {    //传参
+        ue.execCommand('serverparam', {
+            'type' : 'group',
+            'groupid' : groupId,
+            'Authorization':cookieOperate.getCookie('token'),
+            'app-key':'fb98ab9159f51fd0'
+        });
+    });
+
+    //本地存储的圈子信息
     var localGroupInfo={};
 
    //初始化$scope中定义的变量
@@ -57,8 +70,8 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
     }
 
     //通过帖子id查询帖子详情
-    var uriData=undefined;
-    CommonService.getAll('group/topics/'+topicId,'uriData',function(data){
+    uriData=undefined;
+    CommonService.getAll('group/topics/'+topicId,uriData,function(data){
         $scope.groupTopicDetail=data;
     },errorOperate);
 

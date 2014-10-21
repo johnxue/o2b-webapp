@@ -163,6 +163,7 @@ LoginControllers.controller('logoutCtrl', function ($scope,CommonService,$window
             localDataStorage.removeItem('cartProductsTotal');
             localDataStorage.removeItem('orderProductsInfo');
             localDataStorage.removeItem('cartProductsTotalOnIndex');
+            localDataStorage.removeItem('groupInfo');
 
             $window.location.href='/';
 

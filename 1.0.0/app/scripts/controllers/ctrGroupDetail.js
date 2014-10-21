@@ -161,7 +161,7 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
          $scope.groupAdministrators=data.Administrator;
          $scope.groupInfo=data.Group;
 
-        localDataStorage.setItem('groupInfo',$scope.groupInfo);
+        localDataStorage.setItem('groupInfo',JSON.stringify($scope.groupInfo));
 
        if($scope.groupInfo.isVerifyJoin=='Y'){
           $scope.ifIsVerifyJoin=true;
