@@ -1,0 +1,115 @@
+<div class="container" >
+  <div class="cont" >
+    <div class="col-md-12">
+      <ul class="nav nav-tabs" ng-init="vm.activeTab=1">
+        <li ng-class="{active: vm.activeTab == 1}" ><a href="javascript:;" ng-click="vm.activeTab = 1">发布新闻</a></li>
+        <li ng-class="{active: vm.activeTab == 2}" ><a href="javascript:;" ng-click="vm.activeTab = 2">管理新闻</a></li>
+      </ul>
+      <div class="tab-content tab-bordered mp20  " >
+        <div class="tab-panel" ng-show="vm.activeTab == 1">
+          <div class="col-md-9 marginb">
+            <form class="form-horizontal" role="form" method='post'>
+              <div class="col-md-12">
+                <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
+                  <div class="content">请您发布正面新闻内容,我们团队及时为您审核,审核通过显示您的新闻内容。 </div>
+                </div>
+                <div class="form-group marginb" style="margin-top:30px;">
+                  <label class="col-md-2 bluezi" >新闻标题：</label>
+                  <div class="col-md-10">
+                    <input type="text" class="form-control" placeholder="请填写新闻标题">
+                  </div>
+                </div>
+                <div class="mp20" >
+                  <div class="form-group " style="margin-top:30px;">
+                    <label class="col-md-2 bluezi" >新闻来源：</label>
+                    <div class="col-md-10">
+                      <input type="text" class="form-control" placeholder="请填写新闻来源">
+                    </div>
+                  </div>
+                </div>
+                <div class="mp20">
+                  <div class="form-group " style="margin-top:30px;">
+                    <label class="col-md-2 bluezi" >新闻作者：</label>
+                    <div class="col-md-10">
+                      <input type="text" class="form-control" placeholder="请填写作者姓名">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group " style="margin-top:30px;">
+                  <label class="col-md-2 bluezi" >新闻内容：</label>
+                  <div class="col-md-10">
+                    <textarea name="" cols="" rows=""  class="teax" style="width:100%"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-12 text-center mp20">
+                  <button class="btn btn-info">保存发布新闻</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        <!-- 新闻发布结束-->
+        <div class="tab-panel" ng-show="vm.activeTab == 2">
+          <div class="col-md-12 marginb">
+            <form class="form-horizontal" role="form" method='post'>
+              <div class="col-md-12 marginb">
+                <div class="alert with-icon mp10  "> <i class="icon-info-sign"></i>
+                  <div class="content">您还没有发布过新闻内容。 </div>
+                </div>
+              </div>
+              <div class="panel mp20">
+            <table class="table table-condensed " >
+              <thead>
+                <tr >
+                  <th ><input name="check" type="checkbox" value="" style="margin-left:10px;"/>
+                    &nbsp;全选</th>
+                  <th>新闻标题</th>
+                  <th>发布时间</th>
+                  <th>发布人</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
+                  <td><span ><a href="" class="blue">智能产品都在这独家首发</a></span></td>
+                  <td>2014-10-10</td>
+                  <td><span class="blue">admin</span></td>
+                  <td>
+                    <span><a href="#/editNews" class="blue " ><i class="icon-pencil"></i> 编辑</a></span><span><a href="" data-toggle="modal" data-target="#delnews" class="blue ml10" ><i class="icon-remove"></i> 删除</a></span></td>
+                </tr>
+               
+              </tbody>
+            </table>
+            <div class="col-md-12 mp20 marginb" style="float:left;">
+            
+              <button type="button" class="btn btn-info pull-right">批量删除</button>
+            </div>
+          </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 确认删除弹框 -->
+
+<div class="modal fade"  id="delnews" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
+  <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" > <i class="icon-remove"></i> 新闻删除 </h4>
+      </div>
+      <div class="modal-body"> 您确定要删除所发布的新闻吗，亲 </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-info" data-dismiss="modal">确定</button>
+      </div>
+    </div>
+    <!-- /.modal-content --> 
+  </div>
+  <!-- /.modal-dialog --> 
+</div>
