@@ -19,8 +19,7 @@
     <div class="panel col-md-9">
       <div class="panel-body">
         <div class="col-md-12">
-          <div class="comment"> 
-            
+          <div class="comment">
             <!--  头像滑过显示
             <div class="relative">
               <div class="popover" ng-style="{display: item.popover?'block':'none'}"  ng-mouseenter="item.popover=true"
@@ -36,13 +35,11 @@
                 </div>
               </div>
             </div>
-            
               头像滑过显示结束 -->
             <a href="" class="avatar"><img ng-src="{{groupTopicDetail.header}}" class="huati-head " ng-mouseenter="item.popover=true"
               ng-mouseleave="item.popover=false"/></a>
             <h2 >{{groupTopicDetail.topic}} <span class="ha20"><a href=""  class="label label-success pull-right ml10" data-toggle="modal" data-target="#del"><i class="icon-remove"></i> 删除</a></span> <span class="ha20"><a href="#/editGroupTopic"  class="label label-info pull-right"><i class="icon-pencil"></i> 编辑</a></span></h2>
             <div class="text" ng-bind-html="groupTopicDetail.contents | to_trusted_single">
-
             </div>
             <p class="ha30"> 
             <span class="pull-right"><i class="icon-comment-alt blue ml10"></i>{{groupTopicDetail.replyCount}}</span><span class="pull-right"><i class="icon-eye-open blue ml10"></i> {{groupTopicDetail.viewCount}} </span></p>
@@ -55,28 +52,30 @@
             </ul>
             </p>-->
           </div>
+
           <div class="col-md-12" style="margin-top:20px;">
-            <div class="huati-box " >
-              <div class="col-md-1"><img src="images/head2.png" class="huati-head "/></div>
+
+            <div class="huati-box " ng-repeat="groupTopicComment in groupTopicComments">
+              <div class="col-md-1"><img ng-src="{{groupTopicComment.comment[5]}}" class="huati-head "/></div>
               <div class="col-md-11">
-                <p><span class="blue">小白</span> 回复于&nbsp;<span>今天&nbsp; 10:50</span><span class="pull-right" ><a href="" class=" label label-info blue " id="huifu1"> <i class="icon-comments"></i> 回复</a></span></p>
-                <div class="ha30"> 魏家四兄弟之一的魏应充还主动向台湾食品GMP发展....</div>
-                <div id="pinglunhou2" style="background-color: #e0f1fa; border-radius:4px; margin-bottom:5px; padding-left:5px; padding-right:5px;" ng-mouseenter="item.hui=true"
+                <p><span class="blue">{{groupTopicComment.comment[4]}}</span> 评论于&nbsp;<span>{{groupTopicComment.comment[7]|showTime}}</span><span class="pull-right" ><a href="" class=" label label-info blue " id="huifu1"> <i class="icon-comments"></i> 回复</a></span></p>
+                <div class="ha30">{{groupTopicComment.comment[6]}}</div>
+
+                <div id="pinglunhou2" ng-repeat="gTCommentReply in groupTopicComment.reply" style="background-color: #e0f1fa; border-radius:4px; margin-bottom:5px; padding-left:5px; padding-right:5px;" ng-mouseenter="item.hui=true"
             ng-mouseleave="item.hui=false" >
-                  <div class="ha30"> <span class="blue">我</span>&nbsp;回复<span class="blue">&nbsp;小白</span>:&nbsp;魏家四兄弟之一的魏应充还主动向台湾食品GMP发展协会请... </div>
-                  <div class="ha30">回复于  1秒前 <span class="pull-right" ><a href=""class=" label label-info hrefw" id="ff" ng-style="{display: item.hui?'block':'none'}"  ng-mouseenter="item.hui=true"
+                  <div class="ha30"> <span class="blue">{{gTCommentReply[5]}}</span>&nbsp;回复<span class="blue">&nbsp;{{gTCommentReply[8]}}</span>:&nbsp;{{gTCommentReply[9]}} </div>
+                  <div class="ha30">回复于  {{gTCommentReply[10] | showTime}} <span class="pull-right" ><a href=""class=" label label-info hrefw" id="ff" ng-style="{display: item.hui?'block':'none'}"  ng-mouseenter="item.hui=true"
             ng-mouseleave="item.hui=false" ><i class="icon-user"></i> 回复</a></span></div>
                 </div>
-                
                 <!--回复text文本域开始-->
                 <div id="pinglun" style=" display:none;">
                   <textarea name="" cols="" rows="" class="teax">回复：小白</textarea>
                   <p><a href=""class=" label label-info hrefw pull-right mt20" id="huifu2"><i class="icon-hand-up"></i> 确认回复</a></p>
                 </div>
-                <!--回复text文本域结束--> 
-                
+                <!--回复text文本域结束-->
               </div>
             </div>
+
               <script type="text/javascript">
                   $(document).ready(function(){
 

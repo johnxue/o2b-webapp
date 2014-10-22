@@ -23,13 +23,6 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
 
     var uriData='';
 
-    var groupAllTopicsCount=0;
-    var topicsPage=0;
-    var topicsPageSize=1;
-    var topicsMaxPage=0;
-    //分页器可显示页数
-    var bursterMaxPage=6;
-
     //初始化UEditor(百度编辑器)
     var ue = UE.getEditor('editor');
 
@@ -41,6 +34,14 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
             'app-key':'fb98ab9159f51fd0'
         });
     });
+
+    var groupAllTopicsCount=0;
+    var topicsPage=0;
+    var topicsPageSize=1;
+    var topicsMaxPage=0;
+    //分页器可显示页数
+    var bursterMaxPage=6;
+
    //初始化$scope中定义的变量
 
     //管理圈子需要的id
@@ -67,6 +68,14 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
     $scope.bursterPageNumbers=[];
 
     $scope.topicsPageSize=topicsPageSize;
+
+    $scope.releaseTopicTitle='';
+
+    //初始化分页器样式
+    $scope.$on('ngRepeatFinished', function () {
+        angular.element('.bursterPageLis').removeClass('active');
+        angular.element('#pageLi0').addClass('active');
+    });
 
     //实现与页面交互的事件,如：button_click
 
@@ -144,6 +153,52 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
         }
     }
 
+    //发布话题单击事件
+    $scope.releaseTopic=function(releaseTopicTitle){
+       uriData={};
+       uriData.type='group';
+       uriData.topic=releaseTopicTitle;
+       uriData.summary=UE.getEditor('editor').getContentTxt();
+       uriData.content=UE.getEditor('editor').getContent();
+
+        //获取话题内容中的图片列表
+        var re = /title="([^"]*)"/g;
+        function getTime(){
+            var nowTime = new Date();
+            var mytime=nowTime.getFullYear().toString();
+            var Year = nowTime.getFullYear().toString();  //年
+            var Month = nowTime.getMonth() + 1;   //月
+            var Day = nowTime.getDate().toString();     //日
+            var nowDaty=Year + Month + Day;
+            return(nowDaty);
+        }
+        var nowTime = getTime();
+        var arr=[];
+        var img = null;
+        while ( arr = re.exec(UE.getEditor('editor').getContent())) {
+            if(img==null){
+                img="/images/tmp/"+nowTime+"/"+arr[1];
+            }else{
+                img=img+","+"/images/tmp/"+nowTime+"/"+arr[1];
+            }
+        }
+        uriData.imgFiles=img;
+
+        //是否禁止评论
+        if($scope.ifForbidComment){
+            uriData.status='NR';
+        }else{
+            uriData.status='OK';
+        }
+
+       CommonService.createOne('group/'+$scope.groupId+'/topics',JSON.stringify(uriData),function(data){
+          console.info(data.tid);
+           ue.setContent('');
+           $scope.releaseTopicTitle='';
+           alert('发布成功!');
+       },errorOperate);
+    }
+
     //调用与后端的接口,如：CommonService.getAll(params)
 
     //用户在某圈子中的权限
@@ -216,7 +271,7 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
                   }
 
                   //设置分页器样式
-                  angular.element('#pageLi'+page+'').siblings().removeClass('active');
+                  angular.element('.bursterPageLis').removeClass('active');
                   angular.element('#pageLi'+page+'').addClass('active');
 
               }, errorOperate);

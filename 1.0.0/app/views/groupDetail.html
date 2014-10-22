@@ -90,20 +90,23 @@
               <div class="pull-right">
                   <ul class="pager pager-pills">
                       <li class="previous" id="LastPageLi"><a href="javascript:;" ng-click="groupTopicsLastPage();">«</a></li>
-                      <li ng-repeat="bursterPageNumber in bursterPageNumbers" id="pageLi{{bursterPageNumber}}"><a href="javascript:;" ng-click="findTopicsOfGroup(bursterPageNumber,topicsPageSize);">{{bursterPageNumber+1}}</a></li>
+                      <li ng-repeat="bursterPageNumber in bursterPageNumbers" id="pageLi{{bursterPageNumber}}" class="bursterPageLis" on-finish-render-filters><a href="javascript:;" ng-click="findTopicsOfGroup(bursterPageNumber,topicsPageSize);">{{bursterPageNumber+1}}</a></li>
                       <li class="next" id="NextPageLi"><a href="javascript:;" ng-click="groupTopicsNextPage();">»</a></li>
                   </ul>
               </div>
           </div>
         <p class="title">发布话题</p>
         <div class="col-md-12">
-          <input name="" type="text"  style="width:100%; height:30px; border-radius:4px; border:1px solid #ccc; margin-bottom:20px;" placeholder="请输入标题"/>
+          <input name="releaseTopicTitle" type="text"  style="width:100%; height:30px; border-radius:4px; border:1px solid #ccc; margin-bottom:20px;" placeholder="请输入标题" ng-model="releaseTopicTitle"/>
         </div>
         <div class="col-md-12">
-            <script id="editor" type="text/plain" style="height:200px; background:red;"></script>
+            <script id="editor" type="text/plain" style="height:150px;"></script>
+        </div>
+        <div class="col-md-12">
+            <input name="check" type="checkbox"  style="margin-left:10px;" ng-model="ifForbidComment"/>&nbsp; 禁止评论
         </div>
         <div class="mp20 marginb">
-          <button class="btn btn-info more">确认保存</button>
+          <button class="btn btn-info more" ng-click="releaseTopic(releaseTopicTitle);" ng-disabled="releaseTopicTitle==''">确认发布</button>
         </div>
       </div>
       <div class="col-md-3 mp20">

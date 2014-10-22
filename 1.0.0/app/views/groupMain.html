@@ -12,12 +12,12 @@
         <li ng-class="{active: vm.activeTab == 3}"><a href="javascript:;" ng-click="showMyGroup();">我的圈子</a></li>
       </ul>
       <div class="tab-content tab-bordered" >
+       <!--热门圈子显示开始-->
         <div class="tab-panel" ng-show="vm.activeTab == 1">
           <div class="col-md-9">
             <div class="huati-box" >
-              <div class="huati-top"> 
-                
-                <!--  头像滑过显示-->
+              <div class="huati-top">
+                <!--  头像滑过显示
                 <div class="relative">
                   <div class="popover" ng-style="{display: item.popover?'block':'none'}"  ng-mouseenter="item.popover=true"
                    ng-mouseleave="item.popover=false"  >
@@ -25,15 +25,14 @@
                       <div class="row">
                         <div class="col-md-5"> <img src="images/head1.gif" class="huati-head"/> </div>
                         <div class="col-md-7"> <span class="pull-right"> <a href="" class="label label-info">+关注</a> 
-                          <!-- <a href="" class="label label-info">已关注</a> --></span> </div>
+                           <a href="" class="label label-info">已关注</a> </span> </div>
                       </div>
                       <p class=" ha30 " > <span> <strong>小非印象</strong></span> &nbsp;<span>关注：2323</span>&nbsp;<span>粉丝：2323</span> </p>
                       <p class=" ha30" > 已加圈：<span class="blue">财网、爱读书、小说圈</span> </p>
                     </div>
                   </div>
                 </div>
-                <!--  头像滑过显示结束--->
-
+                  头像滑过显示结束-->
                 <div class="col-md-1" ><img src="images/head1.gif"  class="huati-head " ng-mouseenter="item.popover=true"
               ng-mouseleave="item.popover=false"/></div>
                 <div class="col-md-11">
@@ -46,7 +45,6 @@
               </div>
             </div>
 
-
             <div class="row pull-right">
                 <ul class="pager pager-pills">
                   <li class="previous disabled"><a href="#">«</a></li>
@@ -57,7 +55,7 @@
                   <li><a href="">5</a></li>
                   <li class="next"><a href="#">»</a></li>
                 </ul>
-              </div>
+            </div>
           </div>
           <div class="col-md-3">
             <div class="panel ">
@@ -77,6 +75,8 @@
             </div>
           </div>
         </div>
+          <!--热门圈子显示结束-->
+          <!--最新话题显示开始-->
         <div class="tab-panel" ng-show="vm.activeTab == 2">
           <div class="col-md-9">
             <div class="huati-box">
@@ -113,68 +113,30 @@
           </div>
           <div class="col-md-3"> </div>
         </div>
-          <!--圈子右边显示开始-->
+        <!--最新话题显示结束-->
+          <!--我的圈子显示开始-->
         <div class="tab-panel" ng-show="vm.activeTab == 3">
           <div class="col-md-9">
-            <div class="huati-box">
-              <div class="huati-top"> 
-                
-                <!--  头像滑过显示-->
-                <div class="relative">
-                  <div class="popover" ng-style="{display: item.popover?'block':'none'}"  ng-mouseenter="item.popover=true"
-            ng-mouseleave="item.popover=false"  >
-                    <div class="popover-content">
-                      <div class="row">
-                        <div class="col-md-5"> <img src="images/head1.gif" class="huati-head " /> </div>
-                        <div class="col-md-7"> <span class="pull-right"> <a href="" class="label label-info">+关注</a> 
-                          <!-- <a href="" class="label label-info">已关注</a> --></span> </div>
+              <p> <span><a href="#/createGroup"  class="label label-info"><i class="icon-comments-alt"></i> 创建圈子</a></span></p>
+              <div class="panel">
+                  <div class="panel-heading">我的圈子
+                      <div class="btn-group pull-right" data-toggle="buttons-radio">
+                          <button type="button" class="btn btn-mini btn-default" ng-click="myGroupsLastPage();" ng-disabled="myGroupsLastPageState"><i class="icon-chevron-up"></i></button>
+                          <button type="button" class="btn  btn-mini btn-default" ng-click="myGroupsNextPage();" ng-disabled="myGroupsNextPageState"><i class="icon-chevron-down"></i></button>
                       </div>
-                      <p class=" ha30 " > <span> <strong>小非印象</strong></span> &nbsp;<span>关注：2323</span>&nbsp;<span>粉丝：2323</span> </p>
-                      <p class=" ha30" > 已加圈：<span class="blue">财网、爱读书、小说圈</span> </p>
-                    </div>
                   </div>
-                </div>
-                <!--  头像滑过显示结束--->
+                  <div class="panel-body">
+                      <div class="col-md-2" ng-repeat="myGroup in myGroups">
+                          <P class="ha30"><img ng-src="{{myGroup[7]}}" class="huati-head prdouctimg"/></P>
+                          <p class="ha20" style="padding-left: 10px;"><a href="#/groupDetail/{{myGroup[0]}}"  class="bl">{{myGroup[1]}}</a></p>
+                      </div>
+                  </div>
+              </div>
 
-                <div class="col-md-1" ><img src="images/head1.gif"  class="huati-head " ng-mouseenter="item.popover=true"
-              ng-mouseleave="item.popover=false"/>
-                </div>
-                <div class="col-md-11">
-                  <p><span class="blue">小白</span> 来自于 <span class="blue">重庆第一车友会</span>&nbsp;&nbsp;<span>今天&nbsp; 10:50</span></p>
-                  <div style=" line-height:30px;">
-                    <p style="color:#000; font-weight:bold; font-size:15px;"><a href="#/groupPostDetail" >康师傅承认使用馊水油作原料 重蹈覆辙誓言落空</a></p>
-                    2014年09月15日 13:13 一财网　　康师傅被馊水油拖下水 绝不再犯誓言落空　　康师傅9月14日下午发布公告，确认该公司产品使用了馊水油作为原料的劣质猪油... </div>
-                  <div class="row ha30"><i class="icon-user blue"></i>&nbsp;<span>小非印象</span>&nbsp;最后回复<span>今天 18:33</span> &nbsp;<span class="pull-right"><i class="icon-comment-alt blue"></i> &nbsp;32423</span> &nbsp;<span class="pull-right"><i class="icon-eye-open blue"></i> &nbsp;123 &nbsp;</span> </div>
-                </div>
-              </div>
-            </div>
-            <p class="title">我要发布</p>
-            <div class="col-md-12">
-              <input name="" type="text"  style="width:100%; height:30px; border-radius:4px; border:1px solid #ccc; margin-bottom:20px;" placeholder="请输入标题"/>
-            </div>
-            <div class="col-md-12">
-              <textarea name="" cols="" rows="" style="width:100%; height:100px; border:1px solid #ccc; margin-bottom:20px;"></textarea>
-            </div>
-            <div class="mp20 marginb">
-              <button class="btn btn-info more">确认发帖</button>
-            </div>
           </div>
-          <div class="col-md-3">
-            <p> <span><a href="#/createGroup"  class="label label-info"><i class="icon-comments-alt"></i> 创建圈子</a></span></p>
-            <div class="panel">
-              <div class="panel-heading">我的圈子
-                  <div class="btn-group pull-right" data-toggle="buttons-radio">
-                      <button type="button" class="btn btn-mini btn-default" ng-click="myGroupsLastPage();" ng-disabled="myGroupsLastPageState"><i class="icon-chevron-up"></i></button>
-                      <button type="button" class="btn  btn-mini btn-default" ng-click="myGroupsNextPage();" ng-disabled="myGroupsNextPageState"><i class="icon-chevron-down"></i></button>
-                  </div>
-              </div>
-              <div class="panel-body">
-                <div class="col-md-4" ng-repeat="myGroup in myGroups">
-                  <P class="ha30"><img ng-src="{{myGroup[7]}}" class="huati-head"/></P>
-                  <p class="ha20"><a href="#/groupDetail/{{myGroup[0]}}"  class="bl">{{myGroup[1]}}</a></p>
-                </div>
-              </div>
-            </div>
+            <!--圈子右边显示开始-->
+            <div class="col-md-3">
+
             <div class="panel mp20">
               <div class="panel-heading"> 最新加入成员</div>
               <div class="panel-body">

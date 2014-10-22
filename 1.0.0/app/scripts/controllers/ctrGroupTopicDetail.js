@@ -44,6 +44,8 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
 
    $scope.showQuitGroup=false;
 
+   $scope.groupTopicComments={};
+
     //实现与页面交互的事件,如：button_click
 
 
@@ -126,12 +128,6 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
         $scope.ifIsVerifyJoin=true;
     }
 
-    //通过帖子id查询帖子详情
-    uriData=undefined;
-    CommonService.getAll('group/topics/'+topicId,uriData,function(data){
-        $scope.groupTopicDetail=data;
-    },errorOperate);
-
     //用户在某圈子中的权限
     if(cookieOperate.getCookie('token')!=null){
         uriData = undefined;
@@ -151,4 +147,16 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
             }
         });
     }
+
+    //通过帖子id查询帖子详情
+    uriData=undefined;
+    CommonService.getAll('group/topics/'+topicId,uriData,function(data){
+        $scope.groupTopicDetail=data;
+    },errorOperate);
+
+    //通过话题id查看该话题的评论(含回复)
+    uriData=undefined;
+    CommonService.getAll('group/topics/'+topicId+'/comment',uriData,function(data){
+        $scope.groupTopicComments=data.comments;
+    },errorOperate);
 });
