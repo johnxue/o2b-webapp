@@ -5,13 +5,14 @@
     <ul class="breadcrumb">
       <li><a href="#/">首页</a></li>
       <li><a href="#/groupMain">圈子</a></li>
-      <li class="active">admin123</li>
+      <li class="active">{{groupInfo.name}}</li>
     </ul>
     <div class="col-md-9">
       <div class="alert with-icon">
-        <div class="content"> <img src="images/dog.jpg" class="huati-head htu" /><strong class="ml70">重庆第一车友会</strong>&nbsp; <i class="icon-chat-dot"></i> 话题：<span class="blue"> 40</span>
-          <div class="pull-right"><a href="" class="label label-success large href"><i class="icon-minus"></i> 退出圈子</a></div>
-          <div class="pull-right"><a href="" class="label label-info large href"><i class="icon-plus"></i> 加入圈子</a></div>
+        <div class="content"> <img ng-src="{{groupInfo.header}}" class="huati-head htu" /><strong class="ml70">{{groupInfo.name}}</strong>&nbsp; <i class="icon-chat-dot"></i> 话题：<span class="blue">{{groupInfo.totalTopic}}</span>
+          <div class="pull-right" ng-show="showQuitGroup"><a href="javascript:;" class="label label-success large href" ng-click="quitGroup();"><i class="icon-minus"></i> 退出圈子</a></div>
+            <div class="pull-right" ng-show="showJoinGroup && !ifIsVerifyJoin"><a href="javascript:;" class="label label-info large href" ng-click="joinDNVGroup();"><i class="icon-plus"></i> 加入圈子</a></div>
+            <div class="pull-right" ng-show="showJoinGroup && ifIsVerifyJoin"><a href="javascript:;" class="label label-info large href" ng-click="showVMForm();"><i class="icon-plus"></i> 加入圈子</a></div>
         </div>
       </div>
     </div>
@@ -20,7 +21,7 @@
         <div class="col-md-12">
           <div class="comment"> 
             
-            <!--  头像滑过显示-->
+            <!--  头像滑过显示
             <div class="relative">
               <div class="popover" ng-style="{display: item.popover?'block':'none'}"  ng-mouseenter="item.popover=true"
             ng-mouseleave="item.popover=false"  >
@@ -28,7 +29,7 @@
                   <div class="row">
                     <div class="col-md-5"> <img src="images/head1.gif" class="huati-head " /> </div>
                     <div class="col-md-7"> <span class="pull-right"> <a href="" class="label label-info">+关注</a> 
-                      <!-- <a href="" class="label label-info">已关注</a> --></span> </div>
+                       <a href="" class="label label-info">已关注</a> </span> </div>
                   </div>
                   <p class=" ha30 " > <span> <strong>小非印象</strong></span> &nbsp;<span>关注：2323</span>&nbsp;<span>粉丝：2323</span> </p>
                   <p class=" ha30" > 已加圈：<span class="blue">财网、爱读书、小说圈</span> </p>
@@ -36,18 +37,15 @@
               </div>
             </div>
             
-            <!--  头像滑过显示结束--> 
-            <a href="#" class="avatar"><img src="images/boy.jpg" class="huati-head " ng-mouseenter="item.popover=true"
+              头像滑过显示结束 -->
+            <a href="" class="avatar"><img ng-src="{{groupTopicDetail.header}}" class="huati-head " ng-mouseenter="item.popover=true"
               ng-mouseleave="item.popover=false"/></a>
-            <h2 >便便的小道消息 <span class="ha20"><a href=""  class="label label-success pull-right ml10" data-toggle="modal" data-target="#del"><i class="icon-remove"></i> 删除</a></span> <span class="ha20"><a href="#/editGroupTopic"  class="label label-info pull-right"><i class="icon-pencil"></i> 编辑</a></span></h2>
-            <div class="text">
-              <p>便便小姐依旧每天喷着洗衣粉般味道的香水在我面前乱晃，告诉我该来的总会来不该来的总会走。我知道她这句话是在安慰受伤的我。可是怎么听怎么觉得是在诅咒我。我习惯性的推开便便，希望她能跟我保持一米的安全距离。</p>
-              <p>她极力的靠近我说要告诉我一个特大重磅惊天大新闻，当然她告诉我的不过是公司里最近都在讨论的要新来的同事，其实，对于公司新来同事我已经见怪不怪了，虽然我嘴上说着很怀疑便便的审美，心里却在默默盘算，能从她口中蹦出美女两个字实在是不容易，因为她一直以来都认为她自己是整个生物界最美的。</p>
-              <p>所以，依据她的描述，不知道这个美女会不会有着范冰冰的脸型，赵薇的眼睛，舒淇的嘴唇，林志玲的身材，莫文蔚的腿型，张曼玉的气质，汤唯的知性……</p>
-              <p><img src="images/quanzitu.jpg" width="850" height="400"></p>
+            <h2 >{{groupTopicDetail.topic}} <span class="ha20"><a href=""  class="label label-success pull-right ml10" data-toggle="modal" data-target="#del"><i class="icon-remove"></i> 删除</a></span> <span class="ha20"><a href="#/editGroupTopic"  class="label label-info pull-right"><i class="icon-pencil"></i> 编辑</a></span></h2>
+            <div class="text" ng-bind-html="groupTopicDetail.contents | to_trusted_single">
+
             </div>
             <p class="ha30"> 
-            <span class="pull-right"><i class="icon-comment-alt blue ml10"></i> 32423</span><span class="pull-right"><i class="icon-eye-open blue ml10"></i> 123 </span></p>
+            <span class="pull-right"><i class="icon-comment-alt blue ml10"></i>{{groupTopicDetail.replyCount}}</span><span class="pull-right"><i class="icon-eye-open blue ml10"></i> {{groupTopicDetail.viewCount}} </span></p>
            <!-- <p class="pinglun">
             <span class="pull-right"><i class="icon-eye-open blue"></i> &nbsp;123 &nbsp;</span> 
             <span class="pull-right"><i class="icon-comment-alt blue"></i> &nbsp;32423</span>
@@ -63,7 +61,7 @@
               <div class="col-md-11">
                 <p><span class="blue">小白</span> 回复于&nbsp;<span>今天&nbsp; 10:50</span><span class="pull-right" ><a href="" class=" label label-info blue " id="huifu1"> <i class="icon-comments"></i> 回复</a></span></p>
                 <div class="ha30"> 魏家四兄弟之一的魏应充还主动向台湾食品GMP发展....</div>
-                <div id="pinglunhou2" style="display:none;background-color: #e0f1fa; border-radius:4px; margin-bottom:5px; padding-left:5px; padding-right:5px;" ng-mouseenter="item.hui=true"
+                <div id="pinglunhou2" style="background-color: #e0f1fa; border-radius:4px; margin-bottom:5px; padding-left:5px; padding-right:5px;" ng-mouseenter="item.hui=true"
             ng-mouseleave="item.hui=false" >
                   <div class="ha30"> <span class="blue">我</span>&nbsp;回复<span class="blue">&nbsp;小白</span>:&nbsp;魏家四兄弟之一的魏应充还主动向台湾食品GMP发展协会请... </div>
                   <div class="ha30">回复于  1秒前 <span class="pull-right" ><a href=""class=" label label-info hrefw" id="ff" ng-style="{display: item.hui?'block':'none'}"  ng-mouseenter="item.hui=true"
@@ -79,60 +77,35 @@
                 
               </div>
             </div>
-            <div class="huati-box " >
-              <div class="col-md-1"><img src="images/head2.png" class="huati-head "/></div>
-              <div class="col-md-11">
-                <p><span class="blue">小白</span> 回复于&nbsp;<span>今天&nbsp; 10:50</span><span ><a href="" class="blue pull-right" id="huifu1">回复</a></span></p>
-                <div class="ha30"> 魏家四兄弟之一的魏应充还主动向台湾食品GMP发展协</div>
-              </div>
-            </div>
-            <div class="huati-box " >
-              <div class="col-md-1"><img src="images/head2.png" class="huati-head "/></div>
-              <div class="col-md-11">
-                <p><span class="blue">小白</span> 回复于&nbsp;<span>今天&nbsp; 10:50</span><span ><a href="" class="blue pull-right" id="huifu1">回复</a></span></p>
-                <div class="ha30"> 魏家四兄弟之一的魏应充还主动向台湾食品GMP发展协</div>
-              </div>
-            </div>
-            <div class="huati-box " >
-              <div class="col-md-1"><img src="images/head2.png" class="huati-head "/></div>
-              <div class="col-md-11">
-                <p><span class="blue">小白</span> 回复于&nbsp;<span>今天&nbsp; 10:50</span><span ><a href="" class="blue pull-right" id="huifu1">回复</a></span></p>
-                <div class="ha30"> 魏家四兄弟之一的魏应充还主动向台湾食品GMP发展协</div>
-              </div>
-            </div>
-            <script type="text/javascript">
-$(document).ready(function(){
+              <script type="text/javascript">
+                  $(document).ready(function(){
 
-	
-	$("#huifu1").click(function(){
-		
-		$("#pinglun").show();
-		
-		});
-		
-    $("#huifu2").click(function(){
-		
-		$("#pinglun").hide();
-	
-		
-		$("#pinglunhou2").show();
-		
-	
-		
-		})
-		 $("#ff").click(function(){
-		$("#pinglun").show();
-		
-	
-		
-		})
 
-});
-</script>
+                      $("#huifu1").click(function(){
+
+                          $("#pinglun").show();
+
+                      });
+
+                      $("#huifu2").click(function(){
+
+                          $("#pinglun").hide();
+
+                          $("#pinglunhou2").show();
+
+                      })
+                      $("#ff").click(function(){
+                          $("#pinglun").show();
+
+
+
+                      })
+
+                  });
+              </script>
             <p class="title">快速回复</p>
             <div class="col-md-12">
-              <!--<textarea name="" cols="" rows="" class="teax "></textarea>-->
-                <script id="editor" type="text/plain" style="height:200px; background:red;"></script>
+              <textarea name="" cols="" rows="" class="teax "></textarea>
             </div>
             <div class="mp20 marginb">
               <button class="btn btn-info more">确认回复保存</button>
@@ -143,6 +116,40 @@ $(document).ready(function(){
     </div>
   </div>
 </div>
+    <!--访问私有圈子弹框开始(需要验证)-->
+    <div class="modal fade"  id="joinNVMModal" tabindex="-1" role="dialog" aria-labelledby="tsModalTitle" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="tsModalTitle"><i class="icon-exclamation-sign"></i> 加入验证</h4>
+                </div>
+                <div class="modal-body">
+                    <p> 亲，此圈子属私有圈子，您需要加入才能查看详细信息。 </p>
+                    <form class="form-horizontal" role="form" name="validateMessageForm" novalidate="true" ng-model="validateMessageForm">
+                        <div class="form-group mp20 marginb" style="">
+                            <label class="col-md-3 control-label" >验证信息：</label>
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input type='text'  class='form-control' placeholder="请输入验证信息" name="validateMessage"  required="true" ng-model="validateMessageForm.vm"/>
+                            <span class="input-group-btn">
+                            <button class="btn btn-default " type="button"><i class="icon-comment-alt "></i></button>
+                            </span>
+                                </div>
+                                <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="validateMessageForm.validateMessage.$dirty && validateMessageForm.validateMessage.$error.required">验证信息不能为空</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-info" ng-disabled="validateMessageForm.$invalid" ng-click="joinNVGroup(validateMessageForm.vm);">加入</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--访问私有圈子弹框结束(需要验证)-->
+
 <!-- 确认删除弹框 -->
 
 <div class="modal"  id="del" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true">

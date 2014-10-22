@@ -27,18 +27,6 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
 
     var topicId=$routeParams.topicId;
 
-    //初始化UEditor(百度编辑器)
-    var ue = UE.getEditor('editor');
-
-    ue.ready(function() {    //传参
-        ue.execCommand('serverparam', {
-            'type' : 'group',
-            'groupid' : groupId,
-            'Authorization':cookieOperate.getCookie('token'),
-            'app-key':'fb98ab9159f51fd0'
-        });
-    });
-
     //本地存储的圈子信息
     var localGroupInfo={};
 
@@ -48,9 +36,68 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
 
    $scope.groupInfo={};
 
+    $scope.ifIsVerifyJoin=false;
+
+    $scope.UserGroupRole={};
+
+   $scope.showJoinGroup=false;
+
+   $scope.showQuitGroup=false;
+
     //实现与页面交互的事件,如：button_click
 
 
+    //加入不需要验证的圈子单击事件
+    $scope.joinDNVGroup=function(){
+        var uriData = {};
+        uriData.st='OK';
+        CommonService.createOne('group/'+ groupId+'/user', JSON.stringify(uriData), function (data) {
+            console.info(data.id);
+            console.info(data.name);
+            console.info(data.membership);
+            $scope.showJoinGroup=false;
+            $scope.showQuitGroup=true;
+        }, errorOperate);
+    }
+
+    //弹出加入验证框
+    $scope.showVMForm=function() {
+        CommonService.getAll('group/' + groupId + '/user', uriData, function (data) {
+            if (data.UserGroupRole.status == 'WT') {
+                alert('加入请求已发出,等待管理员审核');
+            }
+        }, function (response) {
+            if (response.code == '802') {
+                $('#joinNVMModal').modal('show');
+            }
+        });
+    }
+
+    //加入需要验证的圈子单击事件
+    $scope.joinNVGroup=function(validateMessage){
+        var uriData = {};
+        uriData.st='WT';
+        uriData.vm=validateMessage;
+        CommonService.createOne('group/'+ groupId+'/user', JSON.stringify(uriData), function (data) {
+            console.info(data.id);
+            console.info(data.name);
+            console.info(data.membership);
+            $('#joinNVMModal').modal('hide');
+            alert('加入成功,等待管理员验证');
+        }, errorOperate);
+
+    }
+    //退出圈子单击事件
+    $scope.quitGroup=function(){
+        var uriData = undefined;
+        CommonService.deleteOne('group/'+ groupId+'/user', uriData, function (data) {
+            console.info(data.id);
+            console.info(data.name);
+            console.info(data.membership);
+            $scope.showJoinGroup=true;
+            $scope.showQuitGroup=false;
+        }, errorOperate);
+    }
 
 
 
@@ -67,6 +114,16 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
                 $scope.groupInfo=data.Group;
             },errorOperate);
         }
+    }else{
+        uriData=undefined;
+        CommonService.getAll('group/'+groupId+'/info',uriData,function(data){
+            $scope.groupInfo=data.Group;
+        },errorOperate);
+    }
+
+    //判断加入圈子是否需要验证信息
+    if($scope.groupInfo.isVerifyJoin=='Y'){
+        $scope.ifIsVerifyJoin=true;
     }
 
     //通过帖子id查询帖子详情
@@ -75,5 +132,23 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
         $scope.groupTopicDetail=data;
     },errorOperate);
 
+    //用户在某圈子中的权限
+    if(cookieOperate.getCookie('token')!=null){
+        uriData = undefined;
+        CommonService.getAll('group/'+groupId+'/user',uriData,function(data){
+            $scope.UserGroupRole=data.UserGroupRole;
 
+            if($scope.UserGroupRole.role=='S'){
+                $scope.showQuitGroup=true;
+            }else if($scope.UserGroupRole.role=='U'){
+                $scope.showQuitGroup=true;
+            }else if($scope.UserGroupRole.role=='W'){
+                $scope.showJoinGroup=true;
+            }
+        },function(response){
+            if(response.code=='802'){
+                $scope.showJoinGroup=true;
+            }
+        });
+    }
 });

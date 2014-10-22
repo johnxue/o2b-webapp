@@ -41,11 +41,20 @@ CommonFilters.filter('longmark', function() {
     }
 });
 
-/*将字符串转换成HTML*/
+/*将字符串转换成HTML(多个)*/
 CommonFilters.filter('to_trusted',['$sce',function($sce){
 
     return function(input){
         input = input[1];
+        input= $sce.trustAsHtml(input);
+        return input;
+    }
+}]);
+
+/*将字符串转换成HTML(单个)*/
+CommonFilters.filter('to_trusted_single',['$sce',function($sce){
+
+    return function(input){
         input= $sce.trustAsHtml(input);
         return input;
     }

@@ -29,6 +29,18 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
     var topicsMaxPage=0;
     //分页器可显示页数
     var bursterMaxPage=6;
+
+    //初始化UEditor(百度编辑器)
+    var ue = UE.getEditor('editor');
+
+    ue.ready(function() {    //传参
+        ue.execCommand('serverparam', {
+            'type' : 'group',
+            'groupid' : $routeParams.groupId,
+            'Authorization':cookieOperate.getCookie('token'),
+            'app-key':'fb98ab9159f51fd0'
+        });
+    });
    //初始化$scope中定义的变量
 
     //管理圈子需要的id
@@ -53,6 +65,8 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
     $scope.groupTopics={};
 
     $scope.bursterPageNumbers=[];
+
+    $scope.topicsPageSize=topicsPageSize;
 
     //实现与页面交互的事件,如：button_click
 
