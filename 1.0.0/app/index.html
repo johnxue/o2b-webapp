@@ -20,7 +20,7 @@
             <li><a href="javascript:;" ng-click="goTo('#/',$event.target);">首页</a></li>
             <li><a href="javascript:;" ng-click="goTo('#/productList',$event.target);">产品</a></li>
             <li><a href="javascript:;" ng-click="goTo('#/groupMain',$event.target);">圈子</a></li>
-            <li><a href="javascript:;" ng-click="goTo('#/uEditor',$event.target);">新闻</a></li>
+            <li><a href="javascript:;" ng-click="goTo('#/newsList',$event.target);">新闻</a></li>
           </ul>
           <form class="navbar-form navbar-left" role="search">
             <div class="form-group">
@@ -49,6 +49,9 @@
                   <li> <a href="#"> <i class="icon-user"></i> 联系客服 </a> </li>
                   <li class="divider"></li>
                   <li> <a href="#"> <i class="icon-comment"></i> 站内通知</a> </li>
+                    <li class="divider"></li>
+                  <li> <a href="#/releaseNews"> <i class="icon-list-alt"></i> 发布新闻</a> </li>
+                  <li> <a href="#/uEditor"> <i class="icon-list-alt"></i> UEditor编辑器</a> </li>
                 </ul>
               </li>
               <li > <a href="" data-toggle="dropdown"  class="dropdown-toggle" onclick="$('.activeIndex').removeClass('activeIndex');">{{loginedName}} <i class="icon-caret-down"></i> </a>
@@ -212,7 +215,6 @@
 <!-- /.modal -->
 
 <div class="fixtop"><a href="#top"></a></div>
-
 <script src="libs/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="libs/ZUI/js/example.js"></script>
 <script type="text/javascript" src="libs/ZUI/js/zui.min.js"></script>
@@ -222,6 +224,7 @@
 <script src="libs/angular-animate/angular-animate.min.js"></script>
 <script src="libs/angular-file-upload/angular-file-upload.js"></script>
 <script src="scripts/app.js"></script>
+<!-- controller JS -->
 <script src="scripts/controllers/ctrProductList.js"></script> 
 <script src="scripts/controllers/ctrProductDetail.js"></script> 
 <script src="scripts/controllers/ctrIndex.js"></script>
@@ -243,12 +246,13 @@
 <script src="scripts/controllers/ctrGroupTopicDetail.js"></script>
 <script src="scripts/controllers/ctrEditGroupTopic.js"></script>
 <script src="scripts/controllers/ctrManageGroup.js"></script>
+<script src="scripts/controllers/ctrReleaseNews.js"></script>
+<script src="scripts/controllers/ctrEditNews.js"></script>
+<script src="scripts/controllers/ctrUEditor.js"></script>
 
 <script src="scripts/services/svcCommon.js"></script>
 <script src="scripts/services/svcLogin.js"></script>
-
 <script src="scripts/filters/fltCommon.js"></script>
-
 <script src="scripts/directives/drtCommon.js"></script>
 
 <script src="libs/cryptojslib/rollups/md5.js"></script> 

@@ -6,7 +6,8 @@ var MainApp=angular.module('MainApp',['ngRoute','ngResource','angularFileUpload'
     'NewsListControllers','ProductShoppingCartControllers','MyFormControllers','UserRegisterControllers',
     'UserFollowControllers','ViewDetailsControllers','UserAccountSettingControllers','CommonDirectives',
     'GroupMainControllers','GroupDetailControllers','GroupTopicDetailControllers','CreateGroupControllers',
-    'EditGroupTopicControllers','ManageGroupControllers']);
+    'EditGroupTopicControllers','ManageGroupControllers','UEditorControllers','ReleaseControllers',
+    'EditNewsControllers']);
 
 MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($routeProvider,$httpProvider,$locationProvider) {
     $routeProvider
@@ -78,14 +79,26 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title:'管理圈子',
             templateUrl:'views/manageGroup.html',
             controller:'ManageGroupCtrl'
-        }).when('/group/:groupId/topic/:topicId',{
+        }).when('/groupPostDetail',{
             title:'帖子详情',
-            templateUrl:'views/groupTopicDetail.html',
-            controller:'GroupTopicDetailCtrl'
-        }).when('/editGroupTopic',{
+            templateUrl:'views/groupPostDetail.html',
+            controller:'GroupPostDetailCtrl'
+        }).when('/editGroupPost',{
             title:'编辑帖子',
-            templateUrl:'views/editGroupTopic.html',
-            controller:'EditGroupTopicCtrl'
+            templateUrl:'views/editGroupPost.html',
+            controller:'EditGroupPostCtrl'
+        }).when('/releaseNews',{
+            title:'发布新闻',
+            templateUrl:'views/releaseNews.html',
+            controller:'uEditorCtrl'
+        }).when('/editNews',{
+            title:'编辑新闻',
+            templateUrl:'views/releaseNews.html',
+            controller:'uEditorCtrl'
+        }).when('/uEditor',{
+            title:'编辑器',
+            templateUrl:'views/ueditor.html',
+            controller:'uEditorCtrl'
         }).otherwise({
             redirectTo: '/'
         });
