@@ -90,11 +90,11 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
         }).when('/releaseNews',{
             title:'发布新闻',
             templateUrl:'views/releaseNews.html',
-            controller:'uEditorCtrl'
+            controller:'ReleaseNewCtrl'
         }).when('/editNews',{
             title:'编辑新闻',
-            templateUrl:'views/releaseNews.html',
-            controller:'uEditorCtrl'
+            templateUrl:'views/editNews.html',
+            controller:'EditNewsCtrl'
         }).when('/uEditor',{
             title:'编辑器',
             templateUrl:'views/ueditor.html',
