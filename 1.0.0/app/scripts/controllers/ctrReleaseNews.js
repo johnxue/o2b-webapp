@@ -2,7 +2,7 @@
 
 var ReleaseControllers = angular.module('ReleaseControllers',[]);
 
-ReleaseControllers.controller('ReleaseNewCtrl',function($scope,$compile,CommonService,EditorControllers) {
+ReleaseControllers.controller('ReleaseNewCtrl',function($scope,$compile,CommonService,EditorServices) {
 
     var isDiscuss = "N";  //是否允许评论, Y|N '， [可选，默认为Y]
     var isStatus = "NO";  //状态 NO-只保存不提交审核|WT-提交审核’ [可选，默认值为 NO]
@@ -11,8 +11,8 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,$compile,CommonSe
 
     /*var editor = new UE.ui.Editor();
     editor.render("editor");*/
-    EditorControllers.getUEditor();
-    EditorControllers.passArgument();
+    EditorServices.getUEditor();
+    EditorServices.passArgument();
   /*  editor.ready(function() {    //传参
         editor.execCommand('serverparam', {
             'type' : 'group',
@@ -71,8 +71,8 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,$compile,CommonSe
         objNews.content = newsContent;
         objNews.iscomment = isDiscuss;
         objNews.status = isStatus;
-        objNews.imgFiles = EditorControllers.listImgUrl();
-        objNews.summary = EditorControllers.cutOutText(0,199);
+        objNews.imgFiles = EditorServices.listImgUrl();
+        objNews.summary = EditorServices.cutOutText(0,199);
         var uriData = JSON.stringify(objNews);
 
         CommonService.createOne('news', uriData, function (data) {

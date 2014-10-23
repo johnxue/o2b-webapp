@@ -1,4 +1,4 @@
-/*定义 Controller: MyFormCtrl  （发布新闻页面 dingdan.html）*/
+/*定义 Controller: MyFormCtrl  （编辑新闻页面 dingdan.html）*/
 
 var EditNewsControllers = angular.module('EditNewsControllers',[]);
 
