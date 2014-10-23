@@ -18,10 +18,10 @@ UEditorServices.factory('UEditorService',  function () {
         return {
 
             //实例化编辑器
+
             getUEditor:  function (editorId,type,gid) {
                 var editor = new UE.ui.Editor();
                     editor.render(editorId);
-
                 //设置编辑器上传参数 token验证
                 editor.ready(function() {
                     editor.execCommand('serverparam', {
