@@ -13,6 +13,7 @@ EditorServices.factory('EditorServices', ['$http', function ($http) {
             getUEditor:  function () {
                  editor = new UE.ui.Editor();
                  editor.render("editor");
+                return editor;
             },
 
             //设置编辑器上传参数 token验证
