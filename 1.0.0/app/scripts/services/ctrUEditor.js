@@ -1,9 +1,9 @@
 /**
  * Created by Administrator on 2014/10/17.
  */
-var EditorControllers = angular.module('EditorControllers',[]);
+var EditorServices = angular.module('EditorServices',[]);
 
-EditorControllers.factory('EditorControllers', ['$http', function ($http) {
+EditorServices.factory('EditorServices', ['$http', function ($http) {
 
     var editor;
 
