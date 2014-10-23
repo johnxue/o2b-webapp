@@ -24,21 +24,22 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
     var uriData='';
 
     //初始化UEditor(百度编辑器)
-    var ue = UE.getEditor('editor');
+    var ue = new UE.ui.Editor();
+        ue.render("editor");
 
-    ue.ready(function() {    //传参
-        ue.execCommand('serverparam', {
-            'type' : 'group',
-            'groupid' : $routeParams.groupId,
-            'Authorization':cookieOperate.getCookie('token'),
-            'app-key':'fb98ab9159f51fd0'
+        ue.ready(function() {    //传参
+           ue.execCommand('serverparam', {
+               'type' : 'group',
+               'groupid' : $routeParams.groupId,
+               'Authorization':cookieOperate.getCookie('token'),
+               'app-key':'fb98ab9159f51fd0'
+           });
         });
-    });
 
     var groupAllTopicsCount=0;
+    var topicsMaxPage=0;
     var topicsPage=0;
     var topicsPageSize=1;
-    var topicsMaxPage=0;
     //分页器可显示页数
     var bursterMaxPage=6;
 
@@ -134,8 +135,6 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
 
     //圈子的帖子信息分页
     $scope.groupTopicsNextPage=function(){
-        angular.element('#LastPageLi').removeClass('disabled');
-
         if(topicsPage<topicsMaxPage-1){
         findTopicsOfGroup(++topicsPage,topicsPageSize);
         }else{
@@ -144,8 +143,6 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
     }
 
     $scope.groupTopicsLastPage=function(){
-        angular.element('#NextPageLi').removeClass('disabled');
-
         if(topicsPage>0){
            findTopicsOfGroup(--topicsPage,topicsPageSize);
         }else{
@@ -155,48 +152,50 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
 
     //发布话题单击事件
     $scope.releaseTopic=function(releaseTopicTitle){
-       uriData={};
-       uriData.type='group';
-       uriData.topic=releaseTopicTitle;
-       uriData.summary=UE.getEditor('editor').getContentTxt();
-       uriData.content=UE.getEditor('editor').getContent();
+            uriData={};
+            uriData.type='group';
+            uriData.topic=releaseTopicTitle;
+            uriData.summary=ue.getContentTxt();
+            uriData.content=ue.getContent();
 
-        //获取话题内容中的图片列表
-        var re = /title="([^"]*)"/g;
-        function getTime(){
-            var nowTime = new Date();
-            var mytime=nowTime.getFullYear().toString();
-            var Year = nowTime.getFullYear().toString();  //年
-            var Month = nowTime.getMonth() + 1;   //月
-            var Day = nowTime.getDate().toString();     //日
-            var nowDaty=Year + Month + Day;
-            return(nowDaty);
-        }
-        var nowTime = getTime();
-        var arr=[];
-        var img = null;
-        while ( arr = re.exec(UE.getEditor('editor').getContent())) {
-            if(img==null){
-                img="/images/tmp/"+nowTime+"/"+arr[1];
-            }else{
-                img=img+","+"/images/tmp/"+nowTime+"/"+arr[1];
+         //获取话题内容中的图片列表
+            var re = /title="([^"]*)"/g;
+            function getTime(){
+               var nowTime = new Date();
+               var mytime=nowTime.getFullYear().toString();
+               var Year = nowTime.getFullYear().toString();  //年
+               var Month = nowTime.getMonth() + 1;   //月
+               var Day = nowTime.getDate().toString();     //日
+               var nowDaty=Year + Month + Day;
+                 return(nowDaty);
             }
-        }
-        uriData.imgFiles=img;
+            var nowTime = getTime();
+            var arr=[];
+            var img = null;
+            while ( arr = re.exec(ue.getContent())) {
+                if(img==null){
+                    img="/images/tmp/"+nowTime+"/"+arr[1];
+                }else{
+                    img=img+","+"/images/tmp/"+nowTime+"/"+arr[1];
+                }
+            }
 
-        //是否禁止评论
-        if($scope.ifForbidComment){
-            uriData.status='NR';
-        }else{
-            uriData.status='OK';
-        }
+           uriData.imgFiles=img;
 
-       CommonService.createOne('group/'+$scope.groupId+'/topics',JSON.stringify(uriData),function(data){
-          console.info(data.tid);
-           ue.setContent('');
-           $scope.releaseTopicTitle='';
-           alert('发布成功!');
-       },errorOperate);
+          //是否禁止评论
+           if($scope.ifForbidComment){
+              uriData.status='NR';
+           }else{
+              uriData.status='OK';
+           }
+
+          CommonService.createOne('group/'+$scope.groupId+'/topics',JSON.stringify(uriData),function(data){
+               console.info(data.tid);
+               ue.setContent('');
+               $scope.releaseTopicTitle='';
+               alert('发布成功!');
+          },errorOperate);
+
     }
 
     //调用与后端的接口,如：CommonService.getAll(params)
@@ -256,7 +255,7 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
                       }
                   }else {
                       if (page < Math.ceil(bursterMaxPage / 2)) {
-                          for (var i = 0; i < topicsMaxPage && i < bursterMaxPage; i++) {
+                          for (var i = 0; i < bursterMaxPage; i++) {
                               $scope.bursterPageNumbers[i] = i;
                           }
                       } else if (page < topicsMaxPage - Math.ceil(bursterMaxPage / 2)) {
@@ -273,6 +272,10 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
                   //设置分页器样式
                   angular.element('.bursterPageLis').removeClass('active');
                   angular.element('#pageLi'+page+'').addClass('active');
+
+                  //去除上一页,下一页禁用样式
+                  angular.element('#LastPageLi').removeClass('disabled');
+                  angular.element('#NextPageLi').removeClass('disabled');
 
               }, errorOperate);
     }

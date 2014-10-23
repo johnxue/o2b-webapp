@@ -79,14 +79,14 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title:'管理圈子',
             templateUrl:'views/manageGroup.html',
             controller:'ManageGroupCtrl'
-        }).when('/groupPostDetail',{
+        }).when('/group/:groupId/topic/:topicId',{
             title:'帖子详情',
-            templateUrl:'views/groupPostDetail.html',
-            controller:'GroupPostDetailCtrl'
+            templateUrl:'views/groupTopicDetail.html',
+            controller:'GroupTopicDetailCtrl'
         }).when('/editGroupPost',{
             title:'编辑帖子',
-            templateUrl:'views/editGroupPost.html',
-            controller:'EditGroupPostCtrl'
+            templateUrl:'views/editGroupTopic.html',
+            controller:'EditGroupTopicCtrl'
         }).when('/releaseNews',{
             title:'发布新闻',
             templateUrl:'views/releaseNews.html',
