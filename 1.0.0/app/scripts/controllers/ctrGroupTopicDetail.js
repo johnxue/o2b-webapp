@@ -23,12 +23,32 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
 
     var uriData='';
 
+    //初始化UEditor(百度编辑器)
+    var ue = new UE.ui.Editor();
+        ue.render("editor");
+
+        ue.ready(function() {    //传参
+           ue.execCommand('serverparam', {
+              'type' : 'group',
+              'groupid' : $routeParams.groupId,
+              'Authorization':cookieOperate.getCookie('token'),
+              'app-key':'fb98ab9159f51fd0'
+           });
+        });
+
     var groupId=$routeParams.groupId;
 
     var topicId=$routeParams.topicId;
 
     //本地存储的圈子信息
     var localGroupInfo={};
+
+    var topicAllCommentsCount=0;
+    var commentsMaxPage=0;
+    var commentsPage=0;
+    var commentsPageSize=1;
+    //分页器可显示页数
+    var bursterMaxPage=6;
 
    //初始化$scope中定义的变量
 
@@ -44,9 +64,31 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
 
    $scope.showQuitGroup=false;
 
+   $scope.showEditTopic=false;
+
+    $scope.showDeleteTopic=false;
+
    $scope.groupTopicComments={};
 
-    //实现与页面交互的事件,如：button_click
+   $scope.bursterPageNumbers=[];
+
+   $scope.commentsPageSize=commentsPageSize;
+
+   $scope.replyToCommentId='';
+
+   $scope.replyToUserName='';
+
+   $scope.replyToNickName='';
+
+   $scope.replyContent='';
+
+    //初始化分页器样式
+    $scope.$on('ngRepeatFinished', function () {
+        angular.element('.bursterPageLis').removeClass('active');
+        angular.element('#pageLi0').addClass('active');
+    });
+
+  //实现与页面交互的事件,如：button_click
 
 
     //加入不需要验证的圈子单击事件
@@ -101,9 +143,90 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
         }, errorOperate);
     }
 
+    //话题的评论信息分页
+    $scope.topicCommentsNextPage=function(){
+        if(commentsPage<commentsMaxPage-1){
+            findCommentsOfTopic(++commentsPage,commentsPageSize);
+        }else{
+            angular.element('#NextPageLi').addClass('disabled');
+        }
+    }
 
+    $scope.topicCommentsLastPage=function(){
+        if(commentsPage>0){
+            findCommentsOfTopic(--commentsPage,commentsPageSize);
+        }else{
+            angular.element('#LastPageLi').addClass('disabled');
+        }
+    }
 
-    //调用与后端的接口,如：CommonService.getAll(params)
+    //发表话题评论
+    $scope.releaseTopicComment=function(){
+        if(ue.getContent()==''){
+            alert('请输入评论内容!');
+        }else {
+            uriData = {};
+            uriData.gid = groupId;
+            uriData.content = ue.getContent();
+
+            //获取评论内容中的图片列表
+            var re = /title="([^"]*)"/g;
+
+            function getTime() {
+                var nowTime = new Date();
+                var mytime = nowTime.getFullYear().toString();
+                var Year = nowTime.getFullYear().toString();  //年
+                var Month = nowTime.getMonth() + 1;   //月
+                var Day = nowTime.getDate().toString();     //日
+                var nowDaty = Year + Month + Day;
+                return(nowDaty);
+            }
+
+            var nowTime = getTime();
+            var arr = [];
+            var img = null;
+            while (arr = re.exec(ue.getContent())) {
+                if (img == null) {
+                    img = "/images/tmp/" + nowTime + "/" + arr[1];
+                } else {
+                    img = img + "," + "/images/tmp/" + nowTime + "/" + arr[1];
+                }
+            }
+            uriData.imgFiles = img;
+
+            CommonService.createOne('group/topics/' + topicId + '/comment', JSON.stringify(uriData), function (data) {
+                console.info(data.cid);
+                ue.setContent('');
+                alert('发布成功!');
+            }, errorOperate);
+        }
+    }
+
+    $scope.showReplyForm=function(cid,user,nickName){
+        $scope.replyToCommentId=cid;
+
+        $scope.replyToUserName=user;
+
+        $scope.replyToNickName=nickName;
+
+        $('#reply'+String(cid)).show();
+    }
+
+    $scope.releaseReply=function(replyContent){
+        uriData={};
+        uriData.gid=groupId;
+        uriData.tid=topicId;
+        uriData.touser=$scope.replyToUserName;
+        uriData.tonick=$scope.replyToNickName;
+        uriData.content=replyContent;
+        CommonService.createOne('group/topics/comment/'+$scope.replyToCommentId+'/reply',JSON.stringify(uriData),function(data){
+              console.info(data.rid);
+            $('#reply'+String($scope.replyToCommentId)).hide();
+            alert('回复成功!');
+        },errorOperate);
+    }
+
+ //调用与后端的接口,如：CommonService.getAll(params)
 
     //通过圈子id查询圈子详情
     localGroupInfo=JSON.parse(localDataStorage.getItem('groupInfo'));
@@ -134,8 +257,13 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
         CommonService.getAll('group/'+groupId+'/user',uriData,function(data){
             $scope.UserGroupRole=data.UserGroupRole;
 
-            if($scope.UserGroupRole.role=='S'){
+            if($scope.UserGroupRole.role=='O'){
+                $scope.showEditTopic=true;
+                $scope.showDeleteTopic=true;
+            }else if($scope.UserGroupRole.role=='S'){
                 $scope.showQuitGroup=true;
+                $scope.showEditTopic=true;
+                $scope.showDeleteTopic=true;
             }else if($scope.UserGroupRole.role=='U'){
                 $scope.showQuitGroup=true;
             }else if($scope.UserGroupRole.role=='W'){
@@ -148,15 +276,59 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
         });
     }
 
-    //通过帖子id查询帖子详情
+    //通过话题id查询话题详情
     uriData=undefined;
     CommonService.getAll('group/topics/'+topicId,uriData,function(data){
         $scope.groupTopicDetail=data;
+        if($scope.groupTopicDetail.user==cookieOperate.getCookie('userName')){
+            $scope.showEditTopic=true;
+            $scope.showDeleteTopic=true;
+        }
     },errorOperate);
 
     //通过话题id查看该话题的评论(含回复)
-    uriData=undefined;
-    CommonService.getAll('group/topics/'+topicId+'/comment',uriData,function(data){
-        $scope.groupTopicComments=data.comments;
-    },errorOperate);
+    var findCommentsOfTopic=$scope.findCommentsOfTopic=function(page,pageSize){
+             uriData='o='+page+'&r='+pageSize;
+             CommonService.getAll('group/topics/'+topicId+'/comment',uriData,function(data){
+                  $scope.groupTopicComments=data.comments;
+                  topicAllCommentsCount=data.count;
+
+                  //记录查询页号,连接点击页号查询和点击上一页或下一页查询
+                  commentsPage=page;
+
+                  //分页器显示
+                   commentsMaxPage=Math.ceil(topicAllCommentsCount/commentsPageSize);
+                   $scope.bursterPageNumbers =[];
+                   if(bursterMaxPage>commentsMaxPage){
+                      for(var i=0;i<commentsMaxPage;i++){
+                         $scope.bursterPageNumbers[i] = i;
+                      }
+                   }else {
+                       if (page < Math.ceil(bursterMaxPage / 2)) {
+                            for (var i = 0;  i < bursterMaxPage; i++) {
+                                $scope.bursterPageNumbers[i] = i;
+                            }
+                       } else if (page < commentsMaxPage - Math.ceil(bursterMaxPage / 2)) {
+                            for (var i = 0, j = -Math.floor(bursterMaxPage / 2); i < bursterMaxPage; i++, j++) {
+                                $scope.bursterPageNumbers[i] = page + j;
+                            }
+                       } else {
+                            for (var i = 0, j = commentsMaxPage - bursterMaxPage; i < bursterMaxPage; i++, j++) {
+                                $scope.bursterPageNumbers[i] = j;
+                            }
+                       }
+                   }
+
+                 //设置分页器样式
+                 angular.element('.bursterPageLis').removeClass('active');
+                 angular.element('#pageLi'+page+'').addClass('active');
+                 //去除上一页,下一页禁用样式
+                 angular.element('#LastPageLi').removeClass('disabled');
+                 angular.element('#NextPageLi').removeClass('disabled');
+
+             },errorOperate);
+    }
+
+    findCommentsOfTopic(0,1);
+
 });

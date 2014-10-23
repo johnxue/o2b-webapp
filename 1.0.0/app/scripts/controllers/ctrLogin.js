@@ -55,16 +55,19 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
 
         strDataPacket = url + "/" + Base64.encode(strDataPacket);
 
-        var objResults = {
-            error: {code: 0, message: ''},
-            authcode: ''
-        };
-
 
         loginService.getToken(strDataPacket, function (response, status, headers, config) {
-            objResults.authcode = headers('Authorization');
-            $scope.token = objResults.authcode;
-            cookieOperate.setCookie('token', $scope.token);
+
+            //初始化本地数据
+            cookieOperate.delCookie('token');
+            cookieOperate.delCookie('userName');
+            localDataStorage.removeItem('cartProductsInfoArray');
+            localDataStorage.removeItem('cartProductsTotal');
+            localDataStorage.removeItem('orderProductsInfo');
+            localDataStorage.removeItem('cartProductsTotalOnIndex');
+            localDataStorage.removeItem('groupInfo');
+
+            cookieOperate.setCookie('token', headers('Authorization'));
             cookieOperate.setCookie('userName', strUserName);
 
             //获取用户登录之后的购物车商品商品信息
