@@ -6,7 +6,7 @@ var MainApp=angular.module('MainApp',['ngRoute','ngResource','angularFileUpload'
     'NewsListControllers','ProductShoppingCartControllers','MyFormControllers','UserRegisterControllers',
     'UserFollowControllers','ViewDetailsControllers','UserAccountSettingControllers','CommonDirectives',
     'GroupMainControllers','GroupDetailControllers','GroupTopicDetailControllers','CreateGroupControllers',
-    'EditGroupTopicControllers','ManageGroupControllers','UEditorControllers','ReleaseControllers',
+    'EditGroupTopicControllers','ManageGroupControllers','EditorControllers','ReleaseControllers',
     'EditNewsControllers']);
 
 MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($routeProvider,$httpProvider,$locationProvider) {
@@ -98,7 +98,7 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
         }).when('/uEditor',{
             title:'编辑器',
             templateUrl:'views/ueditor.html',
-            controller:'uEditorCtrl'
+            controller:'EditorControllers'
         }).otherwise({
             redirectTo: '/'
         });
