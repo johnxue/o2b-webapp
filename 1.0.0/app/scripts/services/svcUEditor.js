@@ -17,8 +17,7 @@ UEditorServices.factory('UEditorService',  function () {
 
         return {
 
-            //实例化编辑器
-
+            //初始化百度编辑器
             getUEditor:  function (editorId,type,gid) {
                 var editor = new UE.ui.Editor();
                     editor.render(editorId);
