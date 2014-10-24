@@ -3,7 +3,7 @@
  */
 var UEditorServices = angular.module('UEditorServices',[]);
 
-UEditorServices.factory('UEditorServices',  function () {
+UEditorServices.factory('UEditorService',  function () {
 
         function getTime(){
             var nowTime = new Date();
