@@ -122,7 +122,7 @@ right: 50px; top: 50px; }
 .comment ul li { float: left; display: block; width: 40px; }
 .comment h2 { font-family: "微软雅黑"; font-size: 18px; color: #666; }
 .teax { width:90%; height:100px; border:1px solid #ccc; margin-bottom:20px; border-radius:4px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; }
-.htu { z-index:1000px; left: -5px; position: absolute; top: -16px; z-index: 500; }
+.htu { z-index:1000px; left: -5px; position: absolute; top: -16px; z-index: 500; width:80px; height: 80px;}
 .ml70 { margin-left:70px; }
 .mp10 { margin-top:10px; }
 #del .modal-dialog { width: 30%; }

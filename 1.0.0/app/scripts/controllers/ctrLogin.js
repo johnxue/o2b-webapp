@@ -66,6 +66,7 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
             localDataStorage.removeItem('orderProductsInfo');
             localDataStorage.removeItem('cartProductsTotalOnIndex');
             localDataStorage.removeItem('groupInfo');
+            localDataStorage.removeItem('groupTopicDetail');
 
             cookieOperate.setCookie('token', headers('Authorization'));
             cookieOperate.setCookie('userName', strUserName);
@@ -167,6 +168,7 @@ LoginControllers.controller('logoutCtrl', function ($scope,CommonService,$window
             localDataStorage.removeItem('orderProductsInfo');
             localDataStorage.removeItem('cartProductsTotalOnIndex');
             localDataStorage.removeItem('groupInfo');
+            localDataStorage.removeItem('groupTopicDetail');
 
             $window.location.href='/';
 
