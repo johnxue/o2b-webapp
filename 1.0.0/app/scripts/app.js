@@ -98,7 +98,7 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
         }).when('/uEditor',{
             title:'编辑器',
             templateUrl:'views/ueditor.html',
-            controller:'EditorServices'
+            controller:'UEditorServices'
         }).otherwise({
             redirectTo: '/'
         });

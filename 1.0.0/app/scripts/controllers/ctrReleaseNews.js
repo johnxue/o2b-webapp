@@ -2,45 +2,28 @@
 
 var ReleaseControllers = angular.module('ReleaseControllers',[]);
 
-ReleaseControllers.controller('ReleaseNewCtrl',function($scope,$compile,CommonService,EditorServices) {
+ReleaseControllers.controller('ReleaseNewCtrl',function($scope,$compile,CommonService,UEditorServices) {
 
     var isDiscuss = "N";  //是否允许评论, Y|N '， [可选，默认为Y]
     var isStatus = "NO";  //状态 NO-只保存不提交审核|WT-提交审核’ [可选，默认值为 NO]
 
     /******************************   加载运行   ***********************************/
 
-    /*var editor = new UE.ui.Editor();
-    editor.render("editor");*/
-    EditorServices.getUEditor();
-    EditorServices.passArgument();
-  /*  editor.ready(function() {    //传参
-        editor.execCommand('serverparam', {
-            'type' : 'group',
-            'groupid' : 'gid',
-            'Authorization':'xuehai',
-            'app-key':'fb98ab9159f51fd0'
-        });
-    });*/
+    var edReleaseNews = UEditorServices.getUEditor("editor","group","gid");
 
     /*****************************  页面交互事件  ***********************************/
+
+    //发布新闻
+
+    //管理新闻
+    $scope.manageNews = function(){
+
+    }
+    //新闻审核
 
     /**
      * 发布新闻
      */
-
-    //提交新闻
-    $scope.submit = function(publish){
-        isStatus = "WT";
-        var isPublish = publish;
-        $scope.publishHtmlCommon(isPublish);
-    }
-
-    //保存新闻
-    $scope.preserve = function(publish){
-        isStatus = "WT";
-        var isPublish = publish;
-        $scope.publishHtmlCommon(isPublish);
-    }
 
     //复选框 Click
     $scope.discuss = function(){
@@ -51,18 +34,26 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,$compile,CommonSe
         }
     }
 
-    //发布新闻
+    //提交新闻
+    $scope.submit = function(publish){
+        isStatus = "WT";
+        var isPublish = publish;
+        $scope.publishHtmlCommon(isPublish);
+    }
 
-    //管理新闻
-
-    //新闻审核
+    //保存新闻
+    $scope.preserve = function(publish){
+        isStatus = "NO";
+        var isPublish = publish;
+        $scope.publishHtmlCommon(isPublish);
+    }
 
     //发布新闻， 提交、保存
     $scope.publishHtmlCommon= function(publish){
         var newsTitle = publish.nTitle;
         var newsSource = publish.Source;
         var newsAuthor = publish.nAutor;
-        var newsContent = UE.getEditor('editor').getContent();
+        var newsContent = edReleaseNews.getContent();
 
         var objNews = Object();
         objNews.title = newsTitle;
@@ -71,8 +62,8 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,$compile,CommonSe
         objNews.content = newsContent;
         objNews.iscomment = isDiscuss;
         objNews.status = isStatus;
-        objNews.imgFiles = EditorServices.listImgUrl();
-        objNews.summary = EditorServices.cutOutText(0,199);
+        objNews.imgFiles = UEditorServices.getImgUrlList(edReleaseNews);
+        objNews.summary = UEditorServices.getCutText(edReleaseNews,0,199);
         var uriData = JSON.stringify(objNews);
 
         CommonService.createOne('news', uriData, function (data) {
