@@ -24,9 +24,26 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,$compile,CommonSe
 
     /*****************************  页面交互事件  ***********************************/
 
+    //发布新闻
+
+    //管理新闻
+    $scope.manageNews = function(){
+        alert();
+    }
+    //新闻审核
+
     /**
      * 发布新闻
      */
+
+    //复选框 Click
+    $scope.discuss = function(){
+        if(isDiscuss=="N"){
+            isDiscuss = "Y";
+        }else{
+            isDiscuss = "N";
+        }
+    }
 
     //提交新闻
     $scope.submit = function(publish){
@@ -41,21 +58,6 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,$compile,CommonSe
         var isPublish = publish;
         $scope.publishHtmlCommon(isPublish);
     }
-
-    //复选框 Click
-    $scope.discuss = function(){
-        if(isDiscuss=="N"){
-            isDiscuss = "Y";
-        }else{
-            isDiscuss = "N";
-        }
-    }
-
-    //发布新闻
-
-    //管理新闻
-
-    //新闻审核
 
     //发布新闻， 提交、保存
     $scope.publishHtmlCommon= function(publish){
