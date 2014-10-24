@@ -36,15 +36,15 @@ UEditorServices.factory('UEditorServices',  function () {
             //获取编辑器图片url列表
             getImgUrlList: function(ue){
                 var uContent = ue.getContent();
-                var re = /title="([^"]*)"/g;
+                var re = /src="([^"]*)"/g;
                 var nowTim = getTime();
                 var img = null;
                 var arr=[];
                 while (arr = re.exec(uContent)) {
                     if(img==null){
-                        img="/images/tmp/"+nowTim+"/"+arr[1];
+                        img=arr[1].substring(21,900);
                     }else{
-                        img=img+","+"/images/tmp/"+nowTim+"/"+arr[1];
+                        img=img+","+arr[1].substring(21,900);
                     }
                 }
                 return img;
