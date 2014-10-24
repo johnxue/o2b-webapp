@@ -37,7 +37,7 @@
               头像滑过显示结束 -->
             <a href="" class="avatar"><img ng-src="{{groupTopicDetail.header}}" class="huati-head " ng-mouseenter="item.popover=true"
               ng-mouseleave="item.popover=false"/></a>
-            <h2 >{{groupTopicDetail.topic}} <span class="ha20"><a href=""  class="label label-success pull-right ml10" data-toggle="modal" data-target="#del" ng-show="showDeleteTopic"><i class="icon-remove"></i> 删除</a></span> <span class="ha20"><a href="#/editGroupTopic"  class="label label-info pull-right" ng-show="showEditTopic"><i class="icon-pencil"></i> 编辑</a></span></h2>
+            <h2 >{{groupTopicDetail.topic}} <span class="ha20"><a href=""  class="label label-success pull-right ml10" data-toggle="modal" data-target="#delTopic" ng-show="showDeleteTopic"><i class="icon-remove"></i> 删除</a></span> <span class="ha20"><a href="#/group/{{groupTopicDetail.gid}}/topic/{{groupTopicDetail.id}}/edit"  class="label label-info pull-right" ng-show="showEditTopic"><i class="icon-pencil"></i> 编辑</a></span></h2>
             <div class="text" ng-bind-html="groupTopicDetail.contents | to_trusted_single">
             </div>
             <p class="ha30"> 
@@ -133,10 +133,9 @@
     </div>
     <!--访问私有圈子弹框结束(需要验证)-->
 
-<!-- 确认删除弹框 -->
-
-<div class="modal"  id="del" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true">
-  <div class="modal-dialog">
+<!-- 确认删除弹框开始 -->
+<div class="modal"  id="delTopic" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true">
+  <div class="modal-dialog" style="width: 30%">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -145,11 +144,13 @@
       <div class="modal-body"> 您确定要删除发布的话题吗，亲 </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-info" data-dismiss="modal">确定</button>
+        <button type="button" class="btn btn-info" ng-click="deleteTopic();">确定</button>
       </div>
     </div>
     <!-- /.modal-content --> 
   </div>
   <!-- /.modal-dialog --> 
 </div>
+<!-- 确认删除弹框结束 -->
+
 </div>

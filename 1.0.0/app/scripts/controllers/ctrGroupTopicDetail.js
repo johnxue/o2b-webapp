@@ -170,6 +170,7 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
         }
     }
 
+    //显示回复框
     $scope.showReplyForm=function(cid,user,nickName){
         $scope.replyToCommentId=cid;
 
@@ -180,6 +181,7 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
         $('#reply'+String(cid)).show();
     }
 
+    //发布回复
     $scope.releaseReply=function(replyContent){
         uriData={};
         uriData.gid=groupId;
@@ -189,8 +191,19 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
         uriData.content=replyContent;
         CommonService.createOne('group/topics/comment/'+$scope.replyToCommentId+'/reply',JSON.stringify(uriData),function(data){
               console.info(data.rid);
+            $scope.replyContent='';
             $('#reply'+String($scope.replyToCommentId)).hide();
             alert('回复成功!');
+        },errorOperate);
+    }
+
+    //删除话题
+    $scope.deleteTopic=function(){
+        uriData=undefined;
+        CommonService.deleteOne('group/topics/'+String(topicId),uriData,function(data){
+              $('#delTopic').modal('hide');
+              $window.location.href='#/groupDetail/'+String(groupId);
+              alert('删除成功!');
         },errorOperate);
     }
 
@@ -252,6 +265,7 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
             $scope.showEditTopic=true;
             $scope.showDeleteTopic=true;
         }
+        localDataStorage.setItem('groupTopicDetail',JSON.stringify($scope.groupTopicDetail));
     },errorOperate);
 
     //通过话题id查看该话题的评论(含回复)

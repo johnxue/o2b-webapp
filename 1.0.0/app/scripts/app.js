@@ -80,11 +80,11 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             templateUrl:'views/manageGroup.html',
             controller:'ManageGroupCtrl'
         }).when('/group/:groupId/topic/:topicId',{
-            title:'帖子详情',
+            title:'话题详情',
             templateUrl:'views/groupTopicDetail.html',
             controller:'GroupTopicDetailCtrl'
-        }).when('/editGroupPost',{
-            title:'编辑帖子',
+        }).when('/group/:groupId/topic/:topicId/edit',{
+            title:'编辑话题',
             templateUrl:'views/editGroupTopic.html',
             controller:'EditGroupTopicCtrl'
         }).when('/releaseNews',{

@@ -1,17 +1,14 @@
-<div ng-controller="EditGroupTopicCtrl">
 <div class="container" >
   <div class="cont" >
     <div class="col-md-12">
       <ul class="breadcrumb">
         <li><a href="#/"><i class="icon-home"></i>首页</a></li>
         <li><a href="#/groupMain">圈子</a></li>
-        <li class="active">编辑圈子</li>
+        <li class="active">编辑帖子</li>
       </ul>
       <div class="col-md-9">
         <div class="alert with-icon">
-          <div class="content"> <img src="images/dog.jpg" class="huati-head htu" /><strong class="ml70">重庆第一车友会</strong>&nbsp; <i class="icon-chat-dot"></i> 话题：<span class="blue"> 40</span>
-            <div class="pull-right"><a href="" class="label label-success large href"><i class="icon-minus"></i> 退出圈子</a></div>
-            <div class="pull-right"><a href="" class="label label-info large href"><i class="icon-plus"></i> 加入圈子</a></div>
+          <div class="content"> <img ng-src="{{groupTopicDetail.header}}" class="huati-head htu prdouctimg" /><strong class="ml70"></strong>&nbsp; <i class="icon-eye-open"></i> 浏览：<span class="blue"> {{groupTopicDetail.viewCount}}</span>&nbsp; <i class="icon-comment-alt"></i> 回复：<span class="blue"> {{groupTopicDetail.replyCount}}</span>
           </div>
         </div>
         <div class="panel">
@@ -22,7 +19,7 @@
                   <label class="col-md-2 control-label bluezi" >话题名称：</label>
                   <div class="col-md-8">
                     <div class="input-group">
-                      <input type='text'  class='form-control' />
+                      <input type='text'  class='form-control' ng-model="topicTitle"/>
                       <span class="input-group-btn">
                       <button class="btn btn-info" type="button"><i class="icon-chat-dot"></i></button>
                       </span> </div>
@@ -33,9 +30,12 @@
                   <br/>
                 </div>
                 <div class="col-md-12">
-                  <textarea name="" cols="" rows="" class="teax ml10"></textarea>
+                    <script id="editor" type="text/plain" style="height:150px;"></script>
                 </div>
-                <div class="mp20 marginb"> <a href="#/quanzixiangxi"class="btn btn-info more">确认保存</a> </div>
+                <div class="col-md-12">
+                    <input name="check" type="checkbox"  style="margin-left:10px;" ng-model="ifForbidComment"/>&nbsp; 禁止评论
+                </div>
+                <div class="mp20 marginb"> <a href="javascript:;"class="btn btn-info more" ng-click="modifyTopic(topicTitle);" ng-disabled="topicTitle==''">确认修改</a> </div>
               </div>
             </form>
           </div>
@@ -44,5 +44,4 @@
       </div>
     </div>
   </div>
-</div>
 </div>
