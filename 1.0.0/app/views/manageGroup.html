@@ -15,7 +15,7 @@
       <ul class="nav nav-tabs" ng-init="vm.activeTab=1">
         <li ng-class="{active: vm.activeTab == 1}"><a href="javascript:;" ng-click="vm.activeTab = 1">圈子设置</a></li>
         <li ng-class="{active: vm.activeTab == 2}"><a href="javascript:;" ng-click="showUserManage();">成员管理</a></li>
-        <li ng-class="{active: vm.activeTab == 3}"><a href="javascript:;" ng-click="vm.activeTab = 3">话题管理</a></li>
+        <li ng-class="{active: vm.activeTab == 3}"><a href="javascript:;" ng-click="showTopicsManage();">话题管理</a></li>
         <li ng-class="{active: vm.activeTab == 4}"><a href="javascript:;" ng-click="showWTUserManage();">加入审核</a></li>
         <li ng-class="{active: vm.activeTab == 5}"><a href="javascript:;" ng-click="showHUserManage();">黑名单</a></li>
       </ul>
@@ -144,7 +144,7 @@
             <table class="table table-condensed " >
               <thead>
                 <tr >
-                  <th ><input name="check" type="checkbox" value="" style="margin-left:10px;"/>
+                  <th ><input name="check" type="checkbox" ng-model="groupTopics.allChecked" ng-change="gTopicsCheckAll(groupTopics.allChecked);" style="margin-left:10px;"/>
                     &nbsp;全选</th>
                   <th>话题</th>
                   <th>发布时间</th>
@@ -153,21 +153,30 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
-                  <td><span ><a href="" class="blue">智能产品都在这独家首发</a></span></td>
-                  <td>2014-10-10</td>
-                  <td><span class="blue">admin</span></td>
-                    <td><span  class="blue ">
-                  <i class="icon-eject"></i>
-                    置顶</span> <span  class="blue ml10">
-                     <i class="icon-star"></i>
-                    精华</span><span  class="blue ml10">
-                     <i class="icon-ban-circle"></i>
-                    禁止评论</span> <span><a href="" class="blue ml10" data-toggle="modal" data-target="#delhuati"><i class="icon-remove"></i> 删除</a></span></td>
+                <tr ng-repeat="groupTopic in groupTopics">
+                  <td ><input type="checkbox" ng-model="groupTopic.checked" style="margin-left:10px;"/></td>
+                  <td><span ><a href="" class="blue">{{groupTopic[5]}}</a></span></td>
+                  <td>{{groupTopic[7]}}</td>
+                  <td><span class="blue">{{groupTopic[3]}}</span></td>
+                  <td>
+                    <span ng-if="groupTopic[10]=='N'"><a href="" class="blue ml10"><i class="icon-eject"></i>置顶</a></span>
+                    <span ng-if="groupTopic[10]=='Y'"><a href="" class="blue ml10"><i class="share-alt"></i>解除置顶</a></span>
+                    <span  class="blue ml10" ng-if="groupTopic[11]=='N'"><a href="" class="blue ml10"><i class="icon-star"></i>精华</a></span>
+                    <span  class="blue ml10" ng-if="groupTopic[11]=='Y'"><a href="" class="blue ml10"><i class="share-alt"></i>解除精华</a></span>
+                    <span  class="blue ml10" ng-if="groupTopic[12]=='OK'"><a href="" class="blue ml10"><i class="icon-ban-circle"></i>禁止评论</a></span>
+                    <span  class="blue ml10" ng-if="groupTopic[12]=='NR'"><a href="" class="blue ml10"><i class="share-alt"></i>允许评论</a></span>
+                    <span><a href="" class="blue ml10" data-toggle="modal" data-target="#delhuati"><i class="icon-remove"></i> 删除</a></span>
+                  </td>
                 </tr>
               </tbody>
             </table>
+            <div class="pull-right">
+               <ul class="pager pager-pills">
+                   <li class="previous" id="LastPageLi"><a href="javascript:;" ng-click="groupTopicsLastPage();">«</a></li>
+                   <li ng-repeat="bursterPageNumber in bursterPageNumbers" id="pageLi{{bursterPageNumber}}" class="bursterPageLis" on-finish-render-filters><a href="javascript:;" ng-click="findTopicsOfGroup(bursterPageNumber,topicsPageSize);">{{bursterPageNumber+1}}</a></li>
+                   <li class="next" id="NextPageLi"><a href="javascript:;" ng-click="groupTopicsNextPage();">»</a></li>
+               </ul>
+            </div>
             <div class="col-md-12 mp20 marginb" style="float:left;">
               <button type="button" class="btn btn-info pull-right ml10">批量禁止</button>
               <button type="button" class="btn btn-info pull-right">批量删除</button>

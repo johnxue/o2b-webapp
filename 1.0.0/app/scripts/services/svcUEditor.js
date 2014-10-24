@@ -5,16 +5,6 @@ var UEditorServices = angular.module('UEditorServices',[]);
 
 UEditorServices.factory('UEditorService',  function () {
 
-        function getTime(){
-            var nowTime = new Date();
-            var mytime=nowTime.getFullYear().toString();
-            var Year = nowTime.getFullYear().toString();  //年
-            var Month = nowTime.getMonth() + 1;          //月
-            var Day = nowTime.getDate().toString();     //日
-            var nowDaty=Year + Month + Day;
-            return(nowDaty);
-        };
-
         return {
 
             //初始化百度编辑器
@@ -37,7 +27,6 @@ UEditorServices.factory('UEditorService',  function () {
             getImgUrlList: function(ue){
                 var uContent = ue.getContent();
                 var re = /src="([^"]*)"/g;
-                var nowTim = getTime();
                 var img = null;
                 var arr=[];
                 while (arr = re.exec(uContent)) {

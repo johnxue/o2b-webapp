@@ -125,7 +125,7 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
             }, errorOperate);
     }
 
-    //圈子的帖子信息分页
+    //圈子的话题信息分页
     $scope.groupTopicsNextPage=function(){
         if(topicsPage<topicsMaxPage-1){
         findTopicsOfGroup(++topicsPage,topicsPageSize);
@@ -152,6 +152,7 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
 
          //获取话题内容中的图片列表
            uriData.imgFiles=UEditorService.getImgUrlList(ue);
+           console.info(uriData.imgFiles);
 
           //是否禁止评论
            if($scope.ifForbidComment==true){
