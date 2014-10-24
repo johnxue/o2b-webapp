@@ -6,7 +6,7 @@ var MainApp=angular.module('MainApp',['ngRoute','ngResource','angularFileUpload'
     'NewsListControllers','ProductShoppingCartControllers','MyFormControllers','UserRegisterControllers',
     'UserFollowControllers','ViewDetailsControllers','UserAccountSettingControllers','CommonDirectives',
     'GroupMainControllers','GroupDetailControllers','GroupTopicDetailControllers','CreateGroupControllers',
-    'EditGroupTopicControllers','ManageGroupControllers','EditorServices','ReleaseControllers',
+    'EditGroupTopicControllers','ManageGroupControllers','UEditorServices','ReleaseControllers',
     'EditNewsControllers']);
 
 MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($routeProvider,$httpProvider,$locationProvider) {

@@ -18,23 +18,13 @@
 var GroupDetailControllers = angular.module('GroupDetailControllers',[]);
 
 /*定义 Controller: GroupDetailCtrl  （圈子详情页面 groupDetail.html）*/
-GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonService,$window,$routeParams){
+GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonService,$window,$routeParams,UEditorService){
     ctrInit();
 
     var uriData='';
 
     //初始化UEditor(百度编辑器)
-    var ue = new UE.ui.Editor();
-        ue.render("editor");
-
-        ue.ready(function() {    //传参
-           ue.execCommand('serverparam', {
-               'type' : 'group',
-               'groupid' : $routeParams.groupId,
-               'Authorization':cookieOperate.getCookie('token'),
-               'app-key':'fb98ab9159f51fd0'
-           });
-        });
+    var ue =UEditorService.getUEditor('editor','group',$routeParams.groupId);
 
     var groupAllTopicsCount=0;
     var topicsMaxPage=0;
@@ -71,6 +61,8 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
     $scope.topicsPageSize=topicsPageSize;
 
     $scope.releaseTopicTitle='';
+
+    $scope.ifForbidComment=false;
 
     //初始化分页器样式
     $scope.$on('ngRepeatFinished', function () {
@@ -155,35 +147,14 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
             uriData={};
             uriData.type='group';
             uriData.topic=releaseTopicTitle;
-            uriData.summary=ue.getContentTxt();
+            uriData.summary=UEditorService.getCutText(ue,0,200);
             uriData.content=ue.getContent();
 
          //获取话题内容中的图片列表
-            var re = /title="([^"]*)"/g;
-            function getTime(){
-               var nowTime = new Date();
-               var mytime=nowTime.getFullYear().toString();
-               var Year = nowTime.getFullYear().toString();  //年
-               var Month = nowTime.getMonth() + 1;   //月
-               var Day = nowTime.getDate().toString();     //日
-               var nowDaty=Year + Month + Day;
-                 return(nowDaty);
-            }
-            var nowTime = getTime();
-            var arr=[];
-            var img = null;
-            while ( arr = re.exec(ue.getContent())) {
-                if(img==null){
-                    img="/images/tmp/"+nowTime+"/"+arr[1];
-                }else{
-                    img=img+","+"/images/tmp/"+nowTime+"/"+arr[1];
-                }
-            }
-
-           uriData.imgFiles=img;
+           uriData.imgFiles=UEditorService.getImgUrlList(ue);
 
           //是否禁止评论
-           if($scope.ifForbidComment){
+           if($scope.ifForbidComment==true){
               uriData.status='NR';
            }else{
               uriData.status='OK';
