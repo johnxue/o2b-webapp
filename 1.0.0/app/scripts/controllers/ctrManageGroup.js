@@ -35,6 +35,15 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     var holdPage=0;
     var holdPageSize=10;
 
+
+    //分页信息(圈子下话题)
+    var groupAllTopicsCount=0;
+    var topicsMaxPage=0;
+    var topicsPage=0;
+    var topicsPageSize=1;
+    //分页器可显示页数
+    var bursterMaxPage=6;
+
     //当前用户是否为圈主
     var isRoleOorS=true;
 
@@ -63,7 +72,17 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
 
     $scope.multiDeleteFromHoldState=true;
 
-   //实现与页面交互的事件,如：button_click
+    $scope.groupTopics={};
+
+    $scope.topicsPageSize=topicsPageSize;
+
+    //初始化分页器样式
+    $scope.$on('ngRepeatFinished', function () {
+        angular.element('.bursterPageLis').removeClass('active');
+        angular.element('#pageLi0').addClass('active');
+    });
+
+    //实现与页面交互的事件,如：button_click
 
     //提交修改单击事件
     $scope.updateGroup=function(manageGroupForm){
@@ -400,6 +419,37 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
         },errorOperate);
     }
 
+    //显示话题管理
+    $scope.showTopicsManage=function(){
+        $scope.vm.activeTab = 3;
+
+        findTopicsOfGroup(0,1);
+    }
+
+    //圈子的话题信息分页
+    $scope.groupTopicsNextPage=function(){
+        if(topicsPage<topicsMaxPage-1){
+            findTopicsOfGroup(++topicsPage,topicsPageSize);
+        }else{
+            angular.element('#NextPageLi').addClass('disabled');
+        }
+    }
+
+    $scope.groupTopicsLastPage=function(){
+        if(topicsPage>0){
+            findTopicsOfGroup(--topicsPage,topicsPageSize);
+        }else{
+            angular.element('#LastPageLi').addClass('disabled');
+        }
+    }
+
+    //圈子的话题信息列表全选
+    $scope.gTopicsCheckAll = function(checked) {
+        angular.forEach($scope.groupTopics, function (groupTopic) {
+            groupTopic.checked = checked;
+        });
+    }
+
    //调用与后端的接口,如：CommonService.getAll(params)
 
     //根据圈子id返回要修改的圈子信息
@@ -609,5 +659,49 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
                 $scope.holdUsersNextPageState=true;
             }
         });
+    }
+
+    //查询圈子下的所有话题
+    var findTopicsOfGroup=$scope.findTopicsOfGroup=function(page,pageSize) {
+        uriData = 'o='+page+'&r='+pageSize;
+        CommonService.getAll('group/' + $routeParams.groupId + '/topics', uriData, function (data) {
+            $scope.groupTopics = data.Topics;
+            groupAllTopicsCount = data.count;
+
+            //记录查询页号,连接点击页号查询和点击上一页或下一页查询
+            topicsPage=page;
+
+            //分页器显示
+            topicsMaxPage=Math.ceil(groupAllTopicsCount/topicsPageSize);
+            $scope.bursterPageNumbers =[];
+            if(bursterMaxPage>topicsMaxPage){
+                for(var i=0;i<topicsMaxPage;i++){
+                    $scope.bursterPageNumbers[i] = i;
+                }
+            }else {
+                if (page < Math.ceil(bursterMaxPage / 2)) {
+                    for (var i = 0; i < bursterMaxPage; i++) {
+                        $scope.bursterPageNumbers[i] = i;
+                    }
+                } else if (page < topicsMaxPage - Math.ceil(bursterMaxPage / 2)) {
+                    for (var i = 0, j = -Math.floor(bursterMaxPage / 2); i < bursterMaxPage; i++, j++) {
+                        $scope.bursterPageNumbers[i] = page + j;
+                    }
+                } else {
+                    for (var i = 0, j = topicsMaxPage - bursterMaxPage; i < bursterMaxPage; i++, j++) {
+                        $scope.bursterPageNumbers[i] = j;
+                    }
+                }
+            }
+
+            //设置分页器样式
+            angular.element('.bursterPageLis').removeClass('active');
+            angular.element('#pageLi'+page+'').addClass('active');
+
+            //去除上一页,下一页禁用样式
+            angular.element('#LastPageLi').removeClass('disabled');
+            angular.element('#NextPageLi').removeClass('disabled');
+
+        }, errorOperate);
     }
 });

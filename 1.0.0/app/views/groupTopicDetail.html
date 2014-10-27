@@ -86,12 +86,14 @@
                    </ul>
                </div>
             </div>
+            <div ng-show="groupTopicDetail.status_code=='OK'">
             <p class="title">快速评论</p>
             <div class="col-md-12">
                 <script id="editor" type="text/plain" style="height:150px;"></script>
             </div>
             <div class="mp20 marginb">
               <button class="btn btn-info more" ng-click="releaseTopicComment();">提交</button>
+            </div>
             </div>
           </div>
         </div>

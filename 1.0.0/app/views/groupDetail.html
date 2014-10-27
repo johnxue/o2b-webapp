@@ -47,6 +47,7 @@
               <p><span class="blue">{{groupTopic[3]}}</span> 来自于 <span class="blue">{{groupInfo.name}}</span>&nbsp;&nbsp;<span>{{groupTopic[7] |showTime}}</span></p>
               <div style=" line-height:30px;">
                 <p style="color:#000; font-weight:bold; font-size:15px;"><a href="#/groupTopicDetail/{{groupTopic[0]}}" >(置顶){{groupTopic[5]}}</a></p>
+                <p style="color:#000; font-weight:bold; font-size:15px;" ng-if="groupTopic[11]=='Y'"><a href="#/groupTopicDetail/{{groupTopic[0]}}" >(置顶)(精){{groupTopic[5]}}</a></p>
                  {{groupTopic[6]}}...
               </div>
               <div class="row ha30"><span class="pull-right"><i class="icon-comment-alt blue"></i> &nbsp;{{groupTopic[9]}}</span> &nbsp;<span class="pull-right"><i class="icon-eye-open blue"></i> &nbsp;{{groupTopic[8]}} &nbsp;</span> </div>
@@ -79,6 +80,7 @@
                        <p><span class="blue">{{groupTopic[3]}}</span> 来自于 <span class="blue">{{groupInfo.name}}</span>&nbsp;&nbsp;<span>{{groupTopic[7] |showTime}}</span></p>
                     <div style=" line-height:30px;">
                        <p style="color:#000; font-weight:bold; font-size:15px;"><a href="#/group/{{groupInfo.gid}}/topic/{{groupTopic[0]}}" >{{groupTopic[5]}}</a></p>
+                       <p style="color:#000; font-weight:bold; font-size:15px;" ng-if="groupTopic[11]=='Y'"><a href="#/groupTopicDetail/{{groupTopic[0]}}" >(精){{groupTopic[5]}}</a></p>
                         {{groupTopic[6]}}...
                     </div>
                     <div class="row ha30"><span class="pull-right"><i class="icon-comment-alt blue"></i> &nbsp;{{groupTopic[9]}}</span> &nbsp;<span class="pull-right"><i class="icon-eye-open blue"></i> &nbsp;{{groupTopic[8]}} &nbsp;</span> </div>

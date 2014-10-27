@@ -53,7 +53,7 @@ EditGroupTopicControllers.controller('EditGroupTopicCtrl',function($scope,Common
     ue.addListener("ready", function () {
         ue.setContent($scope.groupTopicDetail.contents);
         oldSummary=UEditorService.getCutText(ue,0,200);
-        oldImgFiles=UEditorService.getImgUrlList(ue).split(',');
+        oldImgFiles=UEditorService.getImgUrlList(ue)==null ? [] :UEditorService.getImgUrlList(ue).split(',');
     });
 
     //实现与页面交互的事件,如：button_click
@@ -80,9 +80,11 @@ EditGroupTopicControllers.controller('EditGroupTopicCtrl',function($scope,Common
             uriData.content=null;
         }
 
+        //获取当前话题内容中的图片列表
+        var imgFiles = UEditorService.getImgUrlList(ue)==null ? [] :UEditorService.getImgUrlList(ue).split(',');
+
         //获取话题内容中新增图片的列表
-        var newImgFiles=[];
-        var imgFiles = UEditorService.getImgUrlList(ue).split(',');
+        var addImgFiles=[];
 
         for(var i=0;i<imgFiles.length;i++){
             var flag=true;
@@ -95,17 +97,16 @@ EditGroupTopicControllers.controller('EditGroupTopicCtrl',function($scope,Common
             }
 
             if(flag){
-                newImgFiles.push(imgFiles[i]);
+                addImgFiles.push(imgFiles[i]);
             }
 
         }
 
-        uriData.imgFiles=newImgFiles.length==0 ? null :newImgFiles.join(',');
+        uriData.imgFiles=addImgFiles.length==0 ? null :addImgFiles.join(',');
 
 
         //获取话题内容中删除图片的列表
         var removeImgFiles=[];
-        var imgFiles = UEditorService.getImgUrlList(ue).split(',');
 
         for(var i=0;i<oldImgFiles.length;i++){
             var flag=true;
