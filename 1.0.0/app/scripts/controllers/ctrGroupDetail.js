@@ -29,7 +29,7 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
     var groupAllTopicsCount=0;
     var topicsMaxPage=0;
     var topicsPage=0;
-    var topicsPageSize=1;
+    var topicsPageSize=6;
     //分页器可显示页数
     var bursterMaxPage=6;
 
@@ -252,6 +252,6 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
               }, errorOperate);
     }
 
-    findTopicsOfGroup(0,1);
+    findTopicsOfGroup(0,topicsPageSize);
 
 });

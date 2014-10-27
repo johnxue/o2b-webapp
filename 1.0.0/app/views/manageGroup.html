@@ -1,7 +1,6 @@
 <style >
 .ml10 { margin-left:10px; }
 </style>
-<div ng-controller="ManageGroupCtrl">
 <div class="container" >
   <div class="cont marginb"  >
     <div class="col-md-12" >
@@ -136,9 +135,9 @@
         <!-- 话题管理开始-->
         <div class="tab-panel" ng-show="vm.activeTab == 3">
           <div class="alert with-icon "> <span class="mp7"> 话题查询： </span> <span class="col-md-3">
-            <input type="text" class="form-control" placeholder="话题名称">
+            <input type="text" class="form-control" placeholder="话题名称" ng-model="queryTopicTitle">
             </span> <span class="ml10">
-            <button class="btn btn-info"><i class="icon-search"></i> 查询</button>
+            <button class="btn btn-info" ng-click="queryTopicsByTitle(queryTopicTitle);"><i class="icon-search"></i> 查询</button>
             </span> </div>
           <div class="panel mp20">
             <table class="table table-condensed " >
@@ -154,18 +153,20 @@
               </thead>
               <tbody>
                 <tr ng-repeat="groupTopic in groupTopics">
-                  <td ><input type="checkbox" ng-model="groupTopic.checked" style="margin-left:10px;"/></td>
-                  <td><span ><a href="" class="blue">{{groupTopic[5]}}</a></span></td>
+                  <td ><input type="checkbox" ng-model="groupTopic.checked" style="margin-left:10px;" ng-change="gTopicsCheckBoxChange();"/></td>
+                  <td width="250"><span ><a href="#/group/{{groupTopic[1]}}/topic/{{groupTopic[0]}}" class="blue">{{groupTopic[5] |longMarkDynamic:35}}</a></span></td>
                   <td>{{groupTopic[7]}}</td>
                   <td><span class="blue">{{groupTopic[3]}}</span></td>
                   <td>
-                    <span ng-if="groupTopic[10]=='N'"><a href="" class="blue ml10"><i class="icon-eject"></i>置顶</a></span>
-                    <span ng-if="groupTopic[10]=='Y'"><a href="" class="blue ml10"><i class="share-alt"></i>解除置顶</a></span>
-                    <span  class="blue ml10" ng-if="groupTopic[11]=='N'"><a href="" class="blue ml10"><i class="icon-star"></i>精华</a></span>
-                    <span  class="blue ml10" ng-if="groupTopic[11]=='Y'"><a href="" class="blue ml10"><i class="share-alt"></i>解除精华</a></span>
-                    <span  class="blue ml10" ng-if="groupTopic[12]=='OK'"><a href="" class="blue ml10"><i class="icon-ban-circle"></i>禁止评论</a></span>
-                    <span  class="blue ml10" ng-if="groupTopic[12]=='NR'"><a href="" class="blue ml10"><i class="share-alt"></i>允许评论</a></span>
-                    <span><a href="" class="blue ml10" data-toggle="modal" data-target="#delhuati"><i class="icon-remove"></i> 删除</a></span>
+                    <span ng-if="groupTopic[10]=='N'"><a href="javascript:;" class="blue ml10" ng-click="topTopic(groupTopic[0],'Y');"><i class="icon-eject"></i>&nbsp;置顶</a></span>
+                    <span ng-if="groupTopic[10]=='Y'"><a href="javascript:;" class="blue ml10" ng-click="topTopic(groupTopic[0],'N');"><i class="icon-share-alt"></i>&nbsp;解除置顶</a></span>
+                    <span  class="blue ml10" ng-if="groupTopic[11]=='N'"><a href="javascript:;" class="blue ml10" ng-click="essenceTopic(groupTopic[0],'Y');"><i class="icon-star"></i>&nbsp;精华</a></span>
+                    <span  class="blue ml10" ng-if="groupTopic[11]=='Y'"><a href="javascript:;" class="blue ml10" ng-click="essenceTopic(groupTopic[0],'N');"><i class="icon-share-alt"></i>&nbsp;解除精华</a></span>
+                    <span  class="blue ml10" ng-if="groupTopic[12]=='OK'"><a href="javascript:;" class="blue ml10" ng-click="forbidCommentTopic(groupTopic[0],'NR');"><i class="icon-ban-circle"></i>&nbsp;禁止评论</a></span>
+                    <span  class="blue ml10" ng-if="groupTopic[12]=='OK'"><a href="javascript:;" class="blue ml10" ng-click="forbidCommentTopic(groupTopic[0],'HD');"><i class="icon-eye-close"></i>&nbsp;隐藏</a></span>
+                    <span  class="blue ml10" ng-if="groupTopic[12]=='NR'"><a href="javascript:;" class="blue ml10" ng-click="forbidCommentTopic(groupTopic[0],'OK');"><i class="icon-share-alt"></i>&nbsp;允许评论</a></span>
+                    <span  class="blue ml10" ng-if="groupTopic[12]=='HD'"><a href="javascript:;" class="blue ml10" ng-click="forbidCommentTopic(groupTopic[0],'OK');"><i class="icon-share-alt"></i>&nbsp;恢复显示</a></span>
+                    <span  class="blue ml10"><a href="javascript:;" class="blue ml10" ng-click="showDeleteTopicFormSingle(groupTopic[0]);"><i class="icon-remove"></i>&nbsp; 删除</a></span>
                   </td>
                 </tr>
               </tbody>
@@ -173,13 +174,12 @@
             <div class="pull-right">
                <ul class="pager pager-pills">
                    <li class="previous" id="LastPageLi"><a href="javascript:;" ng-click="groupTopicsLastPage();">«</a></li>
-                   <li ng-repeat="bursterPageNumber in bursterPageNumbers" id="pageLi{{bursterPageNumber}}" class="bursterPageLis" on-finish-render-filters><a href="javascript:;" ng-click="findTopicsOfGroup(bursterPageNumber,topicsPageSize);">{{bursterPageNumber+1}}</a></li>
+                   <li ng-repeat="bursterPageNumber in bursterPageNumbers" id="pageLi{{bursterPageNumber}}" class="bursterPageLis" on-finish-render-filters><a href="javascript:;" ng-click="findTopicsOfGroup(bursterPageNumber,topicsPageSize,queryTopicTitle);">{{bursterPageNumber+1}}</a></li>
                    <li class="next" id="NextPageLi"><a href="javascript:;" ng-click="groupTopicsNextPage();">»</a></li>
                </ul>
             </div>
             <div class="col-md-12 mp20 marginb" style="float:left;">
-              <button type="button" class="btn btn-info pull-right ml10">批量禁止</button>
-              <button type="button" class="btn btn-info pull-right">批量删除</button>
+              <button type="button" class="btn btn-info pull-right" ng-disabled="multiDeleteTopicsState" ng-click="showDeleteTopicFormMulti();">批量删除</button>
             </div>
           </div>
         </div>
@@ -260,8 +260,8 @@
     </div>
   </div>
 </div>
-
-<div class="modal fade"  id="delhuati" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
+<!--删除提示框(删除单个话题)开始-->
+<div class="modal fade"  id="delTopicSingle" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
     <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
         <div class="modal-content">
             <div class="modal-header">
@@ -271,11 +271,30 @@
             <div class="modal-body"> 您确定要此话题吗，亲 </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-mini btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-mini btn-info" data-dismiss="modal">确定</button>
+                <button type="button" class="btn btn-mini btn-info"  ng-click="deleteTopic(deleteTopicIds);">确定</button>
             </div>
         </div>
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
 </div>
+<!--删除提示框(删除单个话题)结束-->
+<!--删除提示框(删除多个话题)开始-->
+<div class="modal fade"  id="delTopicMulti" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
+    <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" > <i class="icon-remove"></i> 话题删除 </h4>
+            </div>
+            <div class="modal-body"> 您确定要此话题吗，亲 </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-mini btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-mini btn-info"  ng-click="multiDeleteTopics(deleteTopicIds);">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div>
+<!--删除提示框(删除多个话题)结束-->

@@ -36,7 +36,7 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
     var topicAllCommentsCount=0;
     var commentsMaxPage=0;
     var commentsPage=0;
-    var commentsPageSize=1;
+    var commentsPageSize=6;
     //分页器可显示页数
     var bursterMaxPage=6;
 
@@ -311,6 +311,6 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
              },errorOperate);
     }
 
-    findCommentsOfTopic(0,1);
+    findCommentsOfTopic(0,commentsPageSize);
 
 });

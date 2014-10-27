@@ -32,6 +32,16 @@ CommonFilters.filter('datemark', function() {
 });
 
 /*如果输入字符串的长度超过46 截断到46后加'...'*/
+CommonFilters.filter('longMarkDynamic', function() {
+    return function(input,long) {
+        if(input.length>long){
+            input=input.substring(0,long)+'...';
+        }
+        return input;
+    }
+});
+
+/*如果输入字符串的长度超过46 截断到46后加'...'*/
 CommonFilters.filter('longmark', function() {
     return function(input) {
         if(input.length>46){

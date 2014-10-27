@@ -40,7 +40,7 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     var groupAllTopicsCount=0;
     var topicsMaxPage=0;
     var topicsPage=0;
-    var topicsPageSize=1;
+    var topicsPageSize=6;
     //分页器可显示页数
     var bursterMaxPage=6;
 
@@ -75,6 +75,12 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     $scope.groupTopics={};
 
     $scope.topicsPageSize=topicsPageSize;
+
+    $scope.queryTopicTitle='';
+
+    $scope.deleteTopicIds ='';
+
+    $scope.multiDeleteTopicsState = true;
 
     //初始化分页器样式
     $scope.$on('ngRepeatFinished', function () {
@@ -121,7 +127,7 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     $scope.showUserManage=function(){
         $scope.vm.activeTab = 2;
 
-        findGroupById(0,10);
+        findGroupById(0,pageSize);
     }
 
     //设为或取消管理员
@@ -209,7 +215,7 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     $scope.showWTUserManage=function(){
         $scope.vm.activeTab = 4;
 
-        findWaitUsers(0,10);
+        findWaitUsers(0,waitPageSize);
     }
 
     //待审核用户列表全选
@@ -339,7 +345,7 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     $scope.showHUserManage=function(){
         $scope.vm.activeTab = 5;
 
-        findHoldUsers(0,10);
+        findHoldUsers(0,holdPageSize);
     }
 
 
@@ -423,13 +429,13 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     $scope.showTopicsManage=function(){
         $scope.vm.activeTab = 3;
 
-        findTopicsOfGroup(0,1);
+        findTopicsOfGroup(0,topicsPageSize,$scope.queryTopicTitle);
     }
 
     //圈子的话题信息分页
     $scope.groupTopicsNextPage=function(){
         if(topicsPage<topicsMaxPage-1){
-            findTopicsOfGroup(++topicsPage,topicsPageSize);
+            findTopicsOfGroup(++topicsPage,topicsPageSize,$scope.queryTopicTitle);
         }else{
             angular.element('#NextPageLi').addClass('disabled');
         }
@@ -437,7 +443,7 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
 
     $scope.groupTopicsLastPage=function(){
         if(topicsPage>0){
-            findTopicsOfGroup(--topicsPage,topicsPageSize);
+            findTopicsOfGroup(--topicsPage,topicsPageSize,$scope.queryTopicTitle);
         }else{
             angular.element('#LastPageLi').addClass('disabled');
         }
@@ -448,6 +454,132 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
         angular.forEach($scope.groupTopics, function (groupTopic) {
             groupTopic.checked = checked;
         });
+
+        $scope.multiDeleteTopicsState=true;
+        for(var i=0;i<$scope.groupTopics.length;i++){
+            if($scope.groupTopics[i].checked==true){
+                $scope.multiDeleteTopicsState=false;
+                break;
+            }
+        }
+    }
+
+    //圈子的话题信息列表复选框状态改变事件
+    $scope.gTopicsCheckBoxChange=function(){
+        $scope.multiDeleteTopicsState=true;
+        for(var i=0;i<$scope.groupTopics.length;i++){
+            if($scope.groupTopics[i].checked==true){
+                $scope.multiDeleteTopicsState=false;
+                break;
+            }
+        }
+    }
+
+    //话题查询单击事件
+    $scope.queryTopicsByTitle=function(queryTopicTitle){
+        findTopicsOfGroup(0,1,queryTopicTitle);
+    }
+
+    //话题置顶
+    $scope.topTopic=function(tId,option){
+         uriData={};
+         uriData.top=option;
+        CommonService.updatePartOne('group/topics/'+tId,JSON.stringify(uriData),function(data){
+
+            for(var i=0;i<$scope.groupTopics.length;i++){
+                if($scope.groupTopics[i][0]==tId){
+                    $scope.groupTopics[i][10]=option;
+                    break;
+                }
+            }
+        },errorOperate);
+
+    }
+
+    //话题精华
+    $scope.essenceTopic=function(tId,option){
+        uriData={};
+        uriData.essence=option;
+        CommonService.updatePartOne('group/topics/'+tId,JSON.stringify(uriData),function(data){
+
+            for(var i=0;i<$scope.groupTopics.length;i++){
+                if($scope.groupTopics[i][0]==tId){
+                    $scope.groupTopics[i][11]=option;
+                    break;
+                }
+            }
+        },errorOperate);
+    }
+
+    //话题禁止评论
+    $scope.forbidCommentTopic=function(tId,option){
+        uriData={};
+        uriData.status=option;
+        CommonService.updatePartOne('group/topics/'+tId,JSON.stringify(uriData),function(data){
+
+            for(var i=0;i<$scope.groupTopics.length;i++){
+                if($scope.groupTopics[i][0]==tId){
+                    $scope.groupTopics[i][12]=option;
+                    break;
+                }
+            }
+        },errorOperate);
+    }
+
+    //显示删除提示框(单个话题)
+    $scope.showDeleteTopicFormSingle=function(tId){
+        $scope.deleteTopicIds=tId;
+        $('#delTopicSingle').modal('show');
+    }
+
+    //单个话题删除
+    $scope.deleteTopic=function(tId){
+        uriData=undefined;
+        CommonService.deleteOne('group/topics/'+String(tId),uriData,function(data){
+
+            for(var i=0;i<$scope.groupTopics.length;i++){
+                if($scope.groupTopics[i][0]==tId){
+                    $scope.groupTopics.splice(i, 1);
+                    break;
+                }
+            }
+
+            $('#delTopicSingle').modal('hide');
+        },errorOperate);
+    }
+
+    //显示删除提示框(多个话题)
+    $scope.showDeleteTopicFormMulti=function(){
+        var tIds =[]
+        for(var i=0;i<$scope.groupTopics.length;i++){
+            if($scope.groupTopics[i].checked==true){
+                tIds.push($scope.groupTopics[i][0]);
+            }
+        }
+
+        $scope.deleteTopicIds=tIds.join(',');
+
+        $('#delTopicMulti').modal('show');
+    }
+
+    //多个话题删除
+    $scope.multiDeleteTopics=function(tIds){
+        uriData={};
+        uriData.ids=tIds;
+        CommonService.deleteOne('group/'+$routeParams.groupId+'/topics',uriData,function(data){
+
+            var tIdArray =tIds.split(',');
+            for(var i=0;i<$scope.groupTopics.length;i++){
+               for(var j=0;j<tIdArray.length;j++){
+                 if($scope.groupTopics[i][0]==tIdArray[j]){
+                     $scope.groupTopics.splice(i, 1);
+                 }
+               }
+            }
+
+            $('#delTopicMulti').modal('hide');
+            $scope.multiDeleteTopicsState = true;
+        },errorOperate);
     }
 
    //调用与后端的接口,如：CommonService.getAll(params)
@@ -662,8 +794,12 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     }
 
     //查询圈子下的所有话题
-    var findTopicsOfGroup=$scope.findTopicsOfGroup=function(page,pageSize) {
-        uriData = 'o='+page+'&r='+pageSize;
+    var findTopicsOfGroup=$scope.findTopicsOfGroup=function(page,pageSize,queryCondition) {
+        if(queryCondition==''){
+            uriData = 'o='+page+'&r='+pageSize;
+        }else{
+            uriData = 'o='+page+'&r='+pageSize+'&q='+queryCondition;
+        }
         CommonService.getAll('group/' + $routeParams.groupId + '/topics', uriData, function (data) {
             $scope.groupTopics = data.Topics;
             groupAllTopicsCount = data.count;
