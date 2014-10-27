@@ -5,16 +5,6 @@ var UEditorServices = angular.module('UEditorServices',[]);
 
 UEditorServices.factory('UEditorService',  function () {
 
-        function getTime(){
-            var nowTime = new Date();
-            var mytime=nowTime.getFullYear().toString();
-            var Year = nowTime.getFullYear().toString();  //年
-            var Month = nowTime.getMonth() + 1;          //月
-            var Day = nowTime.getDate().toString();     //日
-            var nowDaty=Year + Month + Day;
-            return(nowDaty);
-        };
-
         return {
 
             //初始化百度编辑器
@@ -33,20 +23,24 @@ UEditorServices.factory('UEditorService',  function () {
 
                return editor;
             },
+
             //获取编辑器图片url列表
             getImgUrlList: function(ue){
                 var uContent = ue.getContent();
                 var re = /src="([^"]*)"/g;
-                var nowTim = getTime();
                 var img = null;
                 var arr=[];
                 while (arr = re.exec(uContent)) {
-                    if(img==null){
-                        img=arr[1].substring(21,900);
-                    }else{
-                        img=img+","+arr[1].substring(21,900);
+                    var imgSrc  = /^(http){1}(s)?:\/\/[^\/]*(\/){1}(.*)$/;
+                    if(imgSrc.test(arr[1])) {
+                        if (img == null) {
+                            img = RegExp.$3 + RegExp.$4;
+                        } else {
+                            img = img + "," + RegExp.$3 + RegExp.$4;
+                        }
                     }
                 }
+
                 return img;
             },
 
@@ -54,9 +48,11 @@ UEditorServices.factory('UEditorService',  function () {
             getCutText: function(ue,sta,end){
                 var uContentTxt = ue.getContentTxt();
                 var cutOutTxt=uContentTxt.substring(sta,end);
+
                 return cutOutTxt;
             }
 
         };
+
     }
 );
