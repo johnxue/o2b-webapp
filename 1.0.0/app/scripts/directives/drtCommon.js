@@ -136,40 +136,44 @@ CommonDirectives.directive('onFinishRenderFilters', function ($timeout) {
     };
 });
 
-//angular封装UEditor
-CommonDirectives.directive('ueditor', function () {
+
+// validate sql injection
+var SQLInjection_VFIT="'|and|exec|insert|select|delete|update|count|*|%|chr|mid|master|truncate|char|declare|; |or|-|+|,";
+
+CommonDirectives.directive('vsqlinjection', function() {
     return {
-        restrict: 'AE',
-        transclude: true,
-        replace: true,
-        template: '<script name="content" type="text/plain" ng-transclude>GGG</script>',
-        require: '?ngModel',
-        scope: {
-            config: '='
-        },
-        link: function (scope, element, attrs, ngModel) {
-            var editor = new UE.ui.Editor(scope.config || {});
-            editor.render(element[0]);
+       require: 'ngModel',
+       link: function(scope, elm, attrs, ctrl) {
+           ctrl.$parsers.unshift(function(viewValue) {
+               if(viewValue!=undefined){
+                  var resultStr = viewValue.toLowerCase();
+                  var alertStr = "";
 
-            if (ngModel) {
-                //Model数据更新时，更新百度UEditor
-                ngModel.$render = function () {
-                    try {
-                        editor.setContent(ngModel.$viewValue);
-                    } catch (e) {
+                  var vFit = SQLInjection_VFIT;
+                  var vFitArray = vFit.split("|");
 
-                    }
-                };
+                  for(var i=0; i<vFitArray.length; i++){
+                      // 匹配SQLInjection_VFIT
+                      if(resultStr.indexOf(vFitArray[i]) >= 0){
+                          alertStr += vFitArray[i] + " ";
+                      }
+                  }
 
-                //百度UEditor数据更新时，更新Model
-                editor.addListener('contentChange', function () {
-                    setTimeout(function () {
-                        scope.$apply(function () {
-                            ngModel.$setViewValue(editor.getContent());
-                        })
-                    }, 0);
-                })
-            }
-        }
-    }
+                  if (alertStr == "") {
+                      // it is valid
+                      ctrl.$setValidity('vsqlinjection', true);
+                      return viewValue;
+                  } else {
+                      // it is invalid, return undefined (no model update)
+                      ctrl.$setValidity('vsqlinjection', false);
+                      return alertStr;
+                  }
+
+               }else{
+                    ctrl.$setValidity('vsqlinjection', true);
+                    return viewValue;
+               }
+           });
+       }
+    };
 });
