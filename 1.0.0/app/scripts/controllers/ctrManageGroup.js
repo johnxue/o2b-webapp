@@ -476,8 +476,8 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     }
 
     //话题查询单击事件
-    $scope.queryTopicsByTitle=function(queryTopicTitle){
-        findTopicsOfGroup(0,1,queryTopicTitle);
+    $scope.queryTopicByTitle=function(queryTopicTitle){
+        findTopicsOfGroup(0,topicsPageSize,queryTopicTitle);
     }
 
     //话题置顶
@@ -795,7 +795,7 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
 
     //查询圈子下的所有话题
     var findTopicsOfGroup=$scope.findTopicsOfGroup=function(page,pageSize,queryCondition) {
-        if(queryCondition==''){
+        if(queryCondition==''||queryCondition==undefined){
             uriData = 'o='+page+'&r='+pageSize;
         }else{
             uriData = 'o='+page+'&r='+pageSize+'&q='+queryCondition;

@@ -155,7 +155,7 @@ function checkSqlInjection(inputStr){
     if(alertStr == ""){
         return true;
     }else{
-        console.info("输入中不能包含如下字符：" + alertStr);
+        alert("输入中不能包含如下字符：" + alertStr);
         return false;
     }
 }

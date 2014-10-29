@@ -7,7 +7,7 @@ var MainApp=angular.module('MainApp',['ngRoute','ngResource','angularFileUpload'
     'UserFollowControllers','ViewDetailsControllers','UserAccountSettingControllers','CommonDirectives',
     'GroupMainControllers','GroupDetailControllers','GroupTopicDetailControllers','CreateGroupControllers',
     'EditGroupTopicControllers','ManageGroupControllers','UEditorServices','ReleaseControllers',
-    'EditNewsControllers']);
+    'EditNewsControllers','MessageMainControllers']);
 
 MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($routeProvider,$httpProvider,$locationProvider) {
     $routeProvider
@@ -87,6 +87,10 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title:'编辑话题',
             templateUrl:'views/editGroupTopic.html',
             controller:'EditGroupTopicCtrl'
+        }).when('/messages',{
+            title:'消息主页',
+            templateUrl:'views/messageMain.html',
+            controller:'MessageMainCtrl'
         }).when('/releaseNews',{
             title:'发布新闻',
             templateUrl:'views/releaseNews.html',

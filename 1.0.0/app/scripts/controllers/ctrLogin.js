@@ -18,10 +18,11 @@
 var LoginControllers = angular.module('LoginControllers', []);
 
 /*定义 Controller: loginCtrl  （登录）*/
-LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,CommonService) {
+LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,CommonService,$interval) {
 
     var uriData='';
 
+    var stop=undefined;
     //初始化$scope中定义的变量
 
     $scope.master= {};
@@ -30,9 +31,7 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
 
 //实现与页面交互的事件,如：button_click
 
-
 // 点击提交
-
     $scope.update = function(objLoginInfo) {
         // 得到Key及iv
         var strMD5Passwd = CryptoJS.MD5(objLoginInfo.password).toString();
@@ -67,6 +66,8 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
             localDataStorage.removeItem('cartProductsTotalOnIndex');
             localDataStorage.removeItem('groupInfo');
             localDataStorage.removeItem('groupTopicDetail');
+            localDataStorage.removeItem('unReadMessageCountOnIndex');
+            localDataStorage.removeItem('messageSniffInterval');
 
             cookieOperate.setCookie('token', headers('Authorization'));
             cookieOperate.setCookie('userName', strUserName);
@@ -124,6 +125,29 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
                 }
             });
 
+            //消息探测(首次)
+            uriData = undefined;
+            CommonService.getAll('message/sniffing', uriData, function (data) {
+               var unReadMessageCount = data.unread_count;
+
+               //改变消息栏显示的未读消息数量
+               $scope.$emit('changeURMessageCountOnIndex', unReadMessageCount);
+            }, errorOperate);
+
+            //消息探测(间隔器)
+           stop=$interval(function () {
+                uriData = undefined;
+                CommonService.getAll('message/sniffing', uriData, function (data) {
+                    var unReadMessageCount = data.unread_count;
+
+                    //改变消息栏显示的未读消息数量
+                    $scope.$emit('changeURMessageCountOnIndex', unReadMessageCount);
+                }, errorOperate);
+            },120000);
+
+            //存储当前运行的间隔器
+            localDataStorage.setItem('messageSniffInterval',JSON.stringify(stop));
+
             $('#denglu').hide();
 
 
@@ -148,12 +172,10 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
     //调用与后端的接口,如：CommonService.getAll(params)
 
 
-
-
 });
 
 /*定义 Controller: logoutCtrl  （登出）*/
-LoginControllers.controller('logoutCtrl', function ($scope,CommonService,$window) {
+LoginControllers.controller('logoutCtrl', function ($scope,CommonService,$window,$interval) {
     ///初始化$scope中定义的变量
      var uriData=undefined;
     //实现与页面交互的事件,如：button_click
@@ -169,6 +191,13 @@ LoginControllers.controller('logoutCtrl', function ($scope,CommonService,$window
             localDataStorage.removeItem('cartProductsTotalOnIndex');
             localDataStorage.removeItem('groupInfo');
             localDataStorage.removeItem('groupTopicDetail');
+            localDataStorage.removeItem('unReadMessageCountOnIndex');
+
+            //停止消息探寻间隔器
+            if(JSON.parse(localDataStorage.getItem('messageSniffInterval'))!=null){
+               $interval.cancel(JSON.parse(localDataStorage.getItem('messageSniffInterval')));
+               localDataStorage.removeItem('messageSniffInterval');
+            }
 
             $window.location.href='/';
 

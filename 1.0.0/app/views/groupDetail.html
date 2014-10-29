@@ -99,9 +99,8 @@
         <p class="title">发布话题</p>
         <form name="releaseTopicForm" ng-model="releaseTopicForm" novalidate="true">
         <div class="col-md-12">
-          <input name="releaseTopicTitle" type="text"  style="width:100%; height:30px; border-radius:4px; border:1px solid #ccc; margin-bottom:20px;" placeholder="请输入标题" ng-model="releaseTopicTitle" required="true"  vsqlinjection/>
+          <input name="releaseTopicTitle" type="text"  style="width:100%; height:30px; border-radius:4px; border:1px solid #ccc; margin-bottom:20px;" placeholder="请输入标题" ng-model="releaseTopicTitle" required="true"/>
            <div class="blue" ng-show="releaseTopicForm.releaseTopicTitle.$dirty &&releaseTopicForm.releaseTopicTitle.$error.required">*标题不能为空</div>
-           <div class="blue" ng-show="releaseTopicForm.releaseTopicTitle.$dirty &&releaseTopicForm.releaseTopicTitle.$error.vsqlinjection">*禁止输入非法字符:{{releaseTopicTitle}}</div>
         </div>
         <div class="col-md-12">
             <script id="editor" type="text/plain" style="height:150px;"></script>
