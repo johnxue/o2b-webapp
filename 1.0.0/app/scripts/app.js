@@ -91,7 +91,7 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title:'发布新闻',
             templateUrl:'views/releaseNews.html',
             controller:'ReleaseNewCtrl'
-        }).when('/editNews',{
+        }).when('/editNews/:editNewsId',{
             title:'编辑新闻',
             templateUrl:'views/editNews.html',
             controller:'EditNewsCtrl'

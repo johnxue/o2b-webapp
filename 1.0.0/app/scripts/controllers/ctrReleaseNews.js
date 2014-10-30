@@ -6,6 +6,8 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
 
     var isDiscuss = "N";  //是否允许评论, Y|N '， [可选，默认为Y]
     var isStatus = "NO";  //状态 NO-只保存不提交审核|WT-提交审核’ [可选，默认值为 NO]
+    var checkFlag = true;
+    var liHtml = null;
 
     var uriData = '';
     var nowPage = 0;  //当前页
@@ -17,23 +19,10 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
 
     /*****************************  页面交互事件  ***********************************/
 
-    //管理新闻
-    $scope.manageNews = function(){
-        uriData = "r=" + pageNum + "&o=" + nowPage;
-        CommonService.getAll('news', uriData, function (data) {
-            $scope.mangerHtml(data);
-        },function(response){
-            if(response.message=="没有找到数据"){
-                $scope.judge();
-            }
-        });
-    }
-
     /**
      * 发布新闻
      */
-
-    //复选框 Click
+    //评论复选框 Click
     $scope.discuss = function(){
         if(isDiscuss=="N"){
             isDiscuss = "Y";
@@ -83,11 +72,22 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
     /**
      * 管理新闻
      */
+     // 查找数据
+    $scope.manageNews = function(){
+        uriData = "r=" + pageNum + "&o=" + nowPage;
+        CommonService.getAll('news', uriData, function (data) {
+            $scope.mangerHtml(data);
+        },function(response){
+            if(response.message=="没有找到数据"){
+                $scope.judge();
+            }
+        });
+    }
+
     //单条删除
     $scope.singerDele = function(deleNews){
         if(confirm("确定删除吗")){
-            uriData = deleNews;
-            CommonService.deleteOne('news/', uriData, function (data) {
+            CommonService.deleteOne('news/'+deleNews, uriData, function (data) {
 
             });
         }
@@ -95,26 +95,166 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
 
     //批量删除
     $scope.batchDele = function(){
+        var ar=[];
+        var maCheck = document.getElementsByName("mangeCheck");
+        for(var i=0; i<maCheck.length; i++){
+            if(maCheck[i].checked){
+               ar.push(maCheck[i].value);
+            }
+        }
+        var objDele = Object();
+        objDele.ids = ar.toString();
+        var data = JSON.stringify(objDele);
+        CommonService.deleteOne('news',data, function (data) {
 
+        });
+    }
+
+    //全选
+    $scope.allCheck = function(){
+        var maCheck = document.getElementsByName("mangeCheck");
+        if (checkFlag) {
+            for(var i=0; i<maCheck.length; i++){
+                maCheck[i].checked = true;
+            }
+            checkFlag = false;
+        }else{
+            for(var i=0; i<maCheck.length; i++){
+                maCheck[i].checked = false;
+            }
+            checkFlag = true;
+        }
     }
 
     //判断是否有内容
-    $scope.judge = function(){
+    $scope.judge = function(newId){
         var newsPrompt = "<div class='col-md-12 marginb'><div class='alert with-icon mp10'> <i class='icon-info-sign'></i>"+
-                         "<div class='content'>您还没有发布过新闻内容。 </div></div></div>";
+            "<div class='content'>您还没有发布过新闻内容。 </div></div></div>";
         $("#mangerNewPrompt").html(newsPrompt);
     }
 
     $scope.mangerHtml = function(data){
         $("#manageTab tr:gt(0)").remove();
         for(var i=0;i<data.news.length;i++){
-            var mHtml = "<tr><td ><input name='check' type='checkbox' style='margin-left:10px;'/></td>"+
-                "<td><span ><a href='' class='blue'>" + data.news[i][1] + "</a></span></td><td>" + data.news[i][5] + "</td>"+
-                "<td><span class='blue'>" + data.news[i][2] + "</span></td><td><span><a href='#/editNews' class='blue' ><i class='icon-pencil'></i> 编辑</a></span>"+
+            var mHtml = "<tr><td ><input name='mangeCheck' type='checkbox' value=" + data.news[i][0] + " style='margin-left:10px;'/></td>"+
+                "<td><span ><a href='#/editNews/" + data.news[i][0] + "' class='blue'>" + data.news[i][1] + "</a></span></td><td>" + data.news[i][5] + "</td>"+
+                "<td><span class='blue'>" + data.news[i][2] + "</span></td>" +
+                "<td><span><a href='#/editNews/" + data.news[i][0] + "' class='blue' >编辑</a></span>"+
                 "<span><a data-toggle='modal' class='blue ml10' data-ng-click='singerDele("+ data.news[i][0] +")'> 删除</a></span></td></tr>";
             var cHtml=$compile(mHtml)($scope);  //编译
             $("#manageTab tr:eq(0)").after(cHtml);
         }
     }
+
+    /**
+     * 新闻审核
+     */
+    $scope.tabSelect = function(){
+        $scope.waitAuditingNews();
+        $scope.tbNewsAlreadyAuditingNews();
+    }
+
+    //待审核新闻
+    $scope.waitAuditingNews = function(){
+        $("#tbNewsExamine tr:gt(0)").remove();
+        uriData = "s=WT&r="+pageNum+"&o="+nowPage
+        CommonService.getAll('news', uriData, function (data) {
+            $scope.newPage("waitExPage",data.count);
+            for(var i=0;i<data.news.length;i++){
+                var tbAuditingHtml = "<tr><td><span class='ml15'><a href='' class='blue'>" + data.news[i][1] + "</a></span></td>"+
+                    "<td>" + data.news[i][5] + "</td><td><span class='blue'>" + data.news[i][2] + "</span></td>"+
+                    "<td><span><a class='blue' data-ng-click='yesThrough("+ data.news[i][0] +")'><i class='icon-pencil' ></i> 确认通过</a></span><span><a class='blue ml10' data-ng-click='noThrough("+ data.news[i][0] +")'><i class='icon-remove'></i> 不予通过</a></span></td>"+
+                    "<td><span class='blue'>" + data.news[i][9] + "</span></td></tr>";
+                     var wHtml=$compile(tbAuditingHtml)($scope);  //编译
+                   $("#tbNewsExamine tr:eq(0)").after(wHtml);  //待审核新闻
+            }
+        },function(response){
+            if(response.message=="没有找到数据"){
+                $("#examineNews").html("<div class='col-md-12 marginb'>"+
+                    "<div class='alert with-icon mp10'><i class='icon-info-sign'></i>"+
+                    "<div class='content'>目前没有需要审核的新闻。 </div></div></div>");
+            }
+        })
+    }
+
+    //已审核新闻
+    $scope.tbNewsAlreadyAuditingNews = function(){
+        uriData = "s=OK&r=50&o=0"
+        CommonService.getAll('news', uriData, function (data) {
+            $scope.newPage("alrExPage",data.count);
+            for(var i=0;i<data.news.length;i++){
+                var tbAlreadyHtml = "<tr><td><span class='ml15'><a href='' class='blue'>" + data.news[i][1] + "</a></span></td>"+
+                    "<td>" + data.news[i][5] + "</td><td><span class='blue'>" + data.news[i][2] + "</span></td>"+
+                    "<td><span><a href='' data-toggle='modal' data-target='#delnewsfabu' class='blue'  data-ng-click='revokeThrough("+ data.news[i][0] +")'> 撤消发布</a></span></td>"+
+                    "<td><span class='blue'>" + data.news[i][9] + "</span></td></tr>";
+                    var aHtml=$compile(tbAlreadyHtml)($scope);  //编译
+                $("#tbNewsAlready tr:eq(0)").after(aHtml);  //待审核新闻
+            }
+        },function(response){
+            if(response.message=="没有找到数据"){
+                $("#alreadyNews").html("<div class='col-md-12 marginb'>"+
+                    "<div class='alert with-icon mp10'><i class='icon-info-sign'></i>"+
+                    "<div class='content'>目前没有已审核的新闻。 </div></div></div>");
+            }
+        })
+    }
+
+    //确认通过
+    $scope.yesThrough = function(newId){
+        var objYesThrough = Object();
+        objYesThrough.st = "OK";
+        var data = JSON.stringify(objYesThrough);
+        CommonService.updatePartOne('news/'+newId, data, function (data) {
+
+        });
+    }
+
+    //不予通过
+    $scope.noThrough = function(newId){
+        var objYesThrough = Object();
+        objYesThrough.st = "NP";
+        var data = JSON.stringify(objYesThrough);
+        CommonService.updatePartOne('news/'+newId, data, function (data) {
+
+        });
+    }
+
+    //撤销发布
+    $scope.revokeThrough = function(newId){
+        var objYesThrough = Object();
+        objYesThrough.st = "NO";
+        var data = JSON.stringify(objYesThrough);
+        CommonService.updatePartOne('news/'+newId, data, function (data) {
+
+        });
+    }
+
+    //分页
+    /*$scope.newPage = function(pageId,data){
+        var aa = data/pageNum;
+
+        var total = Math.ceil(data/pageNum);
+        alert("aa:"+aa+"@"+total+"--"+pageId);
+        liHtml = null;
+        for(var i=1;i<=total;i++){
+            if(liHtml == null){
+               liHtml = "<li><a ng-click='turnPage("+ pageId +")'>"+i+"</a></li>";
+            }else{
+               liHtml = liHtml + "<li><a ng-click='turnPage("+ pageId +")'>"+i+"</a></li>";
+            }
+        }
+        var pageHtml = "<div class='row pull-right'><ul class='pager pager-pills'>"+
+            "<li class='previous disabled'><a href='#'><</a></li>"+
+            liHtml+
+            "<li class='next'><a href='#'>></a></li></ul></div>"
+            var liaHtml=$compile(pageHtml)($scope);
+            $("#"+pageId+"").html(liaHtml);
+    }
+
+    $scope.turnPage = function(page){
+       alert("@"+ page);
+    *//*    nowPage = --page;
+        $scope.waitAuditingNews();*//*
+    }*/
 
 });

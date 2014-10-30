@@ -4,7 +4,7 @@
       <ul class="nav nav-tabs" ng-init="vm.activeTab=1">
         <li ng-class="{active: vm.activeTab == 1}" ><a href="javascript:;" ng-click="vm.activeTab = 1;publishNews()">发布新闻</a></li>
         <li ng-class="{active: vm.activeTab == 2}" ><a href="javascript:;" ng-click="vm.activeTab = 2;manageNews()">管理新闻</a></li>
-        <li ng-class="{active: vm.activeTab == 3}" ><a href="javascript:;" ng-click="vm.activeTab = 3;AuditingNews()">新闻审核</a></li>
+        <li ng-class="{active: vm.activeTab == 3}" ><a href="javascript:;" ng-click="vm.activeTab = 3;tabSelect()">新闻审核</a></li>
       </ul>
       <div class="tab-content tab-bordered mp20  " >
         <div class="tab-panel" ng-show="vm.activeTab == 1">
@@ -62,16 +62,17 @@
         <div class="tab-panel" ng-show="vm.activeTab == 2">
           <div class="col-md-12 marginb">
             <form class="form-horizontal" role="form" method='post'>
-              <div class="col-md-12 marginb">
+                <div id="mangerNewPrompt"></div>
+             <!-- <div class="col-md-12 marginb">
                 <div class="alert with-icon mp10  "> <i class="icon-info-sign"></i>
                   <div class="content">您还没有发布过新闻内容。 </div>
                 </div>
-              </div>
+              </div>-->
               <div class="panel mp20">
-            <table class="table table-condensed " >
+            <table class="table table-condensed" id="manageTab">
               <thead>
                 <tr >
-                  <th ><input name="check" type="checkbox" value="" style="margin-left:10px;"/>
+                  <th ><input name="check" type="checkbox" value="" ng-click="allCheck()" style="margin-left:10px;"/>
                     &nbsp;全选</th>
                   <th>新闻标题</th>
                   <th>发布时间</th>
@@ -81,12 +82,12 @@
               </thead>
               <tbody>
                 <tr>
-                  <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
+   <!--               <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
                   <td><span ><a href="" class="blue">智能产品都在这独家首发</a></span></td>
                   <td>2014-10-10</td>
                   <td><span class="blue">admin</span></td>
                   <td>
-                    <span><a href="#/editNews" class="blue " ><i class="icon-pencil"></i> 编辑</a></span><span><a href="" data-toggle="modal" data-target="#delnews" class="blue ml10" ><i class="icon-remove"></i> 删除</a></span></td>
+                    <span><a href="#/editNews" class="blue " ><i class="icon-pencil"></i> 编辑</a></span><span><a href="" data-toggle="modal" data-target="#delnews" class="blue ml10" ><i class="icon-remove"></i> 删除</a></span></td>-->
                 </tr>
                
               </tbody>
@@ -103,11 +104,11 @@
         <div class="tab-panel" ng-show="vm.activeTab == 3">
             <div class="col-md-12 marginb">
                 <form class="form-horizontal" role="form" method='post'>
-                    <div class="col-md-12 marginb">
+                  <!--  <div class="col-md-12 marginb">
                         <div class="alert with-icon mp10  "> <i class="icon-info-sign"></i>
                             <div class="content">目前没有需要审核的新闻。 </div>
                         </div>
-                    </div>
+                    </div>-->
                     <blockquote>
                         <p class="blue">待审核新闻</p>
                     </blockquote>
@@ -122,8 +123,9 @@
                                 <th>状态</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
+                            <tbody id="tbNewsExamine">
+                                 <tr></tr>
+                           <!-- <tr>
                                 <td><span class="ml15"><a href="" class="blue">智能产品都在这独家首发</a></span></td>
                                 <td>2014-10-10</td>
                                 <td><span class="blue">admin</span></td>
@@ -143,10 +145,12 @@
                                 <td><span class="blue">admin</span></td>
                                 <td><span><a href="" class="blue " ><i class="icon-pencil"></i> 确认通过</a></span><span><a href=""  class="blue ml10" ><i class="icon-remove"></i> 不予通过</a></span></td>
                                 <td><span class="blue">未审核</span></td>
-                            </tr>
+                            </tr>-->
                             </tbody>
                         </table>
-                        <div class="row pull-right ">
+                           <div id="examineNews"></div>  <!-- 判断是否有内容 -->
+                           <div id="waitExPage"></div>
+                     <!--   <div class="row pull-right ">
                             <ul class="pager pager-pills ">
                                 <li class="previous disabled"><a href="#">?</a></li>
                                 <li class="active"><a href="#">1</a></li>
@@ -156,7 +160,7 @@
                                 <li><a href="#">5</a></li>
                                 <li class="next"><a href="#">?</a></li>
                             </ul>
-                        </div>
+                        </div>-->
                     </div>
                     <blockquote class="mp20" style=" margin-top:80px;">
                         <p  class="blue">已审核新闻</p>
@@ -172,8 +176,9 @@
                                 <th>状态</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
+                            <tbody id="tbNewsAlready">
+                            <tr></tr>
+                            <!--<tr>
                                 <td><span class="ml15"><a href="" class="blue">智能产品都在这独家首发</a></span></td>
                                 <td>2014-10-10</td>
                                 <td><span class="blue">admin</span></td>
@@ -200,10 +205,12 @@
                                 <td><span class="blue">admin</span></td>
                                 <td><span><a href="" data-toggle="modal" data-target="#delnewsfabu" class="blue" > 撤消发布</a></span></td>
                                 <td><span class="blue">已审核发布</span></td>
-                            </tr>
+                            </tr>-->
                             </tbody>
                         </table>
-                        <div class="row pull-right">
+                          <div id="alreadyNews"></div>  <!-- 判断是否有内容 -->
+                          <div id="alrExPage"></div>
+                      <!--  <div class="row pull-right">
                             <ul class="pager pager-pills">
                                 <li class="previous disabled"><a href="#">?</a></li>
                                 <li class="active"><a href="#">1</a></li>
@@ -213,7 +220,7 @@
                                 <li><a href="#">5</a></li>
                                 <li class="next"><a href="#">?</a></li>
                             </ul>
-                        </div>
+                        </div>-->
                     </div>
                 </form>
             </div>
@@ -235,10 +242,10 @@
       <div class="modal-body"> 您确定要删除所发布的新闻吗，亲 </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-info" data-dismiss="modal">确定</button>
+        <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="singerDele(data.news[i][0])">确定</button>
       </div>
     </div>
-    <!-- /.modal-content --> 
+    <!-- /.modal-content -->
   </div>
-  <!-- /.modal-dialog --> 
+  <!-- /.modal-dialog -->
 </div>
