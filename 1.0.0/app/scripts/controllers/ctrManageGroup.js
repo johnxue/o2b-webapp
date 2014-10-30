@@ -88,7 +88,14 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
         angular.element('#pageLi0').addClass('active');
     });
 
-    //实现与页面交互的事件,如：button_click
+  //实现与页面交互的事件,如：button_click
+
+    //显示圈子设置
+    $scope.showGroupSetting=function(){
+        $scope.vm.activeTab = 1;
+
+        findGroupInfoById();
+    }
 
     //提交修改单击事件
     $scope.updateGroup=function(manageGroupForm){
@@ -585,17 +592,19 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
    //调用与后端的接口,如：CommonService.getAll(params)
 
     //根据圈子id返回要修改的圈子信息
-    uriData ='g='+$routeParams.groupId;
-    CommonService.getAll('group',uriData,function(data){
-        $scope.manageGroupForm.gid=data.MyGroup[0][0];
-        $scope.manageGroupForm.name=data.MyGroup[0][1];
-        $scope.manageGroupForm.cat = data.MyGroup[0][2];
-        $scope.manageGroupForm.state=data.MyGroup[0][6];
-        $scope.manageGroupForm.join=data.MyGroup[0][7];
-        $scope.manageGroupForm.cnt=data.MyGroup[0][8];
-        $scope.manageGroupForm.header=data.MyGroup[0][9];
-        $scope.manageGroupForm.ntc=data.MyGroup[0][10];
-    },errorOperate);
+    var findGroupInfoById=function() {
+        uriData = 'g=' + $routeParams.groupId;
+        CommonService.getAll('group', uriData, function (data) {
+            $scope.manageGroupForm.gid = data.MyGroup[0][0];
+            $scope.manageGroupForm.name = data.MyGroup[0][1];
+            $scope.manageGroupForm.cat = data.MyGroup[0][2];
+            $scope.manageGroupForm.state = data.MyGroup[0][6];
+            $scope.manageGroupForm.join = data.MyGroup[0][7];
+            $scope.manageGroupForm.cnt = data.MyGroup[0][8];
+            $scope.manageGroupForm.header = data.MyGroup[0][9];
+            $scope.manageGroupForm.ntc = data.MyGroup[0][10];
+        }, errorOperate);
+    }
 
     //根据圈子id返回该圈子下的所有用户(圈子就是一群用户)
     var findGroupById=function(page,pageSize){

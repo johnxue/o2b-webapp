@@ -160,3 +160,51 @@ function checkSqlInjection(inputStr){
     }
 }
 
+//获取修改UEditor内容后的新增和删除图片的信息
+// params (修改前的UEditor内容,修改后的UEditor内容)
+// return {addImgFiles:新增的图片信息,removeImgFiles:删除的图片信息}
+function getAddAndRemoveImgs(oldImgFiles,imgFiles){
+
+    var addAndRemoveImgs={}
+
+    var addImgFiles=[];
+
+    for(var i=0;i<imgFiles.length;i++){
+        var flag=true;
+
+        for(var j=0;j<oldImgFiles.length;j++){
+            if(imgFiles[i]==oldImgFiles[j]){
+                flag=false;
+                break;
+            }
+        }
+
+        if(flag){
+            addImgFiles.push(imgFiles[i]);
+        }
+
+    }
+
+    addAndRemoveImgs.addImgFiles= addImgFiles.length==0 ? null :addImgFiles.join(',');
+
+    var removeImgFiles=[];
+
+    for(var i=0;i<oldImgFiles.length;i++){
+        var flag=true;
+
+        for(var j=0;j<imgFiles.length;j++){
+            if(oldImgFiles[i]==imgFiles[j]){
+                flag=false;
+                break;
+            }
+        }
+
+        if(flag){
+            removeImgFiles.push(oldImgFiles[i]);
+        }
+    }
+
+    addAndRemoveImgs.removeImgFiles=removeImgFiles.length==0 ? null :removeImgFiles.join(',');
+
+    return addAndRemoveImgs;
+}

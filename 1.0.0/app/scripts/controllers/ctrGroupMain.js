@@ -67,7 +67,7 @@ GroupMainControllers.controller('GroupMainCtrl',function($scope,CommonService,$w
         if(cookieOperate.getCookie('token')==null){
             $('#denglu').modal('show');
         }else{
-            uriData ='o=0&r=6';
+            uriData ='o=0&r='+pageSize;
             CommonService.getAll('user/group',uriData,function(data){
                 $scope.myGroups=data.MyJoinGroups;
             },errorOperate);
