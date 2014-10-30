@@ -41,7 +41,7 @@ NewsListControllers.controller('NewsListCtrl',function($scope,CommonService) {
 
     //遍历数据
     $scope.newListPage = function() {
-        uriData = "r=" + pageNum + "&o=" + nowPage;
+        uriData = "s=ok&r=" + pageNum + "&o=" + nowPage;
         CommonService.getAll('news', uriData, function (data) {
             for (var i = 0; i < data.news.length; i++) {
                 var times = timeDifference("D", data.news[i][5], Time);

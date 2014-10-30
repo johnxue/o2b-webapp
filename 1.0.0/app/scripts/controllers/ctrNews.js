@@ -6,6 +6,8 @@ NewsControllers.controller('NewsCtrl',function($scope,CommonService,$routeParams
 
     var uriData ='';
 
+    $("#Examine").hide();   //隐藏新闻审核
+
     ctrInit();  //广告
 
     CommonService.getAll('news/'+$routeParams.id,uriData,function (data) {
