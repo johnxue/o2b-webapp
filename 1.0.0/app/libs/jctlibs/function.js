@@ -167,8 +167,9 @@ function getAddAndRemoveImgs(oldImgFiles,imgFiles){
 
     var addAndRemoveImgs={}
 
-    var oldImgFiles=oldImgFiles.split(',');
-    var imgFiles=imgFiles.split(',');
+    var oldImgFiles=oldImgFiles==null ? [] :oldImgFiles.split(',');
+
+    var imgFiles=imgFiles==null ? [] :imgFiles.split(',');
 
     var addImgFiles=[];
 
