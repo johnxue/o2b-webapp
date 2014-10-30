@@ -126,6 +126,7 @@ EditGroupTopicControllers.controller('EditGroupTopicCtrl',function($scope,Common
         uriData.rImgFiles=removeImgFiles.length==0 ? null :removeImgFiles.join(',');
 
 
+       console.info(getAddAndRemoveImgs(oldImgFiles,imgFiles));
         //是否禁止评论
         if($scope.ifForbidComment==true){
             uriData.status='NR';
