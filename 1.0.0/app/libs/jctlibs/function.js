@@ -139,3 +139,24 @@ function ctrInit(){
     }
 }
 
+//check sql injection
+function checkSqlInjection(inputStr){
+    var resultStr = inputStr.toLowerCase();
+    var alertStr = "";
+
+    var vFit = "'|and|exec|insert|select|delete|update|count|*|%|chr|mid|master|truncate|char|declare|; |or|-|+|,";
+    var vFitter = vFit.split("|");
+    var vFitterLen = vFitter.length;
+    for(var vi=0; vi<vFitterLen; vi++){
+        if(resultStr.indexOf(vFitter[vi]) >= 0){
+            alertStr += vFitter[vi] + " ";
+        }
+    }
+    if(alertStr == ""){
+        return true;
+    }else{
+        alert("输入中不能包含如下字符：" + alertStr);
+        return false;
+    }
+}
+

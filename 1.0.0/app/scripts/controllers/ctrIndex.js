@@ -46,6 +46,10 @@ IndexControllers.controller('IndexCtrl',function($scope,CommonService,$window){
         $scope.loginedName =cookieOperate.getCookie("userName");
     }
 
+    $scope.unReadMessageCountOnIndex=JSON.parse(localDataStorage.getItem('unReadMessageCountOnIndex'));
+    if($scope.unReadMessageCountOnIndex==null){
+        $scope.unReadMessageCountOnIndex=0
+    }
 
     /*注册事件*/
     $scope.$on("logined",function (event, strUserName,cartProductsTotal) {
@@ -69,7 +73,10 @@ IndexControllers.controller('IndexCtrl',function($scope,CommonService,$window){
         localDataStorage.setItem('cartProductsTotalOnIndex',JSON.stringify(cartProductsTotal));
     });
 
-
+    $scope.$on("changeURMessageCountOnIndex",function(event,unReadMessageCount){
+        $scope.unReadMessageCountOnIndex=unReadMessageCount;
+        localDataStorage.setItem('unReadMessageCountOnIndex',JSON.stringify(unReadMessageCount));
+    });
 
     //实现与页面交互的事件,如：button_click
     //产品模糊查询
@@ -82,7 +89,7 @@ IndexControllers.controller('IndexCtrl',function($scope,CommonService,$window){
         CommonService.getAll('product',uriData,function(data){
 
            if($window.location.href.substring($window.location.href.length-9,$window.location.href.length)!='#/product'){
-               $window.location.href='#/product';
+               $window.location.href='#/productList';
                $scope.$broadcast("newProductsByQuery",data);
 
            }else{

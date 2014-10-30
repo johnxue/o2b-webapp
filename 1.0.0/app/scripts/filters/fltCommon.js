@@ -129,7 +129,7 @@ CommonFilters.filter('showYMD',function(){
     }
 });
 
-/*格式化时间,根据当前时间(零点)判断是否为今天、昨天、前天,若不是,则直接显示时间*/
+/*格式化时间,根据当前时间(零点)判断是否为今天、昨天、前天,若不是,则直接显示时间(年月日)*/
 CommonFilters.filter('showTime',function(){
 
     return function(input){
@@ -146,7 +146,7 @@ CommonFilters.filter('showTime',function(){
            }else if(dateTime>=tDBYesterdayDate){
                return '前天';
            }
-            return input;
+            return dateTime.format('yyyy年MM月dd日');
         }
     }
 });

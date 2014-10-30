@@ -22,19 +22,42 @@ GroupMainControllers.controller('GroupMainCtrl',function($scope,CommonService,$w
     ctrInit();
 
     var uriData='';
+
+    //分页信息(我的圈子)
     var page=0;
     var pageSize=6;
+
+    //分页信息(热门话题)
+    var hotTopicsCount=0;
+    var hotTopicsMaxPage=0;
+    var hotTopicsPage=0;
+    var hotTopicsPageSize=1;
+    //分页器可显示页数
+    var bursterMaxPage=6;
+
    //初始化$scope中定义的变量
 
     $scope.myGroups={};
 
     $scope.hotGroups={};
 
+    $scope.hotTopics={};
+
+    $scope.bursterPageNumbers =[];
+
+    $scope.hotTopicsPageSize=hotTopicsPageSize;
+
     $scope.myGroupsNextPageState=false;
 
     $scope.visitNeedJoinGp_GId='';
 
     $scope.ifBlackList=false;
+
+    //初始化分页器样式
+    $scope.$on('ngRepeatFinished', function () {
+        angular.element('.bursterPageLis').removeClass('active');
+        angular.element('#pageLi0').addClass('active');
+    });
 
     //实现与页面交互的事件,如：button_click
 
@@ -48,7 +71,7 @@ GroupMainControllers.controller('GroupMainCtrl',function($scope,CommonService,$w
             CommonService.getAll('user/group',uriData,function(data){
                 $scope.myGroups=data.MyJoinGroups;
             },errorOperate);
-            $scope.vm.activeTab = 3
+            $scope.vm.activeTab = 2;
         }
     }
 
@@ -122,14 +145,75 @@ GroupMainControllers.controller('GroupMainCtrl',function($scope,CommonService,$w
         }, errorOperate);
     }
 
+    //热门话题信息分页
+    $scope.hotTopicsNextPage=function(){
+        if(hotTopicsPage<hotTopicsMaxPage-1){
+            findHotTopics(++hotTopicsPage,hotTopicsPageSize);
+        }else{
+            angular.element('#NextPageLi').addClass('disabled');
+        }
+    }
 
+    $scope.hotTopicsLastPage=function(){
+        if(hotTopicsPage>0){
+            findHotTopics(--hotTopicsPage,hotTopicsPageSize);
+        }else{
+            angular.element('#LastPageLi').addClass('disabled');
+        }
+    }
 
+  //调用与后端的接口,如：CommonService.getAll(params)
 
-    //调用与后端的接口,如：CommonService.getAll(params)
-
+    //查询热门圈子
     uriData ='s=hot';
     CommonService.getAll('group',uriData,function(data){
         $scope.hotGroups=data.HotGroups;
     },errorOperate);
+
+    //查询热门话题
+    var findHotTopics = $scope.findHotTopics=function(page,pageSize){
+        uriData = 'o='+page+'&r='+pageSize;
+        CommonService.getAll('group/6/topics', uriData, function (data) {
+            $scope.hotTopics = data.Topics;
+            hotTopicsCount = data.count;
+
+            //记录查询页号,连接点击页号查询和点击上一页或下一页查询
+            hotTopicsPage=page;
+
+            //分页器显示
+            hotTopicsMaxPage=Math.ceil(hotTopicsCount/hotTopicsPageSize);
+            $scope.bursterPageNumbers =[];
+            if(bursterMaxPage>hotTopicsMaxPage){
+                for(var i=0;i<hotTopicsMaxPage;i++){
+                    $scope.bursterPageNumbers[i] = i;
+                }
+            }else {
+                if (page < Math.ceil(bursterMaxPage / 2)) {
+                    for (var i = 0; i < bursterMaxPage; i++) {
+                        $scope.bursterPageNumbers[i] = i;
+                    }
+                } else if (page < hotTopicsMaxPage - Math.ceil(bursterMaxPage / 2)) {
+                    for (var i = 0, j = -Math.floor(bursterMaxPage / 2); i < bursterMaxPage; i++, j++) {
+                        $scope.bursterPageNumbers[i] = page + j;
+                    }
+                } else {
+                    for (var i = 0, j = hotTopicsMaxPage - bursterMaxPage; i < bursterMaxPage; i++, j++) {
+                        $scope.bursterPageNumbers[i] = j;
+                    }
+                }
+            }
+
+            //设置分页器样式
+            angular.element('.bursterPageLis').removeClass('active');
+            angular.element('#pageLi'+page+'').addClass('active');
+
+            //去除上一页,下一页禁用样式
+            angular.element('#LastPageLi').removeClass('disabled');
+            angular.element('#NextPageLi').removeClass('disabled');
+
+        }, errorOperate);
+    }
+
+    findHotTopics(0,hotTopicsPageSize);
 
 });

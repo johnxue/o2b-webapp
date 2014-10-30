@@ -134,11 +134,17 @@
         <!--成员管理结束-->
         <!-- 话题管理开始-->
         <div class="tab-panel" ng-show="vm.activeTab == 3">
-          <div class="alert with-icon "> <span class="mp7"> 话题查询： </span> <span class="col-md-3">
-            <input type="text" class="form-control" placeholder="话题名称" ng-model="queryTopicTitle">
-            </span> <span class="ml10">
-            <button class="btn btn-info" ng-click="queryTopicsByTitle(queryTopicTitle);"><i class="icon-search"></i> 查询</button>
-            </span> </div>
+          <div class="alert with-icon "> <span class="mp7"> 话题查询： </span>
+            <form name="queryTopicForm" ng-model="queryTopicForm">
+              <span class="col-md-3">
+                <input type="text" class="form-control" placeholder="话题名称" ng-model="queryTopicTitle" name="queryTopicTitle" vsqlinjection/>
+                <div class="blue" ng-show="queryTopicForm.queryTopicTitle.$dirty && queryTopicForm.queryTopicTitle.$error.vsqlinjection">*禁止输入非法字符:{{queryTopicTitle}}</div>
+              </span>
+              <span class="ml10">
+                <button class="btn btn-info" ng-click="queryTopicByTitle(queryTopicTitle);" ng-disabled="queryTopicForm.$invalid"><i class="icon-search"></i> 查询</button>
+              </span>
+            </form>
+          </div>
           <div class="panel mp20">
             <table class="table table-condensed " >
               <thead>

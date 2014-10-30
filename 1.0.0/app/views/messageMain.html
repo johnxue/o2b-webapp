@@ -1,0 +1,160 @@
+<div class="container" >
+  <div class="cont" >
+    <div class="col-md-12">
+      <ul class="nav nav-tabs" ng-init="vm.activeTab=1">
+        <li ng-class="{active: vm.activeTab == 1}" ><a href="javascript:;" ng-click="vm.activeTab = 1">未读消息 <span class="label label-badge label-info">{{unReadMessageCount}}</span></a></li>
+        <li ng-class="{active: vm.activeTab == 2}" ><a href="javascript:;" ng-click="vm.activeTab = 2">已读消息 <span class="label label-badge label-info">{{readMessageCount}}</span></a></li>
+        <li ng-class="{active: vm.activeTab == 3}" ><a href="javascript:;" ng-click="vm.activeTab = 3">发送消息</a> </li>
+      </ul>
+      <div class="tab-content tab-bordered mp20  " >
+        <div class="tab-panel" ng-show="vm.activeTab == 1">
+          <div class="col-md-12 marginb">
+            <div class="col-md-12">
+              <div class="alert with-icon mp10 " ng-show="unReadMessageCount==0"> <i class="icon-info-sign"></i>
+                <div class="content ">亲,您目前还没有未读消息</div>
+              </div>
+              <div class="panel mp20" ng-show="unReadMessageCount!=0">
+                <table class="table table-condensed " >
+                  <thead>
+                    <tr >
+                      <th ><input name="check" type="checkbox"  style="margin-left:10px;" ng-model="unReadMessages.allChecked" ng-change="uRMessagesCheckAll(unReadMessages.allChecked);"/>
+                        &nbsp;全选</th>
+                      <th>消息名称</th>
+                      <th>发布时间</th>
+                      <th>发送人</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="unReadMessage in unReadMessages">
+                      <td ><input  type="checkbox" style="margin-left:10px;" ng-model="unReadMessage.checked"/></td>
+                      <td><span ><a href="#/xiaoxixiangxi" class="blue">{{unReadMessage.name}}</a></span></td>
+                      <td>{{unReadMessage.time}}</td>
+                      <td><span class="blue">{{unReadMessage.from}}</span></td>
+                      <td><span><a href="" ><i class="icon-zoom-in"></i></a></span><span><a href="" data-toggle="modal" data-target="#delMessage" class="ml10" ><i class="icon-trash"></i> </a></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="row mp20 ">
+                <div class="col-md-12">
+                  <button class="btn btn-info pull-right marginb">删除消息</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" ng-show="vm.activeTab == 2">
+          <div class="col-md-12 marginb">
+            <div class="col-md-12">
+              <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
+                <div class="content">亲,您目前还没有未读消息</div>
+              </div>
+              <div class="panel mp20">
+                <table class="table table-condensed " >
+                  <thead>
+                    <tr >
+                      <th ><input name="check" type="checkbox" value="" style="margin-left:10px;"/>
+                        &nbsp;全选</th>
+                      <th>消息名称</th>
+                      <th>发布时间</th>
+                      <th>发送人</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
+                      <td><span ><a href="#/xiaoxixiangxi" class="blue">智能产品都在这独家首发</a></span></td>
+                      <td>2014-10-10</td>
+                      <td><span class="blue">系统通知</span></td>
+              <td><span><a href="" ><i class="icon-zoom-in"></i></a></span><span><a href="" data-toggle="modal" data-target="#delMessage" class="ml10" ><i class="icon-trash"></i> </a></span></td>
+                    </tr>
+                    <tr>
+                      <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
+                      <td><span ><a href="#/xiaoxixiangxi2" class="blue">Nathlock蓝牙挂锁</a></span></td>
+                      <td>2014-10-10</td>
+                      <td><span class="blue">admin</span></td>
+            <td><span><a href="" ><i class="icon-zoom-in"></i></a></span><span><a href="" data-toggle="modal" data-target="#delMessage" class="ml10" ><i class="icon-trash"></i> </a></span></td>
+                    </tr>
+                    <tr>
+                      <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
+                      <td><span ><a href="#/xiaoxixiangxi2" class="blue">AirProce艾泊斯－最聪明的专业级空气净化器</a></span></td>
+                      <td>2014-10-10</td>
+                      <td><span class="blue">系统通知</span></td>
+                   <td><span><a href="" ><i class="icon-zoom-in"></i></a></span><span><a href="" data-toggle="modal" data-target="#delMessage" class="ml10" ><i class="icon-trash"></i> </a></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="row mp20 ">
+                <div class="col-md-12">
+                  <button class="btn btn-info pull-right marginb">删除消息</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" ng-show="vm.activeTab == 3">
+          <form class="form-horizontal" role="form" method='post'>
+            <div class="col-md-9">
+              <div class="panel">
+                <div class="panel-heading">发送消息</div>
+                <div class="panel-body" >
+                  <div class="form-group mp20">
+                    <label class="col-md-2 control-label bluezi" >发送给：</label>
+                    <div class="col-md-8">
+                      <div class="input-group">
+                        <input type='text'  class='form-control' />
+                        <span class="input-group-btn">
+                        <button class="btn btn-info" type="button"><i class="icon-chat-dot"></i></button>
+                        </span> </div>
+                    </div>
+                  </div>
+                  <div class="form-group mp20">
+                    <label class="col-md-2 control-label bluezi">回复主题：</label>
+                    <div class="col-md-8">
+                      <div class="input-group">
+                        <input type='text'  class='form-control' />
+                        <span class="input-group-btn">
+                        <button class="btn btn-info" type="button"><i class="icon-comment-alt"></i></button>
+                        </span> </div>
+                    </div>
+                  </div>
+                  <div class="form-group ">
+                    <label class="col-md-2 control-label bluezi">消息内容：</label>
+                    <div class="col-md-9">
+                      <textarea name="" cols="" rows="" class="teax"></textarea>
+                    </div>
+                  </div>
+                  <div class="row marginb mp20">
+                    <button  class="btn btn-info more">确认保存</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!--我的消息结束 --> 
+      </div>
+      <!--内容结束 --> 
+    </div>
+  </div>
+</div>
+<!-- 确认删除消息弹框 -->
+
+<div class="modal fade"  id="delMessage" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
+  <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" > <i class="icon-remove"></i> 消息删除 </h4>
+      </div>
+      <div class="modal-body"> 您确定要删除此条消息吗，亲 </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-mini btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-mini btn-info" data-dismiss="modal">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
