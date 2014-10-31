@@ -10,12 +10,27 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
     var liHtml = null;
 
     var uriData = '';
-    var nowPage = 0;  //当前页
+    var nowPage = 0;
+    var nowWaitPage = 0;  //待审核当前页
+    var nowAlrePage = 0;  //已审核当前页
     var pageNum = 5;  //每页显示条数
 
     /******************************   加载运行   ***********************************/
-
+    ctrInit();  //广告
     var edReleaseNews = UEditorService.getUEditor("editor","group","gid");
+    //初始化分页器样式
+       $scope.$on('ngRepeatFinished', function () {
+        //待审核
+        angular.element('.exPageLis').removeClass('active');
+        angular.element('#exPageLi0').addClass('active');
+        //已审核
+        angular.element('.alPageLis').removeClass('active');
+        angular.element('#alPageLi0').addClass('active');
+        //管理新闻
+        angular.element('.mangerPageLis').removeClass('active');
+        angular.element('#magPageLi0').addClass('active');
+    });
+
 
     /*****************************  页面交互事件  ***********************************/
 
@@ -74,9 +89,23 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
      */
      // 查找数据
     $scope.manageNews = function(){
+        $("#manageTab tr:gt(0)").remove();
+        $("#mangerNewPrompt").html("");
         uriData = "r=" + pageNum + "&o=" + nowPage;
         CommonService.getAll('news', uriData, function (data) {
-            $scope.mangerHtml(data);
+            $scope.mangerPageNumbers = _produceBurster(nowPage,pageNum,data.count,5,$scope);
+            for(var i=0;i<data.news.length;i++){
+                var mHtml = "<tr><td ><input name='mangeCheck' type='checkbox' value=" + data.news[i][0] + " style='margin-left:10px;'/></td>"+
+                    "<td><span ><a href='#/editNews/" + data.news[i][0] + "' class='blue'>" + data.news[i][1] + "</a></span></td><td>" + data.news[i][5] + "</td>"+
+                    "<td><span class='blue'>" + data.news[i][2] + "</span></td>" +
+                    "<td><span><a href='#/editNews/" + data.news[i][0] + "' class='blue' >编辑</a></span>"+
+                    "<span><a data-toggle='modal' class='blue ml10' data-ng-click='singerDele("+ data.news[i][0] +")'> 删除</a></span></td></tr>";
+                var cHtml=$compile(mHtml)($scope);  //编译
+                $("#manageTab tr:eq(0)").after(cHtml);
+            }
+            //设置分页器样式
+            angular.element('.mangerPageLis').removeClass('active');
+            angular.element('#magPageLi'+nowPage+'').addClass('active');
         },function(response){
             if(response.message=="没有找到数据"){
                 $scope.judge();
@@ -88,7 +117,7 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
     $scope.singerDele = function(deleNews){
         if(confirm("确定删除吗")){
             CommonService.deleteOne('news/'+deleNews, uriData, function (data) {
-
+                $scope.manageNews();
             });
         }
     }
@@ -106,7 +135,7 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         objDele.ids = ar.toString();
         var data = JSON.stringify(objDele);
         CommonService.deleteOne('news',data, function (data) {
-
+            $scope.manageNews();
         });
     }
 
@@ -133,19 +162,6 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         $("#mangerNewPrompt").html(newsPrompt);
     }
 
-    $scope.mangerHtml = function(data){
-        $("#manageTab tr:gt(0)").remove();
-        for(var i=0;i<data.news.length;i++){
-            var mHtml = "<tr><td ><input name='mangeCheck' type='checkbox' value=" + data.news[i][0] + " style='margin-left:10px;'/></td>"+
-                "<td><span ><a href='#/editNews/" + data.news[i][0] + "' class='blue'>" + data.news[i][1] + "</a></span></td><td>" + data.news[i][5] + "</td>"+
-                "<td><span class='blue'>" + data.news[i][2] + "</span></td>" +
-                "<td><span><a href='#/editNews/" + data.news[i][0] + "' class='blue' >编辑</a></span>"+
-                "<span><a data-toggle='modal' class='blue ml10' data-ng-click='singerDele("+ data.news[i][0] +")'> 删除</a></span></td></tr>";
-            var cHtml=$compile(mHtml)($scope);  //编译
-            $("#manageTab tr:eq(0)").after(cHtml);
-        }
-    }
-
     /**
      * 新闻审核
      */
@@ -157,9 +173,10 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
     //待审核新闻
     $scope.waitAuditingNews = function(){
         $("#tbNewsExamine tr:gt(0)").remove();
-        uriData = "s=WT&r="+pageNum+"&o="+nowPage
+        $("#examineNews").html("");
+        uriData = "s=WT&r="+pageNum+"&o="+nowWaitPage
         CommonService.getAll('news', uriData, function (data) {
-            $scope.newPage("waitExPage",data.count);
+           $scope.tbExPage = _produceBurster(nowWaitPage,pageNum,data.count,5,$scope);
             for(var i=0;i<data.news.length;i++){
                 var tbAuditingHtml = "<tr><td><span class='ml15'><a href='' class='blue'>" + data.news[i][1] + "</a></span></td>"+
                     "<td>" + data.news[i][5] + "</td><td><span class='blue'>" + data.news[i][2] + "</span></td>"+
@@ -168,6 +185,8 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
                      var wHtml=$compile(tbAuditingHtml)($scope);  //编译
                    $("#tbNewsExamine tr:eq(0)").after(wHtml);  //待审核新闻
             }
+            angular.element('.exPageLis').removeClass('active');
+            angular.element('#exPageLi'+ nowWaitPage +'').addClass('active');
         },function(response){
             if(response.message=="没有找到数据"){
                 $("#examineNews").html("<div class='col-md-12 marginb'>"+
@@ -179,9 +198,11 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
 
     //已审核新闻
     $scope.tbNewsAlreadyAuditingNews = function(){
-        uriData = "s=OK&r=50&o=0"
+        $("#tbNewsAlready tr:gt(0)").remove();
+        $("#alreadyNews").html("");
+        uriData = "s=OK&r="+ pageNum +"&o=" + nowAlrePage
         CommonService.getAll('news', uriData, function (data) {
-            $scope.newPage("alrExPage",data.count);
+            $scope.tbAlPage = _produceBurster(nowAlrePage,pageNum,data.count,5,$scope);
             for(var i=0;i<data.news.length;i++){
                 var tbAlreadyHtml = "<tr><td><span class='ml15'><a href='' class='blue'>" + data.news[i][1] + "</a></span></td>"+
                     "<td>" + data.news[i][5] + "</td><td><span class='blue'>" + data.news[i][2] + "</span></td>"+
@@ -190,6 +211,8 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
                     var aHtml=$compile(tbAlreadyHtml)($scope);  //编译
                 $("#tbNewsAlready tr:eq(0)").after(aHtml);  //待审核新闻
             }
+            angular.element('.alPageLis').removeClass('active');
+            angular.element('#alPageLi'+ nowAlrePage +'').addClass('active');
         },function(response){
             if(response.message=="没有找到数据"){
                 $("#alreadyNews").html("<div class='col-md-12 marginb'>"+
@@ -205,7 +228,7 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         objYesThrough.st = "OK";
         var data = JSON.stringify(objYesThrough);
         CommonService.updatePartOne('news/'+newId, data, function (data) {
-
+            $scope.waitAuditingNews();
         });
     }
 
@@ -215,7 +238,7 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         objYesThrough.st = "NP";
         var data = JSON.stringify(objYesThrough);
         CommonService.updatePartOne('news/'+newId, data, function (data) {
-
+            $scope.waitAuditingNews();
         });
     }
 
@@ -225,12 +248,12 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         objYesThrough.st = "NO";
         var data = JSON.stringify(objYesThrough);
         CommonService.updatePartOne('news/'+newId, data, function (data) {
-
+            $scope.tbNewsAlreadyAuditingNews();
         });
     }
 
     //分页
-    /*$scope.newPage = function(pageId,data){
+    $scope.newPage = function(pageId,data){
         var aa = data/pageNum;
 
         var total = Math.ceil(data/pageNum);
@@ -253,8 +276,52 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
 
     $scope.turnPage = function(page){
        alert("@"+ page);
-    *//*    nowPage = --page;
-        $scope.waitAuditingNews();*//*
-    }*/
+       nowPage = --page;
+        $scope.waitAuditingNews();
+    }
+
+    /******************************   分页   ***********************************/
+
+    //跳转页
+    $scope.nPage = function(viewName,page){
+        if(viewName == "waitExPage"){
+            nowWaitPage = page;
+            $scope.waitAuditingNews();
+        }else if(viewName == "alrExPage"){
+            nowAlrePage = page;
+            $scope.tbNewsAlreadyAuditingNews();
+        }else if(viewName == "magePage"){
+            nowPage = page;
+            $scope.manageNews();
+        }
+    }
+
+    //下一页
+    $scope.addPage = function(viewName){
+        if(viewName == "waitExPage"){
+            nowWaitPage = ++nowWaitPage;
+            $scope.waitAuditingNews();
+        }else if(viewName == "alrExPage"){
+            nowAlrePage == ++nowAlrePage;
+            $scope.tbNewsAlreadyAuditingNews();
+        }else if(viewName == "magePage"){
+            nowPage = ++nowPage;
+            $scope.manageNews();
+        }
+    }
+
+    //上一页
+    $scope.redPage = function(viewName){
+        if(viewName == "waitExPage"){
+            nowWaitPage = --nowWaitPage;
+            $scope.waitAuditingNews();
+        }else if(viewName == "alrExPage"){
+            nowAlrePage = --nowAlrePage;
+            $scope.tbNewsAlreadyAuditingNews();
+        }else if(viewName == "magePage"){
+            nowPage = --nowPage;
+            $scope.manageNews();
+        }
+    }
 
 });

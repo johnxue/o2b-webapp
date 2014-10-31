@@ -12,7 +12,7 @@
             <form class="form-horizontal" role="form" method='post'>
               <div class="col-md-12">
                 <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
-                  <div class="content">请您发布正面新闻内容,我们团队及时为您审核,审核通过显示您的新闻内容。 </div>
+                  <div class="content">请您发布正面新闻内容,我们团队及时为您审核,审核通过显示您的新闻内容。</div>
                 </div>
                 <div class="form-group marginb" style="margin-top:30px;">
                   <label class="col-md-2 bluezi" >新闻标题：</label>
@@ -81,21 +81,17 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-   <!--               <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
-                  <td><span ><a href="" class="blue">智能产品都在这独家首发</a></span></td>
-                  <td>2014-10-10</td>
-                  <td><span class="blue">admin</span></td>
-                  <td>
-                    <span><a href="#/editNews" class="blue " ><i class="icon-pencil"></i> 编辑</a></span><span><a href="" data-toggle="modal" data-target="#delnews" class="blue ml10" ><i class="icon-remove"></i> 删除</a></span></td>-->
-                </tr>
-               
+                <tr></tr>
               </tbody>
             </table>
-            <div class="col-md-12 mp20 marginb" style="float:left;">
-            
-              <button type="button" class="btn btn-info pull-right" ng-click="batchDele()">批量删除</button>
-            </div>
+            <div class="pull-left mp20"> <button type="button" class="btn btn-info" ng-click="batchDele()">批量删除</button></div>
+                  <div class="pull-right">
+                      <ul class="pager pager-pills">
+                          <li class="previous" id="lastPageMag"><a href="javascript:;" ng-click="redPage('magePage');">«</a></li>
+                          <li ng-repeat="bursterPageNumber in mangerPageNumbers" id="magPageLi{{bursterPageNumber}}" class="mangerPageLis" on-finish-render-filters><a href="javascript:;" ng-click="nPage('magePage',bursterPageNumber);">{{bursterPageNumber+1}}</a></li>
+                          <li class="next" id="nextPageMag"><a href="javascript:;" ng-click="addPage('magePage');">»</a></li>
+                      </ul>
+                  </div>
           </div>
             </form>
           </div>
@@ -104,11 +100,6 @@
         <div class="tab-panel" ng-show="vm.activeTab == 3">
             <div class="col-md-12 marginb">
                 <form class="form-horizontal" role="form" method='post'>
-                  <!--  <div class="col-md-12 marginb">
-                        <div class="alert with-icon mp10  "> <i class="icon-info-sign"></i>
-                            <div class="content">目前没有需要审核的新闻。 </div>
-                        </div>
-                    </div>-->
                     <blockquote>
                         <p class="blue">待审核新闻</p>
                     </blockquote>
@@ -125,42 +116,22 @@
                             </thead>
                             <tbody id="tbNewsExamine">
                                  <tr></tr>
-                           <!-- <tr>
-                                <td><span class="ml15"><a href="" class="blue">智能产品都在这独家首发</a></span></td>
-                                <td>2014-10-10</td>
-                                <td><span class="blue">admin</span></td>
-                                <td><span><a href="" class="blue " ><i class="icon-pencil"></i> 确认通过</a></span><span><a href=""  class="blue ml10" ><i class="icon-remove"></i> 不予通过</a></span></td>
-                                <td><span class="blue">未审核</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="ml15"><a href="" class="blue">智能产品都在这独家首发</a></span></td>
-                                <td>2014-10-10</td>
-                                <td><span class="blue">admin</span></td>
-                                <td><span><a href="" class="blue " ><i class="icon-pencil"></i> 确认通过</a></span><span><a href=""  class="blue ml10" ><i class="icon-remove"></i> 不予通过</a></span></td>
-                                <td><span class="blue">未审核</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="ml15"><a href="" class="blue">智能产品都在这独家首发</a></span></td>
-                                <td>2014-10-10</td>
-                                <td><span class="blue">admin</span></td>
-                                <td><span><a href="" class="blue " ><i class="icon-pencil"></i> 确认通过</a></span><span><a href=""  class="blue ml10" ><i class="icon-remove"></i> 不予通过</a></span></td>
-                                <td><span class="blue">未审核</span></td>
-                            </tr>-->
                             </tbody>
                         </table>
                            <div id="examineNews"></div>  <!-- 判断是否有内容 -->
-                           <div id="waitExPage"></div>
-                     <!--   <div class="row pull-right ">
-                            <ul class="pager pager-pills ">
-                                <li class="previous disabled"><a href="#">?</a></li>
-                                <li class="active"><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li class="next"><a href="#">?</a></li>
-                            </ul>
-                        </div>-->
+                           <div class="pull-right">
+                                 <ul class="pager pager-pills">
+                                    <li class="previous" id="LastPageLi">
+                                        <a href="javascript:;" ng-click="redPage('waitExPage')">«</a>
+                                    </li>
+                                    <li ng-repeat="bursterPageNumber in tbExPage "id="exPageLi{{bursterPageNumber}}" class="exPageLis" on-finish-renderfilters>
+                                        <a href="javascript:;" ng-click="nPage('waitExPage',bursterPageNumber);">{{bursterPageNumber+1}}</a>
+                                    </li>
+                                    <li class="next" id="NextPageLi">
+                                        <a href="javascript:;" ng-click="addPage('waitExPage')">»</a>
+                                    </li>
+                                 </ul>
+                            </div>
                     </div>
                     <blockquote class="mp20" style=" margin-top:80px;">
                         <p  class="blue">已审核新闻</p>
@@ -178,49 +149,22 @@
                             </thead>
                             <tbody id="tbNewsAlready">
                             <tr></tr>
-                            <!--<tr>
-                                <td><span class="ml15"><a href="" class="blue">智能产品都在这独家首发</a></span></td>
-                                <td>2014-10-10</td>
-                                <td><span class="blue">admin</span></td>
-                                <td><span><a href="" data-toggle="modal" data-target="#delnewsfabu" class="blue" > 撤消发布</a></span></td>
-                                <td><span class="blue">已审核发布</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="ml15"><a href="" class="blue">智能产品都在这独家首发</a></span></td>
-                                <td>2014-10-10</td>
-                                <td><span class="blue">admin</span></td>
-                                <td><span><a href="" data-toggle="modal" data-target="#delnewsfabu" class="blue" > 撤消发布</a></span></td>
-                                <td><span class="blue">已审核发布</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="ml15"><a href="" class="blue">智能产品都在这独家首发</a></span></td>
-                                <td>2014-10-10</td>
-                                <td><span class="blue">admin</span></td>
-                                <td><span><a href="" data-toggle="modal" data-target="#delnewsfabu" class="blue" > 撤消发布</a></span></td>
-                                <td><span class="blue">已审核发布</span></td>
-                            </tr>
-                            <tr>
-                                <td><span class="ml15"><a href="" class="blue">智能产品都在这独家首发</a></span></td>
-                                <td>2014-10-10</td>
-                                <td><span class="blue">admin</span></td>
-                                <td><span><a href="" data-toggle="modal" data-target="#delnewsfabu" class="blue" > 撤消发布</a></span></td>
-                                <td><span class="blue">已审核发布</span></td>
-                            </tr>-->
                             </tbody>
                         </table>
                           <div id="alreadyNews"></div>  <!-- 判断是否有内容 -->
-                          <div id="alrExPage"></div>
-                      <!--  <div class="row pull-right">
-                            <ul class="pager pager-pills">
-                                <li class="previous disabled"><a href="#">?</a></li>
-                                <li class="active"><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li class="next"><a href="#">?</a></li>
-                            </ul>
-                        </div>-->
+                          <div class="pull-right">
+                               <ul class="pager pager-pills">
+                                    <li class="previous" id="LastPageLiAl">
+                                        <a href="javascript:;" ng-click="redPage('alrExPage')">«</a>
+                                     </li>
+                                     <li ng-repeat="bursterPageNumber in tbAlPage "id="alPageLi{{bursterPageNumber}}" class="alPageLis" on-finish-renderfilters>
+                                        <a href="javascript:;" ng-click="nPage('alrExPage',bursterPageNumber);">{{bursterPageNumber+1}}</a>
+                                     </li>
+                                     <li class="next" id="NextPageLiAl">
+                                        <a href="javascript:;" ng-click="addPage('alrExPage')">»</a>
+                                     </li>
+                               </ul>
+                        </div>
                     </div>
                 </form>
             </div>
