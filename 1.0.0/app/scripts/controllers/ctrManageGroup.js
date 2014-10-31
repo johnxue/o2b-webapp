@@ -311,13 +311,21 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
         uriData.role='U';
         uriData.st='OK';
         CommonService.updatePartOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
+            var afterMultiAgreedGroupWaitUsers=[]
             for(var i=0;i<$scope.groupWaitUsers.length;i++){
+              var flag =true;
               for(var j=0;j<ids.length;j++){
                 if($scope.groupWaitUsers[i].id==ids[j]){
-                    $scope.groupWaitUsers.splice(i, 1);
+                    flag=false;
+                    break;
                 }
               }
+              if(flag){
+                  afterMultiAgreedGroupWaitUsers.push($scope.groupWaitUsers[i]);
+              }
             }
+            $scope.groupWaitUsers=afterMultiAgreedGroupWaitUsers;
+
             $scope.multiAgreedToJoinState=true;
             $scope.multiRefuseToJoinState=true;
         },errorOperate);
@@ -336,13 +344,21 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
         uriData.role='U';
         uriData.st='NP';
         CommonService.updatePartOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
+            var afterMultiRefuseGroupWaitUsers=[];
             for(var i=0;i<$scope.groupWaitUsers.length;i++){
+                var flag =true;
                 for(var j=0;j<ids.length;j++){
                     if($scope.groupWaitUsers[i].id==ids[j]){
-                        $scope.groupWaitUsers.splice(i, 1);
+                        flag=false;
+                        break;
                     }
                 }
+                if(flag){
+                    afterMultiRefuseGroupWaitUsers.push($scope.groupWaitUsers[i]);
+                }
             }
+            $scope.groupWaitUsers=afterMultiRefuseGroupWaitUsers;
+
             $scope.multiAgreedToJoinState=true;
             $scope.multiRefuseToJoinState=true;
         },errorOperate);
@@ -421,13 +437,21 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
         uriData.guids=ids.join(',');
         uriData.role='U';
         CommonService.updatePartOne('group/'+$routeParams.groupId,JSON.stringify(uriData),function(data){
+            var afterMultiDeleteGroupHoldUsers=[];
             for(var i=0;i<$scope.groupHoldUsers.length;i++){
+                var flag =true;
                 for(var j=0;j<ids.length;j++){
                     if($scope.groupHoldUsers[i].id==ids[j]){
-                        $scope.groupHoldUsers.splice(i, 1);
+                        flag=false;
+                        break;
                     }
                 }
+                if(flag){
+                    afterMultiDeleteGroupHoldUsers.push($scope.groupHoldUsers[i]);
+                }
             }
+            $scope.groupHoldUsers=afterMultiDeleteGroupHoldUsers;
+
             $scope.multiDeleteFromHoldState=true;
         },errorOperate);
     }
@@ -576,13 +600,21 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
         CommonService.deleteOne('group/'+$routeParams.groupId+'/topics',uriData,function(data){
 
             var tIdArray =tIds.split(',');
+            var afterMultiDeleteGroupTopics=[];
             for(var i=0;i<$scope.groupTopics.length;i++){
+               var flag=true;
                for(var j=0;j<tIdArray.length;j++){
                  if($scope.groupTopics[i][0]==tIdArray[j]){
-                     $scope.groupTopics.splice(i, 1);
+                     flag=false;
+                     break;
                  }
                }
+               if(flag){
+                   afterMultiDeleteGroupTopics.push($scope.groupTopics[i]);
+               }
             }
+            $scope.groupTopics=afterMultiDeleteGroupTopics;
+
 
             $('#delTopicMulti').modal('hide');
             $scope.multiDeleteTopicsState = true;

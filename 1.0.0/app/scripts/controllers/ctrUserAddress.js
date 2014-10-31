@@ -112,6 +112,7 @@ UserAddressControllers.controller('UserAddressCtrl',function($scope,CommonServic
             for(var i =0;i<$scope.userAddressesBefore.length;i++){
                 if($scope.userAddressesBefore[i][0]==id){
                     $scope.userAddressesBefore.splice(i,1);
+                    break;
                 }
             }
         },errorOperate);

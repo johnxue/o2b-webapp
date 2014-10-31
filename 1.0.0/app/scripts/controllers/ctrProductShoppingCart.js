@@ -164,6 +164,8 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
                         $scope.multiDelCartProductState = true;
 
                         $scope.orderCartProductState=true;
+
+                        break;
                     }
                 }
 
@@ -184,6 +186,8 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
                     $scope.multiDelCartProductState = true;
 
                     $scope.orderCartProductState=true;
+
+                    break;
                 }
             }
 
@@ -211,18 +215,23 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
             uriData.ids = ids.substring(0, ids.length - 1);
 
             CommonService.deleteOne('shoppingcart', JSON.stringify(uriData), function (data) {
+                 var afterMultiDeleteCartProducts=[];
                 for (var i = 0; i < $scope.cartProductForm.cartProducts.length; i++) {
+                    var flag =true;
                     for (var j = 0; j < idsArray.length; j++) {
                         if ($scope.cartProductForm.cartProducts[i]['id'] == idsArray[j]) {
 
                             $scope.allQuantity--;
                             $scope.allCost -= $scope.cartProductForm.cartProducts[i]['currentPrice'] * $scope.cartProductForm.cartProducts[i]['quantity'];
-
-                            $scope.cartProductForm.cartProducts.splice(i, 1);
-
+                            flag=false;
+                            break;
                         }
                     }
+                    if(flag){
+                        afterMultiDeleteCartProducts.push($scope.cartProductForm.cartProducts[i]);
+                    }
                 }
+                $scope.cartProductForm.cartProducts=afterMultiDeleteCartProducts;
 
                 $scope.$emit('totalAfterAddShoppingCart', $scope.cartProductForm.cartProducts.length);
 
@@ -241,19 +250,23 @@ ProductShoppingCartControllers.controller('ProductShoppingCartCtrl', function ($
 
                 }
             }
-
+            var afterMultiDeleteCartProducts=[];
             for (var i = 0; i < $scope.cartProductForm.cartProducts.length; i++) {
+                var flag =true;
                 for (var j = 0; j < idsArray.length; j++) {
                     if ($scope.cartProductForm.cartProducts[i]['id'] == idsArray[j]) {
 
                         $scope.allQuantity--;
                         $scope.allCost -= $scope.cartProductForm.cartProducts[i]['currentPrice'] * $scope.cartProductForm.cartProducts[i]['quantity'];
 
-                        $scope.cartProductForm.cartProducts.splice(i, 1);
-
+                        flag=false;
                     }
                 }
+                if(flag){
+                    afterMultiDeleteCartProducts.push($scope.cartProductForm.cartProducts[i]);
+                }
             }
+            $scope.cartProductForm.cartProducts=afterMultiDeleteCartProducts;
 
             $scope.$emit('totalAfterAddShoppingCart', $scope.cartProductForm.cartProducts.length);
 
