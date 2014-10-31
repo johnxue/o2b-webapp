@@ -817,7 +817,7 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
             topicsPage=page;
 
             //分页器显示
-            topicsMaxPage=Math.ceil(groupAllTopicsCount/topicsPageSize);
+            /*topicsMaxPage=Math.ceil(groupAllTopicsCount/topicsPageSize);
             $scope.bursterPageNumbers =[];
             if(bursterMaxPage>topicsMaxPage){
                 for(var i=0;i<topicsMaxPage;i++){
@@ -837,7 +837,9 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
                         $scope.bursterPageNumbers[i] = j;
                     }
                 }
-            }
+            }*/
+
+            _produceBurster(0,1,groupAllTopicsCount,6,$scope);
 
             //设置分页器样式
             angular.element('.bursterPageLis').removeClass('active');
@@ -849,4 +851,5 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
 
         }, errorOperate);
     }
+
 });

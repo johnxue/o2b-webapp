@@ -160,55 +160,39 @@ function checkSqlInjection(inputStr){
     }
 }
 
-//获取修改UEditor内容后的新增和删除图片的信息
-// params (修改前的UEditor内容,修改后的UEditor内容)
-// return {addImgFiles:新增的图片信息,removeImgFiles:删除的图片信息}
-function getAddAndRemoveImgs(oldImgFiles,imgFiles){
+/**
+ * 产生分页器
+ * @param page 请求的页号
+ * @param pageSize 每页的记录数
+ * @param recordCount 总的记录数
+ * @param bursterMaxPage 分页可显示的最大页数
+ * @param $scope 固定
+ * @private
+ */
+function  _produceBurster(page,pageSize,recordCount,bursterMaxPage,$scope) {
 
-    var addAndRemoveImgs={}
+    $scope.bursterPageNumbers =[];
 
-    var oldImgFiles=oldImgFiles==null ? [] :oldImgFiles.split(',');
+    var recordMaxPage=Math.ceil(recordCount/pageSize);
 
-    var imgFiles=imgFiles==null ? [] :imgFiles.split(',');
-
-    var addImgFiles=[];
-
-    for(var i=0;i<imgFiles.length;i++){
-        var flag=true;
-
-        for(var j=0;j<oldImgFiles.length;j++){
-            if(imgFiles[i]==oldImgFiles[j]){
-                flag=false;
-                break;
+    if(bursterMaxPage>recordMaxPage){
+        for(var i=0;i<recordMaxPage;i++){
+            $scope.bursterPageNumbers[i] = i;
+        }
+    }else {
+        if (page < Math.ceil(bursterMaxPage / 2)) {
+            for (var i = 0; i < bursterMaxPage; i++) {
+                $scope.bursterPageNumbers[i] = i;
             }
-        }
-
-        if(flag){
-            addImgFiles.push(imgFiles[i]);
-        }
-
-    }
-
-    addAndRemoveImgs.addImgFiles= addImgFiles.length==0 ? null :addImgFiles.join(',');
-
-    var removeImgFiles=[];
-
-    for(var i=0;i<oldImgFiles.length;i++){
-        var flag=true;
-
-        for(var j=0;j<imgFiles.length;j++){
-            if(oldImgFiles[i]==imgFiles[j]){
-                flag=false;
-                break;
+        } else if (page < recordMaxPage - Math.ceil(bursterMaxPage / 2)) {
+            for (var i = 0, j = -Math.floor(bursterMaxPage / 2); i < bursterMaxPage; i++, j++) {
+                $scope.bursterPageNumbers[i] = page + j;
             }
-        }
-
-        if(flag){
-            removeImgFiles.push(oldImgFiles[i]);
+        } else {
+            for (var i = 0, j = recordMaxPage - bursterMaxPage; i < bursterMaxPage; i++, j++) {
+                $scope.bursterPageNumbers[i] = j;
+            }
         }
     }
 
-    addAndRemoveImgs.removeImgFiles=removeImgFiles.length==0 ? null :removeImgFiles.join(',');
-
-    return addAndRemoveImgs;
 }
