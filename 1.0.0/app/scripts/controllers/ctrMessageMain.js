@@ -150,14 +150,23 @@ MessageMainControllers.controller('MessageMainCtrl',function($scope,CommonServic
         uriData.ids=messageIds;
         CommonService.deleteOne('message',JSON.stringify(uriData),function(data){
             var unReadMessagesIdArray =messageIds.split(',');
+
             for(var i=0;i<$scope.unReadMessages.length;i++){
                 for(var j=0;j<unReadMessagesIdArray.length;j++){
                     if($scope.unReadMessages[i].id==unReadMessagesIdArray[j]){
+
                         $scope.unReadMessages.splice(i, 1);
+
+                        //改变消息主页上显示的未读消息数量
+                        $scope.unReadMessageCount--;
+
                         break;
                     }
                 }
             }
+
+            //改变消息栏显示的未读消息数量
+            $scope.$emit('changeURMessageCountOnIndex', $scope.unReadMessageCount);
 
 
             $scope.multiDeleteURMState=true;
@@ -186,5 +195,17 @@ MessageMainControllers.controller('MessageMainCtrl',function($scope,CommonServic
 
        }, errorOperate);
    }
+
+
+    /*增加
+    uriData={};
+    uriData.to="test@163.com";
+    uriData.title="tile3";
+    uriData.msg="msg3";
+
+    CommonService.createOne('message', JSON.stringify(uriData), function (data) {
+        $scope.unReadMessages = data.msg_list_UNREAD;
+
+    }, errorOperate);*/
 
 });

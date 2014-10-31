@@ -161,7 +161,7 @@ function checkSqlInjection(inputStr){
 }
 
 /**
- * 产生分页器
+ * 产生分页器页号
  * @param page 请求的页号
  * @param pageSize 每页的记录数
  * @param recordCount 总的记录数
@@ -169,30 +169,32 @@ function checkSqlInjection(inputStr){
  * @param $scope 固定
  * @private
  */
-function  _produceBurster(page,pageSize,recordCount,bursterMaxPage,$scope) {
+function  _produceBurster(page,pageSize,recordCount,bursterMaxPage) {
 
-    $scope.bursterPageNumbers =[];
+   var bursterPageNumbers =[];
 
     var recordMaxPage=Math.ceil(recordCount/pageSize);
 
     if(bursterMaxPage>recordMaxPage){
         for(var i=0;i<recordMaxPage;i++){
-            $scope.bursterPageNumbers[i] = i;
+            bursterPageNumbers[i] = i;
         }
     }else {
         if (page < Math.ceil(bursterMaxPage / 2)) {
             for (var i = 0; i < bursterMaxPage; i++) {
-                $scope.bursterPageNumbers[i] = i;
+                bursterPageNumbers[i] = i;
             }
         } else if (page < recordMaxPage - Math.ceil(bursterMaxPage / 2)) {
             for (var i = 0, j = -Math.floor(bursterMaxPage / 2); i < bursterMaxPage; i++, j++) {
-                $scope.bursterPageNumbers[i] = page + j;
+                bursterPageNumbers[i] = page + j;
             }
         } else {
             for (var i = 0, j = recordMaxPage - bursterMaxPage; i < bursterMaxPage; i++, j++) {
-                $scope.bursterPageNumbers[i] = j;
+                bursterPageNumbers[i] = j;
             }
         }
     }
+
+    return bursterPageNumbers;
 
 }
