@@ -10,7 +10,7 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
     var liHtml = null;
 
     var uriData = '';
-    var nowPage = 0;
+    var nowPage = 0;     //管理当前页
     var nowWaitPage = 0;  //待审核当前页
     var nowAlrePage = 0;  //已审核当前页
     var pageNum = 5;  //每页显示条数
@@ -19,7 +19,7 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
     ctrInit();  //广告
     var edReleaseNews = UEditorService.getUEditor("editor","group","gid");
     //初始化分页器样式
-       $scope.$on('ngRepeatFinished', function () {
+    $scope.$on('ngRepeatFinished', function () {
         //待审核
         angular.element('.exPageLis').removeClass('active');
         angular.element('#exPageLi0').addClass('active');
@@ -30,7 +30,6 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         angular.element('.mangerPageLis').removeClass('active');
         angular.element('#magPageLi0').addClass('active');
     });
-
 
     /*****************************  页面交互事件  ***********************************/
 
@@ -83,7 +82,6 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         });
     }
 
-
     /**
      * 管理新闻
      */
@@ -113,6 +111,22 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         });
     }
 
+    //全选
+    $scope.allCheck = function(){
+        var maCheck = document.getElementsByName("mangeCheck");
+        if (checkFlag) {
+            for(var i=0; i<maCheck.length; i++){
+                maCheck[i].checked = true;
+            }
+            checkFlag = false;
+        }else{
+            for(var i=0; i<maCheck.length; i++){
+                maCheck[i].checked = false;
+            }
+            checkFlag = true;
+        }
+    }
+
     //单条删除
     $scope.singerDele = function(deleNews){
         if(confirm("确定删除吗")){
@@ -137,22 +151,6 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         CommonService.deleteOne('news',data, function (data) {
             $scope.manageNews();
         });
-    }
-
-    //全选
-    $scope.allCheck = function(){
-        var maCheck = document.getElementsByName("mangeCheck");
-        if (checkFlag) {
-            for(var i=0; i<maCheck.length; i++){
-                maCheck[i].checked = true;
-            }
-            checkFlag = false;
-        }else{
-            for(var i=0; i<maCheck.length; i++){
-                maCheck[i].checked = false;
-            }
-            checkFlag = true;
-        }
     }
 
     //判断是否有内容
@@ -250,34 +248,6 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         CommonService.updatePartOne('news/'+newId, data, function (data) {
             $scope.tbNewsAlreadyAuditingNews();
         });
-    }
-
-    //分页
-    $scope.newPage = function(pageId,data){
-        var aa = data/pageNum;
-
-        var total = Math.ceil(data/pageNum);
-        alert("aa:"+aa+"@"+total+"--"+pageId);
-        liHtml = null;
-        for(var i=1;i<=total;i++){
-            if(liHtml == null){
-               liHtml = "<li><a ng-click='turnPage("+ pageId +")'>"+i+"</a></li>";
-            }else{
-               liHtml = liHtml + "<li><a ng-click='turnPage("+ pageId +")'>"+i+"</a></li>";
-            }
-        }
-        var pageHtml = "<div class='row pull-right'><ul class='pager pager-pills'>"+
-            "<li class='previous disabled'><a href='#'><</a></li>"+
-            liHtml+
-            "<li class='next'><a href='#'>></a></li></ul></div>"
-            var liaHtml=$compile(pageHtml)($scope);
-            $("#"+pageId+"").html(liaHtml);
-    }
-
-    $scope.turnPage = function(page){
-       alert("@"+ page);
-       nowPage = --page;
-        $scope.waitAuditingNews();
     }
 
     /******************************   分页   ***********************************/
