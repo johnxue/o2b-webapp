@@ -25,7 +25,7 @@ MessageMainControllers.controller('MessageMainCtrl',function($scope,CommonServic
 
     //分页信息(未读消息)
     var unReadMessagesPage=0;
-    var unReadMessagesPageSize=1;
+    var unReadMessagesPageSize=2;
 
    //初始化$scope中定义的变量
 
@@ -148,7 +148,7 @@ MessageMainControllers.controller('MessageMainCtrl',function($scope,CommonServic
     $scope.removeURMessages=function(messageIds){
         uriData={};
         uriData.ids=messageIds;
-        CommonService.deleteOne('message/'+messageId,JSON.stringify(uriData),function(data){
+        CommonService.deleteOne('message',JSON.stringify(uriData),function(data){
             var unReadMessagesIdArray =messageIds.split(',');
             for(var i=0;i<$scope.unReadMessages.length;i++){
                 for(var j=0;j<unReadMessagesIdArray.length;j++){
@@ -158,6 +158,7 @@ MessageMainControllers.controller('MessageMainCtrl',function($scope,CommonServic
                     }
                 }
             }
+
 
             $scope.multiDeleteURMState=true;
             angular.element('#delMessageMulti').modal('hide');

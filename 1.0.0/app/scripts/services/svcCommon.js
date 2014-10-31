@@ -86,7 +86,8 @@ CommonServices.factory('CommonService', ['$http', function ($http) {
                 return $http({
                     method: "DELETE",
                     headers: {'Authorization': cookieOperate.getCookie('token')},
-                    url: baseUrl + uri + '?' + data
+                    url: baseUrl + uri ,
+                    data:data
                 }).success(funSuccess).error(funError);
             } else {
                 return $http({
