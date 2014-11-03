@@ -31,7 +31,7 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title: '新闻列表',
             templateUrl: 'views/newslist.html',
             controller: 'NewsListCtrl'
-        }).when('/news/:id',{
+        }).when('/news/:id/:is',{
             title: '新闻内容',
             templateUrl: 'views/news.html',
             controller: 'NewsCtrl'

@@ -9,7 +9,7 @@
       <div class="tab-content tab-bordered mp20  " >
         <div class="tab-panel" ng-show="vm.activeTab == 1">
           <div class="col-md-9 marginb">
-            <form class="form-horizontal" role="form" method='post'>
+            <form name="frmRelNews" ng-model="publish" class="form-horizontal" role="form" method='post'>
               <div class="col-md-12">
                 <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
                   <div class="content">请您发布正面新闻内容,我们团队及时为您审核,审核通过显示您的新闻内容。</div>
@@ -17,14 +17,14 @@
                 <div class="form-group marginb" style="margin-top:30px;">
                   <label class="col-md-2 bluezi" >新闻标题：</label>
                   <div class="col-md-10">
-                    <input type="text" ng-model="publish.nTitle" class="form-control" placeholder="请填写新闻标题">
+                    <input type="text" ng-model="publish.nTitle" name="nTitle" class="form-control" placeholder="请填写新闻标题" required/>
                   </div>
                 </div>
                 <div class="mp20" >
                   <div class="form-group " style="margin-top:30px;">
                     <label class="col-md-2 bluezi" >新闻来源：</label>
                     <div class="col-md-10">
-                      <input type="text" ng-model="publish.Source" class="form-control" placeholder="请填写新闻来源">
+                      <input type="text" ng-model="publish.Source" class="form-control" placeholder="请填写新闻来源" required/>
                     </div>
                   </div>
                 </div>
@@ -32,7 +32,7 @@
                   <div class="form-group " style="margin-top:30px;">
                     <label class="col-md-2 bluezi" >新闻作者：</label>
                     <div class="col-md-10">
-                      <input type="text" ng-model="publish.nAutor" class="form-control" placeholder="请填写作者姓名">
+                      <input type="text" ng-model="publish.nAutor" class="form-control" placeholder="请填写作者姓名" required/>
                     </div>
                   </div>
                 </div>
@@ -50,8 +50,8 @@
                       </div>
                   </div>
                 <div class="col-md-12 text-center mp20">
-                  <button class="btn btn-info" ng-click="submit(publish)">提交新闻</button>
-                    <button class="btn btn-info ml10" ng-click="preserve(publish)">保存审核</button>
+                  <button class="btn btn-info" ng-disabled="frmRelNews.$invalid" ng-click="submit(publish)">提交新闻</button>
+                    <button class="btn btn-info ml10" ng-disabled="frmRelNews.$invalid" ng-click="preserve(publish)">保存审核</button>
                 </div>
               </div>
             </form>
@@ -91,6 +91,7 @@
             </form>
           </div>
         </div>
+
         <!-- 新闻审核开始 -->
         <div class="tab-panel" ng-show="vm.activeTab == 3">
             <div class="col-md-12 marginb">
@@ -170,7 +171,6 @@
   </div>
 </div>
 <!-- 确认删除弹框 -->
-
 <div class="modal fade"  id="delnews" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
   <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
     <div class="modal-content">

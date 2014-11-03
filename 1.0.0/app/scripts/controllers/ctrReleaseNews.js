@@ -66,6 +66,11 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         var newsAuthor = publish.nAutor;
         var newsContent = edReleaseNews.getContent();
 
+        if(newsContent == null ||newsContent == ""){      //判断内容不能为空
+            alert("请填写内容！");
+            return false;
+        }
+
         var objNews = Object();
         objNews.title = newsTitle;
         objNews.author = newsAuthor;
@@ -94,7 +99,7 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
             $scope.mangerPageNumbers = _produceBurster(nowPage,pageNum,data.count,5,$scope);
             for(var i=0;i<data.news.length;i++){
                 var mHtml = "<tr><td ><input name='mangeCheck' type='checkbox' value=" + data.news[i][0] + " style='margin-left:10px;'/></td>"+
-                    "<td><span ><a href='#/editNews/" + data.news[i][0] + "' class='blue'>" + data.news[i][1] + "</a></span></td><td>" + data.news[i][5] + "</td>"+
+                    "<td><span ><a href='#/news/" + data.news[i][0] + "/shwoDel'>" + data.news[i][1] + "</a></span></td><td>" + data.news[i][5] + "</td>"+
                     "<td><span class='blue'>" + data.news[i][2] + "</span></td>" +
                     "<td><span><a href='#/editNews/" + data.news[i][0] + "' class='blue' >编辑</a></span>"+
                     "<span><a data-toggle='modal' class='blue ml10' data-ng-click='singerDele("+ data.news[i][0] +")'> 删除</a></span></td></tr>";
@@ -129,7 +134,7 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
 
     //单条删除
     $scope.singerDele = function(deleNews){
-        if(confirm("确定删除吗")){
+        if(confirm("确定删除吗？")){
             CommonService.deleteOne('news/'+deleNews, uriData, function (data) {
                 $scope.manageNews();
             });
@@ -148,9 +153,11 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         var objDele = Object();
         objDele.ids = ar.toString();
         var data = JSON.stringify(objDele);
-        CommonService.deleteOne('news',data, function (data) {
-            $scope.manageNews();
-        });
+        if(confirm("确定删除吗？")) {
+            CommonService.deleteOne('news', data, function (data) {
+                $scope.manageNews();
+            });
+        }
     }
 
     //判断是否有内容
@@ -176,7 +183,7 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         CommonService.getAll('news', uriData, function (data) {
            $scope.tbExPage = _produceBurster(nowWaitPage,pageNum,data.count,5,$scope);
             for(var i=0;i<data.news.length;i++){
-                var tbAuditingHtml = "<tr><td><span class='ml15'><a href='' class='blue'>" + data.news[i][1] + "</a></span></td>"+
+                var tbAuditingHtml = "<tr><td><span class='ml15'><a href='#/news/" + data.news[i][0] + "/showExa' class='blue'>" + data.news[i][1] + "</a></span></td>"+
                     "<td>" + data.news[i][5] + "</td><td><span class='blue'>" + data.news[i][2] + "</span></td>"+
                     "<td><span><a class='blue' data-ng-click='yesThrough("+ data.news[i][0] +")'><i class='icon-pencil' ></i> 确认通过</a></span><span><a class='blue ml10' data-ng-click='noThrough("+ data.news[i][0] +")'><i class='icon-remove'></i> 不予通过</a></span></td>"+
                     "<td><span class='blue'>" + data.news[i][9] + "</span></td></tr>";
@@ -202,7 +209,7 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         CommonService.getAll('news', uriData, function (data) {
             $scope.tbAlPage = _produceBurster(nowAlrePage,pageNum,data.count,5,$scope);
             for(var i=0;i<data.news.length;i++){
-                var tbAlreadyHtml = "<tr><td><span class='ml15'><a href='' class='blue'>" + data.news[i][1] + "</a></span></td>"+
+                var tbAlreadyHtml = "<tr><td><span class='ml15'><a href='#/news/" + data.news[i][0] + "/showRe' class='blue'>" + data.news[i][1] + "</a></span></td>"+
                     "<td>" + data.news[i][5] + "</td><td><span class='blue'>" + data.news[i][2] + "</span></td>"+
                     "<td><span><a href='' data-toggle='modal' data-target='#delnewsfabu' class='blue'  data-ng-click='revokeThrough("+ data.news[i][0] +")'> 撤消发布</a></span></td>"+
                     "<td><span class='blue'>" + data.news[i][9] + "</span></td></tr>";
@@ -225,9 +232,11 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         var objYesThrough = Object();
         objYesThrough.st = "OK";
         var data = JSON.stringify(objYesThrough);
-        CommonService.updatePartOne('news/'+newId, data, function (data) {
-            $scope.waitAuditingNews();
-        });
+        if(confirm("确定通过吗？")) {
+            CommonService.updatePartOne('news/' + newId, data, function (data) {
+                $scope.waitAuditingNews();
+            });
+        }
     }
 
     //不予通过
@@ -235,9 +244,11 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         var objYesThrough = Object();
         objYesThrough.st = "NP";
         var data = JSON.stringify(objYesThrough);
-        CommonService.updatePartOne('news/'+newId, data, function (data) {
-            $scope.waitAuditingNews();
-        });
+        if(confirm("确定不通过吗？")) {
+            CommonService.updatePartOne('news/' + newId, data, function (data) {
+                $scope.waitAuditingNews();
+            });
+        }
     }
 
     //撤销发布
@@ -245,9 +256,11 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
         var objYesThrough = Object();
         objYesThrough.st = "NO";
         var data = JSON.stringify(objYesThrough);
-        CommonService.updatePartOne('news/'+newId, data, function (data) {
-            $scope.tbNewsAlreadyAuditingNews();
-        });
+        if(confirm("确定撤销吗？")) {
+            CommonService.updatePartOne('news/' + newId, data, function (data) {
+                $scope.tbNewsAlreadyAuditingNews();
+            });
+        }
     }
 
     /******************************   分页   ***********************************/

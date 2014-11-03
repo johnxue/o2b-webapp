@@ -46,11 +46,11 @@ NewsListControllers.controller('NewsListCtrl',function($scope,CommonService) {
             for (var i = 0; i < data.news.length; i++) {
                 var times = timeDifference("D", data.news[i][5], Time);
                 if (times > 3.00 || times < 0) {
-                    $("table tr:eq(0)").after("<tr><td><a href='#/news/" + data.news[i][0] + "'>" + data.news[i][1] + "</a></td><td>来源：" + data.news[i][3] + "</td><td>作者：" + data.news[i][2] + "</td></td><td>" + data.news[i][5] + "</td></tr>");
+                    $("table tr:eq(0)").after("<tr><td><a href='#/news/" + data.news[i][0] + "/newList'>" + data.news[i][1] + "</a></td><td>来源：" + data.news[i][3] + "</td><td>作者：" + data.news[i][2] + "</td></td><td>" + data.news[i][5] + "</td></tr>");
                 }else if(times == 0){
-                    $("table tr:eq(0)").after("<tr><td><a href='#/news/" + data.news[i][0] + "'>" + data.news[i][1] + "</a></td><td>来源：" + data.news[i][3] + "</td><td>作者：" + data.news[i][2] + "</td><td>今天</td></tr>");
+                    $("table tr:eq(0)").after("<tr><td><a href='#/news/" + data.news[i][0] + "/newList'>" + data.news[i][1] + "</a></td><td>来源：" + data.news[i][3] + "</td><td>作者：" + data.news[i][2] + "</td><td>今天</td></tr>");
                 } else {
-                    $("table tr:eq(0)").after("<tr><td><a href='#/news/" + data.news[i][0] + "'>" + data.news[i][1] + "</a></td><td>来源：" + data.news[i][3] + "</td><td>作者：" + data.news[i][2] + "</td><td>" + times + "天</td></tr>");
+                    $("table tr:eq(0)").after("<tr><td><a href='#/news/" + data.news[i][0] + "/newList'>" + data.news[i][1] + "</a></td><td>来源：" + data.news[i][3] + "</td><td>作者：" + data.news[i][2] + "</td><td>" + times + "天</td></tr>");
                 }
             }
         }, errorOperate);

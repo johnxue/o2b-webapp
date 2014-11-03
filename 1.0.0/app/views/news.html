@@ -11,12 +11,22 @@
         <li><a href="#">新闻</a></li>
         <li class="active">详细</li>
       </ul>
-        <div class="alert with-icon mp10" id="Examine"> <i class="icon-info-sign"></i>
+        <div class="alert with-icon mp10" id="Examine"><i class="icon-info-sign"></i>
             <div class="content"> 需要审核的新闻内容
                 <div class="btn-group pull-right">
-                    <button class="btn btn-info" ><i class="icon-ok-sign"></i> 审核通过</button>
-                    <button class="btn btn-info"> <i class="icon-remove-sign"></i> 不予通过</button>
+                    <button class="btn btn-info" ng-click="yesThrough('OK')"><i class="icon-ok-sign"></i> 审核通过</button>
+                    <button class="btn btn-info" ng-click="yesThrough('NP')"><i class="icon-remove-sign"></i> 不予通过</button>
                 </div>
+            </div>
+        </div>
+        <div class="alert with-icon mp10" id="revokeNews"><i class="icon-info-sign"></i>
+            <div class="content">
+                <div>已发布的新闻内容<button class="btn btn-info pull-right" ng-click="yesThrough('NO')"><i class="icon-undo"></i>撤消发布</button></div>
+            </div>
+        </div>
+        <div class="alert with-icon mp10" id="deleNews"><i class="icon-info-sign"></i>
+            <div class="content">
+                <div>已发布的新闻内容<button class="btn btn-info pull-right" ng-click="yesThrough('del')"><i class="icon-trash"></i>删除</button></div>
             </div>
         </div>
       <div class="col-md-12">
