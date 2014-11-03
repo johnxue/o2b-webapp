@@ -27,13 +27,42 @@ MessageDetailControllers.controller('MessageDetailCtrl',function($scope,CommonSe
 
    //初始化$scope中定义的变量
 
+    $scope.messageInfo={};
 
    //实现与页面交互的事件,如：button_click
 
+    //删除消息
+    $scope.removeMessage = function () {
+        uriData = undefined;
+        CommonService.deleteOne('message/' + messageId, uriData, function (data) {
+            alert('删除成功!');
+            //can not jump in modal window directly ,need by using href in anchor and reload in window
+            $window.location.reload();
+        }, errorOperate);
+    }
+
+    //发送消息
+    $scope.sendMessage=function(replyMessageForm){
+        uriData={};
+        uriData.to = $scope.messageInfo.from;
+        uriData.title = replyMessageForm.title;
+        uriData.msg = replyMessageForm.content;
+
+        CommonService.createOne('message',JSON.stringify(uriData),function(data){
+            alert('发送成功!');
+            $scope.sendMessageForm={};
+            $('#replyFrom').modal('hide');
+        },errorOperate);
+    }
 
 
-   //调用与后端的接口,如：CommonService.getAll(params)
+  //调用与后端的接口,如：CommonService.getAll(params)
 
+   //查询消息详情
+   uriData=undefined;
+   CommonService.getAll('message/'+messageId,uriData,function(data){
+       $scope.messageInfo=data;
+   },errorOperate);
 
 
 

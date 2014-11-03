@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <ul class="nav nav-tabs" ng-init="showUnReadMessages();">
         <li ng-class="{active: vm.activeTab == 1}" ><a href="javascript:;" ng-click="showUnReadMessages();">未读消息 <span class="label label-badge label-info">{{unReadMessageCount}}</span></a></li>
-        <li ng-class="{active: vm.activeTab == 2}" ><a href="javascript:;" ng-click="vm.activeTab = 2">已读消息 <span class="label label-badge label-info">{{readMessageCount}}</span></a></li>
+        <li ng-class="{active: vm.activeTab == 2}" ><a href="javascript:;" ng-click="showReadMessages();">已读消息 <span class="label label-badge label-info">{{readMessageCount}}</span></a></li>
         <li ng-class="{active: vm.activeTab == 3}" ><a href="javascript:;" ng-click="vm.activeTab = 3">发送消息</a> </li>
       </ul>
       <div class="tab-content tab-bordered mp20  " >
@@ -13,54 +13,12 @@
               <div class="alert with-icon mp10 " ng-show="unReadMessageCount==0"> <i class="icon-info-sign"></i>
                 <div class="content ">亲,您目前还没有未读消息</div>
               </div>
-              <div class="panel mp20" ng-show="unReadMessageCount!=0">
-                <table class="table table-condensed " >
+              <div ng-show="unReadMessageCount!=0">
+              <div class="panel mp20" >
+                <table class="table table-condensed ">
                   <thead>
                     <tr >
                       <th ><input name="check" type="checkbox"  style="margin-left:10px;" ng-model="unReadMessages.allChecked" ng-change="uRMessagesCheckAll(unReadMessages.allChecked);"/>
-                        &nbsp;全选</th>
-                      <th>消息名称</th>
-                      <th>发布时间</th>
-                      <th>发送人</th>
-                      <th>操作
-                          <div class="btn-group pull-right mp10" data-toggle="buttons-radio">
-                              <button type="button" class="btn btn-mini " ng-click="unReadMessagesLastPage();"><i class="icon-chevron-up"></i></button>
-                              <button type="button" class="btn  btn-mini " ng-click="unReadMessagesNextPage();" ng-disabled="unReadMessagesNextPageState"><i class="icon-chevron-down"></i></button>
-                          </div>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr ng-repeat="unReadMessage in unReadMessages">
-                      <td ><input  type="checkbox" style="margin-left:10px;" ng-model="unReadMessage.checked" ng-change="uRMessagesCheckBoxChange();"/></td>
-                      <td><span ><a href="#/messages/{{unReadMessage.id}}" class="blue">{{unReadMessage.title}}</a></span></td>
-                      <td>{{unReadMessage.time}}</td>
-                      <td><span class="blue">{{unReadMessage.name}}</span></td>
-                      <td><span><a href="" ><i class="icon-zoom-in"></i></a></span><span><a href="javascript:;"  ng-click="showRemoveURMessageForm(unReadMessage.id);" class="ml10" ><i class="icon-trash"></i> </a></span></td>
-                    </tr>
-                  </tbody>
-                </table>
-                  <div class="row mp10">
-                      <div class="col-md-12">
-                          <button class="btn btn-info pull-right mr10" style="margin-bottom:10px;" ng-disabled="multiDeleteURMState" ng-click="showRemoveURMessagesForm();">删除消息</button>
-                      </div>
-                  </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-        <div class="tab-panel" ng-show="vm.activeTab == 2">
-          <div class="col-md-12 marginb">
-            <div class="col-md-12">
-              <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
-                <div class="content">亲,您目前还没有未读消息</div>
-              </div>
-              <div class="panel mp20">
-                <table class="table table-condensed " >
-                  <thead>
-                    <tr >
-                      <th ><input name="check" type="checkbox" value="" style="margin-left:10px;"/>
                         &nbsp;全选</th>
                       <th>消息名称</th>
                       <th>发布时间</th>
@@ -69,40 +27,80 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
-                      <td><span ><a href="#/xiaoxixiangxi" class="blue">智能产品都在这独家首发</a></span></td>
-                      <td>2014-10-10</td>
-                      <td><span class="blue">系统通知</span></td>
-              <td><span><a href="" ><i class="icon-zoom-in"></i></a></span><span><a href="" data-toggle="modal" data-target="#delMessage" class="ml10" ><i class="icon-trash"></i> </a></span></td>
-                    </tr>
-                    <tr>
-                      <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
-                      <td><span ><a href="#/xiaoxixiangxi2" class="blue">Nathlock蓝牙挂锁</a></span></td>
-                      <td>2014-10-10</td>
-                      <td><span class="blue">admin</span></td>
-            <td><span><a href="" ><i class="icon-zoom-in"></i></a></span><span><a href="" data-toggle="modal" data-target="#delMessage" class="ml10" ><i class="icon-trash"></i> </a></span></td>
-                    </tr>
-                    <tr>
-                      <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
-                      <td><span ><a href="#/xiaoxixiangxi2" class="blue">AirProce艾泊斯－最聪明的专业级空气净化器</a></span></td>
-                      <td>2014-10-10</td>
-                      <td><span class="blue">系统通知</span></td>
-                   <td><span><a href="" ><i class="icon-zoom-in"></i></a></span><span><a href="" data-toggle="modal" data-target="#delMessage" class="ml10" ><i class="icon-trash"></i> </a></span></td>
+                    <tr ng-repeat="unReadMessage in unReadMessages">
+                      <td ><input  type="checkbox" style="margin-left:10px;" ng-model="unReadMessage.checked" ng-change="uRMessagesCheckBoxChange();"/></td>
+                      <td><span ><a href="#/messages/{{unReadMessage.id}}" class="blue">{{unReadMessage.title}}</a></span></td>
+                      <td>{{unReadMessage.time}}</td>
+                      <td><span class="blue">{{unReadMessage.name}}</span></td>
+                      <td><span><a href="#/messages/{{unReadMessage.id}}" ><i class="icon-zoom-in"></i></a></span><span><a href="javascript:;"  ng-click="showRemoveURMessageForm(unReadMessage.id);" class="ml10" ><i class="icon-trash"></i> </a></span></td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <div class="row mp20 ">
-                <div class="col-md-12">
-                  <button class="btn btn-info pull-right marginb">删除消息</button>
-                </div>
+                  <div class="row mp10">
+                      <div class="col-md-12">
+                          <button class="btn btn-info pull-right " ng-disabled="multiDeleteURMState" ng-click="showRemoveURMessagesForm();">删除消息</button>
+                      </div>
+                  </div>
+                  <div class="pull-right">
+                      <ul class="pager pager-pills">
+                          <li class="previous" id="unRMLastPageLi"><a href="javascript:;" ng-click="unReadMessagesLastPage();">«</a></li>
+                          <li ng-repeat="bursterPageNumber in unRMBursterNumbers" id="unRMBPageLi{{bursterPageNumber}}" class="unRMBursterPageLis" on-finish-render-filters><a href="javascript:;" ng-click="findUnReadMessages(bursterPageNumber,unReadMessagesPageSize);">{{bursterPageNumber+1}}</a></li>
+                          <li class="next" id="unRMNextPageLi"><a href="javascript:;" ng-click="unReadMessagesNextPage();">»</a></li>
+                      </ul>
+                  </div>
               </div>
             </div>
           </div>
         </div>
+        <div class="tab-panel" ng-show="vm.activeTab == 2">
+          <div class="col-md-12 marginb">
+            <div class="col-md-12">
+              <div class="alert with-icon mp10 " ng-show="readMessageCount==0"> <i class="icon-info-sign"></i>
+                <div class="content">亲,您目前还没有未读消息</div>
+              </div>
+            <div ng-show="readMessageCount!=0">
+              <div class="panel mp20">
+                <table class="table table-condensed " >
+                  <thead>
+                    <tr >
+                      <th ><input name="check" type="checkbox"  style="margin-left:10px;" ng-model="readMessages.allChecked" ng-change="rMessagesCheckAll(readMessages.allChecked);"/>
+                        &nbsp;全选</th>
+                      <th>消息名称</th>
+                      <th>发布时间</th>
+                      <th>发送人</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat="readMessage in readMessages">
+                      <td ><input  type="checkbox" style="margin-left:10px;" ng-model="readMessage.checked" ng-change="rMessagesCheckBoxChange();"/></td>
+                      <td><span ><a href="#/messages/{{readMessage.id}}" class="blue">{{readMessage.title}}</a></span></td>
+                      <td>{{readMessage.time}}</td>
+                      <td><span class="blue">{{readMessage.name}}</span></td>
+                      <td><span><a href="#/messages/{{readMessage.id}}" ><i class="icon-zoom-in"></i></a></span><span><a href="javascript:;"  ng-click="showRemoveRMessageForm(readMessage.id);" class="ml10" ><i class="icon-trash"></i> </a></span></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+                  <div class="row mp10">
+                      <div class="col-md-12">
+                          <button class="btn btn-info pull-right marginb" ng-disabled="multiDeleteRMState" ng-click="showRemoveRMessagesForm();">删除消息</button>
+                      </div>
+                  </div>
+                <div class="pull-right">
+                    <ul class="pager pager-pills">
+                        <li class="previous" id="rMLastPageLi"><a href="javascript:;" ng-click="readMessagesLastPage();">«</a></li>
+                        <li ng-repeat="rMBursterNumber in rMBursterNumbers" id="rMBPageLi{{rMBursterNumber}}" class="rMBursterPageLis" on-finish-render-filters><a href="javascript:;" ng-click="findReadMessages(rMBursterNumber,readMessagesPageSize);">{{rMBursterNumber+1}}</a></li>
+                        <li class="next" id="rMNextPageLi"><a href="javascript:;" ng-click="readMessagesNextPage();">»</a></li>
+                    </ul>
+                </div>
+            </div>
+          </div>
+        </div>
+        </div>
         <div class="tab-panel" ng-show="vm.activeTab == 3">
-          <form class="form-horizontal" role="form" method='post'>
+          <form class="form-horizontal" role="form"  ng-model="sendMessageForm" name="sendMessageForm" novalidate="true">
             <div class="col-md-9">
               <div class="panel">
                 <div class="panel-heading">发送消息</div>
@@ -111,43 +109,45 @@
                     <label class="col-md-2 control-label bluezi" >发送给：</label>
                     <div class="col-md-8">
                       <div class="input-group">
-                        <input type='text'  class='form-control' />
+                        <input type='text'  class='form-control'  ng-model="sendMessageForm.userName" required="true" name="sendMessageForm_userName"/>
                         <span class="input-group-btn">
                         <button class="btn btn-info" type="button"><i class="icon-chat-dot"></i></button>
-                        </span> </div>
+                        </span>
+                      </div>
+                        <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="sendMessageForm.sendMessageForm_userName.$dirty && sendMessageForm.sendMessageForm_userName.$error.required"> *用户名不能为空</div>
                     </div>
                   </div>
                   <div class="form-group mp20">
-                    <label class="col-md-2 control-label bluezi">回复主题：</label>
+                    <label class="col-md-2 control-label bluezi">消息标题：</label>
                     <div class="col-md-8">
                       <div class="input-group">
-                        <input type='text'  class='form-control' />
+                        <input type='text'  class='form-control' name="sendMessageForm_title" ng-model="sendMessageForm.title" required="true"/>
                         <span class="input-group-btn">
                         <button class="btn btn-info" type="button"><i class="icon-comment-alt"></i></button>
-                        </span> </div>
+                        </span>
+                      </div>
+                        <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="sendMessageForm.sendMessageForm_title.$dirty && sendMessageForm.sendMessageForm_title.$error.required"> *标题不能为空</div>
                     </div>
                   </div>
                   <div class="form-group ">
                     <label class="col-md-2 control-label bluezi">消息内容：</label>
                     <div class="col-md-9">
-                      <textarea name="" cols="" rows="" class="teax"></textarea>
+                      <textarea name="sendMessageForm_content" cols="" rows="" class="teax" ng-model="sendMessageForm.content"></textarea>
                     </div>
                   </div>
                   <div class="row marginb mp20">
-                    <button  class="btn btn-info more">确认保存</button>
+                    <button  class="btn btn-info more" ng-disabled="sendMessageForm.$invalid" ng-click="sendMessage(sendMessageForm);">确认发送</button>
                   </div>
                 </div>
               </div>
             </div>
           </form>
         </div>
-        <!--我的消息结束 --> 
-      </div>
       <!--内容结束 --> 
     </div>
   </div>
 </div>
-<!-- 确认删除消息弹框(单个)开始 -->
+<!-- 确认删除未读消息弹框(单个)开始 -->
 <div class="modal fade"  id="delMessage" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
   <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
     <div class="modal-content">
@@ -163,8 +163,8 @@
     </div>
   </div>
 </div>
-<!-- 确认删除消息弹框(单个)结束 -->
-<!-- 确认删除消息弹框(多个)开始 -->
+<!-- 确认删除未读消息弹框(单个)结束 -->
+<!-- 确认删除未读消息弹框(多个)开始 -->
 <div class="modal fade"  id="delMessageMulti" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
     <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
         <div class="modal-content">
@@ -180,5 +180,39 @@
         </div>
     </div>
 </div>
-<!-- 确认删除消息弹框(多个)结束 -->
-
+<!-- 确认删除未读消息弹框(多个)结束 -->
+    <!-- 确认删除已读消息弹框(单个)开始 -->
+    <div class="modal fade"  id="delRMessage" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
+        <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" > <i class="icon-remove"></i> 消息删除 </h4>
+                </div>
+                <div class="modal-body"> 您确定要删除此条消息吗，亲 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-mini btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-mini btn-info" ng-click="removeRMessage(removeRMessageIds);">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 确认删除已读消息弹框(单个)结束 -->
+  <!-- 确认删除已读消息弹框(多个)开始 -->
+  <div class="modal fade"  id="delRMessageMulti" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
+      <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" > <i class="icon-remove"></i> 消息删除 </h4>
+              </div>
+              <div class="modal-body"> 您确定要删除此条消息吗，亲 </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-mini btn-default" data-dismiss="modal">取消</button>
+                  <button type="button" class="btn btn-mini btn-info" ng-click="removeRMessages(removeRMessageIds);">确定</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- 确认删除已读消息弹框(多个)结束 -->
+</div>

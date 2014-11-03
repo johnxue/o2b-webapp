@@ -161,13 +161,13 @@ function checkSqlInjection(inputStr){
 }
 
 /**
- * 产生分页器页号
+ * 产生分页器显示数
  * @param page 请求的页号
  * @param pageSize 每页的记录数
  * @param recordCount 总的记录数
  * @param bursterMaxPage 分页可显示的最大页数
  * @param $scope 固定
- * @private
+ * @return 分页器显示数
  */
 function  _produceBurster(page,pageSize,recordCount,bursterMaxPage) {
 
