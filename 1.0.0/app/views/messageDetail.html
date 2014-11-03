@@ -5,10 +5,10 @@
       <ul class="breadcrumb">
         <li><a href="#"> <i class="icon-location-arrow"></i> 首页</a></li>
         <li><a href="#/messages">消息主页</a></li>
-        <li class="active">消息详细</li>
+        <li class="active">消息详情</li>
       </ul>
-          <!-- 系统消息结开始-->
-      <div class="col-md-12 marginb">
+ <!-- 系统消息结开始-->
+      <div class="col-md-12 marginb" ng-show="messageInfo.level=='S'">
         <div class="panel">
           <div class="panel-heading"><i class="icon-bullhorn"></i> 系统通知</div>
           <div class="panel-body marginb">
@@ -20,57 +20,84 @@
           </div>
         </div>
       </div>
-   
     <!-- 系统消息结束--> 
     <!-- 用户消息开始-->
-    <div class="col-md-12 marginb">
+    <div class="col-md-12 marginb" ng-show="messageInfo.level=='U'">
         <div class="panel">
-          <div class="panel-heading"><i class="icon-bullhorn"></i> 用户消息 </div>
+          <div class="panel-heading"><i class="icon-bullhorn"></i> 用户消息 <span><a href="" class="label label-info hrewf pull-right ml10" data-toggle="modal" data-target="#replyFrom" >回复</a></span><span><a href="" data-toggle="modal" data-target="#delMessage" class="label ml10 pull-right" > 删除 </a></span></div>
           <div class="panel-body marginb">
             <div>
               <blockquote>
-                <p class="blue">当我们谈论人脸识别，我们谈些什么？<span><a href=""class="label label-info hrewf pull-right" data-toggle="modal" data-target="#huifuxiaoxi" >回复</a></span><small class="blue mr20 pull-right">小白HHHH</small></p>
+                <p class="blue">{{messageInfo.title}}<small class="blue mr20 pull-right">{{messageInfo.from}}</small></p>
               </blockquote>
               <div class="text">
-                <P> 好莱坞大片中，刷脸打开防盗系统，帮忙抓逃犯，想必您一定看过吧？  
-                  考勤，刷脸签到，还想代刷卡吗？  PC、手机，刷脸解锁，想破解，可能吗？ 
-                  和明星大咖PK，你也是明星脸？ 
-                  购物支付，刷脸即可搞定？  
-                  人脸识别？ 刷脸行天下——快速实现身份识别，人脸识别技术无疑是最佳的选择，且准确率超过99%，比肉眼识别更加精准，超过Facebook、FBI哦！
-                  说说你最希望人脸识别用在什么地方？我们会随机抽取3个幸运儿送出语音云限量版充电宝哦！</P>
+                <P>{{messageInfo.msg}}</P>
               </div>
-              <div class="col-md-12 "><span class="pull-right">10：12 &nbsp;2014-5-5</span></div>
+              <div class="col-md-12 "><span class="pull-right">{{messageInfo.time}}</span></div>
             </div>
-          
-            <section class="comments-list">
-              <div id="pinglunhou2" style="background-color: #e0f1fa; border-radius:4px; margin-bottom:5px; padding-left:5px; padding-right:5px;  margin-top:22px;" ng-mouseenter="item.hui=true"
-            ng-mouseleave="item.hui=false" >
-                <div class="ha30" > <span class="blue">我</span>&nbsp;回复<span class="blue">&nbsp;小白LH</span>:&nbsp;魏家四兄弟之一的魏应充还主动向台湾食品GMP发展协会请... </div>
-                <div class="ha30" >回复于  1秒前 <span class="pull-right" ><a href=""class=" label label-info hrefw mp10" id="ff" ng-style="{display: item.hui?'block':'none'}"  ng-mouseenter="item.hui=true"
-            ng-mouseleave="item.hui=false" data-toggle="modal" data-target="#delMessage" > 删除</a></span></div>
-              </div>
-            </section>
-            <div>
-              <blockquote>
-                <p > 好莱坞大片中，刷脸打开防盗系统，人脸识别？ 刷脸行天下——快速实现身份识别，人脸识别技术无疑是最佳的选择，且准确率超过99%，比肉眼识别更加精准，超过Facebook、FBI哦！
-                  说说你最希望人脸识别用在什么地方？我们会随机抽取3个幸运儿送出语音云限量版充电宝哦！<span><a href=""class="pull-right blue" data-toggle="modal" data-target="#huifuxiaoxi" title="回复"><i class="icon-comment"></i></a></span><small class="blue mr20 pull-right">小白HHHH</small></p>
-              </blockquote>
-              <div class="col-md-12 "><span class="pull-right">10：12 &nbsp;2014-5-5</span></div>
-            </div>
-            <section class="comments-list">
-              <div id="pinglunhou2" style="background-color: #e0f1fa; border-radius:4px; margin-bottom:5px; padding-left:5px; padding-right:5px;  margin-top:22px;" ng-mouseenter="item.hui=true"
-            ng-mouseleave="item.hui=false" >
-                <div class="ha30" > <span class="blue">我</span>&nbsp;回复<span class="blue">&nbsp;小白LH</span>:&nbsp;魏家四兄弟之一的魏应充还主动向台湾食品GMP发展协会请... </div>
-                <div class="ha30" >回复于  1秒前 <span class="pull-right" ><a href=""class=" label label-info hrefw mp10" id="ff" ng-style="{display: item.hui?'block':'none'}"  ng-mouseenter="item.hui=true"
-            ng-mouseleave="item.hui=false" data-toggle="modal" data-target="#delMessage" > 删除</a></span></div>
-              </div>
-            </section>
-     
           </div>
         </div>
-      </div> 
-    
+      </div>
+
     <!-- 用户消息结束--> 
      </div>
   </div>
 </div>
+ <!--回复消息框开始-->
+<div class="modal" id="replyFrom" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
+    <div class="modal-dialog" style="width:50%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="resizedModalTitle"> <i class="icon-comments-alt"></i> 回复消息 </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" ng-model="replyMessageForm" name="replyMessageForm">
+                    <div class="container" >
+                        <div class="col-md-12">
+                            <div class="form-group mp20">
+                                <label class="col-md-3 control-label bluezi">回复主题：</label>
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <input type='text'  class='form-control' ng-model="replyMessageForm.title" name="replyMessageForm_title" required="true" placeholder="请输入标题"/>
+                  <span class="input-group-btn">
+                  <button class="btn btn-info" type="button"><i class="icon-comment-alt"></i></button>
+                  </span> </div>
+                                </div>
+                                <div class="col-md-7 col-md-offset-4 ha30 blue" ng-show="replyMessageForm.replyMessageForm_title.$dirty && replyMessageForm.replyMessageForm_title.$error.required"> *标题不能为空</div>
+                            </div>
+                            <div class="form-group mp20">
+                                <label class="col-md-3 control-label bluezi">回复内容：</label>
+                                <div class="col-md-9">
+                                    <textarea name="replyMessageForm_content" cols="" rows="" class="teax" placeholder="请输入内容" ng-model="replyMessageForm.content"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-info" data-dismiss="modal" ng-disabled="replyMessageForm.$invalid" ng-click="sendMessage(replyMessageForm);">发送</button>
+        </div>
+    </div>
+</div>
+<!--回复消息框结束-->
+<!-- 确认删除消息弹框开始-->
+<div class="modal fade"  id="delMessage" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
+    <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" > <i class="icon-remove"></i> 回复删除 </h4>
+            </div>
+            <div class="modal-body"> 您确定要删除此条回复吗，亲 </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-mini btn-default" data-dismiss="modal">取消</button>
+                <a href="#/messages" class="btn btn-mini btn-info"  ng-click="removeMessage();">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 确认删除消息弹框结束-->

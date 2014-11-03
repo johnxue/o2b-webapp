@@ -148,7 +148,7 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
             //存储当前运行的间隔器
             localDataStorage.setItem('messageSniffInterval',JSON.stringify(stop));
 
-            $('#denglu').hide();
+            $('#denglu').modal('hide');
 
 
         },errorOperate);
