@@ -72,9 +72,11 @@ MessageMainControllers.controller('MessageMainCtrl', function ($scope, CommonSer
 
     //初始化分页器样式
     $scope.$on('ngRepeatFinished', function () {
+		//未读信息分页器初始化样式	
         angular.element('.unRMBursterPageLis').removeClass('active');
         angular.element('#unRMBPageLi0').addClass('active');
 
+        //已读信息分页器初始化样式
         angular.element('.rMBursterPageLis').removeClass('active');
         angular.element('#rMBPageLi0').addClass('active');
     });
