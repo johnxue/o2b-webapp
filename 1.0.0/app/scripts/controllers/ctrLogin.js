@@ -132,21 +132,25 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
 
                //改变消息栏显示的未读消息数量
                $scope.$emit('changeURMessageCountOnIndex', unReadMessageCount);
+
+               //消息探测(间隔器)
+               stop=$interval(function () {
+                   uriData = undefined;
+                   CommonService.getAll('message/sniffing', uriData, function (data) {
+                      var unReadMessageCount = data.unread_count;
+
+                      //改变消息栏显示的未读消息数量
+                      $scope.$emit('changeURMessageCountOnIndex', unReadMessageCount);
+
+                   }, errorOperate);
+
+               },120000);
+
+              //存储当前运行的间隔器
+              localDataStorage.setItem('messageSniffInterval',JSON.stringify(stop));
+
             }, errorOperate);
 
-            //消息探测(间隔器)
-           stop=$interval(function () {
-                uriData = undefined;
-                CommonService.getAll('message/sniffing', uriData, function (data) {
-                    var unReadMessageCount = data.unread_count;
-
-                    //改变消息栏显示的未读消息数量
-                    $scope.$emit('changeURMessageCountOnIndex', unReadMessageCount);
-                }, errorOperate);
-            },120000);
-
-            //存储当前运行的间隔器
-            localDataStorage.setItem('messageSniffInterval',JSON.stringify(stop));
 
             $('#denglu').modal('hide');
 

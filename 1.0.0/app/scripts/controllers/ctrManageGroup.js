@@ -23,20 +23,31 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
 
     var uriData='';
 
-    //分页信息(圈子下用户)
-    var page=0;
-    var pageSize=10;
+   //分页信息(圈子下用户)
+	var groupAllCount=0;
+	var groupMaxPage=0;
+    var groupPage=0;
+    var groupPageSize=6;
+	 //分页器可显示的页数
+	var groupBursterMaxPage=6;
 
-    //分页信息(圈子下待审核用户)
+   //分页信息(圈子下待审核用户)
+    var waitAllCount=0;
+    var waitMaxPage=0;
     var waitPage=0;
-    var waitPageSize=10;
+    var waitPageSize=6;
+    //分页器可显示的页数
+    var waitBursterMaxPage=6;
 
-    //分页信息(圈子下黑名单用户)
+   //分页信息(圈子下黑名单用户)
+    var holdAllCount=0;
+    var holdMaxPage=0;
     var holdPage=0;
-    var holdPageSize=10;
+    var holdPageSize=6;
+    //分页器可显示的页数
+    var holdBursterMaxPage=6;
 
-
-    //分页信息(圈子下话题)
+   //分页信息(圈子下话题)
     var groupAllTopicsCount=0;
     var topicsMaxPage=0;
     var topicsPage=0;
@@ -56,11 +67,15 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     //圈子下所有用户信息
     $scope.groupUsers=[];
 
-    $scope.groupUsersNextPageState=false;
+    $scope.groupBursterPageNumbers=[];
+
+    $scope.groupPageSize=groupPageSize;
 
     $scope.groupWaitUsers=[];
 
-    $scope.waitUsersNextPageState=false;
+    $scope.waitBursterPageNumbers=[];
+
+    $scope.waitPageSize=waitPageSize;
 
     $scope.multiAgreedToJoinState=true;
 
@@ -68,7 +83,9 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
 
     $scope.groupHoldUsers={};
 
-    $scope.holdUsersNextPageState=false;
+    $scope.holdBursterPageNumbers=[];
+
+    $scope.holdPageSize=holdPageSize;
 
     $scope.multiDeleteFromHoldState=true;
 
@@ -84,8 +101,22 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
 
     //初始化分页器样式
     $scope.$on('ngRepeatFinished', function () {
+        //话题分页器初始化样式
         angular.element('.bursterPageLis').removeClass('active');
         angular.element('#pageLi0').addClass('active');
+
+        //成员管理分页器初始化样式
+        angular.element('.groupBursterPageLis').removeClass('active');
+        angular.element('#groupPageLi0').addClass('active');
+
+        //未加入审核分页器初始化样式
+        angular.element('.waitBursterPageLis').removeClass('active');
+        angular.element('#waitPageLi0').addClass('active');
+
+        //黑名单管理分页器初始化样式
+        angular.element('.holdBursterPageLis').removeClass('active');
+        angular.element('#holdPageLi0').addClass('active');
+
     });
 
   //实现与页面交互的事件,如：button_click
@@ -134,7 +165,7 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     $scope.showUserManage=function(){
         $scope.vm.activeTab = 2;
 
-        findGroupById(0,pageSize);
+        findGroupById(0,groupPageSize);
     }
 
     //设为或取消管理员
@@ -207,14 +238,19 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     }
 
     //成员管理-用户列表分页
-    $scope.groupUsersNextPage=function(){
-        findGroupById(++page,pageSize);
+    $scope.groupNextPage=function(){
+        if(groupPage<groupMaxPage-1){
+            findGroupById(++groupPage,groupPageSize);
+        }else{
+            angular.element('#groupNextPageLi').addClass('disabled');
+        }
     }
 
-    $scope.groupUsersLastPage=function(){
-        $scope.groupUsersNextPageState=false;
-        if(page>0){
-            findGroupById(--page,pageSize);
+    $scope.groupLastPage=function(){
+        if(groupPage>0){
+            findGroupById(--groupPage,groupPageSize);
+        }else{
+            angular.element('#groupLastPageLi').addClass('disabled');
         }
     }
 
@@ -255,14 +291,19 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     }
 
     //加入审核-待审核用户列表分页
-    $scope.waitUsersNextPage=function(){
-        findWaitUsers(++waitPage,waitPageSize);
+    $scope.groupWaitNextPage=function(){
+        if(waitPage<waitMaxPage-1){
+            findWaitUsers(++waitPage,waitPageSize);
+        }else{
+            angular.element('#waitNextPageLi').addClass('disabled');
+        }
     }
 
-    $scope.waitUsersLastPage=function(){
-        $scope.waitUsersNextPageState=false;
+    $scope.groupWaitLastPage=function(){
         if(waitPage>0){
             findWaitUsers(--waitPage,waitPageSize);
+        }else{
+            angular.element('#waitLastPageLi').addClass('disabled');
         }
     }
 
@@ -398,14 +439,19 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     }
 
     //黑名单-用户列表分页
-    $scope.holdUsersNextPage=function(){
-        findHoldUsers(++holdPage,holdPageSize);
+    $scope.groupHoldNextPage=function(){
+        if(holdPage<holdMaxPage-1){
+            findHoldUsers(++holdPage,holdPageSize);
+        }else{
+            angular.element('#holdNextPageLi').addClass('disabled');
+        }
     }
 
-    $scope.holdUsersLastPage=function(){
-        $scope.holdUsersNextPageState=false;
+    $scope.groupHoldLastPage=function(){
         if(holdPage>0){
             findHoldUsers(--holdPage,holdPageSize);
+        }else{
+            angular.element('#holdLastPageLi').addClass('disabled');
         }
     }
 
@@ -639,11 +685,12 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     }
 
     //根据圈子id返回该圈子下的所有用户(圈子就是一群用户)
-    var findGroupById=function(page,pageSize){
+    var findGroupById=$scope.findGroupById=function(page,pageSize){
           uriData ='o='+page+'&r='+pageSize;
          CommonService.getAll('group/'+$routeParams.groupId,uriData,function(data){
              $scope.groupUsers=[];
-           //判断当前用户是不是群主
+
+            //判断当前用户是不是群主
            if(cookieOperate.getCookie('userName')!=data.GroupUsers[0][1]){
                  isRoleOorS=false;
            }
@@ -662,6 +709,25 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
            }
 
            showGroupUsersHtml($scope.groupUsers);
+
+            groupAllCount = data.count;
+
+            //记录查询页号,连接点击页号查询和点击上一页或下一页查询
+            groupPage=page;
+
+            groupMaxPage=Math.ceil(groupAllCount/groupPageSize);
+
+            //分页器显示
+            $scope.groupBursterPageNumbers =_produceBurster(page,pageSize,groupAllCount,groupBursterMaxPage);
+
+             //设置分页器样式
+             angular.element('.groupBursterPageLis').removeClass('active');
+             angular.element('#groupPageLi'+page+'').addClass('active');
+
+             //去除上一页,下一页禁用样式
+             angular.element('#groupLastPageLi').removeClass('disabled');
+             angular.element('#groupNextPageLi').removeClass('disabled');
+
         },function(response){
              if(response.code=="802"){
                  $scope.groupUsersNextPageState=true;
@@ -785,8 +851,8 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     }
 
     //通过圈子id查询该圈子下待审核的用户信息
-    var findWaitUsers=function(waitPage,waitPageSize) {
-        uriData = 'o=' + waitPage + '&r=' + waitPageSize + '&role=W';
+    var findWaitUsers=$scope.findWaitUsers=function(page,pageSize) {
+        uriData = 'o=' + page + '&r=' + pageSize + '&role=W';
         CommonService.getAll('group/' + $routeParams.groupId, uriData, function (data) {
               $scope.groupWaitUsers=[];
             for (var i = 0; i < data.GroupUsers.length; i++) {
@@ -802,6 +868,25 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
                 waitGroupUser.vm = data.GroupUsers[i][8];
                 $scope.groupWaitUsers.push(waitGroupUser);
             }
+
+            waitAllCount = data.count;
+
+            //记录查询页号,连接点击页号查询和点击上一页或下一页查询
+            waitPage=page;
+
+            waitMaxPage=Math.ceil(waitAllCount/waitPageSize);
+
+            //分页器显示
+            $scope.waitBursterPageNumbers =_produceBurster(page,pageSize,waitAllCount,waitBursterMaxPage);
+
+            //设置分页器样式
+            angular.element('.waitBursterPageLis').removeClass('active');
+            angular.element('#waitPageLi'+page+'').addClass('active');
+
+            //去除上一页,下一页禁用样式
+            angular.element('#waitLastPageLi').removeClass('disabled');
+            angular.element('#waitNextPageLi').removeClass('disabled');
+
         }, function (response) {
             if(response.code=="802"){
                 $scope.waitUsersNextPageState=true;
@@ -810,8 +895,8 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     }
 
     //通过圈子id查询该圈子下黑名单的用户信息
-    var findHoldUsers=function(holdPage,holdPageSize){
-        uriData = 'o=' + holdPage + '&r=' + holdPageSize + '&role=H';
+    var findHoldUsers=$scope.findHoldUsers=function(page,pageSize){
+        uriData = 'o=' + page + '&r=' + pageSize + '&role=H';
         CommonService.getAll('group/' + $routeParams.groupId, uriData, function (data) {
             $scope.groupHoldUsers=[];
             for (var i = 0; i < data.GroupUsers.length; i++) {
@@ -827,6 +912,25 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
                 holdGroupUser.vm = data.GroupUsers[i][8];
                 $scope.groupHoldUsers.push(holdGroupUser);
             }
+
+            holdAllCount = data.count;
+
+            //记录查询页号,连接点击页号查询和点击上一页或下一页查询
+            holdPage=page;
+
+            holdMaxPage=Math.ceil(holdAllCount/holdPageSize);
+
+            //分页器显示
+            $scope.holdBursterPageNumbers =_produceBurster(page,pageSize,holdAllCount,holdBursterMaxPage);
+
+            //设置分页器样式
+            angular.element('.holdBursterPageLis').removeClass('active');
+            angular.element('#holdPageLi'+page+'').addClass('active');
+
+            //去除上一页,下一页禁用样式
+            angular.element('#holdLastPageLi').removeClass('disabled');
+            angular.element('#holdNextPageLi').removeClass('disabled');
+
         }, function (response) {
             if(response.code=="802"){
                 $scope.holdUsersNextPageState=true;
