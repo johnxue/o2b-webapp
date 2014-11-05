@@ -22,6 +22,11 @@ NewsControllers.controller('NewsCtrl',function($scope,CommonService,$routeParams
         $("#revokeNews").hide();   //隐藏撤销
     }
 
+    //后退
+    $scope.newBack = function(){
+        window.history.back(-1)
+    }
+
     CommonService.getAll('news/'+$routeParams.id,uriData,function (data) {
         $("#newTitle").html(data.title);                  //标题
         $("#newAuthor").html("作者："+data.author);     //作者
