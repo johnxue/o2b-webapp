@@ -125,10 +125,13 @@
               <tr><!--表格内容--></tr>
               </tbody>
             </table>
-              <div class=" btn-group pull-right mp20"  data-toggle="buttons-radio">
-                  <button type="button" class="btn " ng-click="groupUsersLastPage();"><i class="icon-double-angle-left"></i></button>
-                  <button type="button" class="btn " ng-disabled="groupUsersNextPageState" ng-click="groupUsersNextPage();"><i class="icon-double-angle-right"></i></button>
-              </div>
+             <div class="pull-right">
+               <ul class="pager pager-pills">
+                   <li class="previous" id="groupLastPageLi"><a href="javascript:;" ng-click="groupLastPage();">«</a></li>
+                   <li ng-repeat="groupBursterPageNumber in groupBursterPageNumbers" id="groupPageLi{{groupBursterPageNumber}}" class="groupBursterPageLis" on-finish-render-filters><a href="javascript:;" ng-click="findGroupById(groupBursterPageNumber,groupPageSize);">{{groupBursterPageNumber+1}}</a></li>
+                   <li class="next" id="groupNextPageLi"><a href="javascript:;" ng-click="groupNextPage();">»</a></li>
+               </ul>
+            </div>
           </div>
         </div>
         <!--成员管理结束-->
@@ -218,9 +221,12 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class=" btn-group pull-right mp20"  data-toggle="buttons-radio">
-                    <button type="button" class="btn " ng-click="waitUsersLastPage();"><i class="icon-double-angle-left"></i></button>
-                    <button type="button" class="btn " ng-disabled="waitUsersNextPageState" ng-click="waitUsersNextPage();"><i class="icon-double-angle-right"></i></button>
+                <div class="pull-right">
+                    <ul class="pager pager-pills">
+                        <li class="previous" id="waitLastPageLi"><a href="javascript:;" ng-click="groupWaitLastPage();">«</a></li>
+                        <li ng-repeat="waitBursterPageNumber in waitBursterPageNumbers" id="waitPageLi{{waitBursterPageNumber}}" class="waitBursterPageLis" on-finish-render-filters><a href="javascript:;" ng-click="findWaitUsers(waitBursterPageNumber,waitPageSize);">{{waitBursterPageNumber+1}}</a></li>
+                        <li class="next" id="waitNextPageLi"><a href="javascript:;" ng-click="groupWaitNextPage();">»</a></li>
+                    </ul>
                 </div>
                 <div class="col-md-12 mp20 marginb" style="float:left;">
 
@@ -252,10 +258,13 @@
                 </tr>
               </tbody>
             </table>
-            <div class=" btn-group pull-right mp20"  data-toggle="buttons-radio">
-               <button type="button" class="btn " ng-click="holdUsersLastPage();"><i class="icon-double-angle-left"></i></button>
-               <button type="button" class="btn " ng-disabled="holdUsersNextPageState" ng-click="holdUsersNextPage();"><i class="icon-double-angle-right"></i></button>
-            </div>
+              <div class="pull-right">
+                  <ul class="pager pager-pills">
+                      <li class="previous" id="holdLastPageLi"><a href="javascript:;" ng-click="groupHoldLastPage();">«</a></li>
+                      <li ng-repeat="holdBursterPageNumber in holdBursterPageNumbers" id="holdPageLi{{holdBursterPageNumber}}" class="holdBursterPageLis" on-finish-render-filters><a href="javascript:;" ng-click="findHoldUsers(holdBursterPageNumber,holdPageSize);">{{holdBursterPageNumber+1}}</a></li>
+                      <li class="next" id="holdNextPageLi"><a href="javascript:;" ng-click="groupHoldNextPage();">»</a></li>
+                  </ul>
+              </div>
             <div class="col-md-12 mp20 marginb" style="float:left;">
               <button type="button" class="btn btn-info pull-right" ng-disabled="multiDeleteFromHoldState" ng-click="multiDeleteFromHold();">批量删除</button>
             </div>
