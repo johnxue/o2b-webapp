@@ -25,7 +25,7 @@ MessageMainControllers.controller('MessageMainCtrl', function ($scope, CommonSer
 
     //分页信息(未读消息)
     var unReadMessagesPage = 0;
-    var unReadMessagesPageSize = 2;
+    var unReadMessagesPageSize = 6;
     var unReadAllMessagesCount=0;
     var unReadMessagesMaxPage=0;
     //分页器可显示页数(未读消息)
@@ -33,7 +33,7 @@ MessageMainControllers.controller('MessageMainCtrl', function ($scope, CommonSer
 
     //分页信息(已读消息)
     var readMessagesPage = 0;
-    var readMessagesPageSize = 2;
+    var readMessagesPageSize = 6;
     var readAllMessagesCount=0;
     var readMessagesMaxPage=0;
     //分页器可显示页数(已读消息)
