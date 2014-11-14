@@ -64,7 +64,7 @@ MainControllers.controller('MainCtrl',function($scope,CommonService,$window){
 
     uriData = undefined;
     CommonService.getAll('adSense/main/1',uriData,function(data){
-        $scope.adsLevelTwos=data.ads_level_02;
+        $scope.mainOneC00s=data.C00;
     },errorOperate);
 
 });

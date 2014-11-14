@@ -1,0 +1,383 @@
+<div class="container" >
+  <div class="cont" >
+    <div class="col-md-12">
+      <ul class="nav nav-tabs" ng-init="vm.activeTab=1">
+        <li ng-class="{active: vm.activeTab == 1}" ><a href="javascript:;" ng-click="vm.activeTab = 1">发布我的产品</a></li>
+        <li ng-class="{active: vm.activeTab == 2}" ><a href="javascript:;" ng-click="vm.activeTab = 2">产品详细描述</a></li>
+        <li ng-class="{active: vm.activeTab == 3}" ><a href="javascript:;" ng-click="vm.activeTab = 3">产品审核</a></li>
+        <li ng-class="{active: vm.activeTab == 4}" ><a href="javascript:;" ng-click="vm.activeTab = 4">产品管理</a></li>
+      </ul>
+      <div class="tab-content tab-bordered mp20  " >
+        <div class="tab-panel" ng-show="vm.activeTab == 1">
+          <div class="col-md-9 marginb">
+            <form class="form-horizontal" role="form" ng-model="productInfoForm" name="productInfoForm">
+              <div class="col-md-12">
+                <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
+                  <div class="content">我们团队及时向大家说明并积极解决问题，也希望大家能给予谅解并耐心等待。</div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >产品编号：</label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >产品批次：</label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >产品规格：</label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >供应编码：</label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >产品编号：</label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" >
+                  </div>
+                  <div class="col-md-1 blue"> </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >产品类别：</label>
+                  <div class="col-md-10">
+                    <label class="radio-inline">
+                      <input type="radio" name="optionsRadios"  checked="">
+                      医疗健康 </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="optionsRadios" >
+                      家居生活 </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="optionsRadios" >
+                      出行定位 </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="optionsRadios" >
+                      影音娱乐 </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="optionsRadios" >
+                      科技外设 </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="optionsRadios" >
+                      其他</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 blue">开始时间：</label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control"/>
+                  </div>
+                </div>
+              
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >结束时间：</label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >产品原价：</label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" >
+                  </div>
+                </div>
+              
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >当前价格：</label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="请填写产品金额">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >限定数量：</label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="请填写限定数量">
+                  </div>
+                  <!-- <div class="col-md-1 blue">个</div>--> 
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >宣传视频：</label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="请填写视频地址">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >产品名称：</label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="请填写产品名称">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >产品简介：</label>
+                  <div class="col-md-10">
+                    <textarea name="" cols="" rows=""  class="teax" style="width:100%"></textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >封面图片：</label>
+                  <div class="col-md-10">
+                      <input ng-file-select name="productInfoForm_cover" id="coverId"
+                             ng-model="productInfoForm.cover" type="file" size="4"  single
+                             accept="image/gif,image/png,image/jpeg" ng-disabled="coverState"/>
+
+                      <div nowrap>
+                          <button type="button" class="btn btn-success btn-xs"
+                                  ng-click="updateCover.queue[0].upload()"
+                                  ng-disabled="(updateCover.queue[0].isReady || updateCover.queue[0].isUploading ||updateCover.queue[0].isSuccess)||coverState">
+                              <span>上传</span>
+                          </button>
+                          <button type="button" class="btn btn-warning btn-xs"
+                                  ng-click="updateCover.queue[0].cancel()"
+                                  ng-disabled="(!updateCover.queue[0].isUploading)||coverState">
+                              <span>取消</span>
+                          </button>
+                          <button type="button" class="btn btn-danger btn-xs" ng-disabled="coverState"
+                                  ng-click="updateCover.queue[0].remove()">
+                              <span>清空</span>
+                          </button>
+                      </div>
+                    <button ng-click="click();"></button>
+                    <span class="pull-right" style="margin-top:-22px;">建议尺寸：690x512px</span> </br>
+                    <div class="mt20"><img src="images/prducttu.jpg"  class="prdouctimg" id="pCoverImgId"/></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >头部大图：</label>
+                  <div class="col-md-10">
+                      <input ng-file-select  name="productInfoForm_top" id="topId"
+                             ng-model="productInfoForm.top" type="file" size="4"  single
+                             accept="image/gif,image/png,image/jpeg" ng-disabled="topState"/>
+
+                      <div nowrap>
+                          <button type="button" class="btn btn-success btn-xs "
+                                  ng-click="updateTop.queue[0].upload()"
+                                  ng-disabled="(updateTop.queue[0].isReady || updateTop.queue[0].isUploading ||updateTop.queue[0].isSuccess)||topState">
+                              <span>上传</span>
+                          </button>
+                          <button type="button" class="btn btn-warning btn-xs "
+                                  ng-click="updateTop.queue[0].cancel()"
+                                  ng-disabled="(!updateTop.queue[0].isUploading)|| topState">
+                              <span>取消</span>
+                          </button>
+                          <button type="button" class="btn btn-danger btn-xs" ng-disabled="topState"
+                                  ng-click="updateTop.queue[0].remove()">
+                              <span>清空</span>
+                          </button>
+                      </div>
+                    <span class="pull-right" style="margin-top:-22px;">建议尺寸：2560x450px</span> </br>
+                    <div class="mt20"><img src="images/dog.jpg"  class="prdouctimg" id="pTopImgId"/></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >中间小图：</label>
+                  <div class="col-md-10">
+                      <input ng-file-select  name="productInfoForm_center" id="centerId"
+                             ng-model="productInfoForm.center" type="file" size="4"  single
+                             accept="image/gif,image/png,image/jpeg" ng-disabled="centerState" />
+
+                      <div nowrap>
+                          <button type="button" class="btn btn-success btn-xs "
+                                  ng-click="updateCenter.queue[0].upload()"
+                                  ng-disabled="(updateCenter.queue[0].isReady || updateCenter.queue[0].isUploading ||updateCenter.queue[0].isSuccess)|| centerState">
+                              <span>上传</span>
+                          </button>
+                          <button type="button" class="btn btn-warning btn-xs "
+                                  ng-click="updateCenter.queue[0].cancel()"
+                                  ng-disabled="(!updateCenter.queue[0].isUploading)|| centerState">
+                              <span>取消</span>
+                          </button>
+                          <button type="button" class="btn btn-danger btn-xs " ng-disabled="centerState"
+                                  ng-click="updateCenter.queue[0].remove()">
+                              <span>清空</span>
+                          </button>
+                      </div>
+                    <span class="pull-right" style="margin-top:-22px;">建议尺寸：468x224px</span> </br>
+                    <div class="mt20"><img src="images/prducttu.jpg"  class="prdouctimg" id="pCenterImgId"/></div>
+                  </div>
+                </div>
+                <div class="col-md-12 text-center mp20">
+                  <button class="btn btn-info">保存提交审核</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-3">
+            <div class="card mp10"><img src="images/min.png" width="214" height="165" /> <span class="caption">&nbsp;</span> <a href="###" class="card-heading"><span>&nbsp;</span></a>
+              <P class="listp"><span class='label label-info pull-right' >准备中</span></P>
+              <div class="col-md-5 ha20"  >¥0</div>
+              <div class="col-md-3 ha20" >0</div>
+              <div class="col-md-3 pull-right ha20" >0人</div>
+              <div class="col-md-5 ha20 hui" >累计金额</div>
+              <div class="col-md-3 ha20 hui" >话题</div>
+              <div class="col-md-3 pull-right ha20 hui" >关注</div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" ng-show="vm.activeTab == 2">
+          <div class="col-md-9 marginb">
+            <form class="form-horizontal" role="form" method='post'>
+              <div class="col-md-12">
+                <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
+                  <div class="content">详细的描述您的产品，可以帮助用户更好的购买您的产品。 <a href="#/yulanproduct" class="btn btn-info">查看预览</a></div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-2 bluezi" >描述：</label>
+                  <div class="col-md-10">
+                    <textarea name="" cols="" rows=""  class="teax" style="width:100%"></textarea>
+                  </div>
+                </div>
+                  <div class="form-group">
+                      <label class="col-md-2 bluezi" >详情：</label>
+                      <div class="col-md-10">
+                          <textarea name="" cols="" rows=""  class="teax" style="width:100%"></textarea>
+                      </div>
+                  </div>
+                <div class="col-md-12 text-center mp20">
+                  <button class="btn btn-info">保存发布产品</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="tab-panel" ng-show="vm.activeTab == 3">
+          <div class="col-md-12 marginb">
+            <div class="panel mp20 ">
+              <table class="table table-condensed " >
+                <thead>
+                  <tr >
+                    <th ><span class="ml15" >产品名称</span></th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>状态</th>
+                    <th>发布人</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="ml15" ><img src="images/quanzibg.jpg" class="prdouctimg" /><a href="#/yulanproduct" class="blue ml10">智能产品都在这独家首发</a></span></td>
+                    <td>2014-10-10</td>
+                    <td>2014-10-15</td>
+                    <td>准备中</td>
+                    <td><span class="blue">admin213213</span></td>
+                    <td><span><a href="#/fabuproduct" class="blue " >审核通过</a></span><span><a href="" class="blue ml10" >不予通过 </a></span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="ml15" ><img src="images/quanzibg.jpg" class="prdouctimg" /><a href="#/yulanproduct" class="blue ml10">智能产品都在这独家首发</a></span></td>
+                    <td>2014-10-10</td>
+                    <td>2014-10-15</td>
+                    <td>准备中</td>
+                    <td><span class="blue">admin213213</span></td>
+                    <td><span><a href="#/fabuproduct" class="blue " >审核通过</a></span><span><a href="" class="blue ml10" >不予通过 </a></span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="ml15" ><img src="images/quanzibg.jpg" class="prdouctimg" /><a href="#/yulanproduct" class="blue ml10">智能产品都在这独家首发</a></span></td>
+                    <td>2014-10-10</td>
+                    <td>2014-10-15</td>
+                    <td>准备中</td>
+                    <td><span class="blue">admin213213</span></td>
+                    <td><span><a href="#/fabuproduct" class="blue " >审核通过</a></span><span><a href="" class="blue ml10" >不予通过 </a></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" ng-show="vm.activeTab == 4">
+          <div class="col-md-12 marginb">
+            <div class="panel mp20">
+              <table class="table table-condensed " >
+                <thead>
+                  <tr >
+                    <th ><input name="check" type="checkbox" value="" style="margin-left:10px;"/>
+                      &nbsp;全选</th>
+                    <th>产品名称</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>发布人</th>
+                    <th>操作</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
+                    <td><span ><a href="" class="blue">智能产品都在这独家首发</a></span></td>
+                    <td>2014-10-10</td>
+                    <td>2014-10-20</td>
+                    <td><span class="blue">admin</span></td>
+                    <td><span><a href="" data-toggle="modal" data-target="#delprduct" class="blue" ><i class="icon-remove"></i> 删除</a></span><span><a href="" data-toggle="modal" data-target="#delfabuprduct" class="blue ml10" >撤消发布</a></span></td>
+                    <td>已发布</td>
+                  </tr>
+                  <tr>
+                    <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
+                    <td><span ><a href="" class="blue">智能产品都在这独家首发</a></span></td>
+                    <td>2014-10-10</td>
+                    <td>2014-10-20</td>
+                    <td><span class="blue">admin</span></td>
+                    <td><span><a href="" data-toggle="modal" data-target="#delprduct" class="blue" ><i class="icon-remove"></i> 删除</a></span><span><a href="" data-toggle="modal" data-target="#delfabuprduct" class="blue ml10" >撤消发布</a></span></td>
+                    <td>已发布</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="mp20 marginb pull-left" >
+                <button type="button" class="btn btn-info">批量删除</button>
+              </div>
+              <div class="row pull-right">
+                <ul class="pager pager-pills ">
+                  <li class="previous disabled"><a href="#">«</a></li>
+                  <li class="active"><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">4</a></li>
+                  <li><a href="#">5</a></li>
+                  <li class="next"><a href="#">»</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 确认撤消发布弹框 -->
+
+<div class="modal fade"  id="delfabuprduct" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
+  <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" > <i class="icon-remove"></i> 撤消发布</h4>
+      </div>
+      <div class="modal-body"> 您确定要撤消发布此产品吗,亲</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-mini btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-mini btn-info" data-dismiss="modal">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 确认删除弹框 -->
+<div class="modal fade"  id="delprduct" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
+  <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" > <i class="icon-remove"></i> 删除产品</h4>
+      </div>
+      <div class="modal-body"> 您确定要删除此产品吗,亲</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-mini btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-mini btn-info" data-dismiss="modal">确定</button>
+      </div>
+    </div>
+  </div>
+</div>

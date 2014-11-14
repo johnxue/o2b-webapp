@@ -47,16 +47,16 @@ UserAccountSettingControllers.controller('UserAccountSettingCtrl',function($scop
     //文件上传
    $scope.uploader=$fileUploader.create({
            scope: $scope,
-           url: 'https://192.168.1.210/o2b/v1.0.0/user/header?type=header',
+           url: 'https://192.168.1.210/o2b/v1.0.0/user/header?type=userheader',
            method: 'POST',
            autoUpload: false,   // 自动上传
-           alias: 'picture',
+           alias: 'upfile',
            headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
 
        });
 
     $scope.uploader.bind('success',function(event,xhr,item,response){
-        document.getElementById('hiId')['src']='https://192.168.1.210/'+response.url+'/'+response.filename;
+        document.getElementById('hiId')['src']=response.url;
         alert('上传成功!');
     });
 

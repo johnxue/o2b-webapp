@@ -7,7 +7,7 @@ var MainApp=angular.module('MainApp',['ngRoute','ngResource','angularFileUpload'
     'UserFollowControllers','ViewDetailsControllers','UserAccountSettingControllers','CommonDirectives',
     'GroupMainControllers','GroupDetailControllers','GroupTopicDetailControllers','CreateGroupControllers',
     'EditGroupTopicControllers','ManageGroupControllers','UEditorServices','ReleaseControllers',
-    'EditNewsControllers','MessageMainControllers','MessageDetailControllers']);
+    'EditNewsControllers','MessageMainControllers','MessageDetailControllers','ReleaseProductControllers']);
 
 MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($routeProvider,$httpProvider,$locationProvider) {
     $routeProvider
@@ -95,6 +95,10 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title:'消息详情',
             templateUrl:'views/messageDetail.html',
             controller:'MessageDetailCtrl'
+        }).when('/releaseProduct',{
+            title:'发布产品',
+            templateUrl:'views/releaseProduct.html',
+            controller:'ReleaseProductCtrl'
         }).when('/releaseNews',{
             title:'发布新闻',
             templateUrl:'views/releaseNews.html',

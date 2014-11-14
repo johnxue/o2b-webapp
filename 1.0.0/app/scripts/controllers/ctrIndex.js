@@ -111,7 +111,7 @@ IndexControllers.controller('IndexCtrl',function($scope,CommonService,$window){
     //调用与后端的接口,如：CommonService.getAll(params)
     uriData = undefined;
     CommonService.getAll('adSense/main/1',uriData,function(data){
-        $scope.adsLevelOnes=data.ads_level_01;
+        $scope.mainOneT00s=data.T00;
     },errorOperate);
 
 });
