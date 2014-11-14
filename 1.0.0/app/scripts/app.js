@@ -8,6 +8,7 @@ var MainApp=angular.module('MainApp',['ngRoute','ngResource','angularFileUpload'
     'GroupMainControllers','GroupDetailControllers','GroupTopicDetailControllers','CreateGroupControllers',
     'EditGroupTopicControllers','ManageGroupControllers','UEditorServices','ReleaseControllers',
     'EditNewsControllers','MessageMainControllers','MessageDetailControllers','AdverControllers']);
+    'EditNewsControllers','MessageMainControllers','MessageDetailControllers','ReleaseProductControllers']);
 
 MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($routeProvider,$httpProvider,$locationProvider) {
     $routeProvider
@@ -107,10 +108,6 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title:'编辑器',
             templateUrl:'views/ueditor.html',
             controller:'UEditorService'
-        }).when('/adver',{
-            title:'广告',
-            templateUrl:'views/advertising.html',
-            controller:'AdverCtrl'
         }).otherwise({
             redirectTo: '/'
         });

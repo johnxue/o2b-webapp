@@ -11,35 +11,35 @@
               <li data-target="#carousel-example-generic" data-slide-to="4"></li>
           </ol>
           <div class="carousel-inner" >
-              <div class="item active h"  ng-repeat="adsLevelTwo in  adsLevelTwos" ng-if="$first"><a ng-href="#/productDetail/{{adsLevelTwo[0]}}"><img alt="First slide" ng-src="images/products/{{adsLevelTwo[3]}}" class="fl"></a>
+              <div class="item active h"  ng-repeat="mainOneC00 in  mainOneC00s" ng-if="$first"><a ng-href="#/productDetail/{{mainOneC00[0]}}"><img alt="First slide" ng-src="{{mainOneC00[3]}}" class="fl"></a>
                   <div  class="itemtext">
-                      <p class="listb"><a ng-href="#/productDetail/{{adsLevelTwo[0]}}" class="card-heading"><span>{{adsLevelTwo[1]}}</span></a></p>
-                      <p class="lrp10">{{adsLevelTwo[2] | longmark}}</p>
-                      <P class="listp"><span class="hui">{{adsLevelTwo[4]+'&'+adsLevelTwo[5] | datemark}}</span>
-                          <span class='label label-success pull-right' ng-show="adsLevelTwo[6]=='ON'">{{adsLevelTwo[7]}}</span>
-                          <span class='label label-warning pull-right' ng-show="adsLevelTwo[6]=='TBA'">{{adsLevelTwo[7]}}</span>
-                          <span class='label label-default pull-right' ng-show="adsLevelTwo[6]=='OFF'">{{adsLevelTwo[7]}}</span>
+                      <p class="listb"><a ng-href="#/productDetail/{{mainOneC00[0]}}" class="card-heading"><span>{{mainOneC00[1]}}</span></a></p>
+                      <p class="lrp10">{{mainOneC00[2] | longmark}}</p>
+                      <P class="listp"><span class="hui">{{mainOneC00[4]+'&'+mainOneC00[5] | datemark}}</span>
+                          <span class='label label-success pull-right' ng-show="mainOneC00[6]=='ON'">{{mainOneC00[7]}}</span>
+                          <span class='label label-warning pull-right' ng-show="mainOneC00[6]=='TBA'">{{mainOneC00[7]}}</span>
+                          <span class='label label-default pull-right' ng-show="mainOneC00[6]=='OFF'">{{mainOneC00[7]}}</span>
                       </P>
-                      <div class="col-md-4 ha20"  >¥{{adsLevelTwo[11]}}</div>
-                      <div class="col-md-4 ha20" >{{adsLevelTwo[8]}}</div>
-                      <div class="col-md-4 pull-right ha20" >{{adsLevelTwo[9]}}人</div>
+                      <div class="col-md-4 ha20"  >¥{{mainOneC00[11]}}</div>
+                      <div class="col-md-4 ha20" >{{mainOneC00[8]}}</div>
+                      <div class="col-md-4 pull-right ha20" >{{mainOneC00[9]}}人</div>
                       <div class="col-md-4 ha20 hui" >累计金额</div>
                       <div class="col-md-4 ha20 hui" >话题</div>
                       <div class="col-md-4 pull-right ha20 hui" >关注</div>
                   </div>
               </div>
-              <div class="item  h" ng-repeat="adsLevelTwo in  adsLevelTwos" ng-if="!$first"><a ng-href="#/productDetail/{{adsLevelTwo[0]}}"><img alt="First slide" ng-src="images/products/{{adsLevelTwo[3]}}" class="fl"></a>
+              <div class="item  h" ng-repeat="mainOneC00 in  mainOneC00s" ng-if="!$first"><a ng-href="#/productDetail/{{mainOneC00[0]}}"><img alt="First slide" ng-src="{{mainOneC00[3]}}" class="fl"></a>
                   <div  class="itemtext">
-                      <p class="listb"><a ng-href="#/productDetail/{{adsLevelTwo[0]}}" class="card-heading"><span>{{adsLevelTwo[1]}}</span></a></p>
-                      <p class="lrp10">{{adsLevelTwo[2] | longmark}}</p>
-                      <P class="listp"><span class="hui">{{adsLevelTwo[4]+'&'+adsLevelTwo[5] | datemark}}</span>
-                          <span class='label label-success pull-right' ng-show="adsLevelTwo[6]=='ON'">{{adsLevelTwo[7]}}</span>
-                          <span class='label label-warning pull-right' ng-show="adsLevelTwo[6]=='TBA'">{{adsLevelTwo[7]}}</span>
-                          <span class='label label-default pull-right' ng-show="adsLevelTwo[6]=='OFF'">{{adsLevelTwo[7]}}</span>
+                      <p class="listb"><a ng-href="#/productDetail/{{mainOneC00[0]}}" class="card-heading"><span>{{mainOneC00[1]}}</span></a></p>
+                      <p class="lrp10">{{mainOneC00[2] | longmark}}</p>
+                      <P class="listp"><span class="hui">{{mainOneC00[4]+'&'+mainOneC00[5] | datemark}}</span>
+                          <span class='label label-success pull-right' ng-show="mainOneC00[6]=='ON'">{{mainOneC00[7]}}</span>
+                          <span class='label label-warning pull-right' ng-show="mainOneC00[6]=='TBA'">{{mainOneC00[7]}}</span>
+                          <span class='label label-default pull-right' ng-show="mainOneC00[6]=='OFF'">{{mainOneC00[7]}}</span>
                       </P>
-                      <div class="col-md-4 ha20" >¥{{adsLevelTwo[11] | nullToZero}}</div>
-                      <div class="col-md-4 ha20" >{{adsLevelTwo[8]  | nullToZero }}</div>
-                      <div class="col-md-4 pull-right ha20" >{{adsLevelTwo[9]  | nullToZero}}人</div>
+                      <div class="col-md-4 ha20" >¥{{mainOneC00[11] | nullToZero}}</div>
+                      <div class="col-md-4 ha20" >{{mainOneC00[8]  | nullToZero }}</div>
+                      <div class="col-md-4 pull-right ha20" >{{mainOneC00[9]  | nullToZero}}人</div>
                       <div class="col-md-4 ha20 hui" >累计金额</div>
                       <div class="col-md-4 ha20 hui" >话题</div>
                       <div class="col-md-4 pull-right ha20 hui" >关注</div>
