@@ -26,7 +26,7 @@ GroupDetailControllers.controller('GroupDetailCtrl',function($scope,CommonServic
     //初始化UEditor(百度编辑器)
     var ue =UEditorService.getUEditor('editor','group',$routeParams.groupId);
 
-
+    //分页信息(圈子下话题)
     var groupAllTopicsCount=0;
     var topicsMaxPage=0;
     var topicsPage=0;

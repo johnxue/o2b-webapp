@@ -123,7 +123,7 @@
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >封面图片：</label>
                   <div class="col-md-10">
-                      <input ng-file-select name="productInfoForm_cover" id="coverId"
+                      <input ng-file-select name="productInfoForm_cover" id="coverId"  onchange="angular.element(this).scope().fileChanged('coverState')"
                              ng-model="productInfoForm.cover" type="file" size="4"  single
                              accept="image/gif,image/png,image/jpeg" ng-disabled="coverState"/>
 
@@ -139,11 +139,10 @@
                               <span>取消</span>
                           </button>
                           <button type="button" class="btn btn-danger btn-xs" ng-disabled="coverState"
-                                  ng-click="updateCover.queue[0].remove()">
+                                  ng-click="updateCover.queue[0].remove();fileTagStateReStore();">
                               <span>清空</span>
                           </button>
                       </div>
-                    <button ng-click="click();"></button>
                     <span class="pull-right" style="margin-top:-22px;">建议尺寸：690x512px</span> </br>
                     <div class="mt20"><img src="images/prducttu.jpg"  class="prdouctimg" id="pCoverImgId"/></div>
                   </div>
@@ -151,7 +150,7 @@
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >头部大图：</label>
                   <div class="col-md-10">
-                      <input ng-file-select  name="productInfoForm_top" id="topId"
+                      <input ng-file-select  name="productInfoForm_top" id="topId" onchange="angular.element(this).scope().fileChanged('topState')"
                              ng-model="productInfoForm.top" type="file" size="4"  single
                              accept="image/gif,image/png,image/jpeg" ng-disabled="topState"/>
 
@@ -167,7 +166,7 @@
                               <span>取消</span>
                           </button>
                           <button type="button" class="btn btn-danger btn-xs" ng-disabled="topState"
-                                  ng-click="updateTop.queue[0].remove()">
+                                  ng-click="updateTop.queue[0].remove();fileTagStateReStore();">
                               <span>清空</span>
                           </button>
                       </div>
@@ -178,7 +177,7 @@
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >中间小图：</label>
                   <div class="col-md-10">
-                      <input ng-file-select  name="productInfoForm_center" id="centerId"
+                      <input ng-file-select  name="productInfoForm_center" id="centerId" onchange="angular.element(this).scope().fileChanged('centerState')"
                              ng-model="productInfoForm.center" type="file" size="4"  single
                              accept="image/gif,image/png,image/jpeg" ng-disabled="centerState" />
 
@@ -194,7 +193,7 @@
                               <span>取消</span>
                           </button>
                           <button type="button" class="btn btn-danger btn-xs " ng-disabled="centerState"
-                                  ng-click="updateCenter.queue[0].remove()">
+                                  ng-click="updateCenter.queue[0].remove();fileTagStateReStore();">
                               <span>清空</span>
                           </button>
                       </div>
@@ -236,7 +235,7 @@
                   <div class="form-group">
                       <label class="col-md-2 bluezi" >详情：</label>
                       <div class="col-md-10">
-                          <textarea name="" cols="" rows=""  class="teax" style="width:100%"></textarea>
+                          <script id="editor" type="text/plain" style="height:150px;"></script>
                       </div>
                   </div>
                 <div class="col-md-12 text-center mp20">

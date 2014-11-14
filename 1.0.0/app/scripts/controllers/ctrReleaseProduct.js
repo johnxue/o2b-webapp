@@ -18,11 +18,15 @@
 var ReleaseProductControllers = angular.module('ReleaseProductControllers',[]);
 
 /*定义 Controller: ReleaseProduct  （主页面 releaseProduct.html）*/
-ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,CommonService,$window,$fileUploader){
+ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,CommonService,$window,$fileUploader,UEditorService){
     ctrInit();
 
     var uriData='';
-  //初始化$scope中定义的变量
+
+    //初始化UEditor(百度编辑器)
+    var ue =UEditorService.getUEditor('editor','group','aa');
+
+    //初始化$scope中定义的变量
 
     $scope.productInfoForm={};
 
@@ -38,14 +42,28 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
     $scope.centerState=false;
 
-    $scope.$on('$viewContentLoaded', function() {
-        $('#coverId').change( function($scope) {
-            $scope.topState=true;
-
-            $scope.centerState=true;
-        });
-    });
   //实现与页面交互的事件,如：button_click
+
+    //文件上传标签状态改变事件
+    $scope.fileChanged=function(stateName){
+        if(stateName=='coverState') {
+            $scope.topState = true;
+            $scope.centerState = true;
+        }else if(stateName=='topState'){
+            $scope.coverState=true;
+            $scope.centerState = true;
+        }else if(stateName=='centerState'){
+            $scope.coverState=true;
+            $scope.topState = true;
+        }
+    }
+
+    //文件上传标签状态复原
+    var fileTagStateReStore=$scope.fileTagStateReStore=function(){
+        $scope.coverState=false;
+        $scope.topState=false;
+        $scope.centerState=false;
+    }
 
     //文件上传(封面)
     $scope.updateCover= $fileUploader.create({
@@ -61,18 +79,13 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
     $scope.updateCover.bind('success',function(event,xhr,item,response){
         document.getElementById('pCoverImgId')['src']=response.url;
+        fileTagStateReStore();
         alert('上传成功!');
     });
 
     $scope.updateCover.bind('error',function(event,xhr,item,response){
         alert('上传失败,请清除后重新提交!');
     });
-
-    $scope.click=function(){
-        $scope.topState=true;
-
-        $scope.centerState=true;
-    }
 
     //文件上传(顶部)
     $scope.updateTop= $fileUploader.create({
@@ -87,6 +100,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
     $scope.updateTop.bind('success',function(event,xhr,item,response){
         document.getElementById('pTopImgId')['src']=response.url;
+        fileTagStateReStore();
         alert('上传成功!');
     });
 
@@ -108,6 +122,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
     $scope.updateCenter.bind('success',function(event,xhr,item,response){
         document.getElementById('pCenterImgId')['src']=response.url;
+        fileTagStateReStore();
         alert('上传成功!');
     });
 
