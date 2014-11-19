@@ -56,6 +56,8 @@
                   <li class="divider"></li>
                   <li> <a href="#/releaseProduct"> <i class="icon-list-alt"></i> 发布产品</a> </li>
                   <li class="divider"></li>
+                  <li> <a href="#/adver"> <i class="icon-list-alt"></i> 广告</a> </li>
+                  <li class="divider"></li>
                   <li> <a href="#/uEditor"> <i class="icon-list-alt"></i> UEditor编辑器</a> </li>
                   <li class="divider"></li>
                   <li ng-controller="logoutCtrl"> <a href="javascript:;"  ng-click="logout();"> <i class="icon-off"></i> 退出 </a> </li>
@@ -83,12 +85,12 @@
             <li data-target="#carousel-example-generic1" data-slide-to="2" class=""></li>
         </ol>
         <div class="carousel-inner">
-            <div class="item active" ng-repeat="mainOneT00 in mainOneT00s" ng-if="$first">
-               <a href="#/productDetail/{{mainOneT00[0]}}"><img ng-src="{{mainOneT00[3]}}" class="bannerimg" style="height: 450px; width: 100%; background-position: center center;background-repeat: no-repeat; margin-top: -20px; cursor: pointer;" /></a>
+            <div class="item active" ng-repeat="adsLevelOne in adsLevelOnes" ng-if="$first">
+               <a href="#/productDetail/{{adsLevelOne[0]}}"><img ng-src="images/products/{{adsLevelOne[1]}}" class="bannerimg" style="height: 450px; width: 100%; background-position: center center;background-repeat: no-repeat; margin-top: -20px; cursor: pointer;" /></a>
 
             </div>
-            <div class="item" ng-repeat="mainOneT00 in mainOneT00s" ng-if="!$first">
-               <a href="#/productDetail/{{mainOneT00[0]}}"><img ng-src="{{mainOneT00[3]}}" class="bannerimg" style="height: 450px; width: 100%; background-position: center center;background-repeat: no-repeat; margin-top: -20px; cursor: pointer;"/></a>
+            <div class="item" ng-repeat="adsLevelOne in adsLevelOnes" ng-if="!$first">
+               <a href="#/productDetail/{{adsLevelOne[0]}}"><img ng-src="images/products/{{adsLevelOne[1]}}" class="bannerimg" style="height: 450px; width: 100%; background-position: center center;background-repeat: no-repeat; margin-top: -20px; cursor: pointer;"/></a>
 
             </div>
         </div>
@@ -247,6 +249,7 @@
 <script src="scripts/controllers/ctrMessageMain.js"></script>
 <script src="scripts/controllers/ctrMessageDetail.js"></script>
 <script src="scripts/controllers/ctrReleaseProduct.js"></script>
+<script src="scripts/controllers/ctrAdvertising.js"></script>
 
 <script src="scripts/services/svcCommon.js"></script>
 <script src="scripts/services/svcLogin.js"></script>

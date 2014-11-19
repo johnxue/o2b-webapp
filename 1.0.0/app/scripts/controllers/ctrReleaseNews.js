@@ -134,6 +134,7 @@ ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$co
 
     //单条删除
     $scope.singerDele = function(deleNews){
+        uriData = "";
         if(confirm("确定删除吗？")){
             CommonService.deleteOne('news/'+deleNews, uriData, function (data) {
                 $scope.manageNews();
