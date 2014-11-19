@@ -95,6 +95,10 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title:'消息详情',
             templateUrl:'views/messageDetail.html',
             controller:'MessageDetailCtrl'
+        }).when('/releaseProduct',{
+            title:'发布产品',
+            templateUrl:'views/releaseProduct.html',
+            controller:'ReleaseProductCtrl'
         }).when('/releaseNews',{
             title:'发布新闻',
             templateUrl:'views/releaseNews.html',
