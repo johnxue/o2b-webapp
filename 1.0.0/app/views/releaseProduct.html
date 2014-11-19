@@ -18,68 +18,72 @@
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >产品编号：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" >
+                    <input type="text" class="form-control" placeholder="请填写产品编号" ng-model="productInfoForm.c">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >产品批次：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" >
+                    <input type="text" class="form-control" placeholder="请填写产品批次" ng-model="productInfoForm.bn" >
                   </div>
                 </div>
+                  <div class="form-group">
+                      <label class="col-md-2 bluezi" >产品名称：</label>
+                      <div class="col-md-6">
+                          <input type="text" class="form-control" placeholder="请填写产品名称" ng-model="productInfoForm.name">
+                      </div>
+                      <div class="col-md-1 blue"> </div>
+                  </div>
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >产品规格：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" >
+                    <input type="text" class="form-control" placeholder="请填写产品规格" ng-model="productInfoForm.spec">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >供应编码：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" >
+                    <input type="text" class="form-control" placeholder="请填写供应商编码"  ng-model="productInfoForm.sc" >
                   </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >产品编号：</label>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" >
-                  </div>
-                  <div class="col-md-1 blue"> </div>
                 </div>
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >产品类别：</label>
                   <div class="col-md-10">
-                    <label class="radio-inline">
-                      <input type="radio" name="optionsRadios"  checked="">
-                      医疗健康 </label>
-                    <label class="radio-inline">
-                      <input type="radio" name="optionsRadios" >
-                      家居生活 </label>
-                    <label class="radio-inline">
-                      <input type="radio" name="optionsRadios" >
-                      出行定位 </label>
-                    <label class="radio-inline">
-                      <input type="radio" name="optionsRadios" >
-                      影音娱乐 </label>
-                    <label class="radio-inline">
-                      <input type="radio" name="optionsRadios" >
-                      科技外设 </label>
-                    <label class="radio-inline">
-                      <input type="radio" name="optionsRadios" >
-                      其他</label>
+                    <label class="radio-inline" ng-repeat="productCategory in productCategorys" ng-if="productCategory[1]!='0000'">
+                       <input type="radio" name="pCRadios"  value="productCategory[1]" ng-model="productInfoForm.cat">
+                        {{productCategory[0]}}
+                    </label>
                   </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 bluezi" >产品状态：</label>
+                    <div class="col-md-10">
+                        <label class="radio-inline" ng-repeat="productState in productStates" ng-if="productState[1]!='ALL'">
+                            <input type="radio" name="pSRadios"  value="productState[1]" ng-model="productInfoForm.st">
+                            {{productState[0]}}
+                        </label>
+                    </div>
                 </div>
                 <div class="form-group">
                   <label class="col-md-2 blue">开始时间：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control"/>
+                      <div class="input-group">
+                      <input id="startTimeId" type="text" ng-model="productInfoForm.stm" readonly="true" class="form-control"/>
+                      <span class="input-group-btn">
+                      <button class="btn btn-default" type="button" onclick="WdatePicker({el:'startTimeId',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicking:function(dp){angular.element(this).scope().productInfoForm.stm=dp.cal.getNewDateStr()}})"><i class="icon-calendar"></i></button>
+                      </span>
+                      </div>
                   </div>
                 </div>
-              
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >结束时间：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" >
+                      <div class="input-group">
+                      <input id="endTimeId" type="text" ng-model="productInfoForm.etm" readonly="true" class="form-control"/>
+                      <span class="input-group-btn">
+                      <button class="btn btn-default" type="button" onclick="WdatePicker({el:'endTimeId',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicking:function(dp){angular.element(this).scope().productInfoForm.etm=dp.cal.getNewDateStr()}})"><i class="icon-calendar"></i></button>
+                      </span>
+                      </div>
                   </div>
                 </div>
                 <div class="form-group">
@@ -92,7 +96,7 @@
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >当前价格：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写产品金额">
+                    <input type="text" class="form-control" placeholder="请填写产品当前价格">
                   </div>
                 </div>
                 <div class="form-group">
@@ -103,21 +107,9 @@
                   <!-- <div class="col-md-1 blue">个</div>--> 
                 </div>
                 <div class="form-group">
-                  <label class="col-md-2 bluezi" >宣传视频：</label>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写视频地址">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >产品名称：</label>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写产品名称">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >产品简介：</label>
+                  <label class="col-md-2 bluezi" >产品描述：</label>
                   <div class="col-md-10">
-                    <textarea name="" cols="" rows=""  class="teax" style="width:100%"></textarea>
+                    <textarea name="" cols="" rows=""  class="teax" style="width:100%" placeholder="请填写产品描述" ng-model="productInfoForm.desc"></textarea>
                   </div>
                 </div>
                 <div class="form-group">
@@ -175,7 +167,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="col-md-2 bluezi" >中间小图：</label>
+                  <label class="col-md-2 bluezi" >广告条图：</label>
                   <div class="col-md-10">
                       <input ng-file-select  name="productInfoForm_center" id="centerId" onchange="angular.element(this).scope().fileChanged('centerState')"
                              ng-model="productInfoForm.center" type="file" size="4"  single
@@ -200,6 +192,33 @@
                     <span class="pull-right" style="margin-top:-22px;">建议尺寸：468x224px</span> </br>
                     <div class="mt20"><img src="images/prducttu.jpg"  class="prdouctimg" id="pCenterImgId"/></div>
                   </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 bluezi" >小图：</label>
+                    <div class="col-md-10">
+                        <input ng-file-select  name="productInfoForm_mini" id="miniId" onchange="angular.element(this).scope().fileChanged('miniState')"
+                               ng-model="productInfoForm.mini" type="file" size="4"  single
+                               accept="image/gif,image/png,image/jpeg" ng-disabled="miniState" />
+
+                        <div nowrap>
+                            <button type="button" class="btn btn-success btn-xs "
+                                    ng-click="updateMini.queue[0].upload()"
+                                    ng-disabled="(updateMini.queue[0].isReady || updateMini.queue[0].isUploading ||updateMini.queue[0].isSuccess)|| miniState">
+                                <span>上传</span>
+                            </button>
+                            <button type="button" class="btn btn-warning btn-xs "
+                                    ng-click="updateMini.queue[0].cancel()"
+                                    ng-disabled="(!updateMini.queue[0].isUploading)|| miniState">
+                                <span>取消</span>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-xs " ng-disabled="miniState"
+                                    ng-click="updateMini.queue[0].remove();fileTagStateReStore();">
+                                <span>清空</span>
+                            </button>
+                        </div>
+                        <span class="pull-right" style="margin-top:-22px;">建议尺寸：468x224px</span> </br>
+                        <div class="mt20"><img src="images/prducttu.jpg"  class="prdouctimg" id="pMiniImgId"/></div>
+                    </div>
                 </div>
                 <div class="col-md-12 text-center mp20">
                   <button class="btn btn-info">保存提交审核</button>
@@ -380,3 +399,4 @@
     </div>
   </div>
 </div>
+

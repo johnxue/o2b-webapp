@@ -26,7 +26,15 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
     //初始化UEditor(百度编辑器)
     var ue =UEditorService.getUEditor('editor','group','aa');
 
-    //初始化$scope中定义的变量
+    //封面图
+    var img = '';
+    //顶部大图
+    var imgl='';
+    //广告条图
+    var imgb='';
+    //小图
+    var imgs ='';
+  //初始化$scope中定义的变量
 
     $scope.productInfoForm={};
 
@@ -42,6 +50,12 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
     $scope.centerState=false;
 
+    $scope.miniState=false;
+
+    $scope.productCategorys={};
+
+    $scope.productStates={};
+
   //实现与页面交互的事件,如：button_click
 
     //文件上传标签状态改变事件
@@ -49,11 +63,18 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
         if(stateName=='coverState') {
             $scope.topState = true;
             $scope.centerState = true;
+            $scope.miniState=true;
         }else if(stateName=='topState'){
             $scope.coverState=true;
             $scope.centerState = true;
+            $scope.miniState=true;
         }else if(stateName=='centerState'){
             $scope.coverState=true;
+            $scope.topState = true;
+            $scope.miniState=true;
+        }else if(stateName=='miniState'){
+            $scope.coverState=true;
+            $scope.centerState = true;
             $scope.topState = true;
         }
     }
@@ -63,6 +84,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
         $scope.coverState=false;
         $scope.topState=false;
         $scope.centerState=false;
+        $scope.miniState=false;
     }
 
     //文件上传(封面)
@@ -80,6 +102,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
     $scope.updateCover.bind('success',function(event,xhr,item,response){
         document.getElementById('pCoverImgId')['src']=response.url;
         fileTagStateReStore();
+        img=response.filename;
         alert('上传成功!');
     });
 
@@ -101,6 +124,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
     $scope.updateTop.bind('success',function(event,xhr,item,response){
         document.getElementById('pTopImgId')['src']=response.url;
         fileTagStateReStore();
+        imgl=response.filename;
         alert('上传成功!');
     });
 
@@ -109,7 +133,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
     });
 
 
-    //文件上传(中间)
+    //文件上传(广告条图)
     $scope.updateCenter= $fileUploader.create({
         scope: $scope,
         url: 'https://192.168.1.210/o2b/v1.0.0/user/header?type=header',
@@ -123,6 +147,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
     $scope.updateCenter.bind('success',function(event,xhr,item,response){
         document.getElementById('pCenterImgId')['src']=response.url;
         fileTagStateReStore();
+        imgb=response.filename;
         alert('上传成功!');
     });
 
@@ -130,7 +155,34 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
         alert('上传失败,请清除后重新提交!');
     });
 
+    //文件上传(小)
+    $scope.updateMini= $fileUploader.create({
+        scope: $scope,
+        url: 'https://192.168.1.210/o2b/v1.0.0/user/header?type=header',
+        method: 'POST',
+        autoUpload: false,   // 自动上传
+        alias: 'picture',
+        headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
+
+    });
+
+    $scope.updateMini.bind('success',function(event,xhr,item,response){
+        document.getElementById('pMiniImgId')['src']=response.url;
+        fileTagStateReStore();
+        imgs=response.filename;
+        alert('上传成功!');
+    });
+
+    $scope.updateMini.bind('error',function(event,xhr,item,response){
+        alert('上传失败,请清除后重新提交!');
+    });
+
 
    //调用与后端的接口,如：CommonService.getAll(params)
+    uriData=undefined;
+    CommonService.getAll('product/attribute',uriData,function(data){
+        $scope.productCategorys=data.category;
+        $scope.productStates=data.attribute;
+    },errorOperate)
 
 });
