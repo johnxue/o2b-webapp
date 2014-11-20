@@ -183,7 +183,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$fileUploader,$compile
         url:"https://192.168.1.210/o2b/v1.0.0/order/returns/upload?type=order.returns",
         headers:{'Authorization':cookieOperate.getCookie('token'),'app-key':'fb98ab9159f51fd0'},
         method: "POST",
-        alias:"picture",
+        alias:"upfile",
         autoUpload: true       //是否自动上传
     });
 

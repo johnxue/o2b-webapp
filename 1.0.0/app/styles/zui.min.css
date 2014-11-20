@@ -361,7 +361,6 @@ input, button, select, textarea { font-family:inherit; font-size:inherit; line-h
 a { color:#999; text-decoration:none; -webkit-transition:all .5s cubic-bezier(0.175, .885, .32, 1);
 transition:all .5s cubic-bezier(0.175, .885, .32, 1)
 }
-a:hover, a:focus { color:#fff; }
 a:focus { outline:thin dotted #333; outline:5px auto -webkit-focus-ring-color; outline-offset:-2px }
 a.disabled, a.disabled:hover, a.disabled:focus, a[disabled], a[disabled]:hover, a[disabled]:focus {  text-decoration:none; cursor:default }
 audio, canvas, img, svg, video { max-width:100%; vertical-align:middle }
