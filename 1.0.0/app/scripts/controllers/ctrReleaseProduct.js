@@ -26,13 +26,13 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
     //初始化UEditor(百度编辑器)
     var ue =UEditorService.getUEditor('editor','group','aa');
 
-    //封面图
+    //文件名(封面图)
     var img = '';
-    //顶部大图
+    //文件名(顶部大图)
     var imgl='';
-    //广告条图
+    //文件名(广告条图)
     var imgb='';
-    //小图
+    //文件名(小图)
     var imgs ='';
   //初始化$scope中定义的变量
 
@@ -55,6 +55,10 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
     $scope.productCategorys={};
 
     $scope.productStates={};
+
+    $scope.coverImgUrl='';
+
+    $scope.statesObj={};
 
   //实现与页面交互的事件,如：button_click
 
@@ -90,7 +94,8 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
     //文件上传(封面)
     $scope.updateCover= $fileUploader.create({
         scope: $scope,
-        url: 'https://192.168.1.210/o2b/v1.0.0/user/header?type=userheader',
+        url: 'http://192.168.1.110:8081/o2b/v1.0.0/user/header?type=userheader',
+        /*url: 'https://192.168.1.210/o2b/v1.0.0/user/header?type=userheader',*/
         method: 'POST',
         autoUpload: false,   // 自动上传
         alias: 'upfile',
@@ -102,6 +107,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
     $scope.updateCover.bind('success',function(event,xhr,item,response){
         document.getElementById('pCoverImgId')['src']=response.url;
         fileTagStateReStore();
+        $scope.coverImgUrl=response.url;
         img=response.filename;
         alert('上传成功!');
     });
@@ -113,10 +119,12 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
     //文件上传(顶部)
     $scope.updateTop= $fileUploader.create({
         scope: $scope,
-        url: 'https://192.168.1.210/o2b/v1.0.0/user/header?type=header',
+        url: 'http://192.168.1.110:8081/o2b/v1.0.0/user/header?type=userheader',
+        /*url: 'https://192.168.1.210/o2b/v1.0.0/user/header?type=userheader',*/
         method: 'POST',
         autoUpload: false,   // 自动上传
-        alias: 'picture',
+        alias: 'upfile',
+        removeAfterUpload: true,
         headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
 
     });
@@ -136,10 +144,12 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
     //文件上传(广告条图)
     $scope.updateCenter= $fileUploader.create({
         scope: $scope,
-        url: 'https://192.168.1.210/o2b/v1.0.0/user/header?type=header',
+        url: 'http://192.168.1.110:8081/o2b/v1.0.0/user/header?type=userheader',
+        /*url: 'https://192.168.1.210/o2b/v1.0.0/user/header?type=userheader',*/
         method: 'POST',
         autoUpload: false,   // 自动上传
-        alias: 'picture',
+        alias: 'upfile',
+        removeAfterUpload: true,
         headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
 
     });
@@ -158,10 +168,12 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
     //文件上传(小)
     $scope.updateMini= $fileUploader.create({
         scope: $scope,
-        url: 'https://192.168.1.210/o2b/v1.0.0/user/header?type=header',
+        url: 'http://192.168.1.110:8081/o2b/v1.0.0/user/header?type=userheader',
+        /*url: 'https://192.168.1.210/o2b/v1.0.0/user/header?type=userheader',*/
         method: 'POST',
         autoUpload: false,   // 自动上传
-        alias: 'picture',
+        alias: 'upfile',
+        removeAfterUpload: true,
         headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
 
     });
@@ -177,12 +189,45 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
         alert('上传失败,请清除后重新提交!');
     });
 
+    //提交产品基本信息
+    $scope.submitProductInfo=function(productInfoForm){
+       uriData ={};
+        uriData.c= productInfoForm.c;
+        uriData.bn= productInfoForm.bn;
+        uriData.name= productInfoForm.name;
+        uriData.spec= productInfoForm.spec;
+        uriData.desc= productInfoForm.desc;
+        uriData.img= img;
+        uriData.imgl= imgl;
+        uriData.imgb= imgb;
+        uriData.imgs= imgs;
+        uriData.sc= productInfoForm.sc;
+        uriData.cat= productInfoForm.cat;
+        uriData.st= productInfoForm.st;
+        uriData.stm= productInfoForm.stm;
+        uriData.etm= productInfoForm.etm;
+        uriData.cp= productInfoForm.cp;
+        uriData.op= productInfoForm.op;
+        uriData.ta= 0;
+        uriData.tt= 0;
+        uriData.tf= 0;
+        uriData.ts= 0;
+        uriData.lmt=productInfoForm.lmt;
+
+       CommonService.createOne('product',JSON.stringify(uriData),function(data){
+             console.info(data.pid);
+       },errorOperate);
+    }
+
 
    //调用与后端的接口,如：CommonService.getAll(params)
     uriData=undefined;
     CommonService.getAll('product/attribute',uriData,function(data){
         $scope.productCategorys=data.category;
         $scope.productStates=data.attribute;
+        for(var i=0;i<$scope.productStates.length;i++){
+            $scope.statesObj[$scope.productStates[i][1]]=$scope.productStates[i][0];
+        }
     },errorOperate)
 
 });

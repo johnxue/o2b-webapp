@@ -148,6 +148,7 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
         method: 'PATCH',
         autoUpload: false,   // 是否自动上传
         alias: 'upfile',
+        removeAfterUpload: true,
         headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
 
     });
