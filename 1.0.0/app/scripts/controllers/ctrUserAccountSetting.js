@@ -51,6 +51,7 @@ UserAccountSettingControllers.controller('UserAccountSettingCtrl',function($scop
            method: 'POST',
            autoUpload: false,   // 自动上传
            alias: 'upfile',
+           removeAfterUpload: true,
            headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
 
        });

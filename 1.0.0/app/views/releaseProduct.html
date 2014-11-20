@@ -50,7 +50,7 @@
                   <label class="col-md-2 bluezi" >产品类别：</label>
                   <div class="col-md-10">
                     <label class="radio-inline" ng-repeat="productCategory in productCategorys" ng-if="productCategory[1]!='0000'">
-                       <input type="radio" name="pCRadios"  value="productCategory[1]" ng-model="productInfoForm.cat">
+                       <input type="radio" name="pCRadios"  ng-value="productCategory[1]" ng-model="productInfoForm.cat">
                         {{productCategory[0]}}
                     </label>
                   </div>
@@ -59,7 +59,7 @@
                     <label class="col-md-2 bluezi" >产品状态：</label>
                     <div class="col-md-10">
                         <label class="radio-inline" ng-repeat="productState in productStates" ng-if="productState[1]!='ALL'">
-                            <input type="radio" name="pSRadios"  value="productState[1]" ng-model="productInfoForm.st">
+                            <input type="radio" name="pSRadios"  ng-value="productState[1]" ng-model="productInfoForm.st">
                             {{productState[0]}}
                         </label>
                     </div>
@@ -68,9 +68,9 @@
                   <label class="col-md-2 blue">开始时间：</label>
                   <div class="col-md-6">
                       <div class="input-group">
-                      <input id="startTimeId" type="text" ng-model="productInfoForm.stm" readonly="true" class="form-control"/>
+                      <input id="startTimeId" type="text" ng-model="productInfoForm.stm" readonly="true" class="form-control" placeholder="请选择开始时间"/>
                       <span class="input-group-btn">
-                      <button class="btn btn-default" type="button" onclick="WdatePicker({el:'startTimeId',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicking:function(dp){angular.element(this).scope().productInfoForm.stm=dp.cal.getNewDateStr()}})"><i class="icon-calendar"></i></button>
+                      <button class="btn btn-default" type="button" onclick="WdatePicker({el:'startTimeId',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicking:function(dp){angular.element(this).scope().productInfoForm.stm=dp.cal.getNewDateStr();angular.element(this).scope().$apply();}})"><i class="icon-calendar"></i></button>
                       </span>
                       </div>
                   </div>
@@ -79,9 +79,9 @@
                   <label class="col-md-2 bluezi" >结束时间：</label>
                   <div class="col-md-6">
                       <div class="input-group">
-                      <input id="endTimeId" type="text" ng-model="productInfoForm.etm" readonly="true" class="form-control"/>
+                      <input id="endTimeId" type="text" ng-model="productInfoForm.etm" readonly="true" class="form-control" placeholder="请选择结束时间"/>
                       <span class="input-group-btn">
-                      <button class="btn btn-default" type="button" onclick="WdatePicker({el:'endTimeId',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicking:function(dp){angular.element(this).scope().productInfoForm.etm=dp.cal.getNewDateStr()}})"><i class="icon-calendar"></i></button>
+                      <button class="btn btn-default" type="button" onclick="WdatePicker({el:'endTimeId',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicking:function(dp){angular.element(this).scope().productInfoForm.etm=dp.cal.getNewDateStr();angular.element(this).scope().$apply();}})"><i class="icon-calendar"></i></button>
                       </span>
                       </div>
                   </div>
@@ -89,20 +89,20 @@
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >产品原价：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" >
+                    <input type="text" class="form-control" ng-model="productInfoForm.op" placeholder="请填写产品原价">
                   </div>
                 </div>
               
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >当前价格：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写产品当前价格">
+                    <input type="text" class="form-control" placeholder="请填写产品当前价格" ng-model="productInfoForm.cp">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >限定数量：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写限定数量">
+                    <input type="text" class="form-control" placeholder="请填写限定数量" ng-model="productInfoForm.lmt">
                   </div>
                   <!-- <div class="col-md-1 blue">个</div>--> 
                 </div>
@@ -136,7 +136,7 @@
                           </button>
                       </div>
                     <span class="pull-right" style="margin-top:-22px;">建议尺寸：690x512px</span> </br>
-                    <div class="mt20"><img src="images/prducttu.jpg"  class="prdouctimg" id="pCoverImgId"/></div>
+                    <div class="mt20"><img src="images/min.png"  class="prdouctimg" id="pCoverImgId"/></div>
                   </div>
                 </div>
                 <div class="form-group">
@@ -163,7 +163,7 @@
                           </button>
                       </div>
                     <span class="pull-right" style="margin-top:-22px;">建议尺寸：2560x450px</span> </br>
-                    <div class="mt20"><img src="images/dog.jpg"  class="prdouctimg" id="pTopImgId"/></div>
+                    <div class="mt20"><img src="images/min.png"  class="prdouctimg" id="pTopImgId"/></div>
                   </div>
                 </div>
                 <div class="form-group">
@@ -190,7 +190,7 @@
                           </button>
                       </div>
                     <span class="pull-right" style="margin-top:-22px;">建议尺寸：468x224px</span> </br>
-                    <div class="mt20"><img src="images/prducttu.jpg"  class="prdouctimg" id="pCenterImgId"/></div>
+                    <div class="mt20"><img src="images/min.png"  class="prdouctimg" id="pCenterImgId"/></div>
                   </div>
                 </div>
                 <div class="form-group">
@@ -217,25 +217,34 @@
                             </button>
                         </div>
                         <span class="pull-right" style="margin-top:-22px;">建议尺寸：468x224px</span> </br>
-                        <div class="mt20"><img src="images/prducttu.jpg"  class="prdouctimg" id="pMiniImgId"/></div>
+                        <div class="mt20"><img src="images/min.png"  class="prdouctimg" id="pMiniImgId"/></div>
                     </div>
                 </div>
                 <div class="col-md-12 text-center mp20">
-                  <button class="btn btn-info">保存提交审核</button>
+                  <button class="btn btn-info" ng-click="submitProductInfo(productInfoForm);">保存提交审核</button>
                 </div>
               </div>
             </form>
           </div>
           <div class="col-md-3">
-            <div class="card mp10"><img src="images/min.png" width="214" height="165" /> <span class="caption">&nbsp;</span> <a href="###" class="card-heading"><span>&nbsp;</span></a>
-              <P class="listp"><span class='label label-info pull-right' >准备中</span></P>
-              <div class="col-md-5 ha20"  >¥0</div>
-              <div class="col-md-3 ha20" >0</div>
-              <div class="col-md-3 pull-right ha20" >0人</div>
-              <div class="col-md-5 ha20 hui" >累计金额</div>
-              <div class="col-md-3 ha20 hui" >话题</div>
-              <div class="col-md-3 pull-right ha20 hui" >关注</div>
-            </div>
+              <div class="card mp10">
+                  <img src="images/min.png" width="214" height="165" ng-if="coverImgUrl==''"/>
+                  <img ng-src="{{coverImgUrl}}" width="214" height="165" ng-if="coverImgUrl!=''"/>
+                  <span class="caption">{{productInfoForm.name}}&nbsp;</span>
+                  <a href="javascript:;" class="card-heading"><span>{{productInfoForm.name}}&nbsp;</span></a>
+                  <P class="listp">
+                      <span class="hui">{{productInfoForm.stm+'&'+productInfoForm.etm | datemark}}</span>
+                      <span class='label label-success pull-right' ng-show="productInfoForm.st=='ON'">{{statesObj['ON']}}</span>
+                      <span class='label label-warning pull-right' ng-show="productInfoForm.st=='TBA'">{{statesObj['TBA']}}</span>
+                      <span class='label label-default pull-right' ng-show="productInfoForm.st=='OFF'">{{statesObj['OFF']}}</span>
+                  </P>
+                  <div class="col-md-5 ha20"  >￥0</div>
+                  <div class="col-md-3 ha20" >0</div>
+                  <div class="col-md-3 pull-right ha20" >0人</div>
+                  <div class="col-md-5 ha20 hui" >累计金额</div>
+                  <div class="col-md-3 ha20 hui" >话题</div>
+                  <div class="col-md-3 pull-right ha20 hui" >关注</div>
+              </div>
           </div>
         </div>
         <div class="tab-panel" ng-show="vm.activeTab == 2">
