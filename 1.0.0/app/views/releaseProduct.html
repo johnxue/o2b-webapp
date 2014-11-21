@@ -65,31 +65,21 @@
                     </div>
                 </div>
                 <div class="form-group">
-                  <label class="col-md-2 blue">开始时间：</label>
-                  <div class="col-md-6">
-                      <div class="input-group">
-                      <input id="startTimeId" type="text" ng-model="productInfoForm.stm" readonly="true" class="form-control" placeholder="请选择开始时间"/>
-                      <span class="input-group-btn">
-                      <button class="btn btn-default" type="button" onclick="WdatePicker({el:'startTimeId',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicking:function(dp){angular.element(this).scope().productInfoForm.stm=dp.cal.getNewDateStr();angular.element(this).scope().$apply();}})"><i class="icon-calendar"></i></button>
-                      </span>
-                      </div>
-                  </div>
+                    <label class="col-md-2 bluezi" >开始时间：</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control form-datetime" data-date-format="yyyy-mm-dd hh:ii:00" ng-model="productInfoForm.stm" placeholder="请选择开始时间" readonly="true"/>
+                    </div>
                 </div>
                 <div class="form-group">
-                  <label class="col-md-2 bluezi" >结束时间：</label>
-                  <div class="col-md-6">
-                      <div class="input-group">
-                      <input id="endTimeId" type="text" ng-model="productInfoForm.etm" readonly="true" class="form-control" placeholder="请选择结束时间"/>
-                      <span class="input-group-btn">
-                      <button class="btn btn-default" type="button" onclick="WdatePicker({el:'endTimeId',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicking:function(dp){angular.element(this).scope().productInfoForm.etm=dp.cal.getNewDateStr();angular.element(this).scope().$apply();}})"><i class="icon-calendar"></i></button>
-                      </span>
-                      </div>
-                  </div>
+                    <label class="col-md-2 bluezi" >结束时间：</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control form-datetime" data-date-format="yyyy-mm-dd hh:ii:59" ng-model="productInfoForm.etm" placeholder="请选择结束时间" readonly="true"/>
+                    </div>
                 </div>
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >产品原价：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" ng-model="productInfoForm.op" placeholder="请填写产品原价">
+                    <input type="text" class="form-control" ng-model="productInfoForm.op" placeholder="请填写产品原价" />
                   </div>
                 </div>
               
@@ -115,23 +105,23 @@
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >封面图片：</label>
                   <div class="col-md-10">
-                      <input ng-file-select name="productInfoForm_cover" id="coverId"  onchange="angular.element(this).scope().fileChanged('coverState')"
-                             ng-model="productInfoForm.cover" type="file" size="4"  single
-                             accept="image/gif,image/png,image/jpeg" ng-disabled="coverState"/>
+                      <input nv-file-select="" uploader="updateCover" name="productInfoForm_cover" id="coverId"
+                             ng-model="productInfoForm.cover" type="file" size="4"
+                             accept="image/gif,image/png,image/jpeg"/>
 
                       <div nowrap>
                           <button type="button" class="btn btn-success btn-xs"
                                   ng-click="updateCover.queue[0].upload()"
-                                  ng-disabled="(updateCover.queue[0].isReady || updateCover.queue[0].isUploading ||updateCover.queue[0].isSuccess)||coverState">
+                                  ng-disabled="updateCover.queue[0].isReady || updateCover.queue[0].isUploading ||updateCover.queue[0].isSuccess">
                               <span>上传</span>
                           </button>
                           <button type="button" class="btn btn-warning btn-xs"
                                   ng-click="updateCover.queue[0].cancel()"
-                                  ng-disabled="(!updateCover.queue[0].isUploading)||coverState">
+                                  ng-disabled="!updateCover.queue[0].isUploading">
                               <span>取消</span>
                           </button>
-                          <button type="button" class="btn btn-danger btn-xs" ng-disabled="coverState"
-                                  ng-click="updateCover.queue[0].remove();fileTagStateReStore();">
+                          <button type="button" class="btn btn-danger btn-xs"
+                                  ng-click="updateCover.queue[0].remove();">
                               <span>清空</span>
                           </button>
                       </div>
@@ -142,23 +132,23 @@
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >头部大图：</label>
                   <div class="col-md-10">
-                      <input ng-file-select  name="productInfoForm_top" id="topId" onchange="angular.element(this).scope().fileChanged('topState')"
-                             ng-model="productInfoForm.top" type="file" size="4"  single
-                             accept="image/gif,image/png,image/jpeg" ng-disabled="topState"/>
+                      <input  nv-file-select="" uploader="updateTop" name="productInfoForm_top" id="topId"
+                             ng-model="productInfoForm.top" type="file" size="4"
+                             accept="image/gif,image/png,image/jpeg"/>
 
                       <div nowrap>
                           <button type="button" class="btn btn-success btn-xs "
                                   ng-click="updateTop.queue[0].upload()"
-                                  ng-disabled="(updateTop.queue[0].isReady || updateTop.queue[0].isUploading ||updateTop.queue[0].isSuccess)||topState">
+                                  ng-disabled="updateTop.queue[0].isReady || updateTop.queue[0].isUploading ||updateTop.queue[0].isSuccess">
                               <span>上传</span>
                           </button>
                           <button type="button" class="btn btn-warning btn-xs "
                                   ng-click="updateTop.queue[0].cancel()"
-                                  ng-disabled="(!updateTop.queue[0].isUploading)|| topState">
+                                  ng-disabled="!updateTop.queue[0].isUploading">
                               <span>取消</span>
                           </button>
-                          <button type="button" class="btn btn-danger btn-xs" ng-disabled="topState"
-                                  ng-click="updateTop.queue[0].remove();fileTagStateReStore();">
+                          <button type="button" class="btn btn-danger btn-xs"
+                                  ng-click="updateTop.queue[0].remove();">
                               <span>清空</span>
                           </button>
                       </div>
@@ -169,23 +159,23 @@
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >广告条图：</label>
                   <div class="col-md-10">
-                      <input ng-file-select  name="productInfoForm_center" id="centerId" onchange="angular.element(this).scope().fileChanged('centerState')"
-                             ng-model="productInfoForm.center" type="file" size="4"  single
-                             accept="image/gif,image/png,image/jpeg" ng-disabled="centerState" />
+                      <input nv-file-select="" uploader="updateCenter"  name="productInfoForm_center" id="centerId"
+                             ng-model="productInfoForm.center" type="file" size="4"
+                             accept="image/gif,image/png,image/jpeg" />
 
                       <div nowrap>
                           <button type="button" class="btn btn-success btn-xs "
                                   ng-click="updateCenter.queue[0].upload()"
-                                  ng-disabled="(updateCenter.queue[0].isReady || updateCenter.queue[0].isUploading ||updateCenter.queue[0].isSuccess)|| centerState">
+                                  ng-disabled="updateCenter.queue[0].isReady || updateCenter.queue[0].isUploading ||updateCenter.queue[0].isSuccess">
                               <span>上传</span>
                           </button>
                           <button type="button" class="btn btn-warning btn-xs "
                                   ng-click="updateCenter.queue[0].cancel()"
-                                  ng-disabled="(!updateCenter.queue[0].isUploading)|| centerState">
+                                  ng-disabled="!updateCenter.queue[0].isUploading">
                               <span>取消</span>
                           </button>
-                          <button type="button" class="btn btn-danger btn-xs " ng-disabled="centerState"
-                                  ng-click="updateCenter.queue[0].remove();fileTagStateReStore();">
+                          <button type="button" class="btn btn-danger btn-xs "
+                                  ng-click="updateCenter.queue[0].remove();">
                               <span>清空</span>
                           </button>
                       </div>
@@ -196,23 +186,23 @@
                 <div class="form-group">
                     <label class="col-md-2 bluezi" >小图：</label>
                     <div class="col-md-10">
-                        <input ng-file-select  name="productInfoForm_mini" id="miniId" onchange="angular.element(this).scope().fileChanged('miniState')"
-                               ng-model="productInfoForm.mini" type="file" size="4"  single
-                               accept="image/gif,image/png,image/jpeg" ng-disabled="miniState" />
+                        <input nv-file-select="" uploader="updateMini"  name="productInfoForm_mini" id="miniId"
+                               ng-model="productInfoForm.mini" type="file" size="4"
+                               accept="image/gif,image/png,image/jpeg"/>
 
                         <div nowrap>
                             <button type="button" class="btn btn-success btn-xs "
                                     ng-click="updateMini.queue[0].upload()"
-                                    ng-disabled="(updateMini.queue[0].isReady || updateMini.queue[0].isUploading ||updateMini.queue[0].isSuccess)|| miniState">
+                                    ng-disabled="updateMini.queue[0].isReady || updateMini.queue[0].isUploading ||updateMini.queue[0].isSuccess">
                                 <span>上传</span>
                             </button>
                             <button type="button" class="btn btn-warning btn-xs "
                                     ng-click="updateMini.queue[0].cancel()"
-                                    ng-disabled="(!updateMini.queue[0].isUploading)|| miniState">
+                                    ng-disabled="!updateMini.queue[0].isUploading">
                                 <span>取消</span>
                             </button>
-                            <button type="button" class="btn btn-danger btn-xs " ng-disabled="miniState"
-                                    ng-click="updateMini.queue[0].remove();fileTagStateReStore();">
+                            <button type="button" class="btn btn-danger btn-xs "
+                                    ng-click="updateMini.queue[0].remove();">
                                 <span>清空</span>
                             </button>
                         </div>
@@ -409,3 +399,18 @@
   </div>
 </div>
 
+<script type="text/javascript">
+
+    $('.form-datetime').datetimepicker(
+            {
+                language:'zh-CN',
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                forceParse: 0,
+                showMeridian: 1
+            });
+
+</script>

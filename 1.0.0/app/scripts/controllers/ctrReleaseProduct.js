@@ -18,7 +18,7 @@
 var ReleaseProductControllers = angular.module('ReleaseProductControllers',[]);
 
 /*定义 Controller: ReleaseProduct  （主页面 releaseProduct.html）*/
-ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,CommonService,$window,$fileUploader,UEditorService){
+ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,CommonService,$window,FileUploader,UEditorService){
     ctrInit();
 
     var uriData='';
@@ -48,13 +48,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
     $scope.updateCenter={};
 
-    $scope.coverState=false;
-
-    $scope.topState=false;
-
-    $scope.centerState=false;
-
-    $scope.miniState=false;
+    $scope.updateMini={};
 
     $scope.productCategorys={};
 
@@ -66,130 +60,101 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
   //实现与页面交互的事件,如：button_click
 
-    //文件上传标签状态改变事件
-    $scope.fileChanged=function(stateName){
-        if(stateName=='coverState') {
-            $scope.topState = true;
-            $scope.centerState = true;
-            $scope.miniState=true;
-        }else if(stateName=='topState'){
-            $scope.coverState=true;
-            $scope.centerState = true;
-            $scope.miniState=true;
-        }else if(stateName=='centerState'){
-            $scope.coverState=true;
-            $scope.topState = true;
-            $scope.miniState=true;
-        }else if(stateName=='miniState'){
-            $scope.coverState=true;
-            $scope.centerState = true;
-            $scope.topState = true;
-        }
-    }
-
-    //文件上传标签状态复原
-    var fileTagStateReStore=$scope.fileTagStateReStore=function(){
-        $scope.coverState=false;
-        $scope.topState=false;
-        $scope.centerState=false;
-        $scope.miniState=false;
-    }
-
     //文件上传(封面)
-    $scope.updateCover= $fileUploader.create({
+    $scope.updateCover= new FileUploader({
         scope: $scope,
-        url: 'http://192.168.1.110:8081/o2b/v1.0.0/product/images?type=product.medium&code='+productCode,
-        //url: 'https://192.168.1.210/o2b/v1.0.0/product/images?type=product.medium&code='+productCode,
+        //url: 'http://192.168.1.110:8081/o2b/v1.0.0/product/images?type=product.medium&code='+productCode,
+        url: 'https://192.168.1.210/o2b/v1.0.0/product/images?type=product.medium&code='+productCode,
         method: 'POST',
         autoUpload: false,   // 自动上传
         alias: 'upfile',
+        queueLimit:1,
         removeAfterUpload: true,
         headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
     });
 
-    $scope.updateCover.bind('success',function(event,xhr,item,response){
+    $scope.updateCover.onSuccessItem = function(fileItem, response, status, headers) {
         document.getElementById('pCoverImgId')['src']=response.url;
-        fileTagStateReStore();
         $scope.coverImgUrl=response.url;
         img=response.url;
         alert('上传成功!');
-    });
+    };
 
-    $scope.updateCover.bind('error',function(event,xhr,item,response){
+    $scope.updateCover.onErrorItem = function(fileItem, response, status, headers) {
         alert('上传失败,请清除后重新提交!');
-    });
+    };
 
     //文件上传(顶部)
-    $scope.updateTop= $fileUploader.create({
+    $scope.updateTop= new FileUploader({
         scope: $scope,
-        url: 'http://192.168.1.110:8081/o2b/v1.0.0/product/images?type=product.large&code='+productCode,
-        //url: 'https://192.168.1.210/o2b/v1.0.0/product/images?type=product.large&code='+productCode,
+        //url: 'http://192.168.1.110:8081/o2b/v1.0.0/product/images?type=product.large&code='+productCode,
+        url: 'https://192.168.1.210/o2b/v1.0.0/product/images?type=product.large&code='+productCode,
         method: 'POST',
         autoUpload: false,   // 自动上传
         alias: 'upfile',
+        queueLimit:1,
         removeAfterUpload: true,
         headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
 
     });
 
-    $scope.updateTop.bind('success',function(event,xhr,item,response){
+    $scope.updateTop.onSuccessItem = function(fileItem, response, status, headers) {
         document.getElementById('pTopImgId')['src']=response.url;
-        fileTagStateReStore();
         imgl=response.url;
         alert('上传成功!');
-    });
+    };
 
-    $scope.updateTop.bind('error',function(event,xhr,item,response){
+    $scope.updateTop.onErrorItem = function(fileItem, response, status, headers) {
         alert('上传失败,请清除后重新提交!');
-    });
+    };
 
     //文件上传(广告条图)
-    $scope.updateCenter= $fileUploader.create({
+    $scope.updateCenter= new FileUploader({
         scope: $scope,
-        url: 'http://192.168.1.110:8081/o2b/v1.0.0/product/images?type=product.banner&code='+productCode,
-        //url: 'https://192.168.1.210/o2b/v1.0.0/product/images?type=product.banner&code='+productCode,
+        //url: 'http://192.168.1.110:8081/o2b/v1.0.0/product/images?type=product.banner&code='+productCode,
+        url: 'https://192.168.1.210/o2b/v1.0.0/product/images?type=product.banner&code='+productCode,
         method: 'POST',
         autoUpload: false,   // 自动上传
         alias: 'upfile',
+        queueLimit:1,
         removeAfterUpload: true,
         headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
 
     });
 
-    $scope.updateCenter.bind('success',function(event,xhr,item,response){
+    $scope.updateCenter.onSuccessItem = function(fileItem, response, status, headers) {
         document.getElementById('pCenterImgId')['src']=response.url;
-        fileTagStateReStore();
         imgb=response.url;
         alert('上传成功!');
-    });
+    };
 
-    $scope.updateCenter.bind('error',function(event,xhr,item,response){
+    $scope.updateCenter.onErrorItem = function(fileItem, response, status, headers) {
         alert('上传失败,请清除后重新提交!');
-    });
+    };
 
     //文件上传(小)
-    $scope.updateMini= $fileUploader.create({
+    $scope.updateMini= new FileUploader({
         scope: $scope,
-        url: 'http://192.168.1.110:8081/o2b/v1.0.0/product/images?type=product.small&code='+productCode,
-        //url: 'https://192.168.1.210/o2b/v1.0.0/product/images?type=product.small&code='+productCode,
+        //url: 'http://192.168.1.110:8081/o2b/v1.0.0/product/images?type=product.small&code='+productCode,
+        url: 'https://192.168.1.210/o2b/v1.0.0/product/images?type=product.small&code='+productCode,
         method: 'POST',
         autoUpload: false,   // 自动上传
         alias: 'upfile',
+        queueLimit:1,
         removeAfterUpload: true,
         headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
 
     });
 
-    $scope.updateMini.bind('success',function(event,xhr,item,response){
+    $scope.updateMini.onSuccessItem = function(fileItem, response, status, headers) {
         document.getElementById('pMiniImgId')['src']=response.url;
-        fileTagStateReStore();
         imgs=response.url;
         alert('上传成功!');
-    });
+    };
 
-    $scope.updateMini.bind('error',function(event,xhr,item,response){
+    $scope.updateMini.onErrorItem = function(fileItem, response, status, headers) {
         alert('上传失败,请清除后重新提交!');
-    });
+    };
 
     //提交产品基本信息
     $scope.submitProductInfo=function(productInfoForm){

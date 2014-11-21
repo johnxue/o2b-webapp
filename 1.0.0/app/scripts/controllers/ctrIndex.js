@@ -100,10 +100,10 @@ IndexControllers.controller('IndexCtrl',function($scope,CommonService,$window){
     };
 
     //页面跳转
-    $scope.goTo=function(url,target){
+    $scope.goTo=function(url,event){
         //更改选项样式
         $('.activeIndex').removeClass('activeIndex');
-        target.setAttribute('class','activeIndex');
+        event.target.setAttribute('class','activeIndex');
         $window.location.href=url;
 
     }

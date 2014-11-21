@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <link href="styles/index.css" rel="stylesheet">
 <link href="styles/zui.min.css" rel="stylesheet">
+<!--日历插件-->
+<link href="libs/datetimepicker/datetimepicker.css" rel="stylesheet"/>
 </head>
 
 <body>
@@ -17,10 +19,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-collapse-example">
           <ul class="nav navbar-nav">
-            <li><a href="javascript:;" ng-click="goTo('#/',$event.target);">首页</a></li>
-            <li><a href="javascript:;" ng-click="goTo('#/productList',$event.target);">产品</a></li>
-            <li><a href="javascript:;" ng-click="goTo('#/groupMain',$event.target);">圈子</a></li>
-            <li><a href="javascript:;" ng-click="goTo('#/newsList',$event.target);">新闻</a></li>
+            <li><a href="javascript:;" ng-click="goTo('#/',$event);">首页</a></li>
+            <li><a href="javascript:;" ng-click="goTo('#/productList',$event);">产品</a></li>
+            <li><a href="javascript:;" ng-click="goTo('#/groupMain',$event);">圈子</a></li>
+            <li><a href="javascript:;" ng-click="goTo('#/newsList',$event);">新闻</a></li>
           </ul>
           <form class="navbar-form navbar-left" role="search" name="queryProductForm" ng-model="queryProductForm" novalidate="true">
             <div class="form-group">
@@ -31,18 +33,18 @@
           </form>
           <!-- 登陆前显示-->
           <ul class="nav navbar-nav navbar-right" ng-show="beforeLogin">
-            <li><a href="javascript:;" ng-click="goTo('#/register',$event.target);">注册</a></li>
+            <li><a href="javascript:;" ng-click="goTo('#/register',$event);">注册</a></li>
             <li><a href="" data-toggle="modal"  data-target="#denglu" onclick="$('.activeIndex').removeClass('activeIndex');">登陆</a></li>
-            <li><a href="javascript:;" ng-click="goTo('#/productShoppingCart',$event.target);"><i class="icon-shopping-cart"></i> 购物车 <span class="label label-badge label-info">{{cartProductsTotal}}</span></a>
+            <li><a href="javascript:;" ng-click="goTo('#/productShoppingCart',$event);"><i class="icon-shopping-cart"></i> 购物车 <span class="label label-badge label-info">{{cartProductsTotal}}</span></a>
             </li>
           </ul>
           <!-- 登陆前显示结束--> 
           <!-- 登陆后显示-->
           <div class="dengluhou" ng-show="afterLogin">
             <ul class="nav navbar-nav navbar-right">
-              <li> <a href="javascript:;" ng-click="goTo('#/myForm',$event.target);"> 我的订单</a> </li>
+              <li> <a href="javascript:;" ng-click="goTo('#/myForm',$event);"> 我的订单</a> </li>
               <li>
-                 <a href="javascript:;" ng-click="goTo('#/messages',$event.target);"><i class="icon-volume-up"></i> 消息 <span class="label label-badge label-warning">{{unReadMessageCountOnIndex}}</span></a>
+                 <a href="javascript:;" ng-click="goTo('#/messages',$event);"><i class="icon-volume-up"></i> 消息 <span class="label label-badge label-warning">{{unReadMessageCountOnIndex}}</span></a>
               </li>
               <li > <a href="" data-toggle="dropdown"  class="dropdown-toggle" onclick="$('.activeIndex').removeClass('activeIndex');">{{loginedName}} <i class="icon-caret-down"></i> </a>
                 <ul class=" pull-right dropdown-menu  dropdown-close">
@@ -64,7 +66,7 @@
                 </ul>
               </li>
               <li>
-                  <a href="javascript:;" ng-click="goTo('#/productShoppingCart',$event.target);"><i class="icon-shopping-cart"></i> 购物车 <span class="label label-badge label-info">{{cartProductsTotal}}</span></a>
+                  <a href="javascript:;" ng-click="goTo('#/productShoppingCart',$event);"><i class="icon-shopping-cart"></i> 购物车 <span class="label label-badge label-info">{{cartProductsTotal}}</span></a>
               </li>
             </ul>
           </div>
@@ -213,7 +215,7 @@
 <!-- /.modal -->
 
 <div class="fixtop"><a href="#top"></a></div>
-<script src="libs/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="libs/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="libs/ZUI/js/example.js"></script>
 <script type="text/javascript" src="libs/ZUI/js/zui.min.js"></script>
 <script type="text/javascript" src="libs/angular/angular.js"></script>
@@ -268,7 +270,7 @@
 <script type="text/javascript" charset="utf-8" src="libs/ueditor/ueditor.all.js"> </script>
 <script type="text/javascript" charset="utf-8" src="libs/ueditor/lang/zh-cn/zh-cn.js"></script>
 <!--日历插件-->
-<script type="text/javascript" src="libs/My97DatePicker/WdatePicker.js" charset="utf-8"></script>
+<script type="text/javascript" src="libs/datetimepicker/datetimepicker.js" charset="utf-8"></script>
 
 <script src="libs/jctlibs/base64.js"></script>
 </body>

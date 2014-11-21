@@ -15,8 +15,8 @@ var CommonServices = angular.module('CommonServices', []);
 //定义通用服务：CommonService
 CommonServices.factory('CommonService', ['$http', function ($http) {
 
-    var baseUrl='http://192.168.1.110:8081/o2b/v1.0.0/';
-    //var baseUrl = 'https://192.168.1.210/o2b/v1.0.0/';
+    //var baseUrl='http://192.168.1.110:8081/o2b/v1.0.0/';
+    var baseUrl = 'https://192.168.1.210/o2b/v1.0.0/';
 
 
     //定义通用服务CommonService提供的方法

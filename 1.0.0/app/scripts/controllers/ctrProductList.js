@@ -41,10 +41,10 @@
    //实现与页面交互的事件,如：button_click
 
      //按条件查询点击事件
-     $scope.queryBySth = function(sort,value,target){
+     $scope.queryBySth = function(sort,value,event){
          //更改选项样式
          $('.active').removeClass('active');
-         target.setAttribute('class','active');
+         event.target.setAttribute('class','active');
 
          $scope.products = {};
          querySort=sort;

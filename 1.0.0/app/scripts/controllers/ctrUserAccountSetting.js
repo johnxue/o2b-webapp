@@ -18,7 +18,7 @@
 var UserAccountSettingControllers = angular.module('UserAccountSettingControllers',[]);
 
 /*定义 Controller: UserAccountSettingCtrl  （帐号设置页面 accountSetting.html）*/
-UserAccountSettingControllers.controller('UserAccountSettingCtrl',function($scope,CommonService,$fileUploader){
+UserAccountSettingControllers.controller('UserAccountSettingCtrl',function($scope,CommonService,FileUploader){
     ctrInit();
 
     var uriData='';
@@ -45,25 +45,26 @@ UserAccountSettingControllers.controller('UserAccountSettingCtrl',function($scop
     };
 
     //文件上传
-   $scope.uploader=$fileUploader.create({
+   $scope.uploader=new FileUploader({
            scope: $scope,
            url: 'https://192.168.1.210/o2b/v1.0.0/user/header?type=userheader',
            method: 'POST',
            autoUpload: false,   // 自动上传
            alias: 'upfile',
+           queueLimit:1,
            removeAfterUpload: true,
            headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
 
        });
 
-    $scope.uploader.bind('success',function(event,xhr,item,response){
-        document.getElementById('hiId')['src']=response.url;
-        alert('上传成功!');
-    });
+    $scope.uploader.onSuccessItem = function(fileItem, response, status, headers) {
+             document.getElementById('hiId')['src']=response.url;
+             alert('上传成功!');
+    };
 
-    $scope.uploader.bind('error',function(event,xhr,item,response){
-        alert('上传失败,请清除后重新提交!');
-    });
+    $scope.uploader.onErrorItem = function(fileItem, response, status, headers) {
+             alert('上传失败,请清除后重新提交!');
+    };
 
 
 

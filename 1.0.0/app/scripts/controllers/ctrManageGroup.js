@@ -18,7 +18,7 @@
 var ManageGroupControllers = angular.module('ManageGroupControllers',[]);
 
 /*定义 Controller: ManageGroupCtrl  （管理圈子页面 manageGroup.html）*/
-ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonService,$window,$fileUploader,$routeParams,$compile){
+ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonService,$window,FileUploader,$routeParams,$compile){
     ctrInit();
 
     var uriData='';
@@ -142,25 +142,26 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     }
 
     //圈子头像上传
-    $scope.uploader=$fileUploader.create({
+    $scope.uploader=new FileUploader({
         scope: $scope,
         url: 'https://192.168.1.210/o2b/v1.0.0/group/header?type=groupheader&gid='+$routeParams.groupId,
         method: 'PATCH',
         autoUpload: false,   // 是否自动上传
         alias: 'upfile',
+        queueLimit:1,
         removeAfterUpload: true,
         headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
 
     });
 
-    $scope.uploader.bind('success',function(event,xhr,item,response){
-        document.getElementById('giId')['src']=response.url;
-        alert('上传成功!');
-    });
+    $scope.uploader.onSuccessItem = function(fileItem, response, status, headers) {
+         document.getElementById('giId')['src']=response.url;
+         alert('上传成功!');
+    };
 
-    $scope.uploader.bind('error',function(event,xhr,item,response){
+    $scope.uploader.onErrorItem = function(fileItem, response, status, headers) {
         alert('上传失败,请清除后重新提交!');
-    });
+    };
 
     //显示成员管理
     $scope.showUserManage=function(){
