@@ -1,9 +1,3 @@
-define([
-	"./core",
-	"./core/init",
-	"./traversing" // parent, contents
-], function( jQuery ) {
-
 jQuery.fn.extend({
 	wrapAll: function( html ) {
 		if ( jQuery.isFunction( html ) ) {
@@ -69,7 +63,4 @@ jQuery.fn.extend({
 			}
 		}).end();
 	}
-});
-
-return jQuery;
 });
