@@ -11,7 +11,7 @@
                     <div class="col-md-12 marginb">
                         <form name="frmAdverNews" ng-model="adList" class="form-horizontal" role="form" method='post'>
                             <div class="col-md-12">
-                                <div class="alert with-icon mp10"> <span class="mp7">广告产品查询： </span> <span class="col-md-6">
+                                <div class="alert with-icon mp10"><span class="mp7">广告产品查询： </span> <span class="col-md-6">
                   <input type="text" class="form-control" placeholder="请输入产品名称" name="adSele" ng-model="adList.seleCond" required>
                   </span> <span class="ml10">
                   <button class="btn btn-info" ng-disabled="frmAdverNews.$invalid" ng-click="adverSele(adList)"><i class="icon-search"></i> 查询</button>
@@ -41,7 +41,7 @@
                                                 <option >产品</option>
                                                 <option >圈子</option>-->
                                             </select></td>
-                                            <td><select ng-model="adSele.adLevelAd" id="levelad" class="form-control mp10">
+                                            <td><select ng-model="adSele.adLevelAd" id="levelad{{adSele[0]}}" class="form-control mp10">
                                                 <!--<option >一级</option>
                                                 <option >二级</option>
                                                 <option >三级</option>-->
@@ -66,9 +66,9 @@
                                                     </span>
                                                 </div>-->
                                                <!-- <input id="adStartTime{{adSele[0]}}" ng-model="adSele.adStartTime" type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',onpicking:function(dp){angular.element(this).scope().adSele.adStartTime=dp.cal.getNewDateStr();angular.element(this).scope().$apply();}})"/>-->
-                                               <input id="adStartTime{{adSele[0]}}" ng-model="adSele.adStartTime" type="text" class="form-control mp10" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',onpicking:function(dp){angular.element(this).scope().adSele.adStartTime=dp.cal.getNewDateStr()}})"/>
+                                                <input type="text" class="form-control mp10 form-datetime" ng-model="adSele.starTime" placeholder="请选择开始时间" ng-click="getTime()">
                                             </td>
-                                            <td><input id="adEndTime{{adSele[0]}}" ng-model="adSele.adEndTime" type="text" class="form-control mp10" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',onpicking:function(dp){angular.element(this).scope().adSele.adEndTime=dp.cal.getNewDateStr()}})"/></td>
+                                            <td><input type="text" class="form-control mp10 form-datetime" ng-model="adSele.endTime" placeholder="请选择结束时间" ng-click="getTime()"></td>
                                             <td>
                                                 <a href="" class="label label-info" data-toggle="modal" data-target="#hetong" ng-click="addAverApply(adSele,'0')">提交</a>
                                                 <div id="operate{{adSele[0]}}"></div>
@@ -400,3 +400,21 @@
         </div>
     </div>
 </div>
+
+<script>
+
+        $('.form-datetime').datetimepicker(
+                {
+                    language:'zh-CN',
+                    weekStart: 1,
+                    todayBtn:  1,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    forceParse: 0,
+                    showMeridian: 1,
+                    format: 'yyyy-mm-dd hh:ii'
+                });
+
+
+</script>
