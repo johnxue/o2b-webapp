@@ -38,7 +38,7 @@
               <div id="productFixed" class="row border fixed" style="float:left;">
                     <div class="col-md-12">
                       <h3><span class="label label-info large">限额{{productDetailBasic.limit}}台 / 剩余{{productDetailBasic.limit-productDetailBasic.totalSold}}台</span> </h3>
-                      <p><strong class="cl">¥{{productDetailBasic.currentPrice}}</strong>&nbsp;({{productDetailBasic.totalSold}}预订)/<span>原价：<del> 223 </del></span></p>
+                      <p><strong class="cl">¥{{productDetailBasic.currentPrice}}</strong>&nbsp;({{productDetailBasic.totalSold}}预订)/<span>原价：<del> {{productDetailBasic.originalPrice}} </del></span></p>
                     </div>
                     <p><img ng-src="images/products/{{productDetailBasic.image}}"/></p>
                     <div class="col-md-12">{{productDetailBasic.description}}

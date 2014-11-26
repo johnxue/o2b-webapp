@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <ul class="nav nav-tabs" ng-init="vm.activeTab=1">
         <li ng-class="{active: vm.activeTab == 1}" ><a href="javascript:;" ng-click="vm.activeTab = 1">发布我的产品</a></li>
-        <li ng-class="{active: vm.activeTab == 2}" ><a href="javascript:;" ng-click="vm.activeTab = 2">产品详细描述</a></li>
+        <li ng-class="{active: vm.activeTab == 2}" ><a href="javascript:;" ng-click="showProductDetailForm();" >产品详细描述</a></li>
         <li ng-class="{active: vm.activeTab == 3}" ><a href="javascript:;" ng-click="vm.activeTab = 3">产品审核</a></li>
         <li ng-class="{active: vm.activeTab == 4}" ><a href="javascript:;" ng-click="vm.activeTab = 4">产品管理</a></li>
       </ul>
@@ -18,39 +18,39 @@
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >产品编号：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写产品编号" ng-model="productInfoForm.c">
+                    <input type="text" class="form-control" placeholder="请填写产品编号" ng-model="productInfoForm.c" ng-change="productInfoChange('c');">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >产品批次：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写产品批次" ng-model="productInfoForm.bn" >
+                    <input type="text" class="form-control" placeholder="请填写产品批次" ng-model="productInfoForm.bn" ng-change="productInfoChange('bn');">
                   </div>
                 </div>
                   <div class="form-group">
                       <label class="col-md-2 bluezi" >产品名称：</label>
                       <div class="col-md-6">
-                          <input type="text" class="form-control" placeholder="请填写产品名称" ng-model="productInfoForm.name">
+                          <input type="text" class="form-control" placeholder="请填写产品名称" ng-model="productInfoForm.name" ng-change="productInfoChange('name');">
                       </div>
                       <div class="col-md-1 blue"> </div>
                   </div>
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >产品规格：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写产品规格" ng-model="productInfoForm.spec">
+                    <input type="text" class="form-control" placeholder="请填写产品规格" ng-model="productInfoForm.spec" ng-change="productInfoChange('spec');">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >供应编码：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写供应商编码"  ng-model="productInfoForm.sc" >
+                    <input type="text" class="form-control" placeholder="请填写供应商编码"  ng-model="productInfoForm.sc" ng-change="productInfoChange('sc');">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >产品类别：</label>
                   <div class="col-md-10">
                     <label class="radio-inline" ng-repeat="productCategory in productCategorys" ng-if="productCategory[1]!='0000'">
-                       <input type="radio" name="pCRadios"  ng-value="productCategory[1]" ng-model="productInfoForm.cat">
+                       <input type="radio" name="pCRadios"  ng-value="productCategory[1]" ng-model="productInfoForm.cat" ng-change="productInfoChange('cat');">
                         {{productCategory[0]}}
                     </label>
                   </div>
@@ -59,7 +59,7 @@
                     <label class="col-md-2 bluezi" >产品状态：</label>
                     <div class="col-md-10">
                         <label class="radio-inline" ng-repeat="productState in productStates" ng-if="productState[1]!='ALL'">
-                            <input type="radio" name="pSRadios"  ng-value="productState[1]" ng-model="productInfoForm.st">
+                            <input type="radio" name="pSRadios"  ng-value="productState[1]" ng-model="productInfoForm.st" ng-change="productInfoChange('st');">
                             {{productState[0]}}
                         </label>
                     </div>
@@ -67,39 +67,39 @@
                 <div class="form-group">
                     <label class="col-md-2 bluezi" >开始时间：</label>
                     <div class="col-md-6">
-                        <input type="text" class="form-control form-datetime" data-date-format="yyyy-mm-dd hh:ii:00" ng-model="productInfoForm.stm" placeholder="请选择开始时间" readonly="true"/>
+                        <input type="text" class="form-control form-datetime" data-date-format="yyyy-mm-dd hh:ii:00" ng-model="productInfoForm.stm" placeholder="请选择开始时间" readonly="true" ng-change="productInfoChange('stm');"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 bluezi" >结束时间：</label>
                     <div class="col-md-6">
-                        <input type="text" class="form-control form-datetime" data-date-format="yyyy-mm-dd hh:ii:59" ng-model="productInfoForm.etm" placeholder="请选择结束时间" readonly="true"/>
+                        <input type="text" class="form-control form-datetime" data-date-format="yyyy-mm-dd hh:ii:59" ng-model="productInfoForm.etm" placeholder="请选择结束时间" readonly="true" ng-change="productInfoChange('etm');"/>
                     </div>
                 </div>
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >产品原价：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" ng-model="productInfoForm.op" placeholder="请填写产品原价" />
+                    <input type="text" class="form-control" ng-model="productInfoForm.op" placeholder="请填写产品原价" ng-change="productInfoChange('op');"/>
                   </div>
                 </div>
               
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >当前价格：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写产品当前价格" ng-model="productInfoForm.cp">
+                    <input type="text" class="form-control" placeholder="请填写产品当前价格" ng-model="productInfoForm.cp" ng-change="productInfoChange('cp');"/>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >限定数量：</label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写限定数量" ng-model="productInfoForm.lmt">
+                    <input type="text" class="form-control" placeholder="请填写限定数量" ng-model="productInfoForm.lmt" ng-change="productInfoChange('lmt');"/>
                   </div>
                   <!-- <div class="col-md-1 blue">个</div>--> 
                 </div>
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >产品描述：</label>
                   <div class="col-md-10">
-                    <textarea name="" cols="" rows=""  class="teax" style="width:100%" placeholder="请填写产品描述" ng-model="productInfoForm.desc"></textarea>
+                    <textarea name="" cols="" rows=""  class="teax" style="width:100%" placeholder="请填写产品描述" ng-model="productInfoForm.desc" ng-change="productInfoChange('desc');"></textarea>
                   </div>
                 </div>
                 <div class="form-group">
@@ -211,15 +211,15 @@
                     </div>
                 </div>
                 <div class="col-md-12 text-center mp20">
-                  <button class="btn btn-info" ng-click="submitProductInfo(productInfoForm);">保存提交审核</button>
+                  <button class="btn btn-info" ng-click="submitProductInfo(productInfoForm);" ng-disabled="submitPInfoState">保存提交审核</button>
                 </div>
               </div>
             </form>
           </div>
           <div class="col-md-3">
               <div class="card mp10">
-                  <img src="images/min.png" width="214" height="165" ng-if="coverImgUrl==''"/>
-                  <img ng-src="{{coverImgUrl}}" width="214" height="165" ng-if="coverImgUrl!=''"/>
+                  <img src="images/min.png" width="214" height="165" ng-if="productInfoForm.img==undefined"/>
+                  <img ng-src="{{productInfoForm.img}}" width="214" height="165" ng-if="productInfoForm.img!=undefined"/>
                   <span class="caption">{{productInfoForm.name}}&nbsp;</span>
                   <a href="javascript:;" class="card-heading"><span>{{productInfoForm.name}}&nbsp;</span></a>
                   <P class="listp">
@@ -239,15 +239,15 @@
         </div>
         <div class="tab-panel" ng-show="vm.activeTab == 2">
           <div class="col-md-9 marginb">
-            <form class="form-horizontal" role="form" method='post'>
+            <form class="form-horizontal" role="form" name="productDetailForm" ng-model="productDetailForm">
               <div class="col-md-12">
                 <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
-                  <div class="content">详细的描述您的产品，可以帮助用户更好的购买您的产品。 <a href="#/yulanproduct" class="btn btn-info">查看预览</a></div>
+                  <div class="content">详细的描述您的产品，可以帮助用户更好的购买您的产品。 <a href="javascript:;" class="btn btn-info" ng-click="previewProductDetail(productInfoForm,productDetailForm);">查看预览</a></div>
                 </div>
                 <div class="form-group">
                   <label class="col-md-2 bluezi" >描述：</label>
                   <div class="col-md-10">
-                    <textarea name="" cols="" rows=""  class="teax" style="width:100%"></textarea>
+                    <textarea name="" cols="" rows=""  class="teax" style="width:100%" ng-model="productDetailForm.desc" placeholder="请填写产品详细描述" ng-change="productDetailChange('desc');"></textarea>
                   </div>
                 </div>
                   <div class="form-group">
@@ -257,7 +257,7 @@
                       </div>
                   </div>
                 <div class="col-md-12 text-center mp20">
-                  <button class="btn btn-info">保存发布产品</button>
+                  <button class="btn btn-info" ng-click="submitProductDetail(productDetailForm);" ng-disabled="submitPDetailState">保存发布产品</button>
                 </div>
               </div>
             </form>

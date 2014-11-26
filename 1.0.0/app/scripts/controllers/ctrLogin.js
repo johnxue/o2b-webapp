@@ -68,6 +68,8 @@ LoginControllers.controller('loginCtrl', function ($scope,$window,loginService,C
             localDataStorage.removeItem('groupTopicDetail');
             localDataStorage.removeItem('unReadMessageCountOnIndex');
             localDataStorage.removeItem('messageSniffInterval');
+            localDataStorage.removeItem('productInfoPreview');
+            localDataStorage.removeItem('productDetailPreview');
 
             cookieOperate.setCookie('token', headers('Authorization'));
             cookieOperate.setCookie('userName', strUserName);
@@ -196,6 +198,8 @@ LoginControllers.controller('logoutCtrl', function ($scope,CommonService,$window
             localDataStorage.removeItem('groupInfo');
             localDataStorage.removeItem('groupTopicDetail');
             localDataStorage.removeItem('unReadMessageCountOnIndex');
+            localDataStorage.removeItem('productInfoPreview');
+            localDataStorage.removeItem('productDetailPreview');
 
             //停止消息探寻间隔器
             if(JSON.parse(localDataStorage.getItem('messageSniffInterval'))!=null){

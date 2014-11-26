@@ -23,22 +23,33 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
     var uriData='';
 
-    //初始化UEditor(百度编辑器)
-    var ue =UEditorService.getUEditor('editor','group','aa');
-
     //上传产品图片所需产品编码(如无产品编码为"000000")
     var productCode = '000000';
 
-    //文件名(封面图)
-    var img = '';
-    //文件名(顶部大图)
-    var imgl='';
-    //文件名(广告条图)
-    var imgb='';
-    //文件名(小图)
-    var imgs ='';
+    var productId ='';
+
+    var needToSubmitPInfo=[];
+
+    var needToSubmitPDetail=[];
+
+    //初始化UEditor(百度编辑器)
+    var ue = new UE.ui.Editor();
+    ue.render('editor');
+    ue.ready(function () {
+        ue.execCommand('serverparam', {
+            'type': 'product.detail',
+            'code': productCode,
+            'Authorization': cookieOperate.getCookie('token'),
+            'app-key': 'fb98ab9159f51fd0'
+        });
+    });
+    ue.addListener("contentChange",function(){
+        $scope.productDetailChange('html');
+    });
 
   //初始化$scope中定义的变量
+
+    $scope.vm={};
 
     $scope.productInfoForm={};
 
@@ -54,9 +65,15 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
     $scope.productStates={};
 
-    $scope.coverImgUrl='';
-
     $scope.statesObj={};
+
+    $scope.submitPInfoState=false;
+
+    $scope.inputDetailFormState=false;
+
+    $scope.productDetailForm={};
+
+    $scope.submitPDetailState=false;
 
   //实现与页面交互的事件,如：button_click
 
@@ -75,8 +92,8 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
     $scope.updateCover.onSuccessItem = function(fileItem, response, status, headers) {
         document.getElementById('pCoverImgId')['src']=response.url;
-        $scope.coverImgUrl=response.url;
-        img=response.url;
+        $scope.productInfoForm.img =response.url;
+        $scope.productInfoChange('img');
         alert('上传成功!');
     };
 
@@ -100,7 +117,8 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
     $scope.updateTop.onSuccessItem = function(fileItem, response, status, headers) {
         document.getElementById('pTopImgId')['src']=response.url;
-        imgl=response.url;
+        $scope.productInfoForm.imgl=response.url;
+        $scope.productInfoChange('imgl');
         alert('上传成功!');
     };
 
@@ -124,7 +142,8 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
     $scope.updateCenter.onSuccessItem = function(fileItem, response, status, headers) {
         document.getElementById('pCenterImgId')['src']=response.url;
-        imgb=response.url;
+        $scope.productInfoForm.imgb=response.url;
+        $scope.productInfoChange('imgb');
         alert('上传成功!');
     };
 
@@ -148,7 +167,8 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
     $scope.updateMini.onSuccessItem = function(fileItem, response, status, headers) {
         document.getElementById('pMiniImgId')['src']=response.url;
-        imgs=response.url;
+        $scope.productInfoForm.imgs=response.url;
+        $scope.productInfoChange('imgs');
         alert('上传成功!');
     };
 
@@ -156,36 +176,110 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
         alert('上传失败,请清除后重新提交!');
     };
 
+    //产品基本信息状态改变事件
+    $scope.productInfoChange=function(optionName){
+        var flag = true;
+        for(var i=0;i<needToSubmitPInfo.length;i++){
+            if(needToSubmitPInfo[i]==optionName){
+                flag = false;
+                break;
+            }
+        }
+        if(flag){
+            needToSubmitPInfo.push(optionName);
+        }
+    }
+
     //提交产品基本信息
     $scope.submitProductInfo=function(productInfoForm){
+        $scope.submitPInfoState=true;
+
        uriData ={};
-        uriData.c= productInfoForm.c;
-        uriData.bn= productInfoForm.bn;
-        uriData.name= productInfoForm.name;
-        uriData.spec= productInfoForm.spec;
-        uriData.desc= productInfoForm.desc;
-        uriData.img= img;
-        uriData.imgl= imgl;
-        uriData.imgb= imgb;
-        uriData.imgs= imgs;
-        uriData.sc= productInfoForm.sc;
-        uriData.cat= productInfoForm.cat;
-        uriData.st= productInfoForm.st;
-        uriData.stm= productInfoForm.stm;
-        uriData.etm= productInfoForm.etm;
-        uriData.cp= productInfoForm.cp;
-        uriData.op= productInfoForm.op;
+        for(var i=0;i<needToSubmitPInfo.length;i++){
+            uriData[needToSubmitPInfo[i]]=productInfoForm[needToSubmitPInfo[i]];
+        }
+
         uriData.ta= 0;
         uriData.tt= 0;
         uriData.tf= 0;
         uriData.ts= 0;
-        uriData.lmt=productInfoForm.lmt;
 
        CommonService.createOne('product',JSON.stringify(uriData),function(data){
-             console.info(data.pid);
+           productId=data[productInfoForm.c];
+           productCode=productInfoForm.c;
+           alert('提交成功!');
        },errorOperate);
     }
 
+    //显示产品详细描述
+    $scope.showProductDetailForm=function(){
+        $scope.vm.activeTab=2;
+        /*if(productId!=''){
+            $scope.vm.activeTab=2;
+        }else{
+            alert('请先提交产品基本信息!');
+        }*/
+    }
+
+    //产品详细信息状态改变事件
+    $scope.productDetailChange=function(optionName){
+        var flag = true;
+        for(var i=0;i<needToSubmitPDetail.length;i++){
+            if(needToSubmitPDetail[i]==optionName){
+                flag = false;
+                break;
+            }
+        }
+        if(flag){
+            needToSubmitPDetail.push(optionName);
+        }
+    }
+
+    //提交产品详细信息
+    $scope.submitProductDetail=function(productDetailForm){
+        $scope.submitPDetailState=true;
+
+       uriData = {};
+        if(needToSubmitPDetail.indexOf('desc')!=-1){
+            uriData.desc=productDetailForm.desc;
+        }
+
+        if(needToSubmitPDetail.indexOf('html')!=-1){
+            uriData.html=ue.getContent();
+            uriData.imgFiles=UEditorService.getImgUrlList(ue);
+        }
+        uriData.code=productCode;
+
+       CommonService.createOne('product/'+'285',JSON.stringify(uriData),function(data){
+              console.info(data);
+              alert('提交成功!');
+       },errorOperate);
+
+    }
+
+    //预览产品详细信息
+    $scope.previewProductDetail=function(productInfoForm,productDetailForm){
+        var productInfoPreview={};
+        productInfoPreview.starttime=productInfoForm.stm;
+        productInfoPreview.endtime=productInfoForm.etm;
+        productInfoPreview.totalAmount=0;
+        productInfoPreview.limit=productInfoForm.lmt;
+        productInfoPreview.totalSold=0;
+        productInfoPreview.currentPrice=productInfoForm.cp;
+        productInfoPreview.originalPrice=productInfoForm.op;
+        productInfoPreview.image=productInfoForm.img;
+        productInfoPreview.description=productInfoForm.desc;
+        productInfoPreview.imageBanners=productInfoForm.imgl;
+
+        localDataStorage.setItem('productInfoPreview',JSON.stringify(productInfoPreview));
+
+        var productDetailPreview={};
+        productDetailPreview.html=ue.getContent();
+
+        localDataStorage.setItem('productDetailPreview',JSON.stringify(productDetailPreview));
+
+        $window.location.href="#/previewProductDetail";
+    }
 
    //调用与后端的接口,如：CommonService.getAll(params)
     uriData=undefined;
@@ -195,6 +289,6 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
         for(var i=0;i<$scope.productStates.length;i++){
             $scope.statesObj[$scope.productStates[i][1]]=$scope.productStates[i][0];
         }
-    },errorOperate)
+    },errorOperate);
 
 });

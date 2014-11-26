@@ -45,31 +45,32 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
     $scope.reserverState=true;
 
 
-
     $scope.$on('$viewContentLoaded', function() {
 
-    //右侧div滚动
+        //右侧div滚动
 
         $('#productFixed').css('position','relative');
         $('#productFixed').css("top",0);
         $('#productFixed').css("left",0);
 
         var ft = $('#productFixed').offset().top;
-        var fh = $('#productFixed').height();
 
         $(window).scroll(function(e){
+            var fh = $('#productFixed').outerHeight(true);
+
             var s = $(document).scrollTop();
+
             var ht =  $('#productDH').offset().top;
-            var hh = $('#productDH').height();
+            var hh = $('#productDH').outerHeight(true);
 
             if(s > (ft -10)){
-                if((s + fh) < (ht+hh-200)){
+                if( s < (ht+hh-fh)){
                     $('#productFixed').css('position','fixed');
                     $('#productFixed').css("top",0);
                     $('#productFixed').css("left",900);
                 }else{
                     $('#productFixed').css('position','fixed');
-                    $('#productFixed').css("top",hh+ht-s-fh-220);
+                    $('#productFixed').css("top",hh+ht-s-fh);
                     $('#productFixed').css("left",900);
                 }
             }else{
@@ -80,11 +81,9 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
         });
     });
 
-
     //实现与页面交互的事件,如：button_click
 
     // 点击关注单击事件
-
     $scope.guanZhuFun = function(code){
 
         if(cookieOperate.getCookie("token")==null) {

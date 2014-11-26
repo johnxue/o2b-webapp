@@ -1,0 +1,63 @@
+<!--导航结束-->
+<div class="bigbanner"><img ng-src="{{productInfoPreview.imageBanners}}" width="2560" height="450" /></div>
+<div class="container" >
+  <div class="cont" style=" background:#CCF; margin-top:20px;" > 
+    
+    <!-- 列表开始 --> 
+    <!--产品详情页左边开始-->
+    
+    <div class="col-md-12">
+      <ul class="nav nav-tabs" ng-init="vm.activeTab=1">
+        <li ng-class="{active: vm.activeTab == 1}" ><a href="javascript:;" ng-click="vm.activeTab = 1">产品主页</a></li>
+      </ul>
+      <div class="tab-content tab-bordered" >
+          <div class="tab-panel" ng-show="vm.activeTab == 1" >
+              <!--<div id="productDH" class="col-md-9" ng-repeat="productDetailhtml in productDetailhtmls"
+                   ng-bind-html="productDetailhtml | to_trusted" style="background:red;float:left;"></div>-->
+              <div id="productDH" class="col-md-9" style="background:red;float:left;height: 800px">efewf</div>
+              <!--右边开始-->
+              <div class="col-md-3">
+                  <h2><span class="label label-info large">{{productInfoPreview.starttime+'&'+productInfoPreview.endtime | detailDateMark}}</span> </h2>
+                  <p>累计金额</p>
+                  <p>
+                  <h1 style="color:#999;"><strong style="color:#999;">¥{{productInfoPreview.totalAmount |
+                      number:2}}</strong></h1>
+                  </p>
+                  <div class="lrp10"><img src="images/title.png" width="80" height="80"/>&nbsp;&nbsp;<span
+                          class="label label-info large">{{productDetailBasic.supplierName}}</span>
+                  </div>
+
+                  <div id="productFixed" class="row border fixed" style="float:left;">
+                      <div class="col-md-12">
+                          <h3><span class="label label-info large">限额{{productInfoPreview.limit}}台 / 剩余{{productInfoPreview.limit-productInfoPreview.totalSold}}台</span> </h3>
+                          <p><strong class="cl">¥{{productInfoPreview.currentPrice}}</strong>&nbsp;({{productInfoPreview.totalSold}}预订)/<span>原价：<del> {{productInfoPreview.originalPrice}} </del></span></p>
+                      </div>
+                      <p><img ng-src="images/products/{{productInfoPreview.image}}"/></p>
+                      <div class="col-md-12">{{productInfoPreview.description}}
+                          <p>包邮（大陆地区）</p>
+                          <p>预计发货：预订结束后30天内</p>
+                          <p>数量： <span>
+                        <button class="btn btn-info btn-mini w20 " ng-click="quantityPlus(productInfoPreview.limit,productInfoPreview.totalSold)">+</button>
+                        <span>
+                        <input name="" type="text"  class="input" ng-model="quantity"/>
+                        </span>
+                        <button class="btn btn-info btn-mini w20 " ng-click="quantitySubtract()">-</button>
+                        </span> </p>
+                          <P>总金额：<strong class="bluezi">￥{{cost | number:2}}</strong></P>
+                          <p style="text-align:center">
+                              <button type="button" class="btn btn-info" ng-click="order();"
+                                      ng-disabled="reserverState">立即购买 </button>
+                              <button class="btn btn-info" ng-click="addToShoppingCart();"><i class="icon-shopping-cart"></i> 加入购物车</button>
+                          </p>
+                      </div>
+                  </div>
+                  <div style="clear:both"></div>
+              </div>
+              <!--右边结束-->
+          </div>
+      </div>
+    </div>
+    <!--产品详情页左边开始--> 
+    
+  </div>
+</div>
