@@ -188,8 +188,8 @@ AdverControllers.controller('AdverCtrl',function($scope,CommonService,$compile){
            adConJson.n = subAdver.adLevelAd;
            adConJson.l = subAdver.advLayout[1];
            adConJson.o = subAdver.original;
-           adConJson.s = subAdver.adStartTime;
-           adConJson.e = subAdver.adEndTime;
+           adConJson.s = subAdver.starTime;
+           adConJson.e = subAdver.endTime;
        }if(adNan == 1){
             adConJson.cn = subAdver.author;
             adConJson.m = subAdver.adType[1];
@@ -223,10 +223,10 @@ AdverControllers.controller('AdverCtrl',function($scope,CommonService,$compile){
 
     //填充级别
     $scope.asGetLevel = function(leve){
-        document.getElementById("levelad").options.length = 0;
-        document.getElementById("levelad").options.add(new Option("请选择"));
+        document.getElementById("levelad"+leve[0]).options.length = 0;
+        document.getElementById("levelad"+leve[0]).options.add(new Option("请选择"));
         for(var i=1;i<=leve.Channel[2];i++){
-            document.getElementById("levelad").options.add(new Option(i));
+            document.getElementById("levelad"+leve[0]).options.add(new Option(i));
         }
     }
 
@@ -398,6 +398,22 @@ AdverControllers.controller('AdverCtrl',function($scope,CommonService,$compile){
             exNowPage = --exNowPage;
             $scope.getAdverExa();
         }
+    }
+
+    //日期控件
+    $scope.getTime = function(){
+        $('.form-datetime').datetimepicker(
+            {
+                language:'zh-CN',
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                forceParse: 0,
+                showMeridian: 1,
+                format: 'yyyy-mm-dd hh:ii'
+            });
     }
 
 })
