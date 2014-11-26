@@ -2,7 +2,7 @@
 
 var MyFormControllers = angular.module('MyFormControllers',[]);
 
-MyFormControllers.controller('MyFormCtrl',function($scope,$fileUploader,$compile,CommonService){
+MyFormControllers.controller('MyFormCtrl',function($scope,FileUploader,$compile,CommonService){
 
     var uriData = '';
     var nowPage = 0;         //当前页
@@ -178,7 +178,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$fileUploader,$compile
 
 
     //文件上传
-    var uploader = $scope.uploader = $fileUploader.create({   //添加附件
+ /*   var orderUploader = $scope.uploader = $fileUploader.create({   //添加附件
         scope: $scope,                          // to automatically update the html. Default: $rootScope
         url:"https://192.168.1.210/o2b/v1.0.0/order/returns/upload?type=order.returns",
         headers:{'Authorization':cookieOperate.getCookie('token'),'app-key':'fb98ab9159f51fd0'},
@@ -198,7 +198,32 @@ MyFormControllers.controller('MyFormCtrl',function($scope,$fileUploader,$compile
 
     uploader.bind('error', function (event, xhr, item, response) {  //添加失败处理
 
+    });*/
+
+    //文件上传(封面)
+    $scope.orderUploader= new FileUploader({
+        scope: $scope,
+        url: 'https://192.168.1.210/o2b/v1.0.0/order/returns/upload?type=order.returns',
+        method: 'POST',
+        autoUpload: true,   // 自动上传
+        alias: 'upfile',
+        queueLimit:1,
+        removeAfterUpload: true,
+        headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
     });
+
+    $scope.orderUploader.onSuccessItem = function(fileItem, response, status, headers) {
+        picName = response.url;
+        $scope.phones = [
+            {"picUrl": response.url,
+                "picFileName": response.filename}
+        ];
+        alert('上传成功!');
+    };
+
+    $scope.orderUploader.onErrorItem = function(fileItem, response, status, headers) {
+        alert('上传失败,请清除后重新提交!');
+    };
 
     /******************************   调用方法   ***********************************/
      //重置
