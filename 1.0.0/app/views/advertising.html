@@ -37,38 +37,22 @@
                                             <td><span class="ml15"><img ng-model="adSele.picImg" ng-src="https://192.168.1.210{{adSele[4]}}" class="prdouctimg"/></span></td>
                                             <td width='180px;'><p class='ha20' style='margin-top:7px;'><a href='' class='blue'>{{adSele[2]}}</a></p></td>
                                             <td><select ng-model="adSele.Channel" ng-options="Lchannel as Lchannel[0] for Lchannel in adChaViewName" class="form-control mp10" ng-change="asGetLevel(adSele)">
-                                                <!--<option >首页</option>
-                                                <option >产品</option>
-                                                <option >圈子</option>-->
-                                            </select></td>
+                                                </select></td>
                                             <td><select ng-model="adSele.adLevelAd" id="levelad{{adSele[0]}}" class="form-control mp10">
-                                                <!--<option >一级</option>
-                                                <option >二级</option>
-                                                <option >三级</option>-->
-                                            </select></td>
+                                                </select></td>
                                             <td><select ng-model="adSele.advLayout" ng-change="adSeleChange(adSele)" ng-options="Layout as Layout[0] for Layout in adLayViewName" class="form-control mp10">
-                                           <!--     <option >头部</option>
-                                                <option >中间</option>
-                                                <option >底部</option>
-                                                <option >左边</option>
-                                                <option >右边</option>-->
-                                            </select></td>
+                                                </select></td>
                                             <td><select ng-model="adSele.original" ng-change="adSeleChange(adSele)" class="form-control mp10">
                                                 <option >1</option>
                                                 <option >2</option>
                                                 <option >3</option>
-                                            </select></td>
-                                            <td><!--<input ng-model="adSele.startTime" type="datetime-local" class="form-control mp10">-->
-                                                <!--<div class="input-group">
-                                                    <input id="adStartTime{{adSele[0]}}" type="text" ng-model="adSele.adStartTime" readonly="true" class="form-control"/>
-                                                    <span class="input-group-btn">
-                                                        <button class="btn btn-default" type="button" onclick="WdatePicker({el:'adStartTime{{adSele[0]}}',dateFmt:'yyyy-MM-dd HH:mm:ss',onpicking:function(dp){angular.element(this).scope().adSele.adStartTime=dp.cal.getNewDateStr()}})"><i class="icon-calendar"></i></button>
-                                                    </span>
-                                                </div>-->
-                                               <!-- <input id="adStartTime{{adSele[0]}}" ng-model="adSele.adStartTime" type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',onpicking:function(dp){angular.element(this).scope().adSele.adStartTime=dp.cal.getNewDateStr();angular.element(this).scope().$apply();}})"/>-->
+                                                </select></td>
+                                            <td>
                                                 <input type="text" class="form-control mp10 form-datetime" ng-model="adSele.starTime" placeholder="请选择开始时间" ng-click="getTime()">
                                             </td>
-                                            <td><input type="text" class="form-control mp10 form-datetime" ng-model="adSele.endTime" placeholder="请选择结束时间" ng-click="getTime()"></td>
+                                            <td>
+                                                <input type="text" class="form-control mp10 form-datetime" ng-model="adSele.endTime" placeholder="请选择结束时间" ng-click="getTime()">
+                                            </td>
                                             <td>
                                                 <a href="" class="label label-info" data-toggle="modal" data-target="#hetong" ng-click="addAverApply(adSele,'0')">提交</a>
                                                 <div id="operate{{adSele[0]}}"></div>
@@ -76,17 +60,14 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                  <!--  <div class="col-md-12 text-center mp20 mt20">
-                                        <button class="btn btn-info">提交申请一级广告发布</button>
-                                    </div>-->
                                 </div>
                                     <p class="blue">
                                         <label class="radio-inline">
                                             <input type="radio" value="asc" name="adSorting" ng-click="adverSor()" checked="">
-                                            倒序排列 </label>
+                                                倒序排列 </label>
                                         <label class="radio-inline">
                                             <input type="radio" value="desc" name="adSorting" ng-click="adverSor()">
-                                            正序排列</label>
+                                                正序排列</label>
                                     </p>
                                 <div class="panel mp20 ">
                                     <table class="table table-condensed" id="averList">
@@ -103,20 +84,7 @@
                                             <th>操作</th>
                                         </thead>
                                         <tbody>
-                                        <tr></tr>
-                                     <!--   <tr>
-                                          <td><span class="ml15"><img src="images/quanzibg.jpg" class="prdouctimg" /></span></td>
-                                            <td width="180px;"><a href="" class="blue">CamPoint 您的室内的室</a></td>
-                                            <td>首页</td>
-                                            <td>二级</td>
-                                            <td>头部</td>
-                                            <td><span class="blue">第一张</span></td>
-                                            <td ><p class="ha20" style="margin-top:7px;">2014-10-04<br/>
-                                            12:34:03
-                                            </p></td>
-                                            <td>2014-10-20</td>
-                                            <td><a href="" data-toggle="modal" data-target="#delguanggao" class="blue" title="取消展示"><i class="icon-undo"></i></a><span class="ml10"><a href="" data-toggle="modal" data-target="#deleteguanggao" class="blue" title="删除"><i class="icon-trash"></i></a></span></td>
-                                        </tr>-->
+                                        <tr><!-- js遍历内容 --></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -151,18 +119,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr></tr>
-                                        <!--<tr>
-                                            <td><span class="ml15"><img src="images/quanzibg.jpg" class="prdouctimg" /></span></td>
-                                            <td width="180px;"><a href="" class="blue">CamPoint 您的室内的室</a></td>
-                                            <td>首页</td>
-                                            <td>二级</td>
-                                            <td>头部</td>
-                                            <td><span class="blue">第一张</span></td>
-                                            <td>2014-10-08</td>
-                                            <td>2014-10-20</td>
-                                            <td><a class="blue" href="" title="通过展示" ><i class="icon-ok"></i></a><a class="blue ml10" href="" title="不予通过" ><i class="icon-ban-circle"></i></a> <span class="ml10"><a href="" data-toggle="modal" data-target="#deleteguanggao" class="blue" title="删除"><i class="icon-trash"></i></a></span></td>
-                                        </tr>-->
+                                          <tr><!-- js遍历内容 --></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -198,18 +155,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr></tr>
-                                        <!--<tr>
-                                            <td><span class="ml15"><img src="images/quanzibg.jpg" class="prdouctimg" /></span></td>
-                                            <td width="180px;"><a href="" class="blue">CamPoint 您的室内的室</a></td>
-                                            <td>首页</td>
-                                            <td>二级</td>
-                                            <td>头部</td>
-                                            <td><span class="blue">第一张</span></td>
-                                            <td>2014-10-08</td>
-                                            <td>2014-10-20</td>
-                                            <td><a class="blue" href="" title="通过展示" ><i class="icon-ok"></i></a><a class="blue ml10" href="" title="不予通过" ><i class="icon-ban-circle"></i></a> <span class="ml10"><a href="" data-toggle="modal" data-target="#deleteguanggao" class="blue" title="删除"><i class="icon-trash"></i></a></span></td>
-                                        </tr>-->
+                                            <tr><!-- js遍历内容 --></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -246,8 +192,8 @@
         </div>
     </div>
 </div>
-<!-- 删除弹框显示 -->
 
+<!-- 删除弹框显示 -->
 <div class="modal fade"  id="deleteguanggao" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
     <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
         <div class="modal-content">
@@ -321,11 +267,7 @@
                             <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
                             <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
                         </ol>
-                        <div class="carousel-inner" id="bigPic">
-     <!--                       <div class="item active"> <img src="images/big3.png" class="bannerimg" style="height: 450px; width: 100%; background-position: center center;background-repeat: no-repeat; margin-top: -20px; cursor: pointer;" /></div>
-                            <div class="item"> <img src="images/big2.jpg" class="bannerimg" style="height: 450px; width: 100%; background-position: center center;background-repeat: no-repeat; margin-top: -20px; cursor: pointer;"/></div>
-                            <div class="item"> <img src="images/big1.png" class="bannerimg" style="height: 450px; width: 100%; background-position: center center;background-repeat: no-repeat; margin-top: -20px; cursor: pointer;"/></div>-->
-                        </div>
+                        <div class="carousel-inner" id="bigPic"></div>
                     </div>
                 </div>
             </div>
@@ -353,45 +295,9 @@
                             <li data-target="#carousel-example-generic2" data-slide-to="2"></li>
                         </ol>
                         <div class="carousel-inner" >
-                            <div class="item active h" id="small1"><!--<img alt="First slide" src="images/img2.jpg" class="fl">
-                                <div  class="itemtext">
-                                    <p class="listb"><a href="###" class="card-heading"><span>Kids Grow豆芽宝贝成长计划</span></a></p>
-                                    <p class="lrp10">贝虎环境卫士是全球第一款真正的六合一智能PM2.5环境检测设备，它能够精确地检测</p>
-                                    <P class="listp"><span class="hui">27天20小时后结束</span><span class='label label-info pull-right' >即将开始</span></P>
-                                    <div class="col-md-4 ha20"  >¥58</div>
-                                    <div class="col-md-4 ha20" >12</div>
-                                    <div class="col-md-4 pull-right ha20" >108人</div>
-                                    <div class="col-md-4 ha20 hui" >累计金额</div>
-                                    <div class="col-md-4 ha20 hui" >话题</div>
-                                    <div class="col-md-4 pull-right ha20 hui" >关注</div>
-                                </div>-->
-                            </div>
-                            <div id="small2" class="item  h"><!-- <img alt="Two slide" src="images/img3.jpg" class="fl">
-                            <div  class="itemtext">
-                                <p class="listb"><a href="###" class="card-heading"><span>Kids Grow豆芽宝贝成长计划</span></a></p>
-                                <p class="lrp10">贝虎环境卫士是全球第一款真正的六合一智能PM2.5环境检测设备，它能够精确地检测</p>
-                                <P class="listp"><span class="hui">27天20小时后结束</span><span class='label label-info pull-right' >即将开始</span></P>
-                                <div class="col-md-4 ha20"  >¥58</div>
-                                <div class="col-md-4 ha20" >12</div>
-                                <div class="col-md-4 pull-right ha20" >108人</div>
-                                <div class="col-md-4 ha20 hui" >累计金额</div>
-                                <div class="col-md-4 ha20 hui" >话题</div>
-                                <div class="col-md-4 pull-right ha20 hui" >关注</div>
-                            </div>-->
-                        </div>
-                            <div id="small3" class="item  h"><!--<img alt="Three slide" src="images/img1.png" class="fl">
-                                <div  class="itemtext">
-                                    <p class="listb"><a href="###" class="card-heading"><span>Kids Grow豆芽宝贝成长计划</span></a></p>
-                                    <p class="lrp10">贝虎环境卫士是全球第一款真正的六合一智能PM2.5环境检测设备，它能够精确地检测</p>
-                                    <P class="listp"><span class="hui">27天20小时后结束</span><span class='label label-info pull-right' >即将开始</span></P>
-                                    <div class="col-md-4 ha20"  >¥58</div>
-                                    <div class="col-md-4 ha20" >12</div>
-                                    <div class="col-md-4 pull-right ha20" >108人</div>
-                                    <div class="col-md-4 ha20 hui" >累计金额</div>
-                                    <div class="col-md-4 ha20 hui" >话题</div>
-                                    <div class="col-md-4 pull-right ha20 hui" >关注</div>
-                                </div>-->
-                            </div>
+                            <div class="item active h" id="small1"></div>
+                            <div id="small2" class="item  h"></div>
+                            <div id="small3" class="item  h"></div>
                         </div>
                     </div>
                 </div>
@@ -400,21 +306,3 @@
         </div>
     </div>
 </div>
-
-<script>
-
-        $('.form-datetime').datetimepicker(
-                {
-                    language:'zh-CN',
-                    weekStart: 1,
-                    todayBtn:  1,
-                    autoclose: 1,
-                    todayHighlight: 1,
-                    startView: 2,
-                    forceParse: 0,
-                    showMeridian: 1,
-                    format: 'yyyy-mm-dd hh:ii'
-                });
-
-
-</script>
