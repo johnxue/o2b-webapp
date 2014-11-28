@@ -116,10 +116,6 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title:'广告',
             templateUrl:'views/advertising.html',
             controller:'AdverCtrl'
-        }).when('/uEditor',{
-            title:'编辑器',
-            templateUrl:'views/ueditor.html',
-            controller:'UEditorService'
         }).otherwise({
             redirectTo: '/'
         });
