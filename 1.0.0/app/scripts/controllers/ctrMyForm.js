@@ -175,31 +175,6 @@ MyFormControllers.controller('MyFormCtrl',function($scope,FileUploader,$compile,
         });
     }
 
-
-
-    //文件上传
- /*   var orderUploader = $scope.uploader = $fileUploader.create({   //添加附件
-        scope: $scope,                          // to automatically update the html. Default: $rootScope
-        url:"https://192.168.1.210/o2b/v1.0.0/order/returns/upload?type=order.returns",
-        headers:{'Authorization':cookieOperate.getCookie('token'),'app-key':'fb98ab9159f51fd0'},
-        method: "POST",
-        alias:"upfile",
-        autoUpload: true       //是否自动上传
-    });
-
-   uploader.bind('success', function (event, xhr, item, response) {  //添加成功处理
-      //  console.info('Success', xhr, item, response);
-       picName = response.filename;
-       $scope.phones = [
-           {"picUrl": response.url,
-            "picFileName": response.filename}
-       ];
-   });
-
-    uploader.bind('error', function (event, xhr, item, response) {  //添加失败处理
-
-    });*/
-
     //文件上传(封面)
     $scope.orderUploader= new FileUploader({
         scope: $scope,
@@ -212,7 +187,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,FileUploader,$compile,
         headers: {'Authorization': cookieOperate.getCookie('token'), 'app-key': 'fb98ab9159f51fd0'}
     });
 
-    $scope.orderUploader.onSuccessItem = function(fileItem, response, status, headers) {
+    $scope.orderUploader.onSuccessItem = function(fileItem, response, status, headers) {  //添加成功处理
         picName = response.url;
         $scope.phones = [
             {"picUrl": response.url,
@@ -221,7 +196,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,FileUploader,$compile,
         alert('上传成功!');
     };
 
-    $scope.orderUploader.onErrorItem = function(fileItem, response, status, headers) {
+    $scope.orderUploader.onErrorItem = function(fileItem, response, status, headers) {  //添加失败处理
         alert('上传失败,请清除后重新提交!');
     };
 
