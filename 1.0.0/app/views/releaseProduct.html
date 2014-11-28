@@ -1,404 +1,310 @@
-<div class="container" >
-  <div class="cont" >
-    <div class="col-md-12">
-      <ul class="nav nav-tabs" ng-init="vm.activeTab=1">
-        <li ng-class="{active: vm.activeTab == 1}" ><a href="javascript:;" ng-click="vm.activeTab = 1">发布我的产品</a></li>
-        <li ng-class="{active: vm.activeTab == 2}" ><a href="javascript:;" ng-click="showProductDetailForm();" >产品详细描述</a></li>
-        <li ng-class="{active: vm.activeTab == 3}" ><a href="javascript:;" ng-click="vm.activeTab = 3">产品审核</a></li>
-        <li ng-class="{active: vm.activeTab == 4}" ><a href="javascript:;" ng-click="vm.activeTab = 4">产品管理</a></li>
-      </ul>
-      <div class="tab-content tab-bordered mp20  " >
-        <div class="tab-panel" ng-show="vm.activeTab == 1">
-          <div class="col-md-9 marginb">
-            <form class="form-horizontal" role="form" ng-model="productInfoForm" name="productInfoForm">
-              <div class="col-md-12">
-                <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
-                  <div class="content">我们团队及时向大家说明并积极解决问题，也希望大家能给予谅解并耐心等待。</div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >产品编号：</label>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写产品编号" ng-model="productInfoForm.c" ng-change="productInfoChange('c');">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >产品批次：</label>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写产品批次" ng-model="productInfoForm.bn" ng-change="productInfoChange('bn');">
-                  </div>
-                </div>
-                  <div class="form-group">
+<div class="container">
+  <div class="cont">
+    <ul class="nav nav-tabs" ng-init="vm.activeTab=1">
+      <li ng-class="{active: vm.activeTab == 1}"><a href="javascript:;" ng-click="vm.activeTab = 1">产品发布</a></li>
+      <li ng-class="{active: vm.activeTab == 2}"><a href="javascript:;" ng-click="showMyProductsManage();">产品管理</a></li>
+    </ul>
+    <div class="tab-content tab-bordered">
+      <div class="tab-panel" ng-show="vm.activeTab == 1">
+        <div class="col-md-12">
+          <ul class="nav nav-tabs" ng-init="vm.activeTabs=1">
+            <li ng-class="{active: vm.activeTabs == 1}"><a href="javascript:;" ng-click="vm.activeTabs = 1">发布我的产品</a></li>
+            <li ng-class="{active: vm.activeTabs == 2}"><a href="javascript:;" ng-click="showProductDetailForm();">产品详细描述</a></li>
+          </ul>
+          <div class="tab-content tab-bordered">
+            <div class="tab-panel" ng-show="vm.activeTabs == 1">
+              <div class="col-md-9 marginb">
+                <form class="form-horizontal" role="form" ng-model="productInfoForm" name="productInfoForm">
+                  <div class="col-md-12">
+                    <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
+                      <div class="content">我们团队及时向大家说明并积极解决问题，也希望大家能给予谅解并耐心等待。</div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >产品编号：</label>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="请填写产品编号" ng-model="productInfoForm.c" ng-change="productInfoChange('c');">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >产品批次：</label>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="请填写产品批次" ng-model="productInfoForm.bn" ng-change="productInfoChange('bn');">
+                      </div>
+                    </div>
+                    <div class="form-group">
                       <label class="col-md-2 bluezi" >产品名称：</label>
                       <div class="col-md-6">
-                          <input type="text" class="form-control" placeholder="请填写产品名称" ng-model="productInfoForm.name" ng-change="productInfoChange('name');">
+                        <input type="text" class="form-control" placeholder="请填写产品名称" ng-model="productInfoForm.name" ng-change="productInfoChange('name');">
                       </div>
                       <div class="col-md-1 blue"> </div>
-                  </div>
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >产品规格：</label>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写产品规格" ng-model="productInfoForm.spec" ng-change="productInfoChange('spec');">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >供应编码：</label>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写供应商编码"  ng-model="productInfoForm.sc" ng-change="productInfoChange('sc');">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >产品类别：</label>
-                  <div class="col-md-10">
-                    <label class="radio-inline" ng-repeat="productCategory in productCategorys" ng-if="productCategory[1]!='0000'">
-                       <input type="radio" name="pCRadios"  ng-value="productCategory[1]" ng-model="productInfoForm.cat" ng-change="productInfoChange('cat');">
-                        {{productCategory[0]}}
-                    </label>
-                  </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-2 bluezi" >产品状态：</label>
-                    <div class="col-md-10">
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >产品规格：</label>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="请填写产品规格" ng-model="productInfoForm.spec" ng-change="productInfoChange('spec');">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >供应编码：</label>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="请填写供应商编码"  ng-model="productInfoForm.sc" ng-change="productInfoChange('sc');">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >产品类别：</label>
+                      <div class="col-md-10">
+                        <label class="radio-inline" ng-repeat="productCategory in productCategorys" ng-if="productCategory[1]!='0000'">
+                          <input type="radio" name="pCRadios"  ng-value="productCategory[1]" ng-model="productInfoForm.cat" ng-change="productInfoChange('cat');">
+                          {{productCategory[0]}} </label>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >产品状态：</label>
+                      <div class="col-md-10">
                         <label class="radio-inline" ng-repeat="productState in productStates" ng-if="productState[1]!='ALL'">
-                            <input type="radio" name="pSRadios"  ng-value="productState[1]" ng-model="productInfoForm.st" ng-change="productInfoChange('st');">
-                            {{productState[0]}}
-                        </label>
+                          <input type="radio" name="pSRadios"  ng-value="productState[1]" ng-model="productInfoForm.st" ng-change="productInfoChange('st');">
+                          {{productState[0]}} </label>
+                      </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-2 bluezi" >开始时间：</label>
-                    <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >开始时间：</label>
+                      <div class="col-md-6">
                         <input type="text" class="form-control form-datetime" data-date-format="yyyy-mm-dd hh:ii:00" ng-model="productInfoForm.stm" placeholder="请选择开始时间" readonly="true" ng-change="productInfoChange('stm');"/>
+                      </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-2 bluezi" >结束时间：</label>
-                    <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >结束时间：</label>
+                      <div class="col-md-6">
                         <input type="text" class="form-control form-datetime" data-date-format="yyyy-mm-dd hh:ii:59" ng-model="productInfoForm.etm" placeholder="请选择结束时间" readonly="true" ng-change="productInfoChange('etm');"/>
+                      </div>
                     </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >产品原价：</label>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" ng-model="productInfoForm.op" placeholder="请填写产品原价" ng-change="productInfoChange('op');"/>
-                  </div>
-                </div>
-              
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >当前价格：</label>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写产品当前价格" ng-model="productInfoForm.cp" ng-change="productInfoChange('cp');"/>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >限定数量：</label>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="请填写限定数量" ng-model="productInfoForm.lmt" ng-change="productInfoChange('lmt');"/>
-                  </div>
-                  <!-- <div class="col-md-1 blue">个</div>--> 
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >产品描述：</label>
-                  <div class="col-md-10">
-                    <textarea name="" cols="" rows=""  class="teax" style="width:100%" placeholder="请填写产品描述" ng-model="productInfoForm.desc" ng-change="productInfoChange('desc');"></textarea>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >封面图片：</label>
-                  <div class="col-md-10">
-                      <input nv-file-select="" uploader="updateCover" name="productInfoForm_cover" id="coverId"
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >产品原价：</label>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" ng-model="productInfoForm.op" placeholder="请填写产品原价" ng-change="productInfoChange('op');"/>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >当前价格：</label>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="请填写产品当前价格" ng-model="productInfoForm.cp" ng-change="productInfoChange('cp');"/>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >限定数量：</label>
+                      <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="请填写限定数量" ng-model="productInfoForm.lmt" ng-change="productInfoChange('lmt');"/>
+                      </div>
+                      <!-- <div class="col-md-1 blue">个</div>--> 
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >产品描述：</label>
+                      <div class="col-md-10">
+                        <textarea name="" cols="" rows=""  class="teax" style="width:100%" placeholder="请填写产品描述" ng-model="productInfoForm.desc" ng-change="productInfoChange('desc');"></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >封面图片：</label>
+                      <div class="col-md-10">
+                        <input nv-file-select="" uploader="updateCover" name="productInfoForm_cover" id="coverId"
                              ng-model="productInfoForm.cover" type="file" size="4"
                              accept="image/gif,image/png,image/jpeg"/>
-
-                      <div nowrap>
+                        <div nowrap>
                           <button type="button" class="btn btn-success btn-xs"
                                   ng-click="updateCover.queue[0].upload()"
-                                  ng-disabled="updateCover.queue[0].isReady || updateCover.queue[0].isUploading ||updateCover.queue[0].isSuccess">
-                              <span>上传</span>
-                          </button>
+                                  ng-disabled="updateCover.queue[0].isReady || updateCover.queue[0].isUploading ||updateCover.queue[0].isSuccess"> <span>上传</span> </button>
                           <button type="button" class="btn btn-warning btn-xs"
                                   ng-click="updateCover.queue[0].cancel()"
-                                  ng-disabled="!updateCover.queue[0].isUploading">
-                              <span>取消</span>
-                          </button>
+                                  ng-disabled="!updateCover.queue[0].isUploading"> <span>取消</span> </button>
                           <button type="button" class="btn btn-danger btn-xs"
-                                  ng-click="updateCover.queue[0].remove();">
-                              <span>清空</span>
-                          </button>
+                                  ng-click="updateCover.queue[0].remove();"> <span>清空</span> </button>
+                        </div>
+                        <span class="pull-right" style="margin-top:-22px;">建议尺寸：690x512px</span> </br>
+                        <div class="mt20"><img src="images/min.png"  class="prdouctimg" id="pCoverImgId"/></div>
                       </div>
-                    <span class="pull-right" style="margin-top:-22px;">建议尺寸：690x512px</span> </br>
-                    <div class="mt20"><img src="images/min.png"  class="prdouctimg" id="pCoverImgId"/></div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >头部大图：</label>
-                  <div class="col-md-10">
-                      <input  nv-file-select="" uploader="updateTop" name="productInfoForm_top" id="topId"
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >头部大图：</label>
+                      <div class="col-md-10">
+                        <input  nv-file-select="" uploader="updateTop" name="productInfoForm_top" id="topId"
                              ng-model="productInfoForm.top" type="file" size="4"
                              accept="image/gif,image/png,image/jpeg"/>
-
-                      <div nowrap>
+                        <div nowrap>
                           <button type="button" class="btn btn-success btn-xs "
                                   ng-click="updateTop.queue[0].upload()"
-                                  ng-disabled="updateTop.queue[0].isReady || updateTop.queue[0].isUploading ||updateTop.queue[0].isSuccess">
-                              <span>上传</span>
-                          </button>
+                                  ng-disabled="updateTop.queue[0].isReady || updateTop.queue[0].isUploading ||updateTop.queue[0].isSuccess"> <span>上传</span> </button>
                           <button type="button" class="btn btn-warning btn-xs "
                                   ng-click="updateTop.queue[0].cancel()"
-                                  ng-disabled="!updateTop.queue[0].isUploading">
-                              <span>取消</span>
-                          </button>
+                                  ng-disabled="!updateTop.queue[0].isUploading"> <span>取消</span> </button>
                           <button type="button" class="btn btn-danger btn-xs"
-                                  ng-click="updateTop.queue[0].remove();">
-                              <span>清空</span>
-                          </button>
+                                  ng-click="updateTop.queue[0].remove();"> <span>清空</span> </button>
+                        </div>
+                        <span class="pull-right" style="margin-top:-22px;">建议尺寸：2560x450px</span> </br>
+                        <div class="mt20"><img src="images/min.png"  class="prdouctimg" id="pTopImgId"/></div>
                       </div>
-                    <span class="pull-right" style="margin-top:-22px;">建议尺寸：2560x450px</span> </br>
-                    <div class="mt20"><img src="images/min.png"  class="prdouctimg" id="pTopImgId"/></div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >广告条图：</label>
-                  <div class="col-md-10">
-                      <input nv-file-select="" uploader="updateCenter"  name="productInfoForm_center" id="centerId"
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >广告条图：</label>
+                      <div class="col-md-10">
+                        <input nv-file-select="" uploader="updateCenter"  name="productInfoForm_center" id="centerId"
                              ng-model="productInfoForm.center" type="file" size="4"
                              accept="image/gif,image/png,image/jpeg" />
-
-                      <div nowrap>
+                        <div nowrap>
                           <button type="button" class="btn btn-success btn-xs "
                                   ng-click="updateCenter.queue[0].upload()"
-                                  ng-disabled="updateCenter.queue[0].isReady || updateCenter.queue[0].isUploading ||updateCenter.queue[0].isSuccess">
-                              <span>上传</span>
-                          </button>
+                                  ng-disabled="updateCenter.queue[0].isReady || updateCenter.queue[0].isUploading ||updateCenter.queue[0].isSuccess"> <span>上传</span> </button>
                           <button type="button" class="btn btn-warning btn-xs "
                                   ng-click="updateCenter.queue[0].cancel()"
-                                  ng-disabled="!updateCenter.queue[0].isUploading">
-                              <span>取消</span>
-                          </button>
+                                  ng-disabled="!updateCenter.queue[0].isUploading"> <span>取消</span> </button>
                           <button type="button" class="btn btn-danger btn-xs "
-                                  ng-click="updateCenter.queue[0].remove();">
-                              <span>清空</span>
-                          </button>
+                                  ng-click="updateCenter.queue[0].remove();"> <span>清空</span> </button>
+                        </div>
+                        <span class="pull-right" style="margin-top:-22px;">建议尺寸：468x224px</span> </br>
+                        <div class="mt20"><img src="images/min.png"  class="prdouctimg" id="pCenterImgId"/></div>
                       </div>
-                    <span class="pull-right" style="margin-top:-22px;">建议尺寸：468x224px</span> </br>
-                    <div class="mt20"><img src="images/min.png"  class="prdouctimg" id="pCenterImgId"/></div>
-                  </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-2 bluezi" >小图：</label>
-                    <div class="col-md-10">
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi" >小图：</label>
+                      <div class="col-md-10">
                         <input nv-file-select="" uploader="updateMini"  name="productInfoForm_mini" id="miniId"
                                ng-model="productInfoForm.mini" type="file" size="4"
                                accept="image/gif,image/png,image/jpeg"/>
-
                         <div nowrap>
-                            <button type="button" class="btn btn-success btn-xs "
+                          <button type="button" class="btn btn-success btn-xs "
                                     ng-click="updateMini.queue[0].upload()"
-                                    ng-disabled="updateMini.queue[0].isReady || updateMini.queue[0].isUploading ||updateMini.queue[0].isSuccess">
-                                <span>上传</span>
-                            </button>
-                            <button type="button" class="btn btn-warning btn-xs "
+                                    ng-disabled="updateMini.queue[0].isReady || updateMini.queue[0].isUploading ||updateMini.queue[0].isSuccess"> <span>上传</span> </button>
+                          <button type="button" class="btn btn-warning btn-xs "
                                     ng-click="updateMini.queue[0].cancel()"
-                                    ng-disabled="!updateMini.queue[0].isUploading">
-                                <span>取消</span>
-                            </button>
-                            <button type="button" class="btn btn-danger btn-xs "
-                                    ng-click="updateMini.queue[0].remove();">
-                                <span>清空</span>
-                            </button>
+                                    ng-disabled="!updateMini.queue[0].isUploading"> <span>取消</span> </button>
+                          <button type="button" class="btn btn-danger btn-xs "
+                                    ng-click="updateMini.queue[0].remove();"> <span>清空</span> </button>
                         </div>
                         <span class="pull-right" style="margin-top:-22px;">建议尺寸：468x224px</span> </br>
                         <div class="mt20"><img src="images/min.png"  class="prdouctimg" id="pMiniImgId"/></div>
+                      </div>
                     </div>
-                </div>
-                <div class="col-md-12 text-center mp20">
-                  <button class="btn btn-info" ng-click="submitProductInfo(productInfoForm);" ng-disabled="submitPInfoState">保存提交审核</button>
-                </div>
+                    <div class="col-md-12 text-center mp20">
+                      <button class="btn btn-info" ng-click="submitProductInfo(productInfoForm);" ng-disabled="submitPInfoState">保存提交审核</button>
+                    </div>
+                  </div>
+                </form>
               </div>
-            </form>
-          </div>
-          <div class="col-md-3">
-              <div class="card mp10">
-                  <img src="images/min.png" width="214" height="165" ng-if="productInfoForm.img==undefined"/>
-                  <img ng-src="{{productInfoForm.img}}" width="214" height="165" ng-if="productInfoForm.img!=undefined"/>
-                  <span class="caption">{{productInfoForm.name}}&nbsp;</span>
-                  <a href="javascript:;" class="card-heading"><span>{{productInfoForm.name}}&nbsp;</span></a>
-                  <P class="listp">
-                      <span class="hui">{{productInfoForm.stm+'&'+productInfoForm.etm | datemark}}</span>
-                      <span class='label label-success pull-right' ng-show="productInfoForm.st=='ON'">{{statesObj['ON']}}</span>
-                      <span class='label label-warning pull-right' ng-show="productInfoForm.st=='TBA'">{{statesObj['TBA']}}</span>
-                      <span class='label label-default pull-right' ng-show="productInfoForm.st=='OFF'">{{statesObj['OFF']}}</span>
-                  </P>
+              <div class="col-md-3">
+                <div class="card mp10"> <img src="images/min.png" width="214" height="165" ng-if="productInfoForm.img==undefined"/> <img ng-src="{{productInfoForm.img}}" width="214" height="165" ng-if="productInfoForm.img!=undefined"/> <span class="caption">{{productInfoForm.name}}&nbsp;</span> <a href="javascript:;" class="card-heading"><span>{{productInfoForm.name}}&nbsp;</span></a>
+                  <P class="listp"> <span class="hui">{{productInfoForm.stm+'&'+productInfoForm.etm | datemark}}</span> <span class='label label-success pull-right' ng-show="productInfoForm.st=='ON'">{{statesObj['ON']}}</span> <span class='label label-warning pull-right' ng-show="productInfoForm.st=='TBA'">{{statesObj['TBA']}}</span> <span class='label label-default pull-right' ng-show="productInfoForm.st=='OFF'">{{statesObj['OFF']}}</span> </P>
                   <div class="col-md-5 ha20"  >￥0</div>
                   <div class="col-md-3 ha20" >0</div>
                   <div class="col-md-3 pull-right ha20" >0人</div>
                   <div class="col-md-5 ha20 hui" >累计金额</div>
                   <div class="col-md-3 ha20 hui" >话题</div>
                   <div class="col-md-3 pull-right ha20 hui" >关注</div>
+                </div>
               </div>
-          </div>
-        </div>
-        <div class="tab-panel" ng-show="vm.activeTab == 2">
-          <div class="col-md-9 marginb">
-            <form class="form-horizontal" role="form" name="productDetailForm" ng-model="productDetailForm">
-              <div class="col-md-12">
-                <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
-                  <div class="content">详细的描述您的产品，可以帮助用户更好的购买您的产品。 <a href="javascript:;" class="btn btn-info" ng-click="previewProductDetail(productInfoForm,productDetailForm);">查看预览</a></div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-2 bluezi" >描述：</label>
-                  <div class="col-md-10">
-                    <textarea name="" cols="" rows=""  class="teax" style="width:100%" ng-model="productDetailForm.desc" placeholder="请填写产品详细描述" ng-change="productDetailChange('desc');"></textarea>
-                  </div>
-                </div>
-                  <div class="form-group">
-                      <label class="col-md-2 bluezi" >详情：</label>
+            </div>
+            <div class="tab-panel" ng-show="vm.activeTabs == 2">
+              <div class="col-md-9 marginb">
+                <form class="form-horizontal" role="form" name="productDetailForm" ng-model="productDetailForm">
+                  <div class="col-md-12">
+                    <div class="alert with-icon mp10 "> <i class="icon-info-sign"></i>
+                      <div class="content">详细的描述您的产品，可以帮助用户更好的购买您的产品。 <a href="javascript:;" class="btn btn-info" ng-click="previewProductDetail(productInfoForm,productDetailForm);">查看预览</a></div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi control-label" >描述：</label>
                       <div class="col-md-10">
-                          <script id="editor" type="text/plain" style="height:150px;"></script>
+                        <textarea name="" cols="" rows=""  class="teax" style="width:100%" ng-model="productDetailForm.desc" placeholder="请填写产品详细描述" ng-change="productDetailChange('desc');"></textarea>
                       </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2 bluezi control-label" >详情：</label>
+                      <div class="col-md-10"> 
+                        <script id="editor" type="text/plain" style="height:150px;"></script> 
+                      </div>
+                    </div>
+                    <div class="col-md-12 text-center mp20">
+                      <button class="btn btn-info" ng-click="submitProductDetail(productDetailForm);" ng-disabled="submitPDetailState">保存发布产品</button>
+                    </div>
                   </div>
-                <div class="col-md-12 text-center mp20">
-                  <button class="btn btn-info" ng-click="submitProductDetail(productDetailForm);" ng-disabled="submitPDetailState">保存发布产品</button>
-                </div>
+                </form>
               </div>
-            </form>
-          </div>
-        </div>
-        <div class="tab-panel" ng-show="vm.activeTab == 3">
-          <div class="col-md-12 marginb">
-            <div class="panel mp20 ">
-              <table class="table table-condensed " >
-                <thead>
-                  <tr >
-                    <th ><span class="ml15" >产品名称</span></th>
-                    <th>开始时间</th>
-                    <th>结束时间</th>
-                    <th>状态</th>
-                    <th>发布人</th>
-                    <th>操作</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="ml15" ><img src="images/quanzibg.jpg" class="prdouctimg" /><a href="#/yulanproduct" class="blue ml10">智能产品都在这独家首发</a></span></td>
-                    <td>2014-10-10</td>
-                    <td>2014-10-15</td>
-                    <td>准备中</td>
-                    <td><span class="blue">admin213213</span></td>
-                    <td><span><a href="#/fabuproduct" class="blue " >审核通过</a></span><span><a href="" class="blue ml10" >不予通过 </a></span></td>
-                  </tr>
-                  <tr>
-                    <td><span class="ml15" ><img src="images/quanzibg.jpg" class="prdouctimg" /><a href="#/yulanproduct" class="blue ml10">智能产品都在这独家首发</a></span></td>
-                    <td>2014-10-10</td>
-                    <td>2014-10-15</td>
-                    <td>准备中</td>
-                    <td><span class="blue">admin213213</span></td>
-                    <td><span><a href="#/fabuproduct" class="blue " >审核通过</a></span><span><a href="" class="blue ml10" >不予通过 </a></span></td>
-                  </tr>
-                  <tr>
-                    <td><span class="ml15" ><img src="images/quanzibg.jpg" class="prdouctimg" /><a href="#/yulanproduct" class="blue ml10">智能产品都在这独家首发</a></span></td>
-                    <td>2014-10-10</td>
-                    <td>2014-10-15</td>
-                    <td>准备中</td>
-                    <td><span class="blue">admin213213</span></td>
-                    <td><span><a href="#/fabuproduct" class="blue " >审核通过</a></span><span><a href="" class="blue ml10" >不予通过 </a></span></td>
-                  </tr>
-                </tbody>
-              </table>
             </div>
           </div>
         </div>
-        <div class="tab-panel" ng-show="vm.activeTab == 4">
-          <div class="col-md-12 marginb">
-            <div class="panel mp20">
-              <table class="table table-condensed " >
-                <thead>
-                  <tr >
-                    <th ><input name="check" type="checkbox" value="" style="margin-left:10px;"/>
-                      &nbsp;全选</th>
-                    <th>产品名称</th>
-                    <th>开始时间</th>
-                    <th>结束时间</th>
-                    <th>发布人</th>
-                    <th>操作</th>
-                    <th>状态</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
-                    <td><span ><a href="" class="blue">智能产品都在这独家首发</a></span></td>
-                    <td>2014-10-10</td>
-                    <td>2014-10-20</td>
-                    <td><span class="blue">admin</span></td>
-                    <td><span><a href="" data-toggle="modal" data-target="#delprduct" class="blue" ><i class="icon-remove"></i> 删除</a></span><span><a href="" data-toggle="modal" data-target="#delfabuprduct" class="blue ml10" >撤消发布</a></span></td>
-                    <td>已发布</td>
-                  </tr>
-                  <tr>
-                    <td ><input name="check" type="checkbox" value="" style="margin-left:10px;"/></td>
-                    <td><span ><a href="" class="blue">智能产品都在这独家首发</a></span></td>
-                    <td>2014-10-10</td>
-                    <td>2014-10-20</td>
-                    <td><span class="blue">admin</span></td>
-                    <td><span><a href="" data-toggle="modal" data-target="#delprduct" class="blue" ><i class="icon-remove"></i> 删除</a></span><span><a href="" data-toggle="modal" data-target="#delfabuprduct" class="blue ml10" >撤消发布</a></span></td>
-                    <td>已发布</td>
-                  </tr>
-                </tbody>
-              </table>
-              <div class="mp20 marginb pull-left" >
-                <button type="button" class="btn btn-info">批量删除</button>
-              </div>
-              <div class="row pull-right">
-                <ul class="pager pager-pills ">
-                  <li class="previous disabled"><a href="#">«</a></li>
-                  <li class="active"><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">4</a></li>
-                  <li><a href="#">5</a></li>
-                  <li class="next"><a href="#">»</a></li>
+      </div>
+      <div class="tab-panel" ng-show="vm.activeTab == 2">
+        <div class="alert with-icon mp10 " ng-show="showNoMyProductsDiv"> <i class="icon-info-sign"></i>
+          <div class="content">亲，您还没有发布过产品。</div>
+        </div>
+        <!-- 如果用户没有关注的产品则显示以上信息-->
+        <div ng-show="!showNoMyProductsDiv">
+        <div class="alert with-icon "> <span class="mp7" style="float:left;"> 查询条件： </span><span class="col-md-3">
+          <input type="text" class="form-control" placeholder="产品名称">
+          </span> <span class="ml10">
+          <button class="btn btn-info" ><i class="icon-search"></i> 查询</button>
+          </span>
+          <div class="col-md-3">
+            <select  class="form-control">
+              <option>未审核</option>
+              <option>已发布</option>
+            </select>
+            <!-- 按条件查询 --> 
+          </div>
+        </div>
+        <!-- 用户发布的产品信息展示-->
+        
+        <div class=" marginb">
+          <div class="panel mp20 ">
+            <table class="table table-condensed " >
+              <thead>
+                <tr >
+                  <th ><span style="margin-left:15px;">产品名称</span></th>
+                  <th>状态</th>
+                  <th>发布人</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span style="margin-left:15px;" ><img src="images/quanzibg.jpg" class="prdouctimg" /><a href="#/yulanproduct" class="blue ml10">智能产品都在这独家首发</a></span></td>
+                  <td>准备中</td>
+                  <td><span class="blue">admin213213</span></td>
+                  <td><span><a href="" class="blue " ><i class="icon-pencil"></i> 编辑</a></span><span><a href="" data-toggle="modal" data-target="#delnew" class="blue ml10" ><i class="icon-remove"></i> 删除</a></span><span><a href="" class="blue ml10" ><i class="icon-minus-sign"></i> 暂停</a></span><span><a href="" class="blue ml10" ><i class="icon-level-down"></i> 下线</a></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+            <div class="pull-right">
+                <ul class="pager pager-pills">
+                    <li class="previous" id="myProductsLastPageLi"><a href="javascript:;" ng-click="myProductsLastPage();">«</a></li>
+                    <li ng-repeat="myProductsBursterPageNumber in myProductsPageNumbers" id="myProductsPageLi{{myProductsBursterPageNumber}}" class="myProductsBursterPageLis" on-finish-render-filters><a href="javascript:;" ng-click="findMyProducts(myProductsBursterPageNumber,myProductsPageSize);">{{myProductsBursterPageNumber+1}}</a></li>
+                    <li class="next" id="myProductsNextPageLi"><a href="javascript:;" ng-click="myProductsNextPage();">»</a></li>
                 </ul>
-              </div>
             </div>
-          </div>
         </div>
+       </div>
       </div>
     </div>
-  </div>
-</div>
-<!-- 确认撤消发布弹框 -->
-
-<div class="modal fade"  id="delfabuprduct" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
-  <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" > <i class="icon-remove"></i> 撤消发布</h4>
-      </div>
-      <div class="modal-body"> 您确定要撤消发布此产品吗,亲</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-mini btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-mini btn-info" data-dismiss="modal">确定</button>
-      </div>
-    </div>
+    <!-- 标签页结束--> 
   </div>
 </div>
 <!-- 确认删除弹框 -->
-<div class="modal fade"  id="delprduct" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
+
+<div class="modal fade"  id="delnew" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
   <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" > <i class="icon-remove"></i> 删除产品</h4>
+        <h4 class="modal-title" > <i class="icon-remove"></i> 产品删除 </h4>
       </div>
-      <div class="modal-body"> 您确定要删除此产品吗,亲</div>
+      <div class="modal-body"> 您确定要删除这个产品吗,亲</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-mini btn-default" data-dismiss="modal">取消</button>
         <button type="button" class="btn btn-mini btn-info" data-dismiss="modal">确定</button>
       </div>
     </div>
+    <!-- /.modal-content --> 
   </div>
+  <!-- /.modal-dialog --> 
 </div>
-
 <script type="text/javascript">
 
     $('.form-datetime').datetimepicker(
