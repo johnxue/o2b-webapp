@@ -45,7 +45,7 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="col-md-2 bluezi" >供应编码：</label>
+                      <label class="col-md-2 bluezi" >供应商编码：</label>
                       <div class="col-md-6">
                         <input type="text" class="form-control" placeholder="请填写供应商编码"  ng-model="productInfoForm.sc" ng-change="productInfoChange('sc');">
                       </div>
@@ -263,10 +263,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><span style="margin-left:15px;" ><img src="images/quanzibg.jpg" class="prdouctimg" /><a href="#/yulanproduct" class="blue ml10">智能产品都在这独家首发</a></span></td>
-                  <td>准备中</td>
-                  <td><span class="blue">admin213213</span></td>
+                <tr ng-repeat="myProduct in myProducts">
+                  <td><span style="margin-left:15px;" ><img ng-src="{{myProduct.image}}" class="prdouctimg" /><a href="#/yulanproduct" class="blue ml10">{{myProduct.name}}</a></span></td>
+                  <td>{{myProduct.p_status}}</td>
+                  <td><span class="blue">{{myProduct.supplierName}}</span></td>
                   <td><span><a href="" class="blue " ><i class="icon-pencil"></i> 编辑</a></span><span><a href="" data-toggle="modal" data-target="#delnew" class="blue ml10" ><i class="icon-remove"></i> 删除</a></span><span><a href="" class="blue ml10" ><i class="icon-minus-sign"></i> 暂停</a></span><span><a href="" class="blue ml10" ><i class="icon-level-down"></i> 下线</a></span></td>
                 </tr>
               </tbody>
@@ -275,7 +275,7 @@
             <div class="pull-right">
                 <ul class="pager pager-pills">
                     <li class="previous" id="myProductsLastPageLi"><a href="javascript:;" ng-click="myProductsLastPage();">«</a></li>
-                    <li ng-repeat="myProductsBursterPageNumber in myProductsPageNumbers" id="myProductsPageLi{{myProductsBursterPageNumber}}" class="myProductsBursterPageLis" on-finish-render-filters><a href="javascript:;" ng-click="findMyProducts(myProductsBursterPageNumber,myProductsPageSize);">{{myProductsBursterPageNumber+1}}</a></li>
+                    <li ng-repeat="myProductsBursterPageNumber in myProductsBursterPageNumbers" id="myProductsPageLi{{myProductsBursterPageNumber}}" class="myProductsBursterPageLis" on-finish-render-filters><a href="javascript:;" ng-click="findMyProducts(myProductsBursterPageNumber,myProductsPageSize);">{{myProductsBursterPageNumber+1}}</a></li>
                     <li class="next" id="myProductsNextPageLi"><a href="javascript:;" ng-click="myProductsNextPage();">»</a></li>
                 </ul>
             </div>
@@ -286,8 +286,8 @@
     <!-- 标签页结束--> 
   </div>
 </div>
-<!-- 确认删除弹框 -->
 
+<!-- 确认删除弹框 -->
 <div class="modal fade"  id="delnew" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
   <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
     <div class="modal-content">
@@ -305,6 +305,8 @@
   </div>
   <!-- /.modal-dialog --> 
 </div>
+
+<!--zui日历插件-->
 <script type="text/javascript">
 
     $('.form-datetime').datetimepicker(
