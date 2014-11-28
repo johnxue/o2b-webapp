@@ -32,6 +32,10 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
     var needToSubmitPDetail=[];
 
+    var productInfoPreview={};
+
+    var productDetailPreview={};
+
     //初始化UEditor(百度编辑器)
     var ue = new UE.ui.Editor();
     ue.render('editor');
@@ -45,7 +49,16 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
     });
     ue.addListener("contentChange",function(){
         $scope.productDetailChange('html');
+        productDetailPreview.html=ue.getContent();
     });
+
+    //分页信息(我的产品)
+    var myProductsAllCount=0;
+    var myProductsMaxPage=0;
+    var myProductsPage=0;
+    var myProductsPageSize=6;
+    //分页器可显示的页数
+    var myProductsBursterMaxPage=6;
 
   //初始化$scope中定义的变量
 
@@ -74,6 +87,23 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
     $scope.productDetailForm={};
 
     $scope.submitPDetailState=false;
+
+    $scope.showNoMyProductsDiv=false;
+
+    $scope.myProducts=[];
+
+    $scope.myProductsBursterPageNumbers=[];
+
+    $scope.myProductsPageSize=myProductsPageSize;
+
+    //初始化分页器样式
+    $scope.$on('ngRepeatFinished', function () {
+
+        //我的产品分页器初始化样式
+        angular.element('.myProductsBursterPageLis').removeClass('active');
+        angular.element('#myProductsPageLi0').addClass('active');
+
+    });
 
   //实现与页面交互的事件,如：button_click
 
@@ -207,15 +237,17 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
        CommonService.createOne('product',JSON.stringify(uriData),function(data){
            productId=data[productInfoForm.c];
            productCode=productInfoForm.c;
+           $scope.productInfoForm.img=data.img_url+'/'+data.image;
+           $scope.productInfoForm.imgl=data.img_url+'/'+data.imagelarge;
            alert('提交成功!');
        },errorOperate);
     }
 
     //显示产品详细描述
     $scope.showProductDetailForm=function(){
-        $scope.vm.activeTab=2;
+        $scope.vm.activeTabs=2;
         /*if(productId!=''){
-            $scope.vm.activeTab=2;
+            $scope.vm.activeTabs=2;
         }else{
             alert('请先提交产品基本信息!');
         }*/
@@ -251,7 +283,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
         uriData.code=productCode;
 
        CommonService.createOne('product/'+'285',JSON.stringify(uriData),function(data){
-              console.info(data);
+              productDetailPreview.html=data.html;
               alert('提交成功!');
        },errorOperate);
 
@@ -259,7 +291,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
     //预览产品详细信息
     $scope.previewProductDetail=function(productInfoForm,productDetailForm){
-        var productInfoPreview={};
+
         productInfoPreview.starttime=productInfoForm.stm;
         productInfoPreview.endtime=productInfoForm.etm;
         productInfoPreview.totalAmount=0;
@@ -273,12 +305,32 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
         localDataStorage.setItem('productInfoPreview',JSON.stringify(productInfoPreview));
 
-        var productDetailPreview={};
-        productDetailPreview.html=ue.getContent();
-
         localDataStorage.setItem('productDetailPreview',JSON.stringify(productDetailPreview));
 
-        $window.location.href="#/previewProductDetail";
+        $window.open('#/previewProductDetail');
+    }
+
+    //显示产品管理
+    $scope.showMyProductsManage=function(){
+        $scope.vm.activeTab = 2
+        findMyProducts(0,myProductsPageSize);
+    }
+
+    //我的产品信息列表分页
+    $scope.myProductsNextPage=function(){
+        if(myProductsPage<myProductsMaxPage-1){
+            findMyProducts(++waitPage,waitPageSize);
+        }else{
+            angular.element('#myProductsNextPageLi').addClass('disabled');
+        }
+    }
+
+    $scope.myProductsLastPage=function(){
+        if(myProductsPage>0){
+            findMyProducts(--myProductsPage,myProductsPageSize);
+        }else{
+            angular.element('#myProductsLastPageLi').addClass('disabled');
+        }
     }
 
    //调用与后端的接口,如：CommonService.getAll(params)
@@ -290,5 +342,60 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
             $scope.statesObj[$scope.productStates[i][1]]=$scope.productStates[i][0];
         }
     },errorOperate);
+
+    //获取我的产品信息
+    var findMyProducts= $scope.findMyProducts = function(page,pageSize) {
+        uriData = 'o=' + page + '&r=' + pageSize;
+        CommonService.getAll('my/product', uriData, function (data) {
+            $scope.myProducts=[];
+
+            var rows = data.rows;
+            for(var i=0;i<rows.length;i++){
+               var myProduct={};
+                myProduct.pid=rows[i][0];
+                myProduct.code=rows[i][1];
+                myProduct.categoryCode=rows[i][2];
+                myProduct.name=rows[i][3];
+                myProduct.image=rows[i][4];
+                myProduct.starttime=rows[i][5];
+                myProduct.endTime=rows[i][6];
+                myProduct.statusCode=rows[i][7];
+                myProduct.status=rows[i][8];
+                myProduct.totalTopic=rows[i][9];
+                myProduct.totalFollow=rows[i][10];
+                myProduct.totalSold=rows[i][11];
+                myProduct.totalAmount=rows[i][12];
+                myProduct.p_status_code=rows[i][13];
+                myProduct.p_status=rows[i][14];
+
+               $scope.myProducts.push(myProduct);
+            }
+
+            console.info($scope.myProducts);
+
+            /*myProductsAllCount = data.count;
+
+            //记录查询页号,连接点击页号查询和点击上一页或下一页查询
+            myProductsPage=page;
+
+            myProductsMaxPage=Math.ceil(myProductsAllCount/myProductsPageSize);
+
+            //分页器显示
+            $scope.myProductsBursterPageNumbers =_produceBurster(page,pageSize,myProductsAllCount,myProductsBursterMaxPage);
+
+            //设置分页器样式
+            angular.element('.myProductsBursterPageLis').removeClass('active');
+            angular.element('#myProductsPageLi'+page+'').addClass('active');
+
+            //去除上一页,下一页禁用样式
+            angular.element('#myProductsLastPageLi').removeClass('disabled');
+            angular.element('#myProductsNextPageLi').removeClass('disabled');
+*/
+        }, function (response) {
+            if(response.code=="802"){
+                $scope.showNoMyProductsDiv=true;
+            }
+        });
+    }
 
 });

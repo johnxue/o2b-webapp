@@ -29,8 +29,9 @@ PreviewProductDetailControllers.controller('PreviewProductDetailCtrl',function($
 
     $scope.productDetailPreview=JSON.parse(localDataStorage.getItem('productDetailPreview'));
 
-    console.info($scope.productInfoPreview);
-    console.info($scope.productDetailPreview);
+    $scope.quantity=1;
+
+    $scope.cost = 0;
 
     $scope.$on('$viewContentLoaded', function() {
 
@@ -70,7 +71,21 @@ PreviewProductDetailControllers.controller('PreviewProductDetailCtrl',function($
 
    //实现与页面交互的事件,如：button_click
 
+    //数量增加
+    $scope.quantityPlus=function(limit,totalSold){
+        if($scope.quantity<(limit-totalSold)){
+            $scope.quantity++;
+            $scope.cost=$scope.productInfoPreview.currentPrice*($scope.quantity);
+        }
+    }
 
+    //数量减少
+    $scope.quantitySubtract=function(){
+        if($scope.quantity>0){
+            $scope.quantity--;
+            $scope.cost=$scope.productInfoPreview.currentPrice*($scope.quantity);
+        }
+    }
 
 
 
