@@ -4,7 +4,7 @@ var ReleaseControllers = angular.module('ReleaseControllers',[]);
 
 ReleaseControllers.controller('ReleaseNewCtrl',function($scope,CommonService,$compile,UEditorService) {
 
-    var isDiscuss = "N";  //是否允许评论, Y|N '， [可选，默认为Y]
+    var isDiscuss = "N";  //是否允许评论, Y|N '， [可选，默认为N]
     var isStatus = "NO";  //状态 NO-只保存不提交审核|WT-提交审核’ [可选，默认值为 NO]
     var checkFlag = true;
     var liHtml = null;
