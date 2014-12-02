@@ -75,7 +75,7 @@ GroupTopicDetailControllers.controller('GroupTopicDetailCtrl',function($scope,Co
     //初始化分页器样式
     $scope.$on('ngRepeatFinished', function () {
         angular.element('.bursterPageLis').removeClass('active');
-        angular.element('#pageLi0').addClass('active');
+        angular.element('#pageLi'+commentsPage).addClass('active');
     });
 
   //实现与页面交互的事件,如：button_click

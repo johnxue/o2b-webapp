@@ -8,7 +8,7 @@ var MainApp=angular.module('MainApp',['ngRoute','ngResource','angularFileUpload'
     'GroupMainControllers','GroupDetailControllers','GroupTopicDetailControllers','CreateGroupControllers',
     'EditGroupTopicControllers','ManageGroupControllers','UEditorServices','ReleaseControllers',
     'EditNewsControllers','MessageMainControllers','MessageDetailControllers','AdverControllers',
-    'ReleaseProductControllers','PreviewProductDetailControllers']);
+    'MyProductsControllers','PreviewProductDetailControllers']);
 
 MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($routeProvider,$httpProvider,$locationProvider) {
     $routeProvider
@@ -96,10 +96,10 @@ MainApp.config(['$routeProvider','$httpProvider','$locationProvider',function($r
             title:'消息详情',
             templateUrl:'views/messageDetail.html',
             controller:'MessageDetailCtrl'
-        }).when('/releaseProduct',{
-            title:'发布产品',
-            templateUrl:'views/releaseProduct.html',
-            controller:'ReleaseProductCtrl'
+        }).when('/myProducts',{
+            title:'我的产品',
+            templateUrl:'views/myProducts.html',
+            controller:'MyProductsCtrl'
         }).when('/previewProductDetail',{
             title:'预览产品详情',
             templateUrl:'views/previewProductDetail.html',

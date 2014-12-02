@@ -103,19 +103,19 @@ ManageGroupControllers.controller('ManageGroupCtrl',function($scope,CommonServic
     $scope.$on('ngRepeatFinished', function () {
         //话题分页器初始化样式
         angular.element('.bursterPageLis').removeClass('active');
-        angular.element('#pageLi0').addClass('active');
+        angular.element('#pageLi'+topicsPage).addClass('active');
 
         //成员管理分页器初始化样式
         angular.element('.groupBursterPageLis').removeClass('active');
-        angular.element('#groupPageLi0').addClass('active');
+        angular.element('#groupPageLi'+groupPage).addClass('active');
 
         //未加入审核分页器初始化样式
         angular.element('.waitBursterPageLis').removeClass('active');
-        angular.element('#waitPageLi0').addClass('active');
+        angular.element('#waitPageLi'+waitPage).addClass('active');
 
         //黑名单管理分页器初始化样式
         angular.element('.holdBursterPageLis').removeClass('active');
-        angular.element('#holdPageLi0').addClass('active');
+        angular.element('#holdPageLi'+holdPage).addClass('active');
 
     });
 

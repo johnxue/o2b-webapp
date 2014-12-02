@@ -15,10 +15,10 @@
  *  @服务：CommonService 提供接口方法：getAll,getOne,updateOne,deleteOne,createOne
  */
 
-var ReleaseProductControllers = angular.module('ReleaseProductControllers',[]);
+var MyProductsControllers = angular.module('MyProductsControllers',[]);
 
-/*定义 Controller: ReleaseProduct  （主页面 releaseProduct.html）*/
-ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,CommonService,$window,FileUploader,UEditorService){
+/*定义 Controller: MyProducts  （我的产品页面 myProducts.html）*/
+MyProductsControllers.controller('MyProductsCtrl',function($scope,CommonService,$window,FileUploader,UEditorService){
     ctrInit();
 
     var uriData='';
@@ -101,7 +101,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
 
         //我的产品分页器初始化样式
         angular.element('.myProductsBursterPageLis').removeClass('active');
-        angular.element('#myProductsPageLi0').addClass('active');
+        angular.element('#myProductsPageLi'+myProductsPage).addClass('active');
 
     });
 
@@ -239,6 +239,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
            productCode=productInfoForm.c;
            $scope.productInfoForm.img=data.img_url+'/'+data.image;
            $scope.productInfoForm.imgl=data.img_url+'/'+data.imagelarge;
+           $scope.productInfoForm.supplierName=data.supplierName;
            alert('提交成功!');
        },errorOperate);
     }
@@ -302,6 +303,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
         productInfoPreview.image=productInfoForm.img;
         productInfoPreview.description=productInfoForm.desc;
         productInfoPreview.imageBanners=productInfoForm.imgl;
+        productInfoPreview.supplierName=productInfoForm.supplierName;
 
         localDataStorage.setItem('productInfoPreview',JSON.stringify(productInfoPreview));
 
@@ -319,7 +321,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
     //我的产品信息列表分页
     $scope.myProductsNextPage=function(){
         if(myProductsPage<myProductsMaxPage-1){
-            findMyProducts(++waitPage,waitPageSize);
+            findMyProducts(++myProductsPage,myProductsPageSize);
         }else{
             angular.element('#myProductsNextPageLi').addClass('disabled');
         }
@@ -367,13 +369,13 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
                 myProduct.totalAmount=rows[i][12];
                 myProduct.p_status_code=rows[i][13];
                 myProduct.p_status=rows[i][14];
+                myProduct.supplierName=rows[i][15];
+                myProduct.nickname=rows[i][16];
 
                $scope.myProducts.push(myProduct);
             }
 
-            console.info($scope.myProducts);
-
-            /*myProductsAllCount = data.count;
+            myProductsAllCount = data.count;
 
             //记录查询页号,连接点击页号查询和点击上一页或下一页查询
             myProductsPage=page;
@@ -390,7 +392,7 @@ ReleaseProductControllers.controller('ReleaseProductCtrl',function($scope,Common
             //去除上一页,下一页禁用样式
             angular.element('#myProductsLastPageLi').removeClass('disabled');
             angular.element('#myProductsNextPageLi').removeClass('disabled');
-*/
+
         }, function (response) {
             if(response.code=="802"){
                 $scope.showNoMyProductsDiv=true;
