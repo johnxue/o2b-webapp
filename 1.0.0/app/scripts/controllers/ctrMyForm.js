@@ -175,7 +175,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,FileUploader,$compile,
         });
     }
 
-    //文件上传(封面)
+    //文件上传
     $scope.orderUploader= new FileUploader({
         scope: $scope,
         url: 'https://192.168.1.210/o2b/v1.0.0/order/returns/upload?type=order.returns',
@@ -197,7 +197,7 @@ MyFormControllers.controller('MyFormCtrl',function($scope,FileUploader,$compile,
     };
 
     $scope.orderUploader.onErrorItem = function(fileItem, response, status, headers) {  //添加失败处理
-        alert('上传失败,请清除后重新提交!');
+        alert('上传失败!');
     };
 
     /******************************   调用方法   ***********************************/
