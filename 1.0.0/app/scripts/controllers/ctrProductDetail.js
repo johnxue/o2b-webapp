@@ -236,7 +236,7 @@ ProductDetailControllers.controller('ProductDetailCtrl',function($scope,$routePa
         totalSold=$scope.productDetailBasic.totalSold;
         currentPrice=$scope.productDetailBasic.currentPrice;
         $scope.cost=$scope.quantity*currentPrice;
-        $scope.productDetailhtmls=data.html;
+        $scope.productDetailhtmls=data.html.list;
 
         //判断能否预订
 

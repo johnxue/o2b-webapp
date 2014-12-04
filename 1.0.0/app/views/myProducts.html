@@ -7,8 +7,8 @@
     <div class="tab-content tab-bordered">
       <div class="tab-panel" ng-show="vm.activeTab == 1">
         <div class="col-md-12">
-          <ul class="nav nav-tabs" ng-init="vm.activeTabs=1">
-            <li ng-class="{active: vm.activeTabs == 1}"><a href="javascript:;" ng-click="vm.activeTabs = 1">发布我的产品</a></li>
+          <ul class="nav nav-tabs" ng-init="showReleaseMyProduct();">
+            <li ng-class="{active: vm.activeTabs == 1}"><a href="javascript:;" ng-click="showReleaseMyProduct();">发布我的产品</a></li>
             <li ng-class="{active: vm.activeTabs == 2}"><a href="javascript:;" ng-click="showProductDetailForm();">产品详细描述</a></li>
           </ul>
           <div class="tab-content tab-bordered">
@@ -236,19 +236,23 @@
         </div>
         <!-- 如果用户没有关注的产品则显示以上信息-->
         <div ng-show="!showNoMyProductsDiv">
-        <div class="alert with-icon "> <span class="mp7" style="float:left;"> 查询条件： </span><span class="col-md-3">
-          <input type="text" class="form-control" placeholder="产品名称">
-          </span> <span class="ml10">
-          <button class="btn btn-info" ><i class="icon-search"></i> 查询</button>
+        <form name="selectMyProductsForm" ng-model="selectMyProductsForm">
+        <div class="alert with-icon ">
+          <span class="mp7" style="float:left;"> 查询条件： </span>
+          <span class="col-md-3">
+          <input type="text" class="form-control" placeholder="产品名称" ng-model="selectMyProductsForm.name">
+          </span>
+          <span class="ml10">
+          <button class="btn btn-info" ng-click="selectMyProductsByCondition(selectMyProductsForm);"><i class="icon-search"></i> 查询</button>
           </span>
           <div class="col-md-3">
-            <select  class="form-control">
-              <option>未审核</option>
-              <option>已发布</option>
-            </select>
+              <select  class="form-control" ng-model="selectMyProductsForm.status" ng-options="selectProductManageStatus[1] as selectProductManageStatus[0] for selectProductManageStatus in selectProductManageStatuses" name="selectMyProductsForm_status">
+                  <option value="" selected="selected">所有</option>
+              </select>
             <!-- 按条件查询 --> 
           </div>
         </div>
+        </form>
         <!-- 用户发布的产品信息展示-->
         
         <div class=" marginb">
@@ -264,10 +268,17 @@
               </thead>
               <tbody>
                 <tr ng-repeat="myProduct in myProducts">
-                  <td><span style="margin-left:15px;" ><img ng-src="{{myProduct.image}}" class="prdouctimg" /><a href="#/yulanproduct" class="blue ml10">{{myProduct.name}}</a></span></td>
+                  <td><span style="margin-left:15px;" ><img ng-src="{{myProduct.image}}" class="prdouctimg" /><a href="javascript:;" class="blue ml10"  ng-click="showProductInfoDiv(myProduct);">{{myProduct.name}}</a></span></td>
                   <td>{{myProduct.p_status}}</td>
                   <td><span class="blue">{{myProduct.supplierName}}</span></td>
-                  <td><span><a href="" class="blue " ><i class="icon-pencil"></i> 编辑</a></span><span><a href="" data-toggle="modal" data-target="#delnew" class="blue ml10" ><i class="icon-remove"></i> 删除</a></span><span><a href="" class="blue ml10" ><i class="icon-minus-sign"></i> 暂停</a></span><span><a href="" class="blue ml10" ><i class="icon-level-down"></i> 下线</a></span></td>
+                  <td>
+                      <span><a href="javascript:;" class="blue " ng-click="editProduct(myProduct.code);"><i class="icon-pencil"></i> 编辑</a></span>
+                      <span><a href="javascript:;"  class="blue ml10" ng-click="showDelProductDiv(myProduct.pid);"><i class="icon-remove"></i> 删除</a></span>
+                      <span ng-show="myProduct.p_status_code=='OK'"><a href="javascript:;" class="blue ml10" ng-click="pauseProduct(myProduct.pid);"><i class="icon-minus-sign"></i> 暂停</a></span>
+                      <span ng-show="myProduct.p_status_code=='OK'"><a href="javascript:;" class="blue ml10" ng-click="offlineProduct(myProduct.pid);"><i class="icon-level-down"></i> 下线</a></span>
+                      <span ng-show="myProduct.p_status_code=='OFFLINE'"><a href="javascript:;" class="blue ml10" ng-click="showUpdateBatchNumberDiv(myProduct.pid);"><i class="icon-level-up"></i> 重新发布</a></span>
+                      <span ng-show="myProduct.p_status_code=='PAUSE'"><a href="javascript:;" class="blue ml10" ng-click="okProduct(myProduct.pid);"><i class="icon-level-up"></i> 恢复发布</a></span>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -287,8 +298,8 @@
   </div>
 </div>
 
-<!-- 确认删除弹框 -->
-<div class="modal fade"  id="delnew" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
+<!-- 确认删除弹框开始 -->
+<div class="modal fade"  id="delProduct" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle" aria-hidden="true" >
   <div class="modal-dialog" style="margin-top: 182.33333333333334px; width:30%">
     <div class="modal-content">
       <div class="modal-header">
@@ -298,13 +309,100 @@
       <div class="modal-body"> 您确定要删除这个产品吗,亲</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-mini btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-mini btn-info" data-dismiss="modal">确定</button>
+        <button type="button" class="btn btn-mini btn-info" ng-click="delProduct(delProductId);">确定</button>
       </div>
     </div>
     <!-- /.modal-content --> 
   </div>
   <!-- /.modal-dialog --> 
 </div>
+<!-- 确认删除弹框结束 -->
+
+<!--产品信息弹框开始-->
+<div class="modal" id="showProductInfo" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle"  >
+    <div class="modal-dialog">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close();">&times;</button>
+                <h4 class="modal-title" id="resizedModalTitle"> 产品信息 </h4>
+            </div>
+            <div class="modal-body">
+                <form name="productInfoShowForm" class="form-horizontal" role="form" ng-model="productInfoShowForm">
+                    <div class="container" >
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label bluezi" >产品编号：</label>
+                                <div class="col-md-7">
+                                    <input type='text'  class='form-control' readonly="true" ng-model="productInfoShowForm.code"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label bluezi">产品名称：</label>
+                                <div class="col-md-7">
+                                    <input type='text'   class='form-control' readonly="true" ng-model="productInfoShowForm.name"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label bluezi">开始时间：</label>
+                                <div class="col-md-7">
+                                    <input type='text'   class='form-control' readonly="true" ng-model="productInfoShowForm.starttime"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label bluezi">结束时间：</label>
+                                <div class="col-md-7">
+                                    <input type='text'   class='form-control' readonly="true" ng-model="productInfoShowForm.endTime"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label bluezi">累计金额：</label>
+                                <div class="col-md-7">
+                                    <input type='text'   class='form-control' readonly="true" ng-model="productInfoShowForm.totalAmount"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--产品信息弹框结束-->
+
+<!--产品重新发布更改批次号弹框开始-->
+<div class="modal" id="updateBatchNumber" tabindex="-1" role="dialog" aria-labelledby="resizedModalTitle"  >
+    <div class="modal-dialog">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close();">&times;</button>
+                <h4 class="modal-title" id="resizedModalTitle2"> 产品重新发布 </h4>
+            </div>
+            <div class="modal-body">
+                <form name="reReleaseProductForm" class="form-horizontal" role="form" ng-model="reReleaseProductForm" >
+                    <div class="container" >
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label bluezi" >产品批号：</label>
+                                <div class="col-md-7">
+                                    <input type='text'  class='form-control' name="reReleaseProductForm_btn" ng-model="reReleaseProductForm.btn"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-mini btn-default"  data-dismiss="modal" >取消</button>
+                <button type="button" class="btn btn-mini btn-info" ng-click="reReleaseProduct(reReleaseProductId,reReleaseProductForm);">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--产品重新发布更改批次号弹框结束-->
 
 <!--zui日历插件-->
 <script type="text/javascript">

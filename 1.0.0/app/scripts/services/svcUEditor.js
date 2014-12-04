@@ -85,9 +85,9 @@ UEditorServices.factory('UEditorService', function () {
 
                 }
 
-                //find remove imgFiles
                 addAndRemoveImgs.addImgFiles = addImgFiles.length == 0 ? null : addImgFiles.join(',');
 
+                //find remove imgFiles
                 var removeImgFiles = [];
 
                 for (var i = 0; i < oldImgFiles.length; i++) {
