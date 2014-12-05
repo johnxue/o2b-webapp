@@ -16,7 +16,8 @@
     "jquery": "1.10.2",
     "es5-shim": "~4.0.3",
     "json3": "~3.3.2",
-    "zui12": "http://zui.sexy/docs/download/zui-1.2-dist.zip"
+    "zui12": "http://zui.sexy/docs/download/zui-1.2-dist.zip",
+    "angular-ui-select2": "~0.0.5"
   },
   "devDependencies": {
     "angular-mocks": "1.2.26",
