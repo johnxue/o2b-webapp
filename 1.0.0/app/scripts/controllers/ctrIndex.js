@@ -20,8 +20,30 @@ var IndexControllers = angular.module('IndexControllers',[]);
 
 
 /*定义 Controller: IndexCtrl  （首页面 index.html）*/
-IndexControllers.controller('IndexCtrl',function($scope,CommonService,$window){
+IndexControllers.controller('IndexCtrl',function($scope,CommonService,$window,$interval){
     var uriData ='';
+
+    //消息探测
+    if(cookieOperate.getCookie("token")!=null){
+        var stop=undefined;
+        //间隔器
+        stop=$interval(function () {
+            uriData = undefined;
+            CommonService.getAll('message/sniffing', uriData, function (data) {
+                var unReadMessageCount = data.unread_count;
+
+                //改变消息栏显示的未读消息数量
+                $scope.unReadMessageCountOnIndex=unReadMessageCount;
+                localDataStorage.setItem('unReadMessageCountOnIndex',JSON.stringify(unReadMessageCount));
+
+            }, errorOperate);
+
+        },120000);
+
+        //存储当前运行的间隔器
+        localDataStorage.setItem('messageSniffInterval',JSON.stringify(stop));
+    }
+
 //初始化$scope中定义的变量
     $scope.beforeLogin = null;
     $scope.afterLogin = null;
